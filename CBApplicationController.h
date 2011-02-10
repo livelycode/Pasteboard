@@ -4,15 +4,14 @@
 
 @class CBHotKey;
 @class CBPasteboardObserver;
-@class CBWindowController;
+@class CBClipboardWindowController;
 
 @interface CBApplicationController : NSObject 
 {
     @private
-    
     CBPasteboardObserver *clipboardObserver;
     CBHotKey *hotKey;
-    CBWindowController *windowController;
+    CBClipboardWindowController *windowController;
     BOOL windowHidden;
 }
 

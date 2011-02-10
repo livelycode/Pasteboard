@@ -1,9 +1,8 @@
 #import "Cocoa.h"
 
-@interface CBClipboardItem : NSObject
+@interface CBItemLayer : NSObject
 {
 	@private
-    
     CALayer *mainLayer;
     CATextLayer *contentLayer;
     CATextLayer *descriptionLayer;

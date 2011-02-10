@@ -1,13 +1,14 @@
 #import "Cocoa.h"
 
+@class CBClipboardLayer;
 @class CBClipboard;
 
-@interface CBWindowController : NSObject
+@interface CBClipboardWindowController : NSObject
 {
     @private
-    
     NSWindow *mainWindow;
     CALayer *mainLayer;
+    CBClipboardLayer *clipboardLayer;
     CBClipboard *clipboard;
     CABasicAnimation *fadeIn;
     CABasicAnimation *fadeOut;
@@ -24,7 +25,7 @@
 
 @end
 
-@interface CBWindowController(Delegation) <CBPasteboardOberserverDelegate, CBHotKeyDelegate>
+@interface CBClipboardWindowController(Delegation) <CBPasteboardOberserverDelegate, CBHotKeyDelegate>
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag;
 

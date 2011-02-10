@@ -3,7 +3,6 @@
 @interface CBSettings : NSObject
 {
     @private
-    
     NSDictionary *settings;
 }
 

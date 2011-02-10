@@ -4,7 +4,6 @@
 @interface CBPasteboardObserver : NSObject
 {
     @private
-    
     id delegate;
     NSPasteboard *systemPasteboard;
     NSTimer *timer;

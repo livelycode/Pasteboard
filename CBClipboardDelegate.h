@@ -1,12 +1,12 @@
 #import "Cocoa.h"
 
-@class CBClipboard;
+@class CBClipboardLayer;
 
 @protocol CBClipboardDelegate <NSObject>
 
 @optional
-- (void)clipboardDidHide:(CBClipboard *)aClipboard;
+- (void)clipboardDidHide:(CBClipboardLayer *)aClipboard;
 
-- (void)clipboardDidShow:(CBClipboard *)aClipboard;
+- (void)clipboardDidShow:(CBClipboardLayer *)aClipboard;
 
 @end

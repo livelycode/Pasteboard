@@ -5,7 +5,6 @@
 @interface CBHotKey : NSObject
 {
     @private
-    
 	EventHotKeyRef hotKeyRef;
     EventHotKeyID hotKeyID;
     EventTypeSpec eventType;

@@ -1,20 +1,24 @@
 #import "Cocoa.h"
-#import "CBClipboardDelegate.h"
+
+@class CBItem;
 
 @interface CBClipboard : NSObject
 {
     @private
-    
-    CALayer *mainLayer;
-    CGRect frame;
+    NSMutableArray *items;
+    NSUInteger capacity;
 }
 
-- (id)initWithFrame:(CGRect)aRect;
+- (id)init;
 
-- (void)setCornerRadius:(CGFloat)aRadius;
+- (id)initWithCapacity:(NSUInteger)aCapacity;
 
-- (void)setOpacity:(CGFloat)anOpacity;
+- (void)setCapacity:(NSUInteger)aCapacity;
 
-- (CALayer *)layer;
+- (void)insertItem:(CBItem *)anItem AtIndex:(NSUInteger)anIndex;
+
+- (CBItem *)itemAtIndex:(NSUInteger)anIndex;
+
+- (NSArray *)items;
 
 @end

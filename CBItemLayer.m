@@ -1,6 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation CBClipboardItem
+@implementation CBItemLayer
 
 - (id)initWithContentSize:(CGSize)aSize;
 {

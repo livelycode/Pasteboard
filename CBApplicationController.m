@@ -9,7 +9,7 @@
     {
         CBSettings *settings = [CBSettings sharedSettings];
         
-        windowController = [[CBWindowController alloc] init];
+        windowController = [[CBClipboardWindowController alloc] init];
         [windowController setFadeInDuration:[settings floatForKey:@"fadeOutDuration"]];
         
         hotKey = [[CBHotKey alloc] init];

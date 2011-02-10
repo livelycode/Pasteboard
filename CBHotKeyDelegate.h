@@ -5,11 +5,9 @@
 @protocol CBHotKeyDelegate <NSObject>
 
 @required
-
 - (void)hotKeyPressed:(CBHotKey *)hotKey;
 
 @optional
-
 - (void)hotKeyReleased:(CBHotKey *)hotKey;
 
 @end

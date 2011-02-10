@@ -1,6 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation CBWindowController
+@implementation CBClipboardWindowController
 
 - (id)init
 {
@@ -9,15 +9,17 @@
     {
         CBSettings *settings = [CBSettings sharedSettings];
         
-        clipboard = [[CBClipboard alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        [clipboard setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-        [clipboard setOpacity:[settings floatForKey:@"opacity"]];
+        clipboard = [[CBClipboard alloc] initWithCapacity:12];
+        
+        clipboardLayer = [[CBClipboardLayer alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [clipboardLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
+        [clipboardLayer setOpacity:[settings floatForKey:@"opacity"]];
         
         mainWindow = nil;
         
         mainLayer = [CALayer layer];
         [mainLayer setBackgroundColor:CGColorCreateGenericGray(0, 1)];
-     //   [mainLayer addSublayer:[clipboard layer]];
+        [mainLayer addSublayer:[clipboardLayer layer]];
         
         fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [fadeIn setDelegate:self];
@@ -60,11 +62,10 @@
 
 @end
 
-@implementation CBWindowController(Delegation)
+@implementation CBClipboardWindowController(Delegation)
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
 {
-    NSLog(@"foo");
     if (mainLayerHidden == NO)
     {
         NSLog(@"1");
@@ -99,6 +100,12 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
+    for (NSPasteboardItem *item in [aPasteboard pasteboardItems])
+    {
+        CBItem *clipboardItem = [[CBItem alloc] initWithPasteboardItem:item];
+        [clipboard insertItem:clipboardItem
+                      AtIndex:0];
+    }
     /*    Class NSStringClass = [NSString class];
      Class NSAttributedStringClass = [NSAttributedString class];
      Class NSURLClass = [NSURL class];

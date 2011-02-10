@@ -2,35 +2,46 @@
 
 @implementation CBClipboard
 
-- (id)initWithFrame:(CGRect)aRect;
+- (id)init
+{
+    return [self initWithCapacity:0];
+}
+
+- (id)initWithCapacity:(NSUInteger)aCapacity
 {
     self = [super init];
     if (self != nil)
     {
-        frame = aRect;
-        mainLayer = [CALayer layer];
-        [mainLayer setFrame:aRect];
-        [mainLayer setActions:[NSDictionary dictionaryWithObject:[NSNull null]
-                                                             forKey:@"opacity"]];
+        items = [NSMutableArray array];
+        capacity = aCapacity;
     }
     return self;
 }
 
-- (void)setCornerRadius:(CGFloat)aRadius
+- (void)setCapacity:(NSUInteger)aCapacity
 {
-    [mainLayer setCornerRadius:aRadius];
+    NSRange tail = NSMakeRange(aCapacity, [items count] - aCapacity);
+    [items removeObjectsInRange:tail];
 }
 
-- (void)setOpacity:(CGFloat)anOpacity
+- (void)insertItem:(CBItem *)anItem AtIndex:(NSUInteger)anIndex;
 {
-    CGColorRef color = CGColorCreateGenericGray(0, anOpacity);
-    [mainLayer setBackgroundColor:color];
-    CFRelease(color);
+    [items insertObject:anItem
+                atIndex:anIndex];
+    if ([items count] > capacity)
+    {
+        [items removeLastObject];
+    }
 }
 
-- (CALayer *)layer
+- (CBItem *)itemAtIndex:(NSUInteger)anIndex
 {
-    return mainLayer;
+    return [items objectAtIndex:anIndex];
+}
+
+- (NSArray *)items
+{
+    return [NSArray arrayWithArray:items];
 }
 
 @end
