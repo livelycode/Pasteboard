@@ -12,4 +12,9 @@
     return self;
 }
 
+- (NSString *)bestMatchForArray:(NSArray *)URIs;
+{
+    return [pasteboardItem availableTypeFromArray:URIs];
+}
+
 @end

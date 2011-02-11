@@ -9,6 +9,10 @@
     {
         CBSettings *settings = [CBSettings sharedSettings];
         
+        NSString *URLType = [settings objectForKey:@"URLType"];
+        NSString *textType = [settings objectForKey:@"textType"];
+        types = [NSArray arrayWithObjects:URLType, textType, nil];
+        
         clipboard = [[CBClipboard alloc] initWithCapacity:12];
         
         clipboardLayer = [[CBClipboardLayer alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
@@ -68,14 +72,15 @@
 {
     if (mainLayerHidden == NO)
     {
-        NSLog(@"1");
         mainLayerHidden = YES;
         [mainWindow orderOut:self];
     }
     else
     {
-        NSLog(@"2");
         mainLayerHidden = NO;
+        CBItem *item = [clipboard itemAtIndex:0];
+        CBItemLayer *itemLayer = [[CBItemLayer alloc] initWithItem:item
+                                                          forTypes:types];
     }
 }
 
@@ -83,14 +88,12 @@
 {
     if (mainLayerHidden == NO)
     {
-        NSLog(@"3");
         [mainLayer setActions:[NSDictionary dictionaryWithObject:fadeOut
                                                           forKey:@"opacity"]];
         [mainLayer setOpacity:0];
     }
     else
     {
-        NSLog(@"4");
         [mainWindow makeKeyAndOrderFront:self];
         [mainLayer setActions:[NSDictionary dictionaryWithObject:fadeIn
                                                           forKey:@"opacity"]];
@@ -106,26 +109,6 @@
         [clipboard insertItem:clipboardItem
                       AtIndex:0];
     }
-    /*    Class NSStringClass = [NSString class];
-     Class NSAttributedStringClass = [NSAttributedString class];
-     Class NSURLClass = [NSURL class];
-     Class NSImageClass = [NSImage class];
-     Class NSColorClass = [NSColor class];
-     
-     NSArray *classes = [NSArray arrayWithObject:[NSURL class]];
-     NSDictionary *options = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
-     forKey:NSPasteboardURLReadingFileURLsOnlyKey];
-     NSArray *fileURLs = [[NSPasteboard generalPasteboard] readObjectsForClasses:classes
-     options:options];
-     for (NSURL *URL in fileURLs)
-     {
-     CBClipboardItem *clipboardItem = [[CBClipboardItem alloc] initWithContentSize:CGSizeMake(128, 128)];
-     [clipboardItem setFontSize:12];
-     [clipboardItem setImageWithFile:URL];
-     [clipboardItem setDescription:@"png"];
-     [clipboard insertClipboardItem:clipboardItem
-     atIndex:0];
-     }*/
 }
 
 @end

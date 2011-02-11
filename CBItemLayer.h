@@ -9,7 +9,7 @@
     CGSize size;
 }
 
-- (id)initWithContentSize:(CGSize)aSize;
+- (id)initWithItem:(CBItem *)anItem forTypes:(NSArray *)types;
 
 - (void)setImageWithFile:(NSURL *)fileURL;
 
@@ -21,6 +21,6 @@
 
 - (void)setFontSize:(CGFloat)fontSize;
 
-- (CALayer *)layer;
+- (CALayer *)layerWithContentSize:(CGSize)aSize;
 
 @end

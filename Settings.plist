@@ -18,5 +18,9 @@
 	<integer>4</integer>
 	<key>timeInterval</key>
 	<real>0.1</real>
+	<key>textType</key>
+	<string>public.text</string>
+	<key>URLType</key>
+	<string>public.url</string>
 </dict>
 </plist>

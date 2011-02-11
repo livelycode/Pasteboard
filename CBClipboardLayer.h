@@ -1,5 +1,4 @@
 #import "Cocoa.h"
-#import "CBClipboardDelegate.h"
 
 @interface CBClipboardLayer : NSObject
 {

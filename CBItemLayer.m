@@ -2,20 +2,13 @@
 
 @implementation CBItemLayer
 
-- (id)initWithContentSize:(CGSize)aSize;
+- (id)initWithItem:(CBItem *)anItem forTypes:(NSArray *)types
 {
     self = [super init];
     if (self != nil)
     {
-        size = aSize;
-        contentLayer = [CATextLayer layer];
-        [contentLayer setFrame:CGRectMake(0, 20, size.width, size.height)];
-        descriptionLayer = [CATextLayer layer];
-        [descriptionLayer setFrame:CGRectMake(0, 0, size.width, 20)];
-        mainLayer = [CALayer layer];
-        [mainLayer setFrame:CGRectMake(0, 0, size.width, size.height + 20)];
-        [mainLayer addSublayer:contentLayer];
-        [mainLayer addSublayer:descriptionLayer];
+        NSString *URI = [anItem bestMatchForArray:types];
+        NSLog(@"%@", URI);
     }
     return self;
 }
@@ -72,8 +65,16 @@
     [descriptionLayer setFontSize:fontSize];
 }
 
-- (CALayer *)layer;
+- (CALayer *)layerWithContentSize:(CGSize)aSize
 {
+    contentLayer = [CATextLayer layer];
+    [contentLayer setFrame:CGRectMake(0, 20, aSize.width, aSize.height)];
+    descriptionLayer = [CATextLayer layer];
+    [descriptionLayer setFrame:CGRectMake(0, 0, aSize.width, 20)];
+    mainLayer = [CALayer layer];
+    [mainLayer setFrame:CGRectMake(0, 0, aSize.width, aSize.height + 20)];
+    [mainLayer addSublayer:contentLayer];
+    [mainLayer addSublayer:descriptionLayer];
 	return mainLayer; 
 }
 

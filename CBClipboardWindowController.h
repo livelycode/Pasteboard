@@ -7,6 +7,7 @@
 {
     @private
     NSWindow *mainWindow;
+    NSArray *types;
     CALayer *mainLayer;
     CBClipboardLayer *clipboardLayer;
     CBClipboard *clipboard;

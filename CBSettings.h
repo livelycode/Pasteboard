@@ -10,6 +10,8 @@
 
 - (id)init;
 
+- (id)objectForKey:(NSString *)aKey;
+
 - (CGFloat)floatForKey:(NSString *)aKey;
 
 - (NSInteger)integerForKey:(NSString *)aKey;

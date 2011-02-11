@@ -8,4 +8,6 @@
 
 - (id)initWithPasteboardItem:(NSPasteboardItem *)anItem;
 
+- (NSString *)bestMatchForArray:(NSArray *)URIs;
+
 @end

@@ -25,6 +25,11 @@ static CBSettings *sharedSettings = nil;
     return self;
 }
 
+- (id)objectForKey:(NSString *)aKey
+{
+    return [settings objectForKey:aKey];
+}
+
 - (CGFloat)floatForKey:(NSString *)aKey
 {
     return [[settings objectForKey:aKey] floatValue];
