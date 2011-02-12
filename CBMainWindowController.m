@@ -2,19 +2,17 @@
 
 @implementation CBMainWindowController
 
-- (id)init
+- (id)initWithWindow:(NSWindow *)aWindow;
 {
     self = [super init];
     if (self != nil)
     {
-    /*    NSString *URLType = [settings objectForKey:@"URLType"];
-        NSString *textType = [settings objectForKey:@"textType"];
-        types = [NSArray arrayWithObjects:URLType, textType, nil];*/
+        mainWindow = aWindow;
         
-        mainWindow = nil;
-        
-        mainLayer = [CALayer layer];
-        [mainLayer setBackgroundColor:CGColorCreateGenericGray(0, 1)];
+        rootLayer = [CALayer layer];
+        NSView *mainView = [mainWindow contentView];
+        [mainView setLayer:rootLayer];
+        [mainView setWantsLayer:YES];
         
         fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [fadeIn setDelegate:self];
@@ -26,23 +24,19 @@
     return self;
 }
 
-- (void)registerWindow
+- (void)setFadeInDuration:(NSTimeInterval)time
 {
-    if (mainWindow == nil)
-    {
-        mainWindow = [[NSWindow alloc] initWithContentRect:CGRectMake(100, 100, 200, 300)
-                                                 styleMask:NSBorderlessWindowMask
-                                                   backing:NSBackingStoreBuffered
-                                                     defer:NO];
-        [mainWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-        [mainWindow setLevel:NSScreenSaverWindowLevel];
-        [mainWindow setOpaque:NO];
-        [mainWindow setBackgroundColor:[NSColor clearColor]];
-        
-        NSView *mainView = [mainWindow contentView];
-        [mainView setLayer:mainLayer];
-        [mainView setWantsLayer:YES];
-    }
+    [fadeIn setDuration:time];
+}
+
+- (void)setFadeOutDuration:(NSTimeInterval)time
+{
+    [fadeOut setDuration:time];
+}
+
+- (CALayer *)rootLayer
+{
+    return rootLayer;
 }
 
 @end
@@ -53,16 +47,16 @@
 {
     if (mainLayerHidden == NO)
     {
-        [mainLayer setActions:[NSDictionary dictionaryWithObject:fadeOut
+        [rootLayer setActions:[NSDictionary dictionaryWithObject:fadeOut
                                                           forKey:@"opacity"]];
-        [mainLayer setOpacity:0];
+        [rootLayer setOpacity:0];
     }
     else
     {
         [mainWindow makeKeyAndOrderFront:self];
-        [mainLayer setActions:[NSDictionary dictionaryWithObject:fadeIn
+        [rootLayer setActions:[NSDictionary dictionaryWithObject:fadeIn
                                                           forKey:@"opacity"]];
-        [mainLayer setOpacity:0.5];
+        [rootLayer setOpacity:0.5];
     }
 }
 

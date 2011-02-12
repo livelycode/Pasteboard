@@ -17,8 +17,6 @@
     BOOL windowHidden;
 }
 
-- (id)init;
-
 @end
 
 @interface CBApplicationController(Delegation) <NSApplicationDelegate>

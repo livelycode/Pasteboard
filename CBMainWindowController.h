@@ -9,15 +9,19 @@
     @private
     NSWindow *mainWindow;
     NSArray *types;
-    CALayer *mainLayer;
+    CALayer *rootLayer;
     CABasicAnimation *fadeIn;
     CABasicAnimation *fadeOut;
     BOOL mainLayerHidden;
 }
 
-- (id)init;
+- (id)initWithWindow:(NSWindow *)aWindow;
 
-- (void)registerWindow;
+- (void)setFadeInDuration:(NSTimeInterval)time;
+
+- (void)setFadeOutDuration:(NSTimeInterval)time;
+
+- (CALayer *)rootLayer;
 
 @end
 
