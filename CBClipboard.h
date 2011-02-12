@@ -15,9 +15,9 @@
 
 - (void)setCapacity:(NSUInteger)aCapacity;
 
-- (void)insertItem:(CBItem *)anItem AtIndex:(NSUInteger)anIndex;
+- (void)insertItem:(NSPasteboardItem *)anItem AtIndex:(NSUInteger)anIndex;
 
-- (CBItem *)itemAtIndex:(NSUInteger)anIndex;
+- (NSPasteboardItem *)itemAtIndex:(NSUInteger)anIndex;
 
 - (NSArray *)items;
 

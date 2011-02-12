@@ -1,29 +1,20 @@
 #import "Cloudboard.h"
 
-@implementation CBClipboardWindowController
+@implementation CBMainWindowController
 
 - (id)init
 {
     self = [super init];
     if (self != nil)
     {
-        CBSettings *settings = [CBSettings sharedSettings];
-        
-        NSString *URLType = [settings objectForKey:@"URLType"];
+    /*    NSString *URLType = [settings objectForKey:@"URLType"];
         NSString *textType = [settings objectForKey:@"textType"];
-        types = [NSArray arrayWithObjects:URLType, textType, nil];
-        
-        clipboard = [[CBClipboard alloc] initWithCapacity:12];
-        
-        clipboardLayer = [[CBClipboardLayer alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        [clipboardLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-        [clipboardLayer setOpacity:[settings floatForKey:@"opacity"]];
+        types = [NSArray arrayWithObjects:URLType, textType, nil];*/
         
         mainWindow = nil;
         
         mainLayer = [CALayer layer];
         [mainLayer setBackgroundColor:CGColorCreateGenericGray(0, 1)];
-        [mainLayer addSublayer:[clipboardLayer layer]];
         
         fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [fadeIn setDelegate:self];
@@ -54,35 +45,9 @@
     }
 }
 
-- (void)setFadeInDuration:(CGFloat)aDuration
-{
-    [fadeIn setDuration:aDuration];
-}
-
-- (void)setFadeOutDuration:(CGFloat)aDuration
-{
-    [fadeOut setDuration:aDuration];
-}
-
 @end
 
-@implementation CBClipboardWindowController(Delegation)
-
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
-{
-    if (mainLayerHidden == NO)
-    {
-        mainLayerHidden = YES;
-        [mainWindow orderOut:self];
-    }
-    else
-    {
-        mainLayerHidden = NO;
-        CBItem *item = [clipboard itemAtIndex:0];
-        CBItemLayer *itemLayer = [[CBItemLayer alloc] initWithItem:item
-                                                          forTypes:types];
-    }
-}
+@implementation CBMainWindowController(Delegation)
 
 - (void)hotKeyPressed:(CBHotKey *)hotKey
 {
@@ -101,13 +66,16 @@
     }
 }
 
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
 {
-    for (NSPasteboardItem *item in [aPasteboard pasteboardItems])
+    if (mainLayerHidden == NO)
     {
-        CBItem *clipboardItem = [[CBItem alloc] initWithPasteboardItem:item];
-        [clipboard insertItem:clipboardItem
-                      AtIndex:0];
+        mainLayerHidden = YES;
+        [mainWindow orderOut:self];
+    }
+    else
+    {
+        mainLayerHidden = NO;
     }
 }
 

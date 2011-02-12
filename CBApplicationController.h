@@ -2,16 +2,18 @@
 #import "CBPasteboardObserver.h"
 #import "CBHotKeyDelegate.h"
 
+@class CBClipboardController;
 @class CBHotKey;
 @class CBPasteboardObserver;
-@class CBClipboardWindowController;
+@class CBMainWindowController;
 
 @interface CBApplicationController : NSObject 
 {
     @private
-    CBPasteboardObserver *clipboardObserver;
+    CBPasteboardObserver *pasteboardObserver;
     CBHotKey *hotKey;
-    CBClipboardWindowController *windowController;
+    CBMainWindowController *windowController;
+    CBClipboardController *clipboardController;
     BOOL windowHidden;
 }
 

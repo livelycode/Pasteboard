@@ -2,13 +2,20 @@
 
 @implementation CBItemLayer
 
-- (id)initWithItem:(CBItem *)anItem forTypes:(NSArray *)types
+- (id)initWithWithContentSize:(CGSize)aSize
 {
     self = [super init];
     if (self != nil)
     {
-        NSString *URI = [anItem bestMatchForArray:types];
-        NSLog(@"%@", URI);
+        contentLayer = [CATextLayer layer];
+        [contentLayer setFrame:CGRectMake(0, 20, aSize.width, aSize.height)];
+        
+        descriptionLayer = [CATextLayer layer];
+        [descriptionLayer setFrame:CGRectMake(0, 0, aSize.width, 20)];
+        
+        [self setFrame:CGRectMake(0, 0, aSize.width, aSize.height + 20)];
+        [self addSublayer:contentLayer];
+        [self addSublayer:descriptionLayer];
     }
     return self;
 }
@@ -34,17 +41,6 @@
     }
 }
 
-- (void)setColor:(NSColor *)aColor;
-{
-    NSColor *RGBColor = [aColor colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    CGFloat red = [RGBColor redComponent];
-    CGFloat green = [RGBColor greenComponent];
-    CGFloat blue = [RGBColor blueComponent];
-    CGFloat alpha = [RGBColor alphaComponent];
-    CGColorRef colorRef = CGColorCreateGenericRGB(red, green, blue, alpha);
-    [contentLayer setBackgroundColor:colorRef];
-}
-
 - (void)setText:(NSString *)aString;
 {
     [contentLayer setWrapped:YES];
@@ -63,19 +59,6 @@
 {
     [contentLayer setFontSize:fontSize];
     [descriptionLayer setFontSize:fontSize];
-}
-
-- (CALayer *)layerWithContentSize:(CGSize)aSize
-{
-    contentLayer = [CATextLayer layer];
-    [contentLayer setFrame:CGRectMake(0, 20, aSize.width, aSize.height)];
-    descriptionLayer = [CATextLayer layer];
-    [descriptionLayer setFrame:CGRectMake(0, 0, aSize.width, 20)];
-    mainLayer = [CALayer layer];
-    [mainLayer setFrame:CGRectMake(0, 0, aSize.width, aSize.height + 20)];
-    [mainLayer addSublayer:contentLayer];
-    [mainLayer addSublayer:descriptionLayer];
-	return mainLayer; 
 }
 
 @end

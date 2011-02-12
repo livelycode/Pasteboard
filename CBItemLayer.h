@@ -1,19 +1,17 @@
 #import "Cocoa.h"
 
-@interface CBItemLayer : NSObject
+@interface CBItemLayer : CALayer
 {
 	@private
-    CALayer *mainLayer;
+    NSString *itemReference;
     CATextLayer *contentLayer;
     CATextLayer *descriptionLayer;
     CGSize size;
 }
 
-- (id)initWithItem:(CBItem *)anItem forTypes:(NSArray *)types;
+- (id)initWithWithContentSize:(CGSize)aSize;
 
 - (void)setImageWithFile:(NSURL *)fileURL;
-
-- (void)setColor:(NSColor *)aColor;
 
 - (void)setText:(NSString *)aString;
 
@@ -21,6 +19,5 @@
 
 - (void)setFontSize:(CGFloat)fontSize;
 
-- (CALayer *)layerWithContentSize:(CGSize)aSize;
-
 @end
+
