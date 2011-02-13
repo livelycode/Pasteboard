@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <HTTPServer.h>
+#import "HTTPServer.h"
 
 @class HTTPServer, HTTPConnection;
 
