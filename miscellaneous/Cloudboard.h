@@ -6,3 +6,5 @@
 #import "CBMainWindowController.h"
 #import "CBPasteboardObserver.h"
 #import "CBSettings.h"
+#import "HTTPServer.h"
+#import "HTTPConnectionDelegate.h"

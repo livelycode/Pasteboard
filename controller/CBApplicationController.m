@@ -58,6 +58,35 @@
     
     CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
     [pasteboardObserver observeWithTimeInterval:time];
+    [self launchHTTPServer];
+}
+
+- (void)launchHTTPServer {
+/*  HTTPServer *server = [[HTTPServer alloc] init];
+  [server setType:@"_http._tcp."];
+  [server setName:@"Cocoa HTTP Server"];
+  [server setPort: 8090];
+  connectionDelegate = [[HTTPConnectionDelegate alloc] init];
+  [server setDelegate: connectionDelegate];
+  
+  NSError *startError = nil;
+  if (![server start:&startError] ) {
+    NSLog(@"Error starting server: %@", startError);
+  } else {
+    NSLog(@"Starting server on port %d", [server port]);
+  }*/
+  HTTPServer *server = [[HTTPServer alloc] init];
+  [server setType:@"_http._tcp."];
+  [server setName:@"Cocoa HTTP Server"];
+  [server setDocumentRoot:[NSURL fileURLWithPath:@"/"]];
+  
+  NSError *startError = nil;
+  if (![server start:&startError] ) {
+    NSLog(@"Error starting server: %@", startError);
+  } else {
+    NSLog(@"Starting server on port %d", [server port]);
+  }
+
 }
 
 @end

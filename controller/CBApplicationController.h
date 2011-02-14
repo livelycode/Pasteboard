@@ -6,6 +6,7 @@
 @class CBHotKey;
 @class CBPasteboardObserver;
 @class CBMainWindowController;
+@class HTTPConnectionDelegate;
 
 @interface CBApplicationController : NSObject 
 {
@@ -14,6 +15,7 @@
     CBHotKey *hotKey;
     CBMainWindowController *windowController;
     CBClipboardController *clipboardController;
+    HTTPConnectionDelegate *connectionDelegate;
     BOOL windowHidden;
 }
 
@@ -22,5 +24,6 @@
 @interface CBApplicationController(Delegation) <NSApplicationDelegate>
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+- (void)launchHTTPServer;
 
 @end
