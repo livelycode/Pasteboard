@@ -2,14 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>clipboardPadding</key>
+	<integer>64</integer>
 	<key>columns</key>
 	<integer>3</integer>
 	<key>cornerRadius</key>
 	<integer>24</integer>
 	<key>fadeOutDuration</key>
-	<real>0.2</real>
+	<real>0.1</real>
 	<key>opacity</key>
-	<real>0.5</real>
+	<real>0.3</real>
 	<key>rows</key>
 	<integer>4</integer>
 	<key>timeInterval</key>
@@ -19,7 +21,7 @@
 		<string>public.url</string>
 		<string>public.text</string>
 	</array>
-	<key>clipboardPadding</key>
-	<integer>64</integer>
+	<key>fadeInDuration</key>
+	<real>0.1</real>
 </dict>
 </plist>

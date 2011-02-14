@@ -4,10 +4,18 @@
 
 - (id)init
 {
+    return [self initWithRows:1
+                      Columns:1];
+}
+
+- (id)initWithRows:(NSUInteger)rowsNumber
+           Columns:(NSUInteger)columnsNumber
+{
     self = [super init];
     if (self != nil)
     {
-        itemLayers = [NSMutableArray array];
+        rows = rowsNumber;
+        columns = columnsNumber;
     }
     return self;
 }
@@ -16,7 +24,12 @@
               forRow:(NSUInteger)aRow
               column:(NSUInteger)aColumn
 {
-    
+    CGSize size = [self frame].size;
+    CGFloat width = size.width / columns;
+    CGFloat height = size.height / rows;
+    CGPoint center = CGPointMake((width / 2), (height / 2));
+    [itemLayer setPosition:center];
+    [self addSublayer:itemLayer];
 }
 
 @end
