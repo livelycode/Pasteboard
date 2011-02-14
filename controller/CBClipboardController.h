@@ -14,6 +14,6 @@
 
 - (void)setTypes:(NSArray *)anArray;
 
-- (void)updateItemnLayers;
+- (void)updateItemLayers;
 
 @end

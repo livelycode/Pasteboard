@@ -11,7 +11,7 @@
 @interface CBApplicationController : NSObject 
 {
     @private
-    CBPasteboardObserver *pasteboardObserver;
+    CBPasteboardObserver *pasteboardObserver;		
     CBHotKey *hotKey;
     CBClipboard *leftClipboard;
     CBClipboardController *leftClipboardController;

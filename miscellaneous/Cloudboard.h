@@ -1,6 +1,7 @@
 #import "CBApplicationController.h"
 #import "CBClipboard.h"
 #import "CBClipboardController.h"
+#import "CBClipboardLayer.h"
 #import "CBHotKey.h"
 #import "CBItemLayer.h"
 #import "CBMainWindowController.h"

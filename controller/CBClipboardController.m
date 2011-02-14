@@ -19,7 +19,7 @@
     types = anArray;
 }
 
-- (void)updateItemnLayers
+- (void)updateItemLayers
 {
     NSLog(@"foo");
 }

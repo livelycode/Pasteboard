@@ -19,7 +19,7 @@
     leftClipboard = [[CBClipboard alloc] initWithCapacity:12];
     
     CGColorRef color = CGColorCreateGenericGray(0, [settings floatForKey:@"opacity"]);
-    CALayer *leftLayer = [[CALayer alloc] init];
+    CALayer *leftLayer = [[CBClipboardLayer alloc] init];
     CGRect leftFrame = CGRectMake(padding, padding, width, height);
     [leftLayer setFrame:leftFrame];
     [leftLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
@@ -67,7 +67,7 @@
         [leftClipboard insertItem:item
                       AtIndex:0];
     }
-    [leftClipboardController updateItemnLayers];
+    [leftClipboardController updateItemLayers];
 }
 
 @end
