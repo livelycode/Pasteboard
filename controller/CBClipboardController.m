@@ -16,7 +16,12 @@
 
 - (void)setTypes:(NSArray *)anArray
 {
-    types =anArray;
+    types = anArray;
+}
+
+- (void)updateItemLayers
+{
+    NSLog(@"foo");
 }
 
 @end

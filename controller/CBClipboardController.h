@@ -14,10 +14,6 @@
 
 - (void)setTypes:(NSArray *)anArray;
 
-@end
-
-@interface CBClipboardController(Delegation) <CBPasteboardOberserverDelegate>
-
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+- (void)updateItemLayers;
 
 @end
