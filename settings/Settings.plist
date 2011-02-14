@@ -3,15 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>columns</key>
-	<integer>5</integer>
+	<integer>3</integer>
 	<key>cornerRadius</key>
 	<integer>24</integer>
 	<key>fadeOutDuration</key>
 	<real>0.2</real>
-	<key>itemHeight</key>
-	<integer>128</integer>
-	<key>itemWidth</key>
-	<integer>128</integer>
 	<key>opacity</key>
 	<real>0.5</real>
 	<key>rows</key>
@@ -23,5 +19,7 @@
 		<string>public.url</string>
 		<string>public.text</string>
 	</array>
+	<key>clipboardPadding</key>
+	<integer>64</integer>
 </dict>
 </plist>
