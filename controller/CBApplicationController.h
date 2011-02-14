@@ -2,6 +2,7 @@
 #import "CBPasteboardObserver.h"
 #import "CBHotKeyDelegate.h"
 
+@class CBClipboard;
 @class CBClipboardController;
 @class CBHotKey;
 @class CBPasteboardObserver;
@@ -12,15 +13,18 @@
     @private
     CBPasteboardObserver *pasteboardObserver;
     CBHotKey *hotKey;
+    CBClipboard *leftClipboard;
+    CBClipboardController *leftClipboardController;
     CBMainWindowController *windowController;
-    CBClipboardController *clipboardController;
     BOOL windowHidden;
 }
 
 @end
 
-@interface CBApplicationController(Delegation) <NSApplicationDelegate>
+@interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
 @end

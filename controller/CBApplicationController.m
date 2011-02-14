@@ -16,7 +16,7 @@
     CGFloat height = mainFrame.size.height - (2 * padding);
     CGFloat width = (mainFrame.size.width - (3 * padding)) / 2;
     
-    CBClipboard *clipboard = [[CBClipboard alloc] initWithCapacity:12];
+    leftClipboard = [[CBClipboard alloc] initWithCapacity:12];
     
     CGColorRef color = CGColorCreateGenericGray(0, [settings floatForKey:@"opacity"]);
     CALayer *leftLayer = [[CALayer alloc] init];
@@ -33,14 +33,14 @@
     [rightLayer setBackgroundColor:color];
     CFRelease(color);
     
-    clipboardController = [[CBClipboardController alloc] initWithClipboard:clipboard
-                                                                     layer:leftLayer];
-    [clipboardController setTypes:[settings objectForKey:@"URITypes"]];
+    leftClipboardController = [[CBClipboardController alloc] initWithClipboard:leftClipboard
+                                                                         layer:leftLayer];
+    [leftClipboardController setTypes:[settings objectForKey:@"URITypes"]];
     
     hotKey = [[CBHotKey alloc] init];
     
     pasteboardObserver = [[CBPasteboardObserver alloc] init];
-    [pasteboardObserver setDelegate:clipboardController];
+    [pasteboardObserver setDelegate:self];
     
     NSWindow *mainWindow = [[NSWindow alloc] initWithContentRect:mainFrame
                                                        styleMask:NSBorderlessWindowMask
@@ -58,6 +58,16 @@
     
     CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
     [pasteboardObserver observeWithTimeInterval:time];
+}
+
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+{
+    for (NSPasteboardItem *item in [aPasteboard pasteboardItems])
+    {
+        [leftClipboard insertItem:item
+                      AtIndex:0];
+    }
+    [leftClipboardController updateItemnLayers];
 }
 
 @end
