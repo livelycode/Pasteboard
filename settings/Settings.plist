@@ -8,6 +8,8 @@
 	<integer>3</integer>
 	<key>cornerRadius</key>
 	<integer>24</integer>
+	<key>fadeInDuration</key>
+	<real>0.1</real>
 	<key>fadeOutDuration</key>
 	<real>0.1</real>
 	<key>opacity</key>
@@ -21,7 +23,13 @@
 		<string>public.url</string>
 		<string>public.text</string>
 	</array>
-	<key>fadeInDuration</key>
-	<real>0.1</real>
+	<key>shadowOpacity</key>
+	<real>0.5</real>
+	<key>shadowOffset</key>
+	<integer>3</integer>
+	<key>shadowRadius</key>
+	<integer>5</integer>
+	<key>pagePadding</key>
+	<integer>24</integer>
 </dict>
 </plist>

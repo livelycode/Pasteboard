@@ -80,7 +80,7 @@
   } else {
     NSLog(@"Starting server on port %d", [server port]);
   }
-//  [[NSRunLoop currentRunLoop] run];
+  [[NSRunLoop currentRunLoop] run];
 }
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
