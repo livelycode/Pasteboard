@@ -17,6 +17,7 @@
 }
 
 - (void) searchRemotes: (NSTimer*) timer;
+- (void) setService: (NSNetService*) service;
 @end
 
 @interface SyncController(Delegation)

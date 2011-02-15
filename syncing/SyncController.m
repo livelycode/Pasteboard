@@ -19,18 +19,13 @@
     }
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
-    timer = [NSTimer scheduledTimerWithTimeInterval:1 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: YES];
+    timer = [NSTimer scheduledTimerWithTimeInterval:0 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
     return self;
 }
 
 - (void) searchRemotes: (NSTimer*) timer {
-  if(service != nil) {
-    [timer invalidate];
-  } else {
-    [serviceBrowser stop];
-    [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@""];    
-  }
-
+  NSLog(@"invoke search");
+  [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@""];    
 }
 
 - (void)dealloc
@@ -53,10 +48,18 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
   NSLog(@"found service: %@ on port: %i, more coming: %i", newService, [newService port], more);
   if([[newService name] isEqual:@"Cloudboard Server"]) {
-    service = newService;
+    [self setService: newService];
   } else {
-
+    if((more == NO) && (service == nil)) {
+      [browser stop];
+      [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+    }
   }
+}
+
+- (void) setService: (NSNetService*) newService {
+  service = newService;
+  NSLog(@"yeah, found right service! domain: %@", [service domain]);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) service moreComing: (BOOL)more {
