@@ -16,7 +16,9 @@
                       radius:(CGFloat)aRaduis
                       offset:(CGFloat)anOffset;
 
-- (void)setText:(NSString *)aString;
+- (void)setPageColor:(CGColorRef)colorRef;
+
+- (void)setText:(NSAttributedString *)aString;
 
 - (void)setFontSize:(CGFloat)fontSize;
 
