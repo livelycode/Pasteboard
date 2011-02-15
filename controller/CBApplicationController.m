@@ -68,7 +68,7 @@
   [server setType:@"_http._tcp."];
   [server setName:@"Cocoa HTTP Server"];
   [server setPort: 8090];
-  id connectionDelegate = [[HTTPConnectionDelegate alloc] init];
+  connectionDelegate = [[HTTPConnectionDelegate alloc] init];
   [server setDelegate: connectionDelegate];
   
   NSError *startError = nil;
