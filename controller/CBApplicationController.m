@@ -60,7 +60,10 @@
     pasteboardObserver = [[CBPasteboardObserver alloc] init];
     [pasteboardObserver setDelegate:self];
     [pasteboardObserver observeWithTimeInterval:time];
-    [self launchHTTPServer];
+  
+    //start Server in new thread
+    NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
+    [serverThread start];
 }
 
 - (void)launchHTTPServer {
@@ -68,7 +71,7 @@
   [server setType:@"_http._tcp."];
   [server setName:@"Cocoa HTTP Server"];
   [server setPort: 8090];
-  id connectionDelegate = [[HTTPConnectionDelegate alloc] init];
+  connectionDelegate = [[HTTPConnectionDelegate alloc] init];
   [server setDelegate: connectionDelegate];
   
   NSError *startError = nil;
