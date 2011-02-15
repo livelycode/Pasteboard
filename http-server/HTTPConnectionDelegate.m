@@ -48,6 +48,8 @@
   }
   if ([method isEqual:@"POST"]) {
     NSData* itemData = (NSData*) CFHTTPMessageCopyBody(message);
+    NSString* itemText = [[[NSString alloc] initWithData:itemData encoding:NSUTF8StringEncoding] autorelease];
+    NSLog(@"post data: %@", itemText);
     /* Set clipboard item at URL
      
     */
