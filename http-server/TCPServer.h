@@ -57,3 +57,7 @@ typedef enum {
 // connection comes in; a subclass may, of course, change that behavior
 @end
 
+@interface TCPServer (Delegate)<NSNetServiceDelegate>
+- (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict;
+- (void)netServiceDidPublish:(NSNetService *)sender;
+@end

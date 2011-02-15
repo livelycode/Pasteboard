@@ -28,7 +28,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
 - (void)launchHTTPServer;
-
+- (void)startSyncing;
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
 @end
