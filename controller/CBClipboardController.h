@@ -10,7 +10,7 @@
     CBClipboardLayer *clipboardLayer;
     NSArray *types;
 }
-
+							
 - (id)initWithClipboard:(CBClipboard *)aClipboard
                   layer:(CBClipboardLayer *)aLayer;
 
