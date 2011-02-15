@@ -7,6 +7,7 @@
 @class CBHotKey;
 @class CBPasteboardObserver;
 @class CBMainWindowController;
+@class HTTPConnectionDelegate;
 
 @interface CBApplicationController : NSObject 
 {
@@ -16,6 +17,8 @@
     CBClipboard *leftClipboard;
     CBClipboardController *leftClipboardController;
     CBMainWindowController *windowController;
+    CBClipboardController *clipboardController;
+    HTTPConnectionDelegate *connectionDelegate;
     BOOL windowHidden;
 }
 
@@ -24,6 +27,7 @@
 @interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+- (void)launchHTTPServer;
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 

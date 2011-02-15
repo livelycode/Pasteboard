@@ -189,8 +189,9 @@
     
     // Write as many bytes as possible, from buffered bytes, response
     // headers and body, and response stream.
-
-    if (![ostream hasSpaceAvailable]) {
+    Boolean ok = [ostream hasSpaceAvailable];
+  NSLog(@"ok: %d", ok);
+    if (!ok) {
         return;
     }
 
