@@ -19,13 +19,17 @@
     }
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+  
+    NSNetServiceBrowser* serviceBrowser1 = [[NSNetServiceBrowser alloc] init];
+    [serviceBrowser1 setDelegate:self];
+    [serviceBrowser1 searchForBrowsableDomains];
     return self;
 }
 
 - (void) searchRemotes: (NSTimer*) timer {
   NSLog(@"invoke search");
-  [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@""];    
+  [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@"local."];    
 }
 
 - (void)dealloc
@@ -43,6 +47,10 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo {
   NSLog(@"did not search services %@", errorInfo);
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainName moreComing:(BOOL)more {
+  NSLog(@"found domain: %@", domainName);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
