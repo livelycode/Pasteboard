@@ -90,10 +90,16 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
-    for (NSPasteboardItem *item in [aPasteboard pasteboardItems])
+    Class stringClass = [NSAttributedString class];
+    NSArray *classes = [NSArray arrayWithObject:stringClass];
+    NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
+                                                     options:nil];
+    
+    for (NSAttributedString *string in copiedItems)
     {
+        CBItem *item = [[CBItem alloc] initWithString:string];
         [leftClipboard insertItem:item
-                      AtIndex:0];
+                          AtIndex:0];
     }
     [leftClipboardController updateItemLayers];
 }

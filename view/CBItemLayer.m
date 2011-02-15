@@ -10,7 +10,7 @@
         size = aSize;
         
         textLayer = [CATextLayer layer];
-        [textLayer setBackgroundColor:CGColorCreateGenericGray(1, 1)];
+        [textLayer setBackgroundColor:CGColorCreateGenericGray(0, 0)];
         [textLayer setForegroundColor:CGColorCreateGenericGray(0, 1)];
         [textLayer setTruncationMode:kCATruncationEnd];
         [textLayer setAlignmentMode:kCAAlignmentLeft];
@@ -39,6 +39,11 @@
     [pageLayer setPosition:CGPointMake(x, y)];
 }
 
+- (void)setPageColor:(CGColorRef)colorRef
+{
+    [pageLayer setBackgroundColor:colorRef];
+}
+
 - (void)setShadowWithOpacity:(CGFloat)anOpacity
                       radius:(CGFloat)aRaduis
                       offset:(CGFloat)anOffset
@@ -48,7 +53,7 @@
     [pageLayer setShadowOffset:CGSizeMake(0, (-1) * anOffset)];
 }
 
-- (void)setText:(NSString *)aString;
+- (void)setText:(NSAttributedString *)aString;
 {
     [textLayer setString:aString];
 }

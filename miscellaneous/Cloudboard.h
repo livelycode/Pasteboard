@@ -3,6 +3,7 @@
 #import "CBClipboardController.h"
 #import "CBClipboardLayer.h"
 #import "CBHotKey.h"
+#import "CBItem.h"
 #import "CBItemLayer.h"
 #import "CBMainWindowController.h"
 #import "CBPasteboardObserver.h"
