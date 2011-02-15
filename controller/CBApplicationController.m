@@ -60,7 +60,10 @@
     pasteboardObserver = [[CBPasteboardObserver alloc] init];
     [pasteboardObserver setDelegate:self];
     [pasteboardObserver observeWithTimeInterval:time];
-    [self launchHTTPServer];
+  
+    //start Server in new thread
+    NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
+    [serverThread start];
 }
 
 - (void)launchHTTPServer {
