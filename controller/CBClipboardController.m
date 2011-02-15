@@ -26,27 +26,39 @@
     {
         [layer removeFromSuperlayer];
     }
-    NSPasteboardItem *item = [clipboard itemAtIndex:0];
-    CFStringRef URI = (CFStringRef)[item availableTypeFromArray:types];
-    CFStringRef URLType = (CFStringRef)[types objectAtIndex:0];
-    CFStringRef textType = (CFStringRef)[types objectAtIndex:1];
-    if (UTTypeConformsTo(URI, URLType))
+    
+    NSUInteger row = 1;
+    NSUInteger column = 1;
+    for (NSPasteboardItem *item in [clipboard items])
     {
-        NSString *path = [item stringForType:(NSString *)URI];
-        NSURL *fileURL = [[NSURL alloc] initWithString:path];
-        CBItemLayer *itemLayer = [[CBItemLayer alloc] initWithWithContentSize:CGSizeMake(200, 200)];
-        [itemLayer setImageWithFile:fileURL];
-        [itemLayer setDescription:[fileURL lastPathComponent]];
+        CBSettings *settings = [CBSettings sharedSettings];
+        CGFloat opacity = [settings floatForKey:@"shadowOpacity"];
+        CGFloat radius = [settings floatForKey:@"shadowRadius"];
+        CGFloat offset = [settings floatForKey:@"shadowOffset"];
+        CGFloat padding = [settings floatForKey:@"pagePadding"];
+        CGSize itemSize = [clipboardLayer itemLayerSize];
+        NSString *URI = [item availableTypeFromArray:types];
+
+        CBItemLayer *itemLayer = [[CBItemLayer alloc] initWithWithContentSize:itemSize];
+        [itemLayer setPadding:padding];
+        [itemLayer setShadowWithOpacity:opacity
+                                 radius:radius
+                                 offset:offset];
+        [itemLayer setText:[item stringForType:URI]];	
         [itemLayer setFontSize:16];
+        
         [clipboardLayer setItemLayer:itemLayer
-                              forRow:1
-                              column:1];
+                              forRow:row
+                              column:column];
+        column = column + 1;
+        if (column > [clipboardLayer columns])
+        {
+            row = row + 1;
+            column = 1;
+        }
+        [clipboardLayer needsDisplay]; 
     }
-    if (UTTypeConformsTo(URI, textType))
-    {
-        NSLog(@"text");
-    }
-    [clipboardLayer needsDisplay];
+    
 }
 
 @end

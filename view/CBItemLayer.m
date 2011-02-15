@@ -9,57 +9,53 @@
     {
         size = aSize;
         
-        contentLayer = [CATextLayer layer];
-        [contentLayer setFrame:CGRectMake(0, 20, aSize.width, aSize.height)];
+        textLayer = [CATextLayer layer];
+        [textLayer setBackgroundColor:CGColorCreateGenericGray(1, 1)];
+        [textLayer setForegroundColor:CGColorCreateGenericGray(0, 1)];
+        [textLayer setTruncationMode:kCATruncationEnd];
+        [textLayer setAlignmentMode:kCAAlignmentLeft];
+                
+        pageLayer = [CALayer layer];
+        [pageLayer setBackgroundColor:CGColorCreateGenericGray(1, 1)];
+        [pageLayer addSublayer:textLayer];
+        [self setPadding:0];
         
-        descriptionLayer = [CATextLayer layer];
-        [descriptionLayer setFrame:CGRectMake(0, 0, aSize.width, 20)];
-        
-        [self setFrame:CGRectMake(0, 0, aSize.width, aSize.height + 20)];
-        [self addSublayer:contentLayer];
-        [self addSublayer:descriptionLayer];
+        [self setFrame:CGRectMake(0, 0, aSize.width, aSize.height)];
+        [self addSublayer:pageLayer];
     }
     return self;
 }
 
-- (void)setImageWithFile:(NSURL *)fileURL;
+- (void)setPadding:(CGFloat)padding
 {
-    NSDictionary* options = [NSDictionary dictionaryWithObject:(id)kCFBooleanTrue
-                                                        forKey:(id)kQLThumbnailOptionIconModeKey];
-    CGImageRef imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (CFURLRef)fileURL, size, (CFDictionaryRef)options);
-    if (imageRef != NULL)
-    {
-        [contentLayer setContents:(id)imageRef];
-        [contentLayer setContentsGravity:kCAGravityCenter];
-        CFRelease(imageRef);
-    }
-    else
-    {
-        NSString *path = [fileURL path];
-        NSImage *image = [[NSWorkspace sharedWorkspace] iconForFile:path];
-        [image setSize:size];
-        [contentLayer setContents:image];
-        [contentLayer setContentsGravity:kCAGravityResizeAspect];
-    }
+    CGFloat pageWidth = size.width - (2 * padding);
+    CGFloat pageHeight = size.height - (2 * padding);
+    CGRect pageFrame = CGRectMake(padding, padding, pageWidth, pageHeight);
+    CGRect textFrame = CGRectMake(10, 10, (pageWidth - 20), (pageHeight - 20));
+    CGFloat x = size.width / 2;
+    CGFloat y = size.height / 2;
+    [textLayer setFrame:textFrame];
+    [pageLayer setFrame:pageFrame];
+    [pageLayer setPosition:CGPointMake(x, y)];
+}
+
+- (void)setShadowWithOpacity:(CGFloat)anOpacity
+                      radius:(CGFloat)aRaduis
+                      offset:(CGFloat)anOffset
+{
+    [pageLayer setShadowOpacity:anOpacity];
+    [pageLayer setShadowRadius:aRaduis];
+    [pageLayer setShadowOffset:CGSizeMake(0, (-1) * anOffset)];
 }
 
 - (void)setText:(NSString *)aString;
 {
-    [contentLayer setWrapped:YES];
-    [contentLayer setTruncationMode:kCATruncationEnd];
-    [contentLayer setAlignmentMode:kCAAlignmentLeft];
-    [contentLayer setString:aString];
-}
-
-- (void)setDescription:(NSString *)aString
-{
-    [descriptionLayer setAlignmentMode:kCAAlignmentCenter];
-    [descriptionLayer setString:aString];
+    [textLayer setString:aString];
 }
 
 - (void)setFontSize:(CGFloat)fontSize
 {
-    [descriptionLayer setFontSize:fontSize];
+    [textLayer setFontSize:fontSize];
 }
 
 @end

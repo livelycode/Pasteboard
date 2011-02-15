@@ -20,15 +20,33 @@
     return self;
 }
 
-- (void)setItemLayer:(CBItemLayer *)itemLayer
-              forRow:(NSUInteger)aRow
-              column:(NSUInteger)aColumn
+- (NSUInteger)rows
+{
+    return rows;
+}
+
+- (NSUInteger)columns
+{
+    return columns;
+}
+
+- (CGSize)itemLayerSize
 {
     CGSize size = [self frame].size;
     CGFloat width = size.width / columns;
     CGFloat height = size.height / rows;
-    CGPoint center = CGPointMake((width / 2), (height / 2));
-    [itemLayer setPosition:center];
+    return CGSizeMake(width, height);
+}
+
+- (void)setItemLayer:(CBItemLayer *)itemLayer
+              forRow:(NSUInteger)aRow
+              column:(NSUInteger)aColumn
+{   
+    CGSize itemSize = [self itemLayerSize];
+    CGFloat x = (aColumn - 1) * itemSize.width;
+    CGFloat y = (rows - aRow) * itemSize.height;
+    CGRect itemFrame = CGRectMake(x, y, itemSize.width, itemSize.height);
+    [itemLayer setFrame:itemFrame];
     [self addSublayer:itemLayer];
 }
 

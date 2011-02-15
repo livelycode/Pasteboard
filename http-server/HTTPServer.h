@@ -16,7 +16,7 @@
 
 - (Class)connectionClass;
 - (void)setConnectionClass:(Class)value;
-// used to configure the subclass of HTTPConnection to create when  
+// used to configure the subclass of HTTPConnection	 to create when  
 // a new connection comes in; by default, this is HTTPConnection
 
 - (NSURL *)documentRoot;
