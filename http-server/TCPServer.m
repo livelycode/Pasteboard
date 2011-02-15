@@ -226,7 +226,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 }
 
 - (void)netServiceDidPublish:(NSNetService *)sender {
-  NSLog(@"service published");
+  NSLog(@"service published: %@", sender);
 }
 
 @end

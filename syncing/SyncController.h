@@ -11,8 +11,12 @@
 
 @interface SyncController : NSObject <NSNetServiceBrowserDelegate> {
 @private
-    
+  NSNetServiceBrowser *serviceBrowser;
+  NSTimer *timer;
+  NSNetService *service;
 }
+
+- (void) searchRemotes: (NSTimer*) timer;
 @end
 
 @interface SyncController(Delegation)
