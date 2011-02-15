@@ -64,12 +64,13 @@
     //start Server in new thread
     NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
     [serverThread start];
+    [self startSyncing];
 }
 
 - (void)launchHTTPServer {
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
-  [server setName:@"Cocoa HTTP Server"];
+  [server setName:@"Cloudboard Server"];
   [server setPort: 8090];
   connectionDelegate = [[HTTPConnectionDelegate alloc] init];
   [server setDelegate: connectionDelegate];
@@ -81,6 +82,10 @@
     NSLog(@"Starting server on port %d", [server port]);
   }
   [[NSRunLoop currentRunLoop] run];
+}
+
+- (void)startSyncing {
+  SyncController *sync = [[SyncController alloc] init];
 }
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;

@@ -9,3 +9,5 @@
 #import "CBSettings.h"
 #import "HTTPServer.h"
 #import "HTTPConnectionDelegate.h"
+#import "SyncController.h"
+#import "RemoteCloudboard.h"

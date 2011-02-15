@@ -197,6 +197,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
             }
         }
         netService = [[NSNetService alloc] initWithDomain:publishingDomain type:type name:publishingName port:port];
+        [netService setDelegate:self];
         [netService publish];
     }
 
@@ -218,3 +219,14 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
 
 @end
 
+@implementation TCPServer(Delegate)
+
+- (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict {
+  NSLog(@"service not published");
+}
+
+- (void)netServiceDidPublish:(NSNetService *)sender {
+  NSLog(@"service published: %@", sender);
+}
+
+@end
