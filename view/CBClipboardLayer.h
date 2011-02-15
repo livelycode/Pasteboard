@@ -5,8 +5,14 @@
 @interface CBClipboardLayer : CALayer
 {
     @private
-    NSMutableArray *itemLayers;
+    NSUInteger rows;
+    NSUInteger columns;
 }
+
+- (id)init;
+
+- (id)initWithRows:(NSUInteger)rowsNumber
+           Columns:(NSUInteger)columnsNumber;
 
 - (void)setItemLayer:(CBItemLayer *)itemLayer
               forRow:(NSUInteger)aRow

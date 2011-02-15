@@ -19,17 +19,18 @@
     leftClipboard = [[CBClipboard alloc] initWithCapacity:12];
     
     CGColorRef color = CGColorCreateGenericGray(0, [settings floatForKey:@"opacity"]);
-    CALayer *leftLayer = [[CBClipboardLayer alloc] init];
-    CGRect leftFrame = CGRectMake(padding, padding, width, height);
+    NSUInteger rows = [settings integerForKey:@"rows"];
+    NSUInteger columns = [settings integerForKey:@"columns"];
+    CBClipboardLayer *leftLayer = [[CBClipboardLayer alloc] initWithRows:rows
+                                                        Columns:columns];
+    CGRect leftFrame = CGRectMake(0, 0, width, height);
     [leftLayer setFrame:leftFrame];
     [leftLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    [leftLayer setOpacity:[settings floatForKey:@"opacity"]];
     [leftLayer setBackgroundColor:color];
-    CALayer *rightLayer = [[CALayer alloc] init];
-    CGRect rightFrame = CGRectMake((2 * padding) + width, padding, width, height);
+    CBClipboardLayer *rightLayer = [[CBClipboardLayer alloc] init];
+    CGRect rightFrame = CGRectMake((width + padding), 0, width, height);
     [rightLayer setFrame:rightFrame];
     [rightLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    [rightLayer setOpacity:[settings floatForKey:@"opacity"]];
     [rightLayer setBackgroundColor:color];
     CFRelease(color);
     
@@ -37,12 +38,7 @@
                                                                          layer:leftLayer];
     [leftClipboardController setTypes:[settings objectForKey:@"URITypes"]];
     
-    hotKey = [[CBHotKey alloc] init];
-    
-    pasteboardObserver = [[CBPasteboardObserver alloc] init];
-    [pasteboardObserver setDelegate:self];
-    
-    NSWindow *mainWindow = [[NSWindow alloc] initWithContentRect:mainFrame
+    NSWindow *mainWindow = [[NSWindow alloc] initWithContentRect:CGRectMake(padding, padding, ((2 * width) + padding), height)
                                                        styleMask:NSBorderlessWindowMask
                                                          backing:NSBackingStoreBuffered
                                                            defer:NO];
@@ -52,11 +48,17 @@
     [mainWindow setBackgroundColor:[NSColor clearColor]];
     
     windowController = [[CBMainWindowController alloc] initWithWindow:mainWindow];
+    [windowController setFadeInDuration:[settings floatForKey:@"fadeInDuration"]];
+    [windowController setFadeOutDuration:[settings floatForKey:@"fadeOutDuration"]];
     [[windowController rootLayer] addSublayer:leftLayer];
     [[windowController rootLayer] addSublayer:rightLayer];
+    
+    hotKey = [[CBHotKey alloc] init];
     [hotKey setDelegate:windowController];
     
     CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
+    pasteboardObserver = [[CBPasteboardObserver alloc] init];
+    [pasteboardObserver setDelegate:self];
     [pasteboardObserver observeWithTimeInterval:time];
     [self launchHTTPServer];
 }

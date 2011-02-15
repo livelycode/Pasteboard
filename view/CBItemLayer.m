@@ -7,6 +7,8 @@
     self = [super init];
     if (self != nil)
     {
+        size = aSize;
+        
         contentLayer = [CATextLayer layer];
         [contentLayer setFrame:CGRectMake(0, 20, aSize.width, aSize.height)];
         
@@ -24,7 +26,7 @@
 {
     NSDictionary* options = [NSDictionary dictionaryWithObject:(id)kCFBooleanTrue
                                                         forKey:(id)kQLThumbnailOptionIconModeKey];
-    CGImageRef imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (CFURLRef) fileURL, size, (CFDictionaryRef)options);
+    CGImageRef imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (CFURLRef)fileURL, size, (CFDictionaryRef)options);
     if (imageRef != NULL)
     {
         [contentLayer setContents:(id)imageRef];
@@ -57,7 +59,6 @@
 
 - (void)setFontSize:(CGFloat)fontSize
 {
-    [contentLayer setFontSize:fontSize];
     [descriptionLayer setFontSize:fontSize];
 }
 

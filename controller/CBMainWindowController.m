@@ -10,6 +10,7 @@
         mainWindow = aWindow;
         
         rootLayer = [CALayer layer];
+        [rootLayer setOpacity:0];
         NSView *mainView = [mainWindow contentView];
         [mainView setLayer:rootLayer];
         [mainView setWantsLayer:YES];
@@ -56,7 +57,7 @@
         [mainWindow makeKeyAndOrderFront:self];
         [rootLayer setActions:[NSDictionary dictionaryWithObject:fadeIn
                                                           forKey:@"opacity"]];
-        [rootLayer setOpacity:0.5];
+        [rootLayer setOpacity:1];
     }
 }
 
