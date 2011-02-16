@@ -10,6 +10,7 @@
         mainWindow = aWindow;
         
         rootLayer = [CALayer layer];
+        [rootLayer setDelegate:self];
         [rootLayer setOpacity:0];
         
         CGSize windowSize = [mainWindow frame].size;
@@ -53,20 +54,17 @@
 {
     if (mainLayerHidden == NO)
     {
-        [rootLayer setActions:[NSDictionary dictionaryWithObject:fadeOut
-                                                          forKey:@"opacity"]];
         [rootLayer setOpacity:0];
     }
     else
     {
         [mainWindow makeKeyAndOrderFront:self];
-        [rootLayer setActions:[NSDictionary dictionaryWithObject:fadeIn
-                                                          forKey:@"opacity"]];
         [rootLayer setOpacity:1];
     }
 }
 
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
+- (void)animationDidStop:(CAAnimation *)theAnimation
+                finished:(BOOL)flag
 {
     if (mainLayerHidden == NO)
     {
@@ -77,6 +75,24 @@
     {
         mainLayerHidden = NO;
     }
+}
+
+- (id <CAAction>)actionForLayer:(CALayer *)layer
+                         forKey:(NSString *)key
+{
+    CABasicAnimation *fade = nil;
+    if ([key isEqualToString:@"opacity"])
+    {
+        if (mainLayerHidden == NO)
+        {
+            fade = fadeOut;
+        }
+        else
+        {
+            fade = fadeIn;
+        }  
+    }
+    return fade;
 }
 
 @end
