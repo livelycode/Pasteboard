@@ -2,29 +2,28 @@
 
 @implementation CBMainWindowController
 
-- (id)initWithWindow:(NSWindow *)aWindow;
+- (id)init;
 {
     self = [super init];
     if (self != nil)
     {
-        mainWindow = aWindow;
+        CGRect mainFrame = [[NSScreen mainScreen] frame];
         
-        rootLayer = [CALayer layer];
-        [rootLayer setDelegate:self];
-        [rootLayer setOpacity:0];
+        mainWindow = [[NSWindow alloc] initWithContentRect:mainFrame
+                                                 styleMask:NSBorderlessWindowMask
+                                                   backing:NSBackingStoreBuffered
+                                                     defer:NO];
+        [mainWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+        [mainWindow setLevel:NSScreenSaverWindowLevel];
+        [mainWindow setOpaque:NO];
+        [mainWindow setBackgroundColor:[NSColor clearColor]];
         
-        CGSize windowSize = [mainWindow frame].size;
-        CGRect clipboardFrame = CGRectMake(0, 0, windowSize.width, windowSize.height);
-        CBView *clipboardView = [[CBView alloc] initWithFrame:clipboardFrame];
-        [clipboardView setDelegate:self];
-        [clipboardView setLayer:rootLayer];
-        [clipboardView setWantsLayer:YES];
+        rootView = [mainWindow contentView];
+        [rootView setWantsLayer:YES];
         
-        [[mainWindow contentView] addSubview:clipboardView];
-        
-        fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeIn = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
         [fadeIn setDelegate:self];
-        fadeOut = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        fadeOut = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
         [fadeOut setDelegate:self];
         
         mainLayerHidden = YES;
@@ -42,73 +41,29 @@
     [fadeOut setDuration:time];
 }
 
-- (CALayer *)rootLayer
+- (NSView *)rootView;
 {
-    return rootLayer;
+    return rootView;
 }
 
 @end
 
 @implementation CBMainWindowController(Delegation)
 
-- (void)view:(CBView *)aView didReceiveMouseDown:(NSEvent *)theEvent
-{
-    NSLog(@"down");
-}
-
-- (void)view:(CBView *)aView didReceiveMouseUp:(NSEvent *)theEvent
-{
-    NSLog(@"up");
-}
-
-- (void)view:(CBView *)aView didReceiveMouseDragged:(NSEvent *)theEvent
-{
-    NSLog(@"dragged");
-}
-
 - (void)hotKeyPressed:(CBHotKeyObserver *)hotKey
 {
     if (mainLayerHidden == NO)
     {
-        [rootLayer setOpacity:0];
+        [rootView setAlphaValue:0];
+        [mainWindow orderOut:self];
+        mainLayerHidden = YES;
     }
     else
     {
         [mainWindow makeKeyAndOrderFront:self];
-        [rootLayer setOpacity:1];
-    }
-}
-
-- (void)animationDidStop:(CAAnimation *)theAnimation
-                finished:(BOOL)flag
-{
-    if (mainLayerHidden == NO)
-    {
-        mainLayerHidden = YES;
-        [mainWindow orderOut:self];
-    }
-    else
-    {
+        [rootView setAlphaValue:1];
         mainLayerHidden = NO;
     }
-}
-
-- (id <CAAction>)actionForLayer:(CALayer *)layer
-                         forKey:(NSString *)key
-{
-    CABasicAnimation *fade = nil;
-    if ([key isEqualToString:@"opacity"])
-    {
-        if (mainLayerHidden == NO)
-        {
-            fade = fadeOut;
-        }
-        else
-        {
-            fade = fadeIn;
-        }  
-    }
-    return fade;
 }
 
 @end

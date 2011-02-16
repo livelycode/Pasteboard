@@ -1,21 +1,18 @@
 #import "Cocoa.h"
 
 @class CBClipboard;
-@class CBClipboardLayer;
+@class CBClipboardView;
 
 @interface CBClipboardController : NSObject
 {
     @private
     CBClipboard *clipboard;
-    CBClipboardLayer *clipboardLayer;
-    NSArray *types;
+    CBClipboardView *clipboardView;
 }
 							
 - (id)initWithClipboard:(CBClipboard *)aClipboard
-                  layer:(CBClipboardLayer *)aLayer;
+                   view:(CBClipboardView *)aView;
 
-- (void)setTypes:(NSArray *)anArray;
-
-- (void)updateItemLayers;
+- (void)updateItemViews;
 
 @end

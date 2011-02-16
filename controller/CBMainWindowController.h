@@ -5,42 +5,31 @@
 @class CBClipboardLayer;
 @class CBClipboard;
 @class CBSettings;
+@class CBView;
 
 @interface CBMainWindowController : NSObject
 {
     @private
-    NSWindow *mainWindow;
     NSArray *types;
-    CALayer *rootLayer;
+    NSWindow *mainWindow;
+    CBView *rootView;
     CABasicAnimation *fadeIn;
     CABasicAnimation *fadeOut;
     BOOL mainLayerHidden;
 }
 
-- (id)initWithWindow:(NSWindow *)aWindow;
+- (id)init;
 
 - (void)setFadeInDuration:(NSTimeInterval)time;
 
 - (void)setFadeOutDuration:(NSTimeInterval)time;
 
-- (CALayer *)rootLayer;
+- (NSView *)rootView;
 
 @end
 
 @interface CBMainWindowController(Delegation) <CBHotKeyObserverDelegate, CBViewDelegate>
 
 - (void)hotKeyPressed:(CBHotKeyObserver *)hotKey;
-
-- (void)view:(CBView *)aView didReceiveMouseDown:(NSEvent *)theEvent;
-
-- (void)view:(CBView *)aView didReceiveMouseUp:(NSEvent *)theEvent;
-
-- (void)view:(CBView *)aView didReceiveMouseDragged:(NSEvent *)theEvent;
-
-- (void)animationDidStop:(CAAnimation *)theAnimation
-                finished:(BOOL)flag;
-
-- (id <CAAction>)actionForLayer:(CALayer *)layer
-                         forKey:(NSString *)key;
 
 @end

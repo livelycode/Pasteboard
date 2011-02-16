@@ -13,9 +13,15 @@
 	<key>fadeOutDuration</key>
 	<real>0.1</real>
 	<key>opacity</key>
-	<real>0.3</real>
+	<real>0.7</real>
+	<key>pageBlue</key>
+	<real>0.4</real>
+	<key>pageGreen</key>
+	<real>0.9</real>
 	<key>pagePadding</key>
 	<integer>24</integer>
+	<key>pageRed</key>
+	<integer>1</integer>
 	<key>rows</key>
 	<integer>4</integer>
 	<key>shadowOffset</key>
@@ -31,11 +37,5 @@
 		<string>public.url</string>
 		<string>public.text</string>
 	</array>
-	<key>pageRed</key>
-	<integer>1</integer>
-	<key>pageGreen</key>
-	<real>0.9</real>
-	<key>pageBlue</key>
-	<real>0.4</real>
 </dict>
 </plist>

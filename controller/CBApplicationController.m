@@ -11,47 +11,33 @@
     CBSettings *settings = [CBSettings sharedSettings];
     
     CGRect mainFrame = [[NSScreen mainScreen] frame];
-    mainFrame.size.height = mainFrame.size.height - [[NSStatusBar systemStatusBar] thickness];
     CGFloat padding = [settings floatForKey:@"clipboardPadding"];
     CGFloat height = mainFrame.size.height - (2 * padding);
     CGFloat width = (mainFrame.size.width - (3 * padding)) / 2;
     
     leftClipboard = [[CBClipboard alloc] initWithCapacity:12];
     
-    CGColorRef color = CGColorCreateGenericGray(0, [settings floatForKey:@"opacity"]);
     NSUInteger rows = [settings integerForKey:@"rows"];
     NSUInteger columns = [settings integerForKey:@"columns"];
-    CBClipboardLayer *leftLayer = [[CBClipboardLayer alloc] initWithRows:rows
-                                                        Columns:columns];
-    CGRect leftFrame = CGRectMake(0, 0, width, height);
-    [leftLayer setFrame:leftFrame];
-    [leftLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    [leftLayer setBackgroundColor:color];
-    CBClipboardLayer *rightLayer = [[CBClipboardLayer alloc] init];
-    CGRect rightFrame = CGRectMake((width + padding), 0, width, height);
-    [rightLayer setFrame:rightFrame];
-    [rightLayer setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    [rightLayer setBackgroundColor:color];
-    CFRelease(color);
+    CGRect leftFrame = CGRectMake(padding, padding, width, height);
+    CGRect rightFrame = CGRectMake((width + (2 * padding)), padding, width, height);
+    CBClipboardView *leftView = [[CBClipboardView alloc] initWithRows:rows
+                                                              Columns:columns];
+    [leftView setFrame:leftFrame];
+    [leftView setCornerRadius:[settings floatForKey:@"cornerRadius"]];
+    [leftView setOpacity:[settings floatForKey:@"opacity"]];
+    CBClipboardView *rightView = [[CBClipboardView alloc] init];
+    
+    [rightView setFrame:rightFrame];
     
     leftClipboardController = [[CBClipboardController alloc] initWithClipboard:leftClipboard
-                                                                         layer:leftLayer];
-    [leftClipboardController setTypes:[settings objectForKey:@"URITypes"]];
+                                                                          view:leftView];
     
-    NSWindow *mainWindow = [[NSWindow alloc] initWithContentRect:CGRectMake(padding, padding, ((2 * width) + padding), height)
-                                                       styleMask:NSBorderlessWindowMask
-                                                         backing:NSBackingStoreBuffered
-                                                           defer:NO];
-    [mainWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-    [mainWindow setLevel:NSScreenSaverWindowLevel];
-    [mainWindow setOpaque:NO];
-    [mainWindow setBackgroundColor:[NSColor clearColor]];
-    
-    windowController = [[CBMainWindowController alloc] initWithWindow:mainWindow];
+    windowController = [[CBMainWindowController alloc] init];
     [windowController setFadeInDuration:[settings floatForKey:@"fadeInDuration"]];
     [windowController setFadeOutDuration:[settings floatForKey:@"fadeOutDuration"]];
-    [[windowController rootLayer] addSublayer:leftLayer];
-    [[windowController rootLayer] addSublayer:rightLayer];
+    [[windowController rootView] addSubview:leftView];
+    [[windowController rootView] addSubview:rightView];
     
     hotKey = [[CBHotKeyObserver alloc] init];
     [hotKey setDelegate:windowController];
@@ -101,7 +87,7 @@
         [leftClipboard insertItem:item
                           AtIndex:0];
     }
-    [leftClipboardController updateItemLayers];
+    [leftClipboardController updateItemViews];
 }
 
 @end
