@@ -1,12 +1,12 @@
 #import "Cocoa.h"
-#import "CBHotKeyDelegate.h"
+#import "CBHotKeyObserverDelegate.h"
 
 @interface CBMainWindowController : NSObject
 {
     @private
     NSArray *types;
     NSWindow *mainWindow;
-    CBView *rootView;
+    NSView *rootView;
 }
 
 - (id)init;

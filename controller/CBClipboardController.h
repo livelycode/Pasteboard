@@ -13,6 +13,10 @@
 - (id)initWithClipboard:(CBClipboard *)aClipboard
                    view:(CBClipboardView *)aView;
 
-- (void)updateItemViews;
+@end
+
+@interface CBClipboardController(Delegation) <CBPasteboardOberserverDelegate>
+
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
 @end

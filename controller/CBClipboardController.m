@@ -12,38 +12,43 @@
         clipboardView = aView;
     }
     return self;
-}
+}	
 
-- (void)updateItemViews
+@end
+
+@implementation CBClipboardController(Delegation)
+
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
+    Class stringClass = [NSAttributedString class];
+    NSArray *classes = [NSArray arrayWithObject:stringClass];
+    NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
+                                                      options:nil];
+    
+    for (NSAttributedString *string in copiedItems)
+    {
+        CBItem *item = [[CBItem alloc] initWithString:string];
+        [clipboard insertItem:item
+                      AtIndex:0];
+    }
+    
     NSUInteger row = 1;
     NSUInteger column = 1;
     for (CBItem *item in [clipboard items])
     {
-        CBSettings *settings = [CBSettings sharedSettings];
-        CGFloat opacity = [settings floatForKey:@"shadowOpacity"];
-        CGFloat radius = [settings floatForKey:@"shadowRadius"];
-        CGFloat offset = [settings floatForKey:@"shadowOffset"];
-        CGFloat padding = [settings floatForKey:@"pagePadding"];
-        CGFloat red = [settings floatForKey:@"pageRed"];
-        CGFloat green = [settings floatForKey:@"pageGreen"];
-        CGFloat blue = [settings floatForKey:@"pageBlue"];
-        CGSize itemSize = [clipboardView itemViewSize];
-        
-        CBItemView *itemView = [[CBItemView alloc] initWithContentSize:itemSize];
-        [itemView setPadding:padding];
-        [itemView setPageColor:[NSColor colorWithCalibratedRed:red
-                                                         green:green
-                                                          blue:blue
+
+        CBItemView *itemView = [clipboardView itemViewForRow:row
+                                                      column:column];
+        [itemView setPadding:20];
+        [itemView setPageColor:[NSColor colorWithCalibratedRed:0.2
+                                                         green:0.3
+                                                          blue:0.4
                                                          alpha:1]];
-        [itemView setShadowWithOpacity:opacity
-                                radius:radius
-                                offset:offset];
+        [itemView setShadowWithOpacity:0.5
+                                radius:3
+                                offset:5];
         [itemView setText:[item string]];
-                
-        [clipboardView setItemView:itemView
-                            forRow:row
-                            column:column];
+        
         column = column + 1;
         if (column > [clipboardView columns])
         {
@@ -52,7 +57,6 @@
         }
         [clipboardView needsDisplay]; 
     }
-    
 }
 
 @end

@@ -1,6 +1,6 @@
 #import "Cocoa.h"
 
-@class CBHotKeyObserver;
+@protocol CBHotKeyObserverDelegate;
 
 @interface CBHotKeyObserver : NSObject
 {

@@ -24,7 +24,8 @@
     [items removeObjectsInRange:tail];
 }
 
-- (void)insertItem:(NSPasteboardItem *)anItem AtIndex:(NSUInteger)anIndex;
+- (void)insertItem:(CBItem *)anItem
+           AtIndex:(NSUInteger)anIndex;
 {
     [items insertObject:anItem
                 atIndex:anIndex];
@@ -34,7 +35,7 @@
     }
 }
 
-- (NSPasteboardItem *)itemAtIndex:(NSUInteger)anIndex
+- (CBItem *)itemAtIndex:(NSUInteger)anIndex
 {
     return [items objectAtIndex:anIndex];
 }
