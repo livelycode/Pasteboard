@@ -16,6 +16,7 @@
         CGSize windowSize = [mainWindow frame].size;
         CGRect clipboardFrame = CGRectMake(0, 0, windowSize.width, windowSize.height);
         CBView *clipboardView = [[CBView alloc] initWithFrame:clipboardFrame];
+        [clipboardView setDelegate:self];
         [clipboardView setLayer:rootLayer];
         [clipboardView setWantsLayer:YES];
         
@@ -49,6 +50,21 @@
 @end
 
 @implementation CBMainWindowController(Delegation)
+
+- (void)view:(CBView *)aView didReceiveMouseDown:(NSEvent *)theEvent
+{
+    NSLog(@"down");
+}
+
+- (void)view:(CBView *)aView didReceiveMouseUp:(NSEvent *)theEvent
+{
+    NSLog(@"up");
+}
+
+- (void)view:(CBView *)aView didReceiveMouseDragged:(NSEvent *)theEvent
+{
+    NSLog(@"dragged");
+}
 
 - (void)hotKeyPressed:(CBHotKey *)hotKey
 {

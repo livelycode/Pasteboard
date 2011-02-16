@@ -4,6 +4,7 @@
 
 @protocol CBViewDelegate <NSObject>
 
+@optional
 - (void)view:(CBView *)aView
 didReceiveMouseDown:(NSEvent *)theEvent;
 
