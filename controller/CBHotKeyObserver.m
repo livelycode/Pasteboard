@@ -1,6 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation CBHotKey
+@implementation CBHotKeyObserver
 
 static id globalDelegate;
 static id globalSelf;
@@ -22,7 +22,8 @@ hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData)
                withModifier:optionKey];
 }
 
-- (id)initHotKey:(NSUInteger)key withModifier:(NSUInteger)modifier
+- (id)initHotKey:(NSUInteger)key
+    withModifier:(NSUInteger)modifier
 {
     self = [super init];
     if (self != nil)

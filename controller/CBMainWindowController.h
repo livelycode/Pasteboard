@@ -27,9 +27,9 @@
 
 @end
 
-@interface CBMainWindowController(Delegation) <CBHotKeyDelegate, CBViewDelegate>
+@interface CBMainWindowController(Delegation) <CBHotKeyObserverDelegate, CBViewDelegate>
 
-- (void)hotKeyPressed:(CBHotKey *)hotKey;
+- (void)hotKeyPressed:(CBHotKeyObserver *)hotKey;
 
 - (void)view:(CBView *)aView didReceiveMouseDown:(NSEvent *)theEvent;
 

@@ -1,13 +1,13 @@
 #import "Cocoa.h"
 
-@class CBHotKey;
+@class CBHotKeyObserver;
 
-@protocol CBHotKeyDelegate <NSObject>
+@protocol CBHotKeyObserverDelegate <NSObject>
 
 @required
-- (void)hotKeyPressed:(CBHotKey *)hotKey;
+- (void)hotKeyPressed:(CBHotKeyObserver *)hotKey;
 
 @optional
-- (void)hotKeyReleased:(CBHotKey *)hotKey;
+- (void)hotKeyReleased:(CBHotKeyObserver *)hotKey;
 
 @end

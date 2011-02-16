@@ -66,7 +66,7 @@
     NSLog(@"dragged");
 }
 
-- (void)hotKeyPressed:(CBHotKey *)hotKey
+- (void)hotKeyPressed:(CBHotKeyObserver *)hotKey
 {
     if (mainLayerHidden == NO)
     {
