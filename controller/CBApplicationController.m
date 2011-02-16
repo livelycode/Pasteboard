@@ -34,8 +34,6 @@
                                                                           view:leftView];
     
     windowController = [[CBMainWindowController alloc] init];
-    [windowController setFadeInDuration:[settings floatForKey:@"fadeInDuration"]];
-    [windowController setFadeOutDuration:[settings floatForKey:@"fadeOutDuration"]];
     [[windowController rootView] addSubview:leftView];
     [[windowController rootView] addSubview:rightView];
     

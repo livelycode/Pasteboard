@@ -20,25 +20,8 @@
         
         rootView = [mainWindow contentView];
         [rootView setWantsLayer:YES];
-        
-        fadeIn = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
-        [fadeIn setDelegate:self];
-        fadeOut = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
-        [fadeOut setDelegate:self];
-        
-        mainLayerHidden = YES;
     }
     return self;
-}
-
-- (void)setFadeInDuration:(NSTimeInterval)time
-{
-    [fadeIn setDuration:time];
-}
-
-- (void)setFadeOutDuration:(NSTimeInterval)time
-{
-    [fadeOut setDuration:time];
 }
 
 - (NSView *)rootView;
@@ -52,17 +35,13 @@
 
 - (void)hotKeyPressed:(CBHotKeyObserver *)hotKey
 {
-    if (mainLayerHidden == NO)
+    if ([mainWindow isVisible])
     {
-        [rootView setAlphaValue:0];
         [mainWindow orderOut:self];
-        mainLayerHidden = YES;
     }
     else
     {
         [mainWindow makeKeyAndOrderFront:self];
-        [rootView setAlphaValue:1];
-        mainLayerHidden = NO;
     }
 }
 
