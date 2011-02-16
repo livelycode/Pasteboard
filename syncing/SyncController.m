@@ -19,13 +19,35 @@
     }
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
-    timer = [NSTimer scheduledTimerWithTimeInterval:0 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
     return self;
 }
 
 - (void) searchRemotes: (NSTimer*) timer {
   NSLog(@"invoke search");
-  [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@""];    
+  [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@"local."];    
+}
+
+
+- (void) setService: (NSNetService*) newService {
+  NSLog(@"yeah, found right service! domain: %@", [service domain]);
+  service = newService;
+  [self resolveService];
+}
+
+- (void) resolveService {
+  [service setDelegate:self];
+  [service resolveWithTimeout:5];
+}
+
+- (NSURL *)URL
+{
+  NSMutableString *URLString = [NSMutableString string];
+  [URLString appendString:@"http://"];
+  [URLString appendString:host];
+  [URLString appendString:@":"];
+  [URLString appendString:[[NSNumber numberWithUnsignedInteger:port] stringValue]];
+  return [NSURL URLWithString:URLString];
 }
 
 - (void)dealloc
@@ -42,7 +64,11 @@
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo {
-  NSLog(@"did not search services %@", errorInfo);
+  NSLog(@"error: did not search services %@", errorInfo);
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainName moreComing:(BOOL)more {
+  NSLog(@"found domain: %@", domainName);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
@@ -57,16 +83,22 @@
   }
 }
 
-- (void) setService: (NSNetService*) newService {
-  service = newService;
-  NSLog(@"yeah, found right service! domain: %@", [service domain]);
-}
-
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) service moreComing: (BOOL)more {
   NSLog(@"removed service: %@", service);
 }
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
   NSLog(@"stopped searching");
+}
+
+- (void)netServiceDidResolveAddress:(NSNetService *)netService {
+  port = [netService port];
+  host = [netService hostName];
+  NSLog(@"resolved address - host: %@, port: %i", [netService hostName], port);
+  NSLog(@"server URL: %@", [self URL]);
+}
+
+- (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {
+  NSLog(@"error: not resolved address: %@", errorDict);
 }
 @end
