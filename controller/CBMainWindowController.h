@@ -29,6 +29,10 @@
 
 - (void)hotKeyPressed:(CBHotKey *)hotKey;
 
-- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag;
+- (void)animationDidStop:(CAAnimation *)theAnimation
+                finished:(BOOL)flag;
+
+- (id <CAAction>)actionForLayer:(CALayer *)layer
+                         forKey:(NSString *)key;
 
 @end
