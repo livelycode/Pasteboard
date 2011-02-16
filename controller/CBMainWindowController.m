@@ -11,9 +11,14 @@
         
         rootLayer = [CALayer layer];
         [rootLayer setOpacity:0];
-        NSView *mainView = [mainWindow contentView];
-        [mainView setLayer:rootLayer];
-        [mainView setWantsLayer:YES];
+        
+        CGSize windowSize = [mainWindow frame].size;
+        CGRect clipboardFrame = CGRectMake(0, 0, windowSize.width, windowSize.height);
+        CBView *clipboardView = [[CBView alloc] initWithFrame:clipboardFrame];
+        [clipboardView setLayer:rootLayer];
+        [clipboardView setWantsLayer:YES];
+        
+        [[mainWindow contentView] addSubview:clipboardView];
         
         fadeIn = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [fadeIn setDelegate:self];
