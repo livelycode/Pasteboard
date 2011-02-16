@@ -3,27 +3,19 @@
 @implementation CBClipboardController
 
 - (id)initWithClipboard:(CBClipboard *)aClipboard
-                  layer:(CBClipboardLayer *)aLayer;
+                   view:(CBClipboardView *)aView;
 {
     self = [super init];
     if (self != nil)
     {
         clipboard = aClipboard;
-        clipboardLayer = aLayer;
-        types = nil;
+        clipboardView = aView;
     }
     return self;
 }
 
-- (void)setTypes:(NSArray *)anArray
+- (void)updateItemViews
 {
-    types = anArray;
-}
-
-- (void)updateItemLayers
-{
-    [clipboardLayer setSublayers:nil];
-    
     NSUInteger row = 1;
     NSUInteger column = 1;
     for (CBItem *item in [clipboard items])
@@ -36,27 +28,29 @@
         CGFloat red = [settings floatForKey:@"pageRed"];
         CGFloat green = [settings floatForKey:@"pageGreen"];
         CGFloat blue = [settings floatForKey:@"pageBlue"];
-        CGSize itemSize = [clipboardLayer itemLayerSize];
-
-        CBItemLayer *itemLayer = [[CBItemLayer alloc] initWithWithContentSize:itemSize];
-        [itemLayer setPadding:padding];
-        [itemLayer setPageColor:CGColorCreateGenericRGB(red, green, blue, 1)];
-        [itemLayer setShadowWithOpacity:opacity
-                                 radius:radius
-                                 offset:offset];
-        [itemLayer setText:[item string]];	
-        [itemLayer setFontSize:16];
+        CGSize itemSize = [clipboardView itemViewSize];
+        
+        CBItemView *itemView = [[CBItemView alloc] initWithContentSize:itemSize];
+        [itemView setPadding:padding];
+        [itemView setPageColor:[NSColor colorWithCalibratedRed:red
+                                                         green:green
+                                                          blue:blue
+                                                         alpha:1]];
+        [itemView setShadowWithOpacity:opacity
+                                radius:radius
+                                offset:offset];
+        [itemView setText:[item string]];
                 
-        [clipboardLayer setItemLayer:itemLayer
-                              forRow:row
-                              column:column];
+        [clipboardView setItemView:itemView
+                            forRow:row
+                            column:column];
         column = column + 1;
-        if (column > [clipboardLayer columns])
+        if (column > [clipboardView columns])
         {
             row = row + 1;
             column = 1;
         }
-        [clipboardLayer needsDisplay]; 
+        [clipboardView needsDisplay]; 
     }
     
 }

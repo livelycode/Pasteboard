@@ -13,3 +13,5 @@
 #import "HTTPConnectionDelegate.h"
 #import "SyncController.h"
 #import "RemoteCloudboard.h"
+#import "CBItemView.h"
+#import "CBClipboardView.h"
