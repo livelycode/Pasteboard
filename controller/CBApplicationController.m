@@ -53,7 +53,7 @@
     [[windowController rootLayer] addSublayer:leftLayer];
     [[windowController rootLayer] addSublayer:rightLayer];
     
-    hotKey = [[CBHotKey alloc] init];
+    hotKey = [[CBHotKeyObserver alloc] init];
     [hotKey setDelegate:windowController];
     
     CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];

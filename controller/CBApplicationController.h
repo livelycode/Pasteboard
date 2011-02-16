@@ -4,7 +4,7 @@
 
 @class CBClipboard;
 @class CBClipboardController;
-@class CBHotKey;
+@class CBHotKeyObserver;
 @class CBPasteboardObserver;
 @class CBMainWindowController;
 @class HTTPConnectionDelegate;
@@ -13,7 +13,7 @@
 {
     @private
     CBPasteboardObserver *pasteboardObserver;		
-    CBHotKey *hotKey;
+    CBHotKeyObserver *hotKey;
     CBClipboard *leftClipboard;
     CBClipboardController *leftClipboardController;
     CBMainWindowController *windowController;

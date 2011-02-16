@@ -1,4 +1,6 @@
 #import "Cocoa.h"
+#import "CBViewDelegate.h"
+#import "CBHotKeyDelegate.h"
 
 @class CBClipboardLayer;
 @class CBClipboard;
@@ -25,9 +27,15 @@
 
 @end
 
-@interface CBMainWindowController(Delegation) <CBHotKeyDelegate>
+@interface CBMainWindowController(Delegation) <CBHotKeyObserverDelegate, CBViewDelegate>
 
-- (void)hotKeyPressed:(CBHotKey *)hotKey;
+- (void)hotKeyPressed:(CBHotKeyObserver *)hotKey;
+
+- (void)view:(CBView *)aView didReceiveMouseDown:(NSEvent *)theEvent;
+
+- (void)view:(CBView *)aView didReceiveMouseUp:(NSEvent *)theEvent;
+
+- (void)view:(CBView *)aView didReceiveMouseDragged:(NSEvent *)theEvent;
 
 - (void)animationDidStop:(CAAnimation *)theAnimation
                 finished:(BOOL)flag;
