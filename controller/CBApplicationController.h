@@ -1,6 +1,5 @@
 #import "Cocoa.h"
 #import "CBPasteboardObserver.h"
-#import "CBHotKeyDelegate.h"
 
 @class CBClipboard;
 @class CBClipboardController;
@@ -24,11 +23,11 @@
 
 @end
 
-@interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
+@interface CBApplicationController(Delegation) <NSApplicationDelegate>
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
 - (void)launchHTTPServer;
 - (void)startSyncing;
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+
 
 @end

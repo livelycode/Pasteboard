@@ -8,18 +8,37 @@
                       Columns:1];
 }
 
+- (void)drawRect:(NSRect)rect
+{
+    [color set];
+    [NSBezierPath fillRect:[self bounds]];
+}
+
 - (id)initWithRows:(NSUInteger)rowsNumber
            Columns:(NSUInteger)columnsNumber
 {
     self = [super init];
     if (self != nil)
     {
-        rows = rowsNumber;
-        columns = columnsNumber;
+        numberRows = rowsNumber;
+        numberColumns = columnsNumber;
+        cornerRadius = 0;
+        color = [NSColor whiteColor];
         
-        rootLayer = [CALayer layer];
-        [rootLayer setBackgroundColor:CGColorCreateGenericGray(0, 0.5)];
-        [self setLayer:rootLayer];
+        items = [NSMutableArray array];
+        
+        NSUInteger numberItems = numberRows * numberColumns;
+        CGSize clipboardSize = [self frame].size;
+        CGFloat width = clipboardSize.width / numberColumns;
+        CGFloat height = clipboardSize.height / numberRows;
+        CGSize itemSize = CGSizeMake(width, height);
+        while (numberItems != 0)
+        {
+            CBItemView *itemView = [[CBItemView alloc] initWithContentSize:itemSize];
+            [items addObject:itemView];
+            [self addSubview:itemView];
+            numberItems = numberItems - 1;
+        }
         [self setWantsLayer:YES];
     }
     return self;
@@ -27,42 +46,28 @@
 
 - (NSUInteger)rows
 {
-    return rows;
+    return numberRows;
 }
 
 - (NSUInteger)columns
 {
-    return columns;
+    return numberColumns;
 }
 
 - (void)setCornerRadius:(CGFloat)aRadius
 {
-    [rootLayer setCornerRadius:aRadius];
+    cornerRadius = aRadius;
 }
 
-- (void)setOpacity:(CGFloat)anOpacity
+- (void)setColor:(NSColor *)aColor
 {
-    [rootLayer setOpacity:anOpacity];
+    color = aColor;
 }
 
-- (CGSize)itemViewSize
-{
-    CGSize size = [self frame].size;
-    CGFloat width = size.width / columns;
-    CGFloat height = size.height / rows;
-    return CGSizeMake(width, height);
-}
-
-- (void)setItemView:(CBItemView *)itemView
-             forRow:(NSUInteger)aRow
-             column:(NSUInteger)aColumn
+- (CBItemView *)itemViewForRow:(NSUInteger)aRow
+                        column:(NSUInteger)aColumn;
 {   
-    CGSize itemSize = [self itemViewSize];
-    CGFloat x = (aColumn - 1) * itemSize.width;
-    CGFloat y = (rows - aRow) * itemSize.height;
-    CGRect itemFrame = CGRectMake(x, y, itemSize.width, itemSize.height);
-    [itemView setFrame:itemFrame];
-    [self addSubview:itemView];
+    return [items objectAtIndex:0];
 }
 
 @end

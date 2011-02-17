@@ -5,12 +5,16 @@
 @interface CBClipboardView : NSView
 {
     @private
-    NSUInteger rows;
-    NSUInteger columns;
-    CALayer *rootLayer;
+    NSUInteger numberRows;
+    NSUInteger numberColumns;
+    CGFloat cornerRadius;
+    NSColor *color;
+    NSMutableArray *items;
 }
 
 - (id)init;
+
+- (void)drawRect:(NSRect)rect;
 
 - (id)initWithRows:(NSUInteger)rowsNumber
            Columns:(NSUInteger)columnsNumber;
@@ -21,12 +25,9 @@
 
 - (void)setCornerRadius:(CGFloat)aRadius;
 
-- (void)setOpacity:(CGFloat)anOpacity;
+- (void)setColor:(NSColor *)aColor;
 
-- (CGSize)itemViewSize;
-
-- (void)setItemView:(CBItemView *)itemView
-             forRow:(NSUInteger)aRow
-             column:(NSUInteger)aColumn;
+- (CBItemView *)itemViewForRow:(NSUInteger)aRow
+                        column:(NSUInteger)aColumn;
 
 @end

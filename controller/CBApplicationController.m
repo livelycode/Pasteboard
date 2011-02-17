@@ -25,7 +25,6 @@
                                                               Columns:columns];
     [leftView setFrame:leftFrame];
     [leftView setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    [leftView setOpacity:[settings floatForKey:@"opacity"]];
     CBClipboardView *rightView = [[CBClipboardView alloc] init];
     
     [rightView setFrame:rightFrame];
@@ -34,8 +33,6 @@
                                                                           view:leftView];
     
     windowController = [[CBMainWindowController alloc] init];
-    [windowController setFadeInDuration:[settings floatForKey:@"fadeInDuration"]];
-    [windowController setFadeOutDuration:[settings floatForKey:@"fadeOutDuration"]];
     [[windowController rootView] addSubview:leftView];
     [[windowController rootView] addSubview:rightView];
     
@@ -44,7 +41,7 @@
     
     CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
     pasteboardObserver = [[CBPasteboardObserver alloc] init];
-    [pasteboardObserver setDelegate:self];
+    [pasteboardObserver setDelegate:leftClipboardController];
     [pasteboardObserver observeWithTimeInterval:time];
   
     //start Server in new thread
@@ -72,22 +69,6 @@
 
 - (void)startSyncing {
   SyncController *sync = [[SyncController alloc] init];
-}
-
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
-{
-    Class stringClass = [NSAttributedString class];
-    NSArray *classes = [NSArray arrayWithObject:stringClass];
-    NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
-                                                     options:nil];
-    
-    for (NSAttributedString *string in copiedItems)
-    {
-        CBItem *item = [[CBItem alloc] initWithString:string];
-        [leftClipboard insertItem:item
-                          AtIndex:0];
-    }
-    [leftClipboardController updateItemViews];
 }
 
 @end
