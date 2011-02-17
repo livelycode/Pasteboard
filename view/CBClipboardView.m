@@ -2,44 +2,30 @@
 
 @implementation CBClipboardView
 
-- (id)init
-{
-    return [self initWithRows:1
-                      Columns:1];
-}
-
 - (void)drawRect:(NSRect)rect
 {
     [color set];
     [NSBezierPath fillRect:[self bounds]];
 }
 
-- (id)initWithRows:(NSUInteger)rowsNumber
-           Columns:(NSUInteger)columnsNumber
+- (id)initWithFrame:(CGRect)aFrame
+               Rows:(NSUInteger)rowsNumber
+            Columns:(NSUInteger)columnsNumber
+          itemClass:(Class)itemClass;
 {
     self = [super init];
     if (self != nil)
     {
+        matrix = [[NSMatrix alloc] initWithFrame:aFrame
+                                            mode:NSTrackModeMatrix
+                                       cellClass:itemClass
+                                    numberOfRows:rowsNumber
+                                 numberOfColumns:columnsNumber];
         numberRows = rowsNumber;
         numberColumns = columnsNumber;
         cornerRadius = 0;
         color = [NSColor whiteColor];
         
-        items = [NSMutableArray array];
-        
-        NSUInteger numberItems = numberRows * numberColumns;
-        CGSize clipboardSize = [self frame].size;
-        CGFloat width = clipboardSize.width / numberColumns;
-        CGFloat height = clipboardSize.height / numberRows;
-        CGSize itemSize = CGSizeMake(width, height);
-        while (numberItems != 0)
-        {
-            CBItemView *itemView = [[CBItemView alloc] initWithContentSize:itemSize];
-            [items addObject:itemView];
-            [self addSubview:itemView];
-            numberItems = numberItems - 1;
-        }
-        [self setWantsLayer:YES];
     }
     return self;
 }

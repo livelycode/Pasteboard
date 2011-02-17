@@ -5,6 +5,7 @@
 @interface CBClipboardView : NSView
 {
     @private
+    NSMatrix *matrix;
     NSUInteger numberRows;
     NSUInteger numberColumns;
     CGFloat cornerRadius;
@@ -12,12 +13,12 @@
     NSMutableArray *items;
 }
 
-- (id)init;
-
 - (void)drawRect:(NSRect)rect;
 
-- (id)initWithRows:(NSUInteger)rowsNumber
-           Columns:(NSUInteger)columnsNumber;
+- (id)initWithFrame:(CGRect)aFrame
+               Rows:(NSUInteger)rowsNumber
+           Columns:(NSUInteger)columnsNumber
+          itemClass:(Class)itemClass;
 
 - (NSUInteger)rows;
 
