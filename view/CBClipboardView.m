@@ -5,39 +5,28 @@
 - (void)drawRect:(NSRect)rect
 {
     [color set];
-    [NSBezierPath fillRect:[self bounds]];
+    CGRect frame = [self bounds];
+    NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:frame
+                                                         xRadius:cornerRadius
+                                                         yRadius:cornerRadius];
+    [path fill];
+    
 }
 
 - (id)initWithFrame:(CGRect)aFrame
-               Rows:(NSUInteger)rowsNumber
-            Columns:(NSUInteger)columnsNumber
-          itemClass:(Class)itemClass;
+               Rows:(NSUInteger)numberRows
+            Columns:(NSUInteger)numberColumns
+      itemViewClass:(Class)itemClass;
 {
-    self = [super init];
+    self = [super initWithFrame:aFrame];
     if (self != nil)
     {
-        matrix = [[NSMatrix alloc] initWithFrame:aFrame
-                                            mode:NSTrackModeMatrix
-                                       cellClass:itemClass
-                                    numberOfRows:rowsNumber
-                                 numberOfColumns:columnsNumber];
-        numberRows = rowsNumber;
-        numberColumns = columnsNumber;
+        matrix = [[CBMatrix alloc] initWithRows:numberRows
+                                        columns:numberColumns];
         cornerRadius = 0;
         color = [NSColor whiteColor];
-        
     }
     return self;
-}
-
-- (NSUInteger)rows
-{
-    return numberRows;
-}
-
-- (NSUInteger)columns
-{
-    return numberColumns;
 }
 
 - (void)setCornerRadius:(CGFloat)aRadius
@@ -53,7 +42,8 @@
 - (CBItemView *)itemViewForRow:(NSUInteger)aRow
                         column:(NSUInteger)aColumn;
 {   
-    return [items objectAtIndex:0];
+    return [matrix objectForRow:aRow
+                         column:aColumn];
 }
 
 @end

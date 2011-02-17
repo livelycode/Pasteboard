@@ -20,7 +20,7 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
-    Class stringClass = [NSAttributedString class];
+/*    Class stringClass = [NSAttributedString class];
     NSArray *classes = [NSArray arrayWithObject:stringClass];
     NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
                                                       options:nil];
@@ -56,7 +56,7 @@
             column = 1;
         }
         [clipboardView needsDisplay]; 
-    }
+    }*/
 }
 
 @end
