@@ -11,8 +11,7 @@
     NSArray *classes;
 }
 							
-- (id)initWithClipboard:(CBClipboard *)aClipboard
-                   view:(CBClipboardView *)aView;
+- (id)initWithFrame:(CGRect)frame delegate: (id)delegate;
 
 @end
 

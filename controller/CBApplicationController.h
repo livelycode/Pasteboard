@@ -20,7 +20,7 @@
     HTTPConnectionDelegate *connectionDelegate;
     BOOL windowHidden;
 }
-
+- (void)addSubview: (NSView*) view;
 @end
 
 @interface CBApplicationController(Delegation) <NSApplicationDelegate>
