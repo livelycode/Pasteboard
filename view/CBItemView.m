@@ -19,7 +19,7 @@
         textField = [[NSTextField alloc] initWithFrame:CGRectZero];
         [textField setBordered:NO];
         [textField setBackgroundColor:[NSColor clearColor]];
-        [textField setSelectabl:NO];
+        [textField setSelectable:NO];
         [self addSubview:textField];
         
         button = [[NSButton alloc] initWithFrame:CGRectZero];
