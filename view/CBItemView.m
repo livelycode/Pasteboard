@@ -19,7 +19,7 @@
         textField = [[NSTextField alloc] initWithFrame:CGRectZero];
         [textField setBordered:NO];
         [textField setBackgroundColor:[NSColor clearColor]];
-        [textField setSelectable:NO];
+        [textField setSelectabl:NO];
         [self addSubview:textField];
         
         button = [[NSButton alloc] initWithFrame:CGRectZero];
@@ -27,6 +27,7 @@
         [button setButtonType:NSMomentaryChangeButton];
         [button setBordered:NO];
         [[button cell] setImageScaling:NSImageScaleProportionallyDown];
+        [button setTarget:self];
         [self addSubview:button];	
         
         NSShadow *pageShadow = [[NSShadow alloc] init];
