@@ -9,6 +9,11 @@
     {
         CGRect mainFrame = [[NSScreen mainScreen] frame];
         
+        rootView = [[CBWindowView alloc] initWithFrame:mainFrame];
+        [rootView setWantsLayer:YES];
+        [rootView setColor:[NSColor colorWithCalibratedWhite:0
+                                                       alpha:0.5]];
+        
         mainWindow = [[NSWindow alloc] initWithContentRect:mainFrame
                                                  styleMask:NSBorderlessWindowMask
                                                    backing:NSBackingStoreBuffered
@@ -18,8 +23,8 @@
         [mainWindow setOpaque:NO];
         [mainWindow setBackgroundColor:[NSColor clearColor]];
         
-        rootView = [mainWindow contentView];
-        [rootView setWantsLayer:YES];
+        [mainWindow setContentView:rootView];
+        
     }
     return self;
 }

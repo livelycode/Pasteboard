@@ -8,6 +8,7 @@
     @private
     CBClipboard *clipboard;
     CBClipboardView *clipboardView;
+    NSArray *classes;
 }
 							
 - (id)initWithClipboard:(CBClipboard *)aClipboard

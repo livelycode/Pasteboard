@@ -11,7 +11,7 @@
     CBSettings *settings = [CBSettings sharedSettings];
     
     CGRect mainFrame = [[NSScreen mainScreen] frame];
-    CGFloat padding = [settings floatForKey:@"clipboardPadding"];
+    CGFloat padding = 128;
     CGFloat height = mainFrame.size.height - (2 * padding);
     CGFloat width = (mainFrame.size.width - (3 * padding)) / 2;
     CGRect leftFrame = CGRectMake(padding, padding, width, height);
@@ -23,8 +23,9 @@
                                                                   Rows:4
                                                                Columns:3
                                                          itemViewClass:viewClass];
-    [leftView setColor:[NSColor blackColor]];
-    [leftView setCornerRadius:[settings floatForKey:@"cornerRadius"]];
+    [leftView setColor:[NSColor colorWithCalibratedWhite:0.7
+                                                   alpha:1]];
+    [leftView setPadding:20];
     
     leftClipboardController = [[CBClipboardController alloc] initWithClipboard:leftClipboard
                                                                           view:leftView];

@@ -6,23 +6,26 @@
 @interface CBClipboardView : NSView
 {
     @private
-    CBMatrix *matrix;
+    NSMutableArray *itemViews;
     NSColor *color;
+    NSUInteger rows;
+    NSUInteger columns;
     CGFloat cornerRadius;
-}
-
-- (void)drawRect:(NSRect)rect;	
+}	
 
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows
             Columns:(NSUInteger)numberColumns
       itemViewClass:(Class)itemClass;
+	
+- (void)drawRect:(NSRect)rect;
 
 - (void)setCornerRadius:(CGFloat)aRadius;
 
 - (void)setColor:(NSColor *)aColor;
 
-- (CBItemView *)itemViewForRow:(NSUInteger)aRow
-                        column:(NSUInteger)aColumn;
+- (void)setPadding:(CGFloat)thePadding;
+
+- (NSView *)viewAtIndex:(NSUInteger)anIndex;
 
 @end

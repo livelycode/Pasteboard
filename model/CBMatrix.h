@@ -6,11 +6,12 @@
     NSUInteger rows;
     NSUInteger columns;
     NSMutableArray *objects;
-    
 }
 
 - (id)initWithRows:(NSUInteger)numberRows
            columns:(NSUInteger)numberColumns;
+
+- (void)setObjects:(NSArray *)newObjects;
 
 - (void)setObject:(id)anObject
            forRow:(NSUInteger)aRow

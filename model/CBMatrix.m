@@ -10,15 +10,14 @@
     {
         rows = numberRows;
         columns = numberColumns;
-        NSUInteger numberObjects = rows * columns;
-        objects = [[NSMutableArray alloc] initWithCapacity:numberObjects];
-        while (numberObjects > 0)
-        {
-            [objects addObject:[NSNull null]];
-            numberObjects = numberObjects - 1;
-        }
     }
     return self;
+}
+
+- (void)setObjects:(NSArray *)newObjects
+{
+    [objects removeAllObjects];
+    [objects addObjectsFromArray:newObjects];
 }
 
 - (void)setObject:(id)anObject

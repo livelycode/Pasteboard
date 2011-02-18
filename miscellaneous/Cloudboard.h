@@ -13,3 +13,4 @@
 #import "CBItemView.h"
 #import "CBClipboardView.h"
 #import "CBMatrix.h"
+#import "CBWindowView.h"
