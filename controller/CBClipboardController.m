@@ -10,6 +10,7 @@
     {
         clipboard = aClipboard;
         clipboardView = aView;
+        classes = [NSArray arrayWithObject:[NSAttributedString class]];
     }
     return self;
 }	
@@ -20,11 +21,8 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
-    Class stringClass = [NSAttributedString class];
-    NSArray *classes = [NSArray arrayWithObject:stringClass];
     NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
                                                       options:nil];
-    
     for (NSAttributedString *string in copiedItems)
     {
         CBItem *item = [[CBItem alloc] initWithString:string];
@@ -32,31 +30,13 @@
                       AtIndex:0];
     }
     
-    NSUInteger row = 1;
-    NSUInteger column = 1;
     for (CBItem *item in [clipboard items])
     {
-
-        CBItemView *itemView = [clipboardView itemViewForRow:row
-                                                      column:column];
-        [itemView setPadding:20];
-        [itemView setPageColor:[NSColor colorWithCalibratedRed:0.2
-                                                         green:0.3
-                                                          blue:0.4
-                                                         alpha:1]];
-        [itemView setShadowWithOpacity:0.5
-                                radius:3
-                                offset:5];
+        NSUInteger index = [[clipboard items] indexOfObject:item];
+        id itemView = [clipboardView viewAtIndex:index];
         [itemView setText:[item string]];
-        
-        column = column + 1;
-        if (column > [clipboardView columns])
-        {
-            row = row + 1;
-            column = 1;
-        }
-        [clipboardView needsDisplay]; 
     }
+    [clipboardView setNeedsDisplay:YES];
 }
 
 @end

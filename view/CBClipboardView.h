@@ -1,33 +1,31 @@
 #import "Cocoa.h"
 
 @class CBItemView;
+@class CBMatrix;
 
 @interface CBClipboardView : NSView
 {
     @private
-    NSUInteger numberRows;
-    NSUInteger numberColumns;
-    CGFloat cornerRadius;
+    NSMutableArray *itemViews;
     NSColor *color;
-    NSMutableArray *items;
-}
+    NSUInteger rows;
+    NSUInteger columns;
+    CGFloat cornerRadius;
+}	
 
-- (id)init;
-
+- (id)initWithFrame:(CGRect)aFrame
+               Rows:(NSUInteger)numberRows
+            Columns:(NSUInteger)numberColumns
+      itemViewClass:(Class)itemClass;
+	
 - (void)drawRect:(NSRect)rect;
-
-- (id)initWithRows:(NSUInteger)rowsNumber
-           Columns:(NSUInteger)columnsNumber;
-
-- (NSUInteger)rows;
-
-- (NSUInteger)columns;
 
 - (void)setCornerRadius:(CGFloat)aRadius;
 
 - (void)setColor:(NSColor *)aColor;
 
-- (CBItemView *)itemViewForRow:(NSUInteger)aRow
-                        column:(NSUInteger)aColumn;
+- (void)setPadding:(CGFloat)thePadding;
+
+- (NSView *)viewAtIndex:(NSUInteger)anIndex;
 
 @end

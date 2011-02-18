@@ -11,30 +11,27 @@
     CBSettings *settings = [CBSettings sharedSettings];
     
     CGRect mainFrame = [[NSScreen mainScreen] frame];
-    CGFloat padding = [settings floatForKey:@"clipboardPadding"];
+    CGFloat padding = 128;
     CGFloat height = mainFrame.size.height - (2 * padding);
     CGFloat width = (mainFrame.size.width - (3 * padding)) / 2;
+    CGRect leftFrame = CGRectMake(padding, padding, width, height);
     
     leftClipboard = [[CBClipboard alloc] initWithCapacity:12];
     
-    NSUInteger rows = [settings integerForKey:@"rows"];
-    NSUInteger columns = [settings integerForKey:@"columns"];
-    CGRect leftFrame = CGRectMake(padding, padding, width, height);
-    CGRect rightFrame = CGRectMake((width + (2 * padding)), padding, width, height);
-    CBClipboardView *leftView = [[CBClipboardView alloc] initWithRows:rows
-                                                              Columns:columns];
-    [leftView setFrame:leftFrame];
-    [leftView setCornerRadius:[settings floatForKey:@"cornerRadius"]];
-    CBClipboardView *rightView = [[CBClipboardView alloc] init];
-    
-    [rightView setFrame:rightFrame];
+    Class viewClass = [CBItemView class];
+    CBClipboardView *leftView = [[CBClipboardView alloc] initWithFrame:leftFrame	
+                                                                  Rows:4
+                                                               Columns:3
+                                                         itemViewClass:viewClass];
+    [leftView setColor:[NSColor colorWithCalibratedWhite:0.7
+                                                   alpha:1]];
+    [leftView setPadding:20];
     
     leftClipboardController = [[CBClipboardController alloc] initWithClipboard:leftClipboard
                                                                           view:leftView];
     
     windowController = [[CBMainWindowController alloc] init];
     [[windowController rootView] addSubview:leftView];
-    [[windowController rootView] addSubview:rightView];
     
     hotKey = [[CBHotKeyObserver alloc] init];
     [hotKey setDelegate:windowController];

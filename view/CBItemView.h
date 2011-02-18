@@ -1,22 +1,24 @@
 #import "Cocoa.h"
+#import "CBItemViewDelegate.h"
 
 @interface CBItemView : NSView
 {
     @private
+    id delegate; 
     NSTextField *textField;
-    CGSize size;
+    NSButton *button;
+    NSAttributedString *string;
+    NSGradient *gradient;
 }
 
-- (id)initWithContentSize:(CGSize)aSize;
+- (void)mouseDown:(NSEvent *)theEvent;
 
-- (void)setPadding:(CGFloat)padding;
+- (id)initWithFrame:(NSRect)aRect;
 
-- (void)setShadowWithOpacity:(CGFloat)anOpacity
-                      radius:(CGFloat)aRaduis
-                      offset:(CGFloat)anOffset;
-
-- (void)setPageColor:(NSColor *)aColor;
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject;
 
 - (void)setText:(NSAttributedString *)aString;
+
+- (void)drawRect:(NSRect)aRect;
 
 @end
