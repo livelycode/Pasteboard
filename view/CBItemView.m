@@ -19,11 +19,11 @@
         textField = [[NSTextField alloc] initWithFrame:CGRectZero];
         [textField setBordered:NO];
         [textField setBackgroundColor:[NSColor clearColor]];
-        [textField setSelectabl:NO];
+        [textField setSelectable:NO];
         [self addSubview:textField];
         
         button = [[NSButton alloc] initWithFrame:CGRectZero];
-        [button setImage:[NSImage imageNamed:NSImageNameStopProgressFreestandingTemplate]];
+        [button setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
         [button setButtonType:NSMomentaryChangeButton];
         [button setBordered:NO];
         [[button cell] setImageScaling:NSImageScaleProportionallyDown];
@@ -67,6 +67,10 @@
 - (void)drawRect:(NSRect)aRect
 {
     CGRect viewBounds = [self bounds];
+    NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
+    NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
+    NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
+    NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
     
     CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
     CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
@@ -82,7 +86,15 @@
     CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;;
     [button setFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
     
-    NSBezierPath *path = [NSBezierPath bezierPathWithRect:viewBounds];
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [path moveToPoint:leftBottom];
+    [path curveToPoint:rightBottom
+         controlPoint1:NSMakePoint(100, 100)
+         controlPoint2:NSMakePoint(100, 0)];
+    [path lineToPoint:rightTop];
+    [path lineToPoint:leftTop];
+    [path lineToPoint:leftBottom];
+    [path closePath];
     [gradient drawInBezierPath:path
                          angle:90];
 }
