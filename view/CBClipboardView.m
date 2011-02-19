@@ -1,5 +1,10 @@
 #import "Cloudboard.h"
 
+#define LINE_SPACING 39
+#define NUMBER_LINES 24
+#define BORDER_SPACING 32
+#define ROW_SPACING 8
+
 @implementation CBClipboardView
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -26,7 +31,7 @@
         {
             NSView *itemView = [[itemClass alloc] initWithFrame:CGRectZero];
             [itemViews addObject:itemView];
-            [self addSubview:itemView];
+         //   [self addSubview:itemView];
             numberItems = numberItems - 1;
         }
         
@@ -41,6 +46,33 @@
     NSBezierPath *path = [NSBezierPath bezierPathWithRect:mainBounds];
     [gradient drawInBezierPath:path
                          angle:90];
+    
+    NSColor *horizontalLineColor = [NSColor colorWithCalibratedWhite:0.8
+                                                     alpha:1];
+    [horizontalLineColor setStroke];
+    NSUInteger numberLines = NUMBER_LINES;
+    CGFloat y = (mainBounds.size.height / 2) - (((NUMBER_LINES - 1) * LINE_SPACING) / 2) - 0.5;
+    while (numberLines != 0)
+    {
+        [NSBezierPath strokeLineFromPoint:NSMakePoint(0, y)
+                                  toPoint:NSMakePoint(mainBounds.size.width, y)];
+        y = y + LINE_SPACING;
+        numberLines = numberLines - 1;
+    }
+    
+    NSColor *verticalLineColor = [NSColor colorWithCalibratedRed:1
+                                                           green:0.7
+                                                            blue:0.7
+                                                           alpha:1];
+    [verticalLineColor setStroke];
+    CGFloat x1 = BORDER_SPACING + 0.5;
+    CGFloat x2 = BORDER_SPACING + ROW_SPACING + 0.5;
+    [NSBezierPath strokeLineFromPoint:NSMakePoint(x1, 0)
+                              toPoint:NSMakePoint(x1, mainBounds.size.height)];
+    [NSBezierPath strokeLineFromPoint:NSMakePoint(x2, 0)
+                              toPoint:NSMakePoint(x2, mainBounds.size.height)];
+    
+                                                  
 }
 
 - (void)setPadding:(CGFloat)thePadding
