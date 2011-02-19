@@ -12,8 +12,13 @@
     {
         rows = numberRows;
         columns = numberColumns;
-        cornerRadius = 0;
-        color = [NSColor whiteColor];
+        
+        NSColor *startingColor = [NSColor colorWithCalibratedWhite:0.9
+                                                             alpha:1];
+        NSColor *endingColor = [NSColor colorWithCalibratedWhite:1
+                                                           alpha:1];
+        gradient = [[NSGradient alloc] initWithStartingColor:startingColor
+                                                 endingColor:endingColor];
         
         NSUInteger numberItems = rows * columns;
         itemViews = [NSMutableArray arrayWithCapacity:numberItems];
@@ -32,22 +37,10 @@
 
 - (void)drawRect:(NSRect)rect
 {
-    [color set];
-    CGRect frame = [self bounds];
-    NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:frame
-                                                         xRadius:cornerRadius
-                                                         yRadius:cornerRadius];
-    [path fill];
-}
-
-- (void)setCornerRadius:(CGFloat)aRadius
-{
-    cornerRadius = aRadius;
-}
-
-- (void)setColor:(NSColor *)aColor
-{
-    color = aColor;
+    CGRect mainBounds = [self bounds];
+    NSBezierPath *path = [NSBezierPath bezierPathWithRect:mainBounds];
+    [gradient drawInBezierPath:path
+                         angle:90];
 }
 
 - (void)setPadding:(CGFloat)thePadding

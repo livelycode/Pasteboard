@@ -14,7 +14,6 @@
                                                                     Rows:4
                                                                  Columns:2
                                                         itemViewClass:viewClass];
-      [aView setColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1]];
       [aView setPadding:20];
         clipboard = aClipboard;
         clipboardView = aView;

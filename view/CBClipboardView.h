@@ -7,10 +7,9 @@
 {
     @private
     NSMutableArray *itemViews;
-    NSColor *color;
+    NSGradient *gradient;
     NSUInteger rows;
     NSUInteger columns;
-    CGFloat cornerRadius;
 }	
 
 - (id)initWithFrame:(CGRect)aFrame
@@ -19,10 +18,6 @@
       itemViewClass:(Class)itemClass;
 	
 - (void)drawRect:(NSRect)rect;
-
-- (void)setCornerRadius:(CGFloat)aRadius;
-
-- (void)setColor:(NSColor *)aColor;
 
 - (void)setPadding:(CGFloat)thePadding;
 
