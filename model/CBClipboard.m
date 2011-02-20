@@ -18,24 +18,15 @@
     return self;
 }
 
-- (void)setCapacity:(NSUInteger)aCapacity
-{
-  capacity = aCapacity;
-}
-
-- (void)removeOverflowItems {
-  NSRange tail = NSMakeRange(capacity, [items count] - capacity);
-  [items removeObjectsInRange:tail];
-}
-
 - (void)insertItem:(CBItem *)anItem
-           AtIndex:(NSUInteger)anIndex;
+           atIndex:(NSUInteger)anIndex;
 {
     [items insertObject:anItem
                 atIndex:anIndex];
     if ([items count] > capacity)
     {
-        [self removeOverflowItems];
+        NSRange tail = NSMakeRange(capacity, [items count] - capacity);
+        [items removeObjectsInRange:tail];
     }
 }
 
@@ -46,7 +37,7 @@
 
 - (NSArray *)items
 {
-  	 return items;
+  	return [NSArray arrayWithArray:items];
 }
 
 @end
