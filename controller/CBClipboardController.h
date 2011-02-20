@@ -16,9 +16,7 @@
 
 @end
 
-@interface CBClipboardController(Delegation) <CBPasteboardOberserverDelegate, CBClipboardViewDelegate>
-
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+@interface CBClipboardController(Delegation) <CBClipboardViewDelegate>
 
 - (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex;
 
