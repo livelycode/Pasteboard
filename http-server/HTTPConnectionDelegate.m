@@ -32,14 +32,13 @@
   CFHTTPMessageRef message = [request request];
   NSString* method = [(NSString*) CFHTTPMessageCopyRequestMethod(message) autorelease];
   NSURL* url = [(NSURL*) CFHTTPMessageCopyRequestURL(message) autorelease];
-  NSLog(@"Got url: %@", url);
+  NSString* path = [url path];
+  NSLog(@"Got path: %@", path);
   NSLog(@"method: %@", method);
+  NSString* host = [[[NSString alloc] initWithData:[connection peerAddress] encoding:NSUTF8StringEncoding] autorelease];
   if ([method isEqual:@"GET"]) {
-    /* Get clipboard item at URL
-    NSURL *itemURL;
-    NSData *itemData = [NSData dataWithContentsOfURL:itemURL];
-    */
-    NSData *itemData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
+    NSData *itemData;
+    itemData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
     CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [itemData length]]);
     CFHTTPMessageSetBody(response, (CFDataRef)itemData);
@@ -47,16 +46,21 @@
     CFRelease(response);
   }
   if ([method isEqual:@"POST"]) {
-    NSData* itemData = (NSData*) CFHTTPMessageCopyBody(message);
-    NSString* itemText = [[[NSString alloc] initWithData:itemData encoding:NSUTF8StringEncoding] autorelease];
-    NSLog(@"post data: %@", itemText);
+    NSData *responseData;
+    NSData* body = (NSData*) CFHTTPMessageCopyBody(message);
+    if([path isEqual:@"/register"]) {
+      NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
+      NSLog(@"Registered client: %@", clientName);
+      responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
+    } else {
+      responseData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
+    }
     /* Set clipboard item at URL
      
     */
-    NSData *ok = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
     CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
-    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [ok length]]);
-    CFHTTPMessageSetBody(response, (CFDataRef)ok);
+    CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [responseData length]]);
+    CFHTTPMessageSetBody(response, (CFDataRef)responseData);
     [request setResponse:response];
     CFRelease(response);
   }

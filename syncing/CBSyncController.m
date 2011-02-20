@@ -65,9 +65,24 @@
   }
 }
 
+- (void) registerAsClientOf: (NSURL*) server {
+  NSString* myHost = [[NSHost currentHost] name];
+  NSURL *requestURL = [server URLByAppendingPathComponent:@"register"];
+  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
+  [URLRequest setHTTPMethod:@"POST"];
+  [URLRequest setHTTPBody:[myHost dataUsingEncoding: NSUTF8StringEncoding]];
+  NSURLResponse *URLResponse = nil;
+  NSError *receivedError = nil;
+  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
+                                               returningResponse:&URLResponse
+                                                           error:&receivedError];
+  NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  
+  
+}
+
 - (void) resolveService {
-  [service setDelegate:self];
-  [service resolveWithTimeout:5];
+    [service resolveWithTimeout:5];
 }
 
 - (NSURL *)urlWithHost: (NSString*)host port: (NSInteger)port
@@ -125,6 +140,7 @@
   NSInteger port = [netService port];
   NSString *host = [netService hostName];
   NSURL *client = [self urlWithHost:host port: port];
+  [self registerAsClientOf: client];
   [self addClient: client];
 }
 

@@ -21,6 +21,7 @@
 - (void)launchHTTPServer;
 - (void) searchRemotes: (NSTimer*) timer;
 - (void) addClient: (NSURL*) client;
+- (void) registerAsClientOf: (NSURL*) server;
 - (NSURL*) URL;
 @end
 
