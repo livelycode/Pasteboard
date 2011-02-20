@@ -23,7 +23,9 @@
   [serviceBrowser setDelegate:self];
   clients = [NSMutableArray array];
   timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
-  
+  myServiceName = [NSMutableString string];
+  [myServiceName appendString: @"Cloudboard Server "];
+  [myServiceName appendString: [[NSHost currentHost] name]];
   //start Server in new thread
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
   [serverThread start];
@@ -33,8 +35,8 @@
 - (void)launchHTTPServer {
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
-  [server setName:@"Cloudboard Server"];
-  [server setPort: 8090];
+  [server setName:myServiceName];
+  [server setPort: 8080];
   HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
@@ -120,8 +122,8 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
   NSLog(@"found service: %@ on port: %i, more coming: %i", newService, [newService port], more);
-  if([[newService name] isEqual:@"Cloudboard Server"]) {
-    [self setService: newService];
+  if([[newService name] hasPrefix: @"Cloudboard Server"] & ([[newService name] isEqual: myServiceName] == NO)) {
+      [self setService: newService];      
   } else {
     if((more == NO) && (service == nil)) {
       [browser stop];

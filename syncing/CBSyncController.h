@@ -15,6 +15,7 @@
   NSTimer *timer;
   NSNetService *service;
   NSMutableArray *clients;
+  NSString *myServiceName;
   CBClipboardController *clipboardController;
 }
 - (id) initWithClipboardController: (CBClipboardController*)controller;
