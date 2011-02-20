@@ -7,24 +7,20 @@
     self = [super init];
     if (self != nil)
     {
-        CBClipboard* aClipboard = [[CBClipboard alloc] initWithCapacity:12];
+        clipboard = [[CBClipboard alloc] initWithCapacity:8];
       
-        CBClipboardView *aView = [[CBClipboardView alloc] initWithFrame:frame	
+        clipboardView = [[CBClipboardView alloc] initWithFrame:frame	
                                                                    Rows:4
                                                                 Columns:2];
-        [aView setPadding:20];
-        [aView setDelegate:self];
-        clipboard = aClipboard;
-        clipboardView = aView;
-        [viewController addSubview: aView];
+        [clipboardView setPadding:20];
+        [clipboardView setDelegate:self];
+        [viewController addSubview: clipboardView];
     }
     return self;
-}	
+}
 
-- (void)insertItems: (NSArray*) items atIndex: (NSInteger) index {
-  for(CBItem *item in items) {
-    [clipboard insertItem:item AtIndex:0];
-  }
+- (void)insertItem: (CBItem*) newItem atIndex: (NSInteger) index {
+  [clipboard insertItem:newItem AtIndex:0];
   for (CBItem *item in [clipboard items])
   {
     NSUInteger index = [[clipboard items] indexOfObject:item];

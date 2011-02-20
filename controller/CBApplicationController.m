@@ -71,13 +71,10 @@
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
   NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses options:nil];
-  NSMutableArray *cbItems = [NSMutableArray arrayWithCapacity: [copiedItems count]];
-  for (NSAttributedString *string in copiedItems)
-  {
-    CBItem *item = [[CBItem alloc] initWithString:string];
-    [cbItems addObject:item];
+  if([copiedItems count] > 0) {
+    CBItem *item = [[CBItem alloc] initWithString: [copiedItems objectAtIndex:0]];
+    [historyClipboardController insertItem:item atIndex:0];
   }
-  [historyClipboardController insertItems:cbItems atIndex:0];
 }
 
 @end
