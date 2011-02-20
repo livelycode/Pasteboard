@@ -11,13 +11,18 @@
     CBSettings *settings = [CBSettings sharedSettings];
     
     CGRect mainFrame = [[NSScreen mainScreen] frame];
-    CGFloat left = 90;
-    CGFloat bottom = 90;
-    CGFloat height = mainFrame.size.height - (2 * bottom);
-    CGFloat width = (mainFrame.size.width - (3 * left)) / 2;
-    CGRect leftFrame = CGRectMake(left, bottom, width, height);
+    CGFloat screenHeight = CGRectGetHeight(mainFrame);
+    CGFloat screenWidth = CGRectGetWidth(mainFrame);
+    CGFloat marginSide = 90;
+    CGFloat marginBottom = 90;
+    CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
+    CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
+  
+    CGRect leftFrame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
+    CGRect rightFrame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
     windowController = [[CBMainWindowController alloc] init];
     leftClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
+    rightClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame delegate: self];
     
     hotKey = [[CBHotKeyObserver alloc] init];
     [hotKey setDelegate:windowController];

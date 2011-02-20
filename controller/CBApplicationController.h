@@ -15,6 +15,7 @@
     CBHotKeyObserver *hotKey;
     CBClipboard *leftClipboard;
     CBClipboardController *leftClipboardController;
+    CBClipboardController *rightClipboardController;
     CBMainWindowController *windowController;
     CBClipboardController *clipboardController;
     HTTPConnectionDelegate *connectionDelegate;
