@@ -19,6 +19,7 @@
     }
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
+    clients = [NSMutableArray array];
     timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
     return self;
 }
@@ -30,9 +31,12 @@
 
 
 - (void) setService: (NSNetService*) newService {
-  NSLog(@"yeah, found right service! domain: %@", [service domain]);
   service = newService;
   [self resolveService];
+}
+
+- (void) addClient: (NSURL*) client {
+  [clients addObject: client];
 }
 
 - (void) resolveService {
@@ -40,7 +44,7 @@
   [service resolveWithTimeout:5];
 }
 
-- (NSURL *)URL
+- (NSURL *)urlWithHost: (NSString*)host port: (NSInteger)port
 {
   NSMutableString *URLString = [NSMutableString string];
   [URLString appendString:@"http://"];
@@ -92,10 +96,11 @@
 }
 
 - (void)netServiceDidResolveAddress:(NSNetService *)netService {
-  port = [netService port];
-  host = [netService hostName];
-  NSLog(@"resolved address - host: %@, port: %i", [netService hostName], port);
-  NSLog(@"server URL: %@", [self URL]);
+  NSInteger port = [netService port];
+  NSString *host = [netService hostName];
+  NSURL *client = [self urlWithHost:host port: port];
+  [self addClient: client];
+  NSLog(@"server URL: %@", [self urlWithHost:host port: port]);
 }
 
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {

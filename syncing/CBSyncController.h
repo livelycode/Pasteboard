@@ -14,13 +14,11 @@
   NSNetServiceBrowser *serviceBrowser;
   NSTimer *timer;
   NSNetService *service;
-  NSString *host;
-  NSInteger port;
+  NSMutableArray *clients;
 }
 
 - (void) searchRemotes: (NSTimer*) timer;
-- (void) setService: (NSNetService*) service;
-- (void) resolveService;
+- (void) addClient: (NSURL*) client;
 - (NSURL*) URL;
 @end
 
