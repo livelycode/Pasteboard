@@ -22,3 +22,9 @@
 - (void)drawRect:(NSRect)aRect;
 
 @end
+
+@interface CBItemView(Private)
+
+- (void)dismiss;
+
+@end
