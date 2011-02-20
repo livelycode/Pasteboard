@@ -2,7 +2,7 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect) frame delegate: (id)delegate;
+- (id)initWithFrame:(CGRect) frame viewController: (id)viewController;
 {
     self = [super init];
     if (self != nil)
@@ -16,12 +16,12 @@
         [aView setDelegate:self];
         clipboard = aClipboard;
         clipboardView = aView;
-        [delegate addSubview: aView];
+        [viewController addSubview: aView];
     }
     return self;
 }	
 
--(void)insertItems: (NSArray*) items atIndex: (NSInteger) index {
+- (void)insertItems: (NSArray*) items atIndex: (NSInteger) index {
   for(CBItem *item in items) {
     [clipboard insertItem:item AtIndex:0];
   }

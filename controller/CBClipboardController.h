@@ -9,11 +9,12 @@
     @private
     CBClipboard *clipboard;
     CBClipboardView *clipboardView;
+    id changeListener;
 }
 							
-- (id)initWithFrame:(CGRect)frame delegate: (id)delegate;
+- (id)initWithFrame:(CGRect)frame viewController: (id)delegate;
 - (void)insertItems: (NSArray*)items atIndex: (NSInteger)index;
-
+- (void)addChangeListener: (id)listener;
 @end
 
 @interface CBClipboardController(Delegation) <CBClipboardViewDelegate>

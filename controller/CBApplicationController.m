@@ -12,8 +12,8 @@
   CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
   CGRect leftFrame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
   CGRect rightFrame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
-  historyClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
-  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame delegate: self];
+  historyClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame viewController: self];
+  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame viewController: self];
 }
 
 -(void) initPasteboardObserver {
