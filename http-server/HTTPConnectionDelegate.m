@@ -11,14 +11,14 @@
 
 @implementation HTTPConnectionDelegate
 
-- (id)init
+- (id)initWithSyncController:(CBSyncController *)controller
 {
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
+  self = [super init];
+  if (self) {
+      // Initialization code here.
+  }
+  syncController = controller;
+  return self;
 }
 
 - (void)dealloc

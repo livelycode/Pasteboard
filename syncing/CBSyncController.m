@@ -35,7 +35,7 @@
   [server setType:@"_http._tcp."];
   [server setName:@"Cloudboard Server"];
   [server setPort: 8090];
-  HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] init];
+  HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
   NSError *startError = nil;

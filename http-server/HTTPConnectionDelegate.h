@@ -7,14 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HTTPServer.h"
+#import "Cloudboard.h"
 
 @class HTTPServer, HTTPConnection;
 
 @interface HTTPConnectionDelegate : NSObject {
 @private
-    
+  CBSyncController *syncController;
 }
+- (id)initWithSyncController: (CBSyncController*)controller;
 - (void)HTTPServer:(HTTPServer *)server didMakeNewConnection:(HTTPConnection *)connection;
 - (void)HTTPConnection:(HTTPConnection *)connection didReceiveRequest:(HTTPServerRequest *)request;
 @end
