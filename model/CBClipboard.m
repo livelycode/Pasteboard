@@ -19,7 +19,7 @@
 }
 
 - (void)insertItem:(CBItem *)anItem
-           AtIndex:(NSUInteger)anIndex;
+           atIndex:(NSUInteger)anIndex;
 {
     [items insertObject:anItem
                 atIndex:anIndex];

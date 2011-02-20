@@ -14,7 +14,7 @@
 - (id)initWithCapacity:(NSUInteger)aCapacity;
 
 - (void)insertItem:(CBItem *)anItem
-           AtIndex:(NSUInteger)anIndex;
+           atIndex:(NSUInteger)anIndex;
 
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex;
 
