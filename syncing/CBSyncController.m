@@ -82,7 +82,8 @@
 }
 
 - (void) resolveService {
-    [service resolveWithTimeout:5];
+  [service setDelegate: self];
+  [service resolveWithTimeout:5];
 }
 
 - (NSURL *)urlWithHost: (NSString*)host port: (NSInteger)port
@@ -104,6 +105,7 @@
 
 @implementation CBSyncController(Delegation)
 
+//NSNetServiceBrowserDelegate
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser {
   NSLog(@"searching services");
 }
@@ -136,6 +138,7 @@
   NSLog(@"stopped searching");
 }
 
+//NSNetServiceDelegate
 - (void)netServiceDidResolveAddress:(NSNetService *)netService {
   NSInteger port = [netService port];
   NSString *host = [netService hostName];
