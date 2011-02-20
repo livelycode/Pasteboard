@@ -17,34 +17,21 @@
         [aView setPadding:20];
         clipboard = aClipboard;
         clipboardView = aView;
-        classes = [NSArray arrayWithObject:[NSAttributedString class]];
         [delegate addSubview: aView];
     }
     return self;
 }	
 
-@end
-
-@implementation CBClipboardController(Delegation)
-
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
-{
-    NSArray *copiedItems = [aPasteboard readObjectsForClasses:classes
-                                                      options:nil];
-    for (NSAttributedString *string in copiedItems)
-    {
-        CBItem *item = [[CBItem alloc] initWithString:string];
-        [clipboard insertItem:item
-                      AtIndex:0];
-    }
-    
-    for (CBItem *item in [clipboard items])
-    {
-        NSUInteger index = [[clipboard items] indexOfObject:item];
-        id itemView = [clipboardView viewAtIndex:index];
-        [itemView setText:[item string]];
-    }
-    [clipboardView setNeedsDisplay:YES];
+-(void)insertItems: (NSArray*) items atIndex: (NSInteger) index {
+  for(CBItem *item in items) {
+    [clipboard insertItem:item AtIndex:0];
+  }
+  for (CBItem *item in [clipboard items])
+  {
+    NSUInteger index = [[clipboard items] indexOfObject:item];
+    id itemView = [clipboardView viewAtIndex:index];
+    [itemView setText:[item string]];
+  }
+  [clipboardView setNeedsDisplay:YES];
 }
-
 @end

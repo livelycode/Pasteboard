@@ -19,16 +19,21 @@
     CBMainWindowController *windowController;
     CBClipboardController *clipboardController;
     HTTPConnectionDelegate *connectionDelegate;
+    NSArray *pasteboardClasses;
     BOOL windowHidden;
 }
+- (void)initClipboards;
+- (void)initPasteboardObserver;
 - (void)addSubview: (NSView*) view;
-@end
-
-@interface CBApplicationController(Delegation) <NSApplicationDelegate>
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
 - (void)launchHTTPServer;
 - (void)startSyncing;
+@end
 
+@interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
+//NSApplicationDelegate
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+
+//CBPasteboardOberserverDelegate
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
 @end

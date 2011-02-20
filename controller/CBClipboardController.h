@@ -8,15 +8,8 @@
     @private
     CBClipboard *clipboard;
     CBClipboardView *clipboardView;
-    NSArray *classes;
 }
 							
 - (id)initWithFrame:(CGRect)frame delegate: (id)delegate;
-
-@end
-
-@interface CBClipboardController(Delegation) <CBPasteboardOberserverDelegate>
-
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
-
+- (void)insertItems: (NSArray*)items atIndex: (NSInteger)index;
 @end
