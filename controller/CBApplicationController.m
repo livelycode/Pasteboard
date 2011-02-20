@@ -11,10 +11,11 @@
     CBSettings *settings = [CBSettings sharedSettings];
     
     CGRect mainFrame = [[NSScreen mainScreen] frame];
-    CGFloat padding = 90;
-    CGFloat height = mainFrame.size.height - (2 * padding);
-    CGFloat width = (mainFrame.size.width - (3 * padding)) / 2;
-    CGRect leftFrame = CGRectMake(padding, padding, width, height);
+    CGFloat left = 90;
+    CGFloat bottom = 90;
+    CGFloat height = mainFrame.size.height - (2 * bottom);
+    CGFloat width = (mainFrame.size.width - (3 * left)) / 2;
+    CGRect leftFrame = CGRectMake(left, bottom, width, height);
     windowController = [[CBMainWindowController alloc] init];
     leftClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
     

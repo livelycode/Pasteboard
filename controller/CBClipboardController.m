@@ -16,9 +16,9 @@
                                                         itemViewClass:viewClass];
       [aView setColor:[NSColor colorWithCalibratedWhite:0.7 alpha:1]];
       [aView setPadding:20];
-        clipboard = aClipboard;
-        clipboardView = aView;
-        classes = [NSArray arrayWithObject:[NSAttributedString class]];
+      clipboard = aClipboard;
+      clipboardView = aView;
+      classes = [NSArray arrayWithObject:[NSAttributedString class]];
       [delegate addSubview: aView];
     }
     return self;
