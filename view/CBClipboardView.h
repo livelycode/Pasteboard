@@ -7,10 +7,9 @@
 {
     @private
     NSMutableArray *itemViews;
-    NSGradient *gradient;
     NSUInteger rows;
     NSUInteger columns;
-}	
+	}	
 
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows

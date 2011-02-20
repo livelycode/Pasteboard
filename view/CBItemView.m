@@ -88,9 +88,7 @@
     
     NSBezierPath *path = [NSBezierPath bezierPath];
     [path moveToPoint:leftBottom];
-    [path curveToPoint:rightBottom
-         controlPoint1:NSMakePoint(100, 100)
-         controlPoint2:NSMakePoint(100, 0)];
+    [path lineToPoint:rightBottom];
     [path lineToPoint:rightTop];
     [path lineToPoint:leftTop];
     [path lineToPoint:leftBottom];

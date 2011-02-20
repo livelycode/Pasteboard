@@ -18,20 +18,13 @@
         rows = numberRows;
         columns = numberColumns;
         
-        NSColor *startingColor = [NSColor colorWithCalibratedWhite:0.9
-                                                             alpha:1];
-        NSColor *endingColor = [NSColor colorWithCalibratedWhite:1
-                                                           alpha:1];
-        gradient = [[NSGradient alloc] initWithStartingColor:startingColor
-                                                 endingColor:endingColor];
-        
         NSUInteger numberItems = rows * columns;
         itemViews = [NSMutableArray arrayWithCapacity:numberItems];
         while (numberItems != 0)
         {
             NSView *itemView = [[itemClass alloc] initWithFrame:CGRectZero];
             [itemViews addObject:itemView];
-         //   [self addSubview:itemView];
+            [self addSubview:itemView];
             numberItems = numberItems - 1;
         }
         
@@ -41,21 +34,21 @@
 }
 
 - (void)drawRect:(NSRect)rect
-{
-    CGRect mainBounds = [self bounds];
-    NSBezierPath *path = [NSBezierPath bezierPathWithRect:mainBounds];
-    [gradient drawInBezierPath:path
-                         angle:90];
+{   
+    CGRect contentFrame = [self bounds];
     
+    [[NSColor whiteColor] setFill];
+    [NSBezierPath fillRect:contentFrame];
+        
     NSColor *horizontalLineColor = [NSColor colorWithCalibratedWhite:0.8
-                                                     alpha:1];
+                                                               alpha:1];
     [horizontalLineColor setStroke];
     NSUInteger numberLines = NUMBER_LINES;
-    CGFloat y = (mainBounds.size.height / 2) - (((NUMBER_LINES - 1) * LINE_SPACING) / 2) - 0.5;
+    CGFloat y = (contentFrame.size.height / 2) - (((NUMBER_LINES - 1) * LINE_SPACING) / 2) - 0.5;
     while (numberLines != 0)
     {
-        [NSBezierPath strokeLineFromPoint:NSMakePoint(0, y)
-                                  toPoint:NSMakePoint(mainBounds.size.width, y)];
+        [NSBezierPath strokeLineFromPoint:NSMakePoint(contentFrame.origin.x, y)
+                                  toPoint:NSMakePoint(contentFrame.size.width, y)];
         y = y + LINE_SPACING;
         numberLines = numberLines - 1;
     }
@@ -65,14 +58,12 @@
                                                             blue:0.7
                                                            alpha:1];
     [verticalLineColor setStroke];
-    CGFloat x1 = BORDER_SPACING + 0.5;
-    CGFloat x2 = BORDER_SPACING + ROW_SPACING + 0.5;
-    [NSBezierPath strokeLineFromPoint:NSMakePoint(x1, 0)
-                              toPoint:NSMakePoint(x1, mainBounds.size.height)];
-    [NSBezierPath strokeLineFromPoint:NSMakePoint(x2, 0)
-                              toPoint:NSMakePoint(x2, mainBounds.size.height)];
-    
-                                                  
+    CGFloat x1 = contentFrame.origin.x + BORDER_SPACING + 0.5;
+    CGFloat x2 = contentFrame.origin.x + BORDER_SPACING + ROW_SPACING + 0.5;
+    [NSBezierPath strokeLineFromPoint:NSMakePoint(x1, contentFrame.origin.y)
+                              toPoint:NSMakePoint(x1, contentFrame.size.height)];
+    [NSBezierPath strokeLineFromPoint:NSMakePoint(x2, contentFrame.origin.y)
+                              toPoint:NSMakePoint(x2, contentFrame.size.height)];
 }
 
 - (void)setPadding:(CGFloat)thePadding

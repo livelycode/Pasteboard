@@ -7,18 +7,18 @@
     self = [super init];
     if (self != nil)
     {
-      CBClipboard* aClipboard = [[CBClipboard alloc] initWithCapacity:12];
+        CBClipboard* aClipboard = [[CBClipboard alloc] initWithCapacity:12];
       
-      Class viewClass = [CBItemView class];
-      CBClipboardView *aView = [[CBClipboardView alloc] initWithFrame:frame	
-                                                                    Rows:4
-                                                                 Columns:2
-                                                        itemViewClass:viewClass];
-      [aView setPadding:20];
+        Class viewClass = [CBItemView class];
+        CBClipboardView *aView = [[CBClipboardView alloc] initWithFrame:frame	
+                                                                   Rows:4
+                                                                Columns:2
+                                                          itemViewClass:viewClass];
+        [aView setPadding:20];
         clipboard = aClipboard;
         clipboardView = aView;
         classes = [NSArray arrayWithObject:[NSAttributedString class]];
-      [delegate addSubview: aView];
+        [delegate addSubview: aView];
     }
     return self;
 }	
