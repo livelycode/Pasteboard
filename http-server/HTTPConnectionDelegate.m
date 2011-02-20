@@ -50,7 +50,8 @@
     NSData* body = (NSData*) CFHTTPMessageCopyBody(message);
     if([path isEqual:@"/register"]) {
       NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
-      NSLog(@"Registered client: %@", clientName);
+      NSURL* clientURL = [NSURL URLWithString: clientName];
+      [syncController addClient:clientURL];
       responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
     } else {
       responseData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
