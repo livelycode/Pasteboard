@@ -27,7 +27,6 @@
 - (void)initClipboards;
 - (void)initPasteboardObserver;
 - (void)addSubview: (NSView*) view;
-- (void)launchHTTPServer;
 - (void)startSyncing;
 @end
 

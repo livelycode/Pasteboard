@@ -11,17 +11,40 @@
 
 @implementation CBSyncController
 
-- (id)init
+- (id)initWithClipboardController: (CBClipboardController*) controller
 {
-    self = [super init];
-    if (self) {
-        // Initialization code here.
-    }
-    serviceBrowser = [[NSNetServiceBrowser alloc] init];
-    [serviceBrowser setDelegate:self];
-    clients = [NSMutableArray array];
-    timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
-    return self;
+  self = [super init];
+  if (self) {
+      // Initialization code here.
+  }
+  [controller addChangeListener: self];
+  clipboardController = controller;
+  serviceBrowser = [[NSNetServiceBrowser alloc] init];
+  [serviceBrowser setDelegate:self];
+  clients = [NSMutableArray array];
+  timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+  
+  //start Server in new thread
+  NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
+  [serverThread start];
+  return self;
+}
+
+- (void)launchHTTPServer {
+  HTTPServer *server = [[HTTPServer alloc] init];
+  [server setType:@"_http._tcp."];
+  [server setName:@"Cloudboard Server"];
+  [server setPort: 8090];
+  HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] init];
+  [server setDelegate: connectionDelegate];
+  
+  NSError *startError = nil;
+  if (![server start:&startError] ) {
+    NSLog(@"Error starting server: %@", startError);
+  } else {
+    NSLog(@"Starting server on port %d", [server port]);
+  }
+  [[NSRunLoop currentRunLoop] run];
 }
 
 - (void) searchRemotes: (NSTimer*) timer {
@@ -36,7 +59,10 @@
 }
 
 - (void) addClient: (NSURL*) client {
-  [clients addObject: client];
+  if([clients containsObject: client] == NO) {
+    NSLog(@"added client: %@", client);
+    [clients addObject: client];    
+  }
 }
 
 - (void) resolveService {
@@ -100,7 +126,6 @@
   NSString *host = [netService hostName];
   NSURL *client = [self urlWithHost:host port: port];
   [self addClient: client];
-  NSLog(@"server URL: %@", [self urlWithHost:host port: port]);
 }
 
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {

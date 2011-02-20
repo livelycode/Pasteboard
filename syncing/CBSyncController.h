@@ -15,8 +15,10 @@
   NSTimer *timer;
   NSNetService *service;
   NSMutableArray *clients;
+  CBClipboardController *clipboardController;
 }
-
+- (id) initWithClipboardController: (CBClipboardController*)controller;
+- (void)launchHTTPServer;
 - (void) searchRemotes: (NSTimer*) timer;
 - (void) addClient: (NSURL*) client;
 - (NSURL*) URL;

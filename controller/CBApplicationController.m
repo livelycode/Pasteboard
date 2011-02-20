@@ -28,27 +28,8 @@
   [[windowController rootView] addSubview:subView];
 }
 
-- (void)launchHTTPServer {
-  HTTPServer *server = [[HTTPServer alloc] init];
-  [server setType:@"_http._tcp."];
-  [server setName:@"Cloudboard Server"];
-  [server setPort: 8090];
-  connectionDelegate = [[HTTPConnectionDelegate alloc] init];
-  [server setDelegate: connectionDelegate];
-  
-  NSError *startError = nil;
-  if (![server start:&startError] ) {
-    NSLog(@"Error starting server: %@", startError);
-  } else {
-    NSLog(@"Starting server on port %d", [server port]);
-    [self startSyncing];
-  }
-  [[NSRunLoop currentRunLoop] run];
-}
-
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] init];
-  [historyClipboardController addChangeListener:syncController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController];
 }
 
 @end
@@ -57,16 +38,13 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    CBSettings *settings = [CBSettings sharedSettings];
-    windowController = [[CBMainWindowController alloc] init];
-    [self initClipboards];
-    hotKey = [[CBHotKeyObserver alloc] init];
-    [hotKey setDelegate:windowController];
-    [self initPasteboardObserver];
-  
-    //start Server in new thread
-    NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
-    [serverThread start];
+  CBSettings *settings = [CBSettings sharedSettings];
+  windowController = [[CBMainWindowController alloc] init];
+  [self initClipboards];
+  hotKey = [[CBHotKeyObserver alloc] init];
+  [hotKey setDelegate:windowController];
+  [self initPasteboardObserver];
+  [self startSyncing];
 }
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
