@@ -41,7 +41,7 @@
 
 - (NSArray *)items
 {
-  	 return items;
+  	return [NSArray arrayWithArray:items];
 }
 
 @end
