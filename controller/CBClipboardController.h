@@ -15,7 +15,6 @@
 - (id)initWithFrame:(CGRect)frame viewController: (id)delegate;
 - (void)insertItem: (CBItem*) atIndex: (NSInteger)index;
 - (void)addChangeListener: (id)listener;
-
 @end
 
 @interface CBClipboardController(Delegation) <CBClipboardViewDelegate>

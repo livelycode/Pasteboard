@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Cloudboard.h"
 
 @interface CBSyncController : NSObject {
 @private
@@ -36,4 +36,7 @@
 //NSNetServiceDelegate
 - (void)netServiceDidResolveAddress:(NSNetService *)netService;
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict;
+
+//CBClipboardControllerDelegate
+- (void)insertedItem: (CBItem *)item atIndex: (NSInteger)index;
 @end

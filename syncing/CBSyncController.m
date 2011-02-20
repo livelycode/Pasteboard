@@ -83,8 +83,8 @@
   }
 }
 
-- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) service moreComing: (BOOL)more {
-  NSLog(@"removed service: %@", service);
+- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) netService moreComing: (BOOL)more {
+  NSLog(@"removed service: %@", netService);
 }
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
@@ -100,5 +100,10 @@
 
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {
   NSLog(@"error: not resolved address: %@", errorDict);
+}
+
+//CBClipboardControllerDelegate
+- (void)insertedItem:(CBItem*)item atIndex: (NSInteger) index {
+  NSLog(@"received notification");
 }
 @end

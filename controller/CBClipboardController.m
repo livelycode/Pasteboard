@@ -28,6 +28,14 @@
     [itemView setText:[item string]];
   }
   [clipboardView setNeedsDisplay:YES];
+  //notify changelistener:
+  if(changeListener) {
+    [changeListener insertedItem: newItem atIndex: index];
+  }
+}
+
+- (void)addChangeListener: (id)listener {
+  changeListener = listener;
 }
 
 - (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex

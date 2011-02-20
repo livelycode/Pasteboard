@@ -41,12 +41,14 @@
     NSLog(@"Error starting server: %@", startError);
   } else {
     NSLog(@"Starting server on port %d", [server port]);
+    [self startSyncing];
   }
   [[NSRunLoop currentRunLoop] run];
 }
 
 - (void)startSyncing {
-  CBSyncController *sync = [[CBSyncController alloc] init];
+  syncController = [[CBSyncController alloc] init];
+  [historyClipboardController addChangeListener:syncController];
 }
 
 @end
@@ -65,7 +67,6 @@
     //start Server in new thread
     NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
     [serverThread start];
-    [self startSyncing];
 }
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
