@@ -3,7 +3,6 @@
 #import "CBItemViewDelegate.h"
 
 @class CBItemView;
-@class CBMatrix;
 
 @interface CBClipboardView : NSView
 {
@@ -12,7 +11,7 @@
     NSMutableArray *itemViews;
     NSUInteger rows;
     NSUInteger columns;
-	}	
+}	
 
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows

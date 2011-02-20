@@ -18,11 +18,6 @@
     return self;
 }
 
-- (void)setCapacity:(NSUInteger)aCapacity
-{
-  capacity = aCapacity;
-}
-
 - (void)removeOverflowItems {
   NSRange tail = NSMakeRange(capacity, [items count] - capacity);
   [items removeObjectsInRange:tail];
