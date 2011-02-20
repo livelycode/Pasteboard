@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface SyncController : NSObject {
+@interface CBSyncController : NSObject {
 @private
   NSNetServiceBrowser *serviceBrowser;
   NSTimer *timer;
@@ -24,7 +24,7 @@
 - (NSURL*) URL;
 @end
 
-@interface SyncController(Delegation)<NSNetServiceBrowserDelegate, NSNetServiceDelegate>
+@interface CBSyncController(Delegation)<NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 //NSNetServiceBrowserDelegate
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser;
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo;

@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "RemoteCloudboard.h"
+#import "CBRemoteCloudboard.h"
 
 
-@implementation RemoteCloudboard
+@implementation CBRemoteCloudboard
 
 - (id)init
 {

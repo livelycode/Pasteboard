@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "SyncController.h"
+#import "CBSyncController.h"
 
 
-@implementation SyncController
+@implementation CBSyncController
 
 - (id)init
 {
@@ -57,7 +57,7 @@
 
 @end
 
-@implementation SyncController(Delegation)
+@implementation CBSyncController(Delegation)
 
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser {
   NSLog(@"searching services");

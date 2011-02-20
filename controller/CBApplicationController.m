@@ -10,7 +10,6 @@
   CGFloat marginBottom = 90;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
-  
   CGRect leftFrame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
   CGRect rightFrame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
   historyClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
@@ -47,7 +46,7 @@
 }
 
 - (void)startSyncing {
-  SyncController *sync = [[SyncController alloc] init];
+  CBSyncController *sync = [[CBSyncController alloc] init];
 }
 
 @end

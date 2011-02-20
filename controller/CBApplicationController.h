@@ -7,6 +7,7 @@
 @class CBPasteboardObserver;
 @class CBMainWindowController;
 @class HTTPConnectionDelegate;
+@class CBSyncController;
 
 @interface CBApplicationController : NSObject 
 {
@@ -18,6 +19,7 @@
     CBClipboardController *syncingClipboardController;
     CBMainWindowController *windowController;
     CBClipboardController *clipboardController;
+    CBSyncController *syncController;
     HTTPConnectionDelegate *connectionDelegate;
     NSArray *pasteboardClasses;
     BOOL windowHidden;
