@@ -9,8 +9,7 @@
 
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows
-            Columns:(NSUInteger)numberColumns
-      itemViewClass:(Class)itemClass;
+            Columns:(NSUInteger)numberColumns;
 {
     self = [super initWithFrame:aFrame];
     if (self != nil)
@@ -22,8 +21,9 @@
         itemViews = [NSMutableArray arrayWithCapacity:numberItems];
         while (numberItems != 0)
         {
-            NSView *itemView = [[itemClass alloc] initWithFrame:CGRectZero];
+            CBItemView *itemView = [[CBItemView alloc] initWithFrame:CGRectZero];
             [itemViews addObject:itemView];
+            [itemView setDelegate:self];
             [self addSubview:itemView];
             numberItems = numberItems - 1;
         }
@@ -91,9 +91,30 @@
     }
 }
 
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject
+{
+    delegate = anObject;
+}
+
 - (NSView *)viewAtIndex:(NSUInteger)anIndex
 {
     return [itemViews objectAtIndex:anIndex];
+}
+
+@end
+
+@implementation CBClipboardView(Delegation)
+
+- (void)itemViewClicked:(CBItemView *)itemView
+{
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate didReceiveClickForItemAtIndex:index];
+}
+
+- (void)itemViewDismissButtonClicked:(CBItemView *)itemView
+{
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate didReceiveDismissClickFirItemAtIndex:index];
 }
 
 @end

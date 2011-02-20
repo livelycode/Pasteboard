@@ -8,7 +8,7 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    NSLog(@"clicked");
+    [delegate itemViewClicked:self];
 }
 
 - (id)initWithFrame:(NSRect)aRect;
@@ -27,6 +27,7 @@
         [button setButtonType:NSMomentaryChangeButton];
         [button setBordered:NO];
         [[button cell] setImageScaling:NSImageScaleProportionallyDown];
+        [button setAction:@selector(dismiss)];
         [button setTarget:self];
         [self addSubview:button];	
         
@@ -95,6 +96,15 @@
     [path closePath];
     [gradient drawInBezierPath:path
                          angle:90];
+}
+
+@end
+
+@implementation CBItemView(Private)
+
+- (void)dismiss
+{
+    [delegate itemViewDismissButtonClicked:self];
 }
 
 @end

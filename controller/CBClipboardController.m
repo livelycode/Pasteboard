@@ -9,12 +9,11 @@
     {
         CBClipboard* aClipboard = [[CBClipboard alloc] initWithCapacity:12];
       
-        Class viewClass = [CBItemView class];
         CBClipboardView *aView = [[CBClipboardView alloc] initWithFrame:frame	
                                                                    Rows:4
-                                                                Columns:2
-                                                          itemViewClass:viewClass];
+                                                                Columns:2];
         [aView setPadding:20];
+        [aView setDelegate:self];
         clipboard = aClipboard;
         clipboardView = aView;
         classes = [NSArray arrayWithObject:[NSAttributedString class]];
@@ -45,6 +44,16 @@
         [itemView setText:[item string]];
     }
     [clipboardView setNeedsDisplay:YES];
+}
+
+- (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex
+{
+    NSLog(@"%i", anIndex);
+}
+
+- (void)didReceiveDismissClickFirItemAtIndex:(NSUInteger)anIndex
+{
+    NSLog(@"%i", anIndex);
 }
 
 @end
