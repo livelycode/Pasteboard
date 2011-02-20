@@ -13,8 +13,8 @@
   
   CGRect leftFrame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
   CGRect rightFrame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
-  leftClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
-  rightClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame delegate: self];
+  historyClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame delegate: self];
+  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame delegate: self];
 }
 
 -(void) initPasteboardObserver {
@@ -71,15 +71,14 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
-  NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses
-                                                    options:nil];
+  NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses options:nil];
   NSMutableArray *cbItems = [NSMutableArray arrayWithCapacity: [copiedItems count]];
   for (NSAttributedString *string in copiedItems)
   {
     CBItem *item = [[CBItem alloc] initWithString:string];
     [cbItems addObject:item];
   }
-  [leftClipboardController insertItems:cbItems atIndex:0];
+  [historyClipboardController insertItems:cbItems atIndex:0];
 }
 
 @end
