@@ -64,7 +64,7 @@
 
 - (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex
 {
-    NSLog(@"%i", anIndex);
+    [clipboard removeItemAtIndex:anIndex];
 }
 
 @end
