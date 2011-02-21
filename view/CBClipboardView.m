@@ -7,6 +7,13 @@
 
 @implementation CBClipboardView
 
+- (id)init
+{
+    return [self initWithFrame:CGRectZero
+                          Rows:0
+                       Columns:0];
+}
+
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows
             Columns:(NSUInteger)numberColumns;

@@ -13,6 +13,8 @@
     NSUInteger columns;
 }	
 
+- (id)init;
+
 - (id)initWithFrame:(CGRect)aFrame
                Rows:(NSUInteger)numberRows
             Columns:(NSUInteger)numberColumns;
