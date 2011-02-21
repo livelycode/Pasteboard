@@ -54,7 +54,7 @@
     changeListener = anObject;
 }
 
-- (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex
+- (void)didReceiveClickForVisibleItemAtIndex:(NSUInteger)anIndex
 {
     NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
     NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
@@ -62,7 +62,7 @@
     [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
 }
 
-- (void)didReceiveDismissClickForItemAtIndex:(NSUInteger)anIndex
+- (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex
 {
     NSLog(@"%i", anIndex);
 }

@@ -5,6 +5,23 @@
 #define BORDER_SPACING 32
 #define ROW_SPACING 8
 
+static NSUInteger
+hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
+{
+    NSUInteger tailLength = [itemViews count] - anIndex;
+    NSRange range = NSMakeRange(anIndex, tailLength);
+    [itemViews removeObjectsInRange:range];
+    NSUInteger hiddenItemViews = 0;
+    for (CBItemView *itemView in itemViews)
+    {
+        if ([itemView isHidden])
+        {
+            hiddenItemViews = hiddenItemViews + 1;
+        }
+    }
+    return hiddenItemViews;
+}
+
 @implementation CBClipboardView
 
 - (id)init
@@ -130,14 +147,16 @@
 
 - (void)itemViewClicked:(CBItemView *)itemView
 {
-    NSUInteger index = [itemViews indexOfObject:itemView];
-    [delegate didReceiveClickForItemAtIndex:index];
+    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger newIndex = oldIndex - hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    [delegate didReceiveClickForVisibleItemAtIndex:newIndex];
 }
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
 {
     NSUInteger index = [itemViews indexOfObject:itemView];
-    [delegate didReceiveDismissClickForItemAtIndex:index];
+    [delegate didReceiveDismissClickForVisibleItemAtIndex:index];
 }
 
 @end

@@ -5,8 +5,8 @@
 @protocol CBClipboardViewDelegate <NSObject>
 
 @optional
-- (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDismissClickFirItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
 @end

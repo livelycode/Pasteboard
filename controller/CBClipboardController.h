@@ -26,8 +26,8 @@
 
 @interface CBClipboardController(Delegation) <CBClipboardViewDelegate>
 
-- (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDismissClickForItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
 @end
