@@ -19,7 +19,7 @@
                                                    backing:NSBackingStoreBuffered
                                                      defer:NO];
         [mainWindow setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-        [mainWindow setLevel:NSScreenSaverWindowLevel];
+        [mainWindow setLevel:NSStatusWindowLevel];
         [mainWindow setOpaque:NO];
         [mainWindow setBackgroundColor:[NSColor clearColor]];
         
