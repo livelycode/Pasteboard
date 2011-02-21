@@ -49,11 +49,18 @@
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 {
-  NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses options:nil];
-  if([copiedItems count] > 0) {
-    CBItem *item = [[CBItem alloc] initWithString: [copiedItems objectAtIndex:0]];
-    [historyClipboardController insertItem:item atIndex:0];
-  }
+    NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses
+                                                      options:nil];
+    if([copiedItems count] > 0)
+    {
+        id copiedItem = [copiedItems objectAtIndex:0];
+        CBItem *item = [[CBItem alloc] initWithString:copiedItem];
+        if ([historyClipboardController clipboardContainsItem:item] == NO)
+        {
+            [historyClipboardController insertItem:item
+                                           atIndex:0]; 
+        }
+    }
 }
 
 @end
