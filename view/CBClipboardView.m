@@ -156,6 +156,8 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
 {
+    [itemView setHidden:YES];
+    
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
     NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
