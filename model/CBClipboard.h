@@ -16,6 +16,8 @@
 - (void)insertItem:(CBItem *)anItem
            atIndex:(NSUInteger)anIndex;
 
+- (void)removeItemAtIndex:(NSUInteger)anIndex;
+
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex;
 
 - (NSArray *)items;

@@ -30,6 +30,11 @@
     }
 }
 
+- (void)removeItemAtIndex:(NSUInteger)anIndex
+{
+    [items removeObjectAtIndex:anIndex];
+}
+
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex
 {
     return [items objectAtIndex:anIndex];
