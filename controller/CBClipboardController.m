@@ -32,12 +32,12 @@
                              atIndex:anIndex];
     }
     
-    [clipboardView hideAllItems];
+    [clipboardView setAllViewItemsInvisible];
     for (CBItem *item in [clipboard items])
     {
         NSUInteger index = [[clipboard items] indexOfObject:item];
         NSAttributedString *string = [item string];
-        [clipboardView setHidden:NO
+        [clipboardView setVisible:YES
                   forItemAtIndex:index];
         [clipboardView setString:string
                   forItemAtIndex:index];
