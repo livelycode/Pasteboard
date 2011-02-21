@@ -44,6 +44,11 @@
     }
 }
 
+- (BOOL)clipboardContainsItem:(CBItem *)anItem
+{
+    return [[clipboard items] containsObject:anItem];
+}
+
 - (void)addChangeListener:(id)anObject
 {
     changeListener = anObject;

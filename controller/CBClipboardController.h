@@ -18,6 +18,8 @@
 - (void)insertItem:(CBItem *)newItem
            atIndex:(NSInteger)anIndex;
 
+- (BOOL)clipboardContainsItem:(CBItem *)anItem;
+
 - (void)addChangeListener:(id)anObject;
 
 @end
