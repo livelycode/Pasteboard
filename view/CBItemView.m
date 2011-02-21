@@ -11,11 +11,50 @@
     [delegate itemViewClicked:self];
 }
 
+- (void)mouseDragged:(NSEvent *)theEvent
+{
+    NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
+    NSImage *dragImage = [[NSImage alloc] initWithData:imageData];
+    NSPoint leftBottom = [self bounds].origin;
+    NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
+        
+    [self dragImage:dragImage
+                 at:leftBottom
+             offset:NSZeroSize
+              event:theEvent
+         pasteboard:pasteboard
+             source:self
+          slideBack:YES];
+}
+
+- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+{
+    return NSDragOperationMove;
+}
+
+- (BOOL)ignoreModifierKeysWhileDragging
+{
+    return YES;
+}
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+    NSLog(@"enter");
+    return [sender draggingSourceOperationMask];
+}
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender
+{
+    NSLog(@"exit");
+}
+
 - (id)initWithFrame:(NSRect)aRect;
 {
     self = [super initWithFrame:aRect];
     if (self != nil)
     {
+        [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
+        
         textField = [[NSTextField alloc] initWithFrame:CGRectZero];
         [textField setBordered:NO];
         [textField setBackgroundColor:[NSColor clearColor]];

@@ -13,6 +13,8 @@
 
 - (void)mouseDown:(NSEvent *)theEvent;
 
+- (void)mouseDragged:(NSEvent *)theEvent;
+
 - (id)initWithFrame:(NSRect)aRect;
 
 - (void)setDelegate:(id <CBItemViewDelegate>)anObject;
@@ -20,6 +22,18 @@
 - (void)setText:(NSAttributedString *)aString;
 
 - (void)drawRect:(NSRect)aRect;
+
+@end
+
+@interface CBItemView(DragAndDrop)
+
+- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal;
+
+- (BOOL)ignoreModifierKeysWhileDragging;
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender;
 
 @end
 
