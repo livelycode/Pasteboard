@@ -17,9 +17,22 @@
     return string;
 }
 
-- (void)dealloc
+- (BOOL)isEqual:(id)anObject
 {
-    [super dealloc];
+    BOOL isEqual = NO;
+    if ([anObject isMemberOfClass:[self class]])
+    {
+        if ([string isEqual:[anObject string]])
+        {
+            isEqual = YES;
+        }
+    }
+    return isEqual;
+}
+
+- (NSUInteger)hash
+{
+    return [string hash];
 }
 
 @end
