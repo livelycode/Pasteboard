@@ -12,9 +12,14 @@
     id changeListener;
 }
 							
-- (id)initWithFrame:(CGRect)frame viewController: (id)delegate;
-- (void)insertItem: (CBItem*) atIndex: (NSInteger)index;
-- (void)addChangeListener: (id)listener;
+- (id)initWithFrame:(CGRect)aFrame
+     viewController:(id)viewController;
+
+- (void)insertItem:(CBItem *)newItem
+           atIndex:(NSInteger)anIndex;
+
+- (void)addChangeListener:(id)anObject;
+
 @end
 
 @interface CBClipboardController(Delegation) <CBClipboardViewDelegate>

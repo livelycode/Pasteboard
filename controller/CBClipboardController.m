@@ -2,40 +2,46 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect) frame viewController: (id)viewController;
+- (id)initWithFrame:(CGRect)aFrame
+     viewController:(id)viewController;
 {
     self = [super init];
     if (self != nil)
     {
         clipboard = [[CBClipboard alloc] initWithCapacity:8];
       
-        clipboardView = [[CBClipboardView alloc] initWithFrame:frame	
-                                                                   Rows:4
-                                                                Columns:2];
+        clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame	
+                                                          Rows:4
+                                                       Columns:2];
         [clipboardView setPadding:20];
         [clipboardView setDelegate:self];
-        [viewController addSubview: clipboardView];
+        [viewController addSubview:clipboardView];
     }
     return self;
 }
 
-- (void)insertItem: (CBItem*) newItem atIndex: (NSInteger) index {
-  [clipboard insertItem:newItem atIndex:0];
-  for (CBItem *item in [clipboard items])
-  {
-    NSUInteger index = [[clipboard items] indexOfObject:item];
-    id itemView = [clipboardView viewAtIndex:index];
-    [itemView setText:[item string]];
-  }
-  [clipboardView setNeedsDisplay:YES];
-  //notify changelistener:
-  if(changeListener) {
-    [changeListener insertedItem: newItem atIndex: index];
-  }
+- (void)insertItem:(CBItem *)newItem
+           atIndex:(NSInteger)anIndex
+{
+    [clipboard insertItem:newItem atIndex:0];
+    for (CBItem *item in [clipboard items])
+    {
+        NSUInteger index = [[clipboard items] indexOfObject:item];
+        id itemView = [clipboardView viewAtIndex:index];
+        [itemView setText:[item string]];
+    }
+    [clipboardView setNeedsDisplay:YES];
+    //notify changelistener:
+    if (changeListener != nil)
+    {
+        [changeListener insertedItem:newItem
+                             atIndex:anIndex];
+    }
 }
 
-- (void)addChangeListener: (id)listener {
-  changeListener = listener;
+- (void)addChangeListener:(id)anObject
+{
+    changeListener = anObject;
 }
 
 - (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex
