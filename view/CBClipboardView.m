@@ -96,10 +96,10 @@
     delegate = anObject;
 }
 
-- (void)setString:(NSString *)aString
+- (void)setString:(NSAttributedString *)aString
    forItemAtIndex:(NSUInteger)anIndex
 {
-    [[itemViews objectAtIndex:anIndex] setString:aString];
+    [[itemViews objectAtIndex:anIndex] setText:aString];
 }
 
 - (void)setHidden:(BOOL)isHidden

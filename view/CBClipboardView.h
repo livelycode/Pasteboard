@@ -23,13 +23,11 @@
 
 - (void)setDelegate:(id <CBClipboardViewDelegate>)anObject;
 
-- (void)setString:(NSString *)aString
+- (void)setString:(NSAttributedString *)aString
    forItemAtIndex:(NSUInteger)anIndex;
 
 - (void)setHidden:(BOOL)isHidden
    forItemAtIndex:(NSUInteger)anIndex;
-
-- (NSView *)viewAtIndex:(NSUInteger)anIndex;
 
 @end
 
