@@ -21,6 +21,8 @@
 
 - (void)setText:(NSAttributedString *)aString;
 
+- (void)setVisible:(BOOL)isVisible;
+
 - (void)drawRect:(NSRect)aRect;
 
 @end

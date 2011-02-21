@@ -102,7 +102,19 @@
 {
     string = aString;
     [self setNeedsDisplay:YES];
-} 
+}
+
+- (void)setVisible:(BOOL)isVisible
+{
+    if (isVisible)
+    {
+        [self setAlphaValue:1];
+    }
+    else
+    {
+        [self setAlphaValue:0];
+    }
+}
 
 - (void)drawRect:(NSRect)aRect
 {
