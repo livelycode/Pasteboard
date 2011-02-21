@@ -102,6 +102,14 @@
     [[itemViews objectAtIndex:anIndex] setText:aString];
 }
 
+- (void)hideAllItems
+{
+    for (CBItemView *itemView in itemViews)
+    {
+        [itemView setHidden:YES];
+    }
+}
+
 - (void)setHidden:(BOOL)isHidden
    forItemAtIndex:(NSUInteger)anIndex
 {

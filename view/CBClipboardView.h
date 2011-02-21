@@ -26,6 +26,8 @@
 - (void)setString:(NSAttributedString *)aString
    forItemAtIndex:(NSUInteger)anIndex;
 
+- (void)hideAllItems;
+
 - (void)setHidden:(BOOL)isHidden
    forItemAtIndex:(NSUInteger)anIndex;
 
