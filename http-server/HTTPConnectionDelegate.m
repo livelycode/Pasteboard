@@ -18,6 +18,7 @@
       // Initialization code here.
   }
   syncController = controller;
+  postURLs = [NSMutableArray array];
   for(NSInteger i = 0; i<8 ; i++) {
     [postURLs addObject: [[NSNumber numberWithInt: i] stringValue]];
   }
@@ -49,23 +50,25 @@
     CFRelease(response);
   }
   if ([method isEqual:@"POST"]) {
-    NSData *responseData = responseData = [@"invalid" dataUsingEncoding: NSUTF8StringEncoding];
+    NSData* responseData;
     NSData* body = (NSData*) CFHTTPMessageCopyBody(message);
     if([path isEqual:@"register"]) {
       NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
       NSURL* clientURL = [NSURL URLWithString: clientName];
       [syncController addClient:clientURL];
       responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
+    } else {
+      // Set clipboard item at URL
+      if([postURLs containsObject: path]) {
+        NSInteger itemIndex = [path intValue];
+        CBItem* item = [[CBItem alloc] initWithString: [NSUnarchiver unarchiveObjectWithData:body]];
+        [syncController receivedItem:item atIndex:itemIndex];
+        responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
+      } else {
+        responseData = [@"invalid" dataUsingEncoding: NSUTF8StringEncoding];
+      }
     }
-    // Set clipboard item at URL
-    if([postURLs containsObject: path]) {
-      NSInteger itemIndex = [path intValue];
-      CBItem* item = [[CBItem alloc] initWithString: [NSUnarchiver unarchiveObjectWithData:body]];
-      [syncController receivedItem:item atIndex:itemIndex];
-      responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
-    }
-     
-    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
+    CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [responseData length]]);
     CFHTTPMessageSetBody(response, (CFDataRef)responseData);
     [request setResponse:response];

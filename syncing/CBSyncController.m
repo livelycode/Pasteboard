@@ -22,9 +22,10 @@
   serviceBrowser = [[NSNetServiceBrowser alloc] init];
   [serviceBrowser setDelegate:self];
   clients = [NSMutableArray array];
-  timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
+  [self searchRemotes];
   myServiceName = [NSMutableString string];
-  [myServiceName appendString: @"Cloudboard1 Server "];
+  myPort = 8090;
+  [myServiceName appendString: @"Cloudboard Server "];
   [myServiceName appendString: [[NSHost currentHost] name]];
   //start Server in new thread
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
@@ -36,7 +37,7 @@
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
   [server setName:myServiceName];
-  [server setPort: 8090];
+  [server setPort: myPort];
   HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
@@ -49,7 +50,7 @@
   [[NSRunLoop currentRunLoop] run];
 }
 
-- (void) searchRemotes: (NSTimer*) timer {
+- (void) searchRemotes {
   NSLog(@"invoke search");
   [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@"local."];    
 }
@@ -68,7 +69,7 @@
 }
 
 - (void) registerAsClientOf: (NSURL*) server {
-  NSURL* myHost = [self urlWithHost: [[NSHost currentHost] name] port: 8090];
+  NSURL* myHost = [self urlWithHost: [[NSHost currentHost] name] port: myPort];
   NSURL *requestURL = [server URLByAppendingPathComponent:@"register"];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
@@ -139,10 +140,10 @@
   if([[newService name] hasPrefix: @"Cloudboard Server"] & ([[newService name] isEqual: myServiceName] == NO)) {
       [self setService: newService];      
   } else {
-    if((more == NO) && (service == nil)) {
+   /* if((more == NO) && (service == nil)) {
       [browser stop];
       [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
-    }
+    }*/
   }
 }
 
@@ -175,6 +176,6 @@
 
 //HTTPConnectionDelegateDelegate
 - (void)receivedItem: (CBItem*)item atIndex: (NSInteger) index {
-  NSLog(@"got item");
+  NSLog(@"got item: %@", [[item string] string]);
 }
 @end
