@@ -23,6 +23,7 @@
 - (void) searchRemotes: (NSTimer*) timer;
 - (void) addClient: (NSURL*) client;
 - (void) registerAsClientOf: (NSURL*) server;
+- (void) syncItem: (CBItem*)item atIndex: (NSInteger)index;
 - (NSURL*) URL;
 @end
 
@@ -41,4 +42,7 @@
 
 //CBClipboardControllerDelegate
 - (void)insertedItem: (CBItem *)item atIndex: (NSInteger)index;
+
+//HTTPConnectionDelegateDelegate
+- (void)receivedItem: (CBItem*)item atIndex: (NSInteger) index;
 @end

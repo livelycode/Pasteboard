@@ -18,6 +18,9 @@
       // Initialization code here.
   }
   syncController = controller;
+  for(NSInteger i = 0; i<8 ; i++) {
+    [postURLs addObject: [[NSNumber numberWithInt: i] stringValue]];
+  }
   return self;
 }
 
@@ -32,7 +35,7 @@
   CFHTTPMessageRef message = [request request];
   NSString* method = [(NSString*) CFHTTPMessageCopyRequestMethod(message) autorelease];
   NSURL* url = [(NSURL*) CFHTTPMessageCopyRequestURL(message) autorelease];
-  NSString* path = [url path];
+  NSString* path = [[url path] substringFromIndex: 1];
   NSLog(@"Got path: %@", path);
   NSLog(@"method: %@", method);
   NSString* host = [[[NSString alloc] initWithData:[connection peerAddress] encoding:NSUTF8StringEncoding] autorelease];
@@ -46,19 +49,22 @@
     CFRelease(response);
   }
   if ([method isEqual:@"POST"]) {
-    NSData *responseData;
+    NSData *responseData = responseData = [@"invalid" dataUsingEncoding: NSUTF8StringEncoding];
     NSData* body = (NSData*) CFHTTPMessageCopyBody(message);
-    if([path isEqual:@"/register"]) {
+    if([path isEqual:@"register"]) {
       NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
       NSURL* clientURL = [NSURL URLWithString: clientName];
       [syncController addClient:clientURL];
       responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
-    } else {
-      responseData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
     }
-    /* Set clipboard item at URL
+    // Set clipboard item at URL
+    if([postURLs containsObject: path]) {
+      NSInteger itemIndex = [path intValue];
+      CBItem* item = [[CBItem alloc] initWithString: [NSUnarchiver unarchiveObjectWithData:body]];
+      [syncController receivedItem:item atIndex:itemIndex];
+      responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
+    }
      
-    */
     CFHTTPMessageRef response = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1); // OK
     CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length", (CFStringRef)[NSString stringWithFormat:@"%d", [responseData length]]);
     CFHTTPMessageSetBody(response, (CFDataRef)responseData);

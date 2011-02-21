@@ -24,7 +24,7 @@
   clients = [NSMutableArray array];
   timer = [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
   myServiceName = [NSMutableString string];
-  [myServiceName appendString: @"Cloudboard Server "];
+  [myServiceName appendString: @"Cloudboard1 Server "];
   [myServiceName appendString: [[NSHost currentHost] name]];
   //start Server in new thread
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
@@ -36,7 +36,7 @@
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
   [server setName:myServiceName];
-  [server setPort: 8080];
+  [server setPort: 8090];
   HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
@@ -79,8 +79,6 @@
                                                returningResponse:&URLResponse
                                                            error:&receivedError];
   NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
-  
-  
 }
 
 - (void) resolveService {
@@ -96,6 +94,22 @@
   [URLString appendString:@":"];
   [URLString appendString:[[NSNumber numberWithUnsignedInteger:port] stringValue]];
   return [NSURL URLWithString:URLString];
+}
+
+- (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
+  for(NSURL* client in clients) {
+    NSURL *requestURL = [client URLByAppendingPathComponent:[[NSNumber numberWithInt: index] stringValue]];
+    NSData* archivedItem = [NSArchiver archivedDataWithRootObject: [item string]];
+    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
+    [URLRequest setHTTPMethod:@"POST"];
+    [URLRequest setHTTPBody:archivedItem];
+    NSURLResponse *URLResponse = nil;
+    NSError *receivedError = nil;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
+                                                 returningResponse:&URLResponse
+                                                             error:&receivedError];
+    NSLog(@"sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  }
 }
 
 - (void)dealloc
@@ -155,6 +169,12 @@
 
 //CBClipboardControllerDelegate
 - (void)insertedItem:(CBItem*)item atIndex: (NSInteger) index {
+  [self syncItem: item atIndex: index];
   NSLog(@"received notification");
+}
+
+//HTTPConnectionDelegateDelegate
+- (void)receivedItem: (CBItem*)item atIndex: (NSInteger) index {
+  NSLog(@"got item");
 }
 @end

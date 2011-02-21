@@ -14,6 +14,7 @@
 @interface HTTPConnectionDelegate : NSObject {
 @private
   CBSyncController *syncController;
+  NSMutableArray* postURLs;
 }
 - (id)initWithSyncController: (CBSyncController*)controller;
 - (void)HTTPServer:(HTTPServer *)server didMakeNewConnection:(HTTPConnection *)connection;
