@@ -149,14 +149,18 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger newIndex = oldIndex - hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveClickForVisibleItemAtIndex:newIndex];
 }
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
 {
-    NSUInteger index = [itemViews indexOfObject:itemView];
-    [delegate didReceiveDismissClickForVisibleItemAtIndex:index];
+    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger newIndex = oldIndex - hiddenViews;
+    [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
 
 @end
