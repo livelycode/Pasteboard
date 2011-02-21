@@ -25,6 +25,7 @@
 {
     [clipboard insertItem:newItem
                   atIndex:0];
+    
     for (CBItem *item in [clipboard items])
     {
         NSUInteger index = [[clipboard items] indexOfObject:item];

@@ -96,9 +96,16 @@
     delegate = anObject;
 }
 
-- (NSView *)viewAtIndex:(NSUInteger)anIndex
+- (void)setString:(NSString *)aString
+   forItemAtIndex:(NSUInteger)anIndex
 {
-    return [itemViews objectAtIndex:anIndex];
+    [[itemViews objectAtIndex:anIndex] setString:aString];
+}
+
+- (void)setHidden:(BOOL)isHidden
+   forItemAtIndex:(NSUInteger)anIndex
+{
+    [[itemViews objectAtIndex:anIndex] setHidden:isHidden];
 }
 
 @end
