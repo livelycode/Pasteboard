@@ -29,8 +29,9 @@
         while (numberItems != 0)
         {
             CBItemView *itemView = [[CBItemView alloc] initWithFrame:CGRectZero];
-            [itemViews addObject:itemView];
+            [itemView setHidden:YES];
             [itemView setDelegate:self];
+            [itemViews addObject:itemView];
             [self addSubview:itemView];
             numberItems = numberItems - 1;
         }
