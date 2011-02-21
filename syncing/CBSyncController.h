@@ -15,12 +15,13 @@
   NSTimer *timer;
   NSNetService *service;
   NSMutableArray *clients;
+  NSInteger myPort;
   NSString *myServiceName;
   CBClipboardController *clipboardController;
 }
 - (id) initWithClipboardController: (CBClipboardController*)controller;
 - (void)launchHTTPServer;
-- (void) searchRemotes: (NSTimer*) timer;
+- (void) searchRemotes;
 - (void) addClient: (NSURL*) client;
 - (void) registerAsClientOf: (NSURL*) server;
 - (void) syncItem: (CBItem*)item atIndex: (NSInteger)index;
