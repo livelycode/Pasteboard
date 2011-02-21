@@ -28,9 +28,9 @@
 - (void)setString:(NSAttributedString *)aString
    forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)hideAllItems;
+- (void)setAllViewItemsInvisible;
 
-- (void)setHidden:(BOOL)isHidden
+- (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex;
 
 @end

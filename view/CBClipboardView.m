@@ -46,7 +46,7 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
         while (numberItems != 0)
         {
             CBItemView *itemView = [[CBItemView alloc] initWithFrame:CGRectZero];
-            [itemView setHidden:YES];
+            [itemView setVisible:NO];
             [itemView setDelegate:self];
             [itemViews addObject:itemView];
             [self addSubview:itemView];
@@ -127,18 +127,18 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
     [[itemViews objectAtIndex:anIndex] setText:aString];
 }
 
-- (void)hideAllItems
+- (void)setAllViewItemsInvisible
 {
     for (CBItemView *itemView in itemViews)
     {
-        [itemView setHidden:YES];
+        [itemView setVisible:NO];
     }
 }
 
-- (void)setHidden:(BOOL)isHidden
+- (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex
 {
-    [[itemViews objectAtIndex:anIndex] setHidden:isHidden];
+    [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
 @end
