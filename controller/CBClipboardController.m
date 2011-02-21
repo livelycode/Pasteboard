@@ -56,7 +56,10 @@
 
 - (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex
 {
-    NSLog(@"%i", anIndex);
+    NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
+    NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
+    [systemPasteboard clearContents];
+    [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
 }
 
 - (void)didReceiveDismissClickForItemAtIndex:(NSUInteger)anIndex

@@ -38,7 +38,6 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-  CBSettings *settings = [CBSettings sharedSettings];
   windowController = [[CBMainWindowController alloc] init];
   [self initClipboards];
   hotKey = [[CBHotKeyObserver alloc] init];
