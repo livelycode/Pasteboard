@@ -26,17 +26,21 @@
     [clipboard insertItem:newItem
                   atIndex:0];
     
-    for (CBItem *item in [clipboard items])
-    {
-        NSUInteger index = [[clipboard items] indexOfObject:item];
-        id itemView = [clipboardView viewAtIndex:index];
-        [itemView setText:[item string]];
-    }
-    
     if (changeListener != nil)
     {
         [changeListener insertedItem:newItem
                              atIndex:anIndex];
+    }
+    
+    [clipboardView hideAllItems];
+    for (CBItem *item in [clipboard items])
+    {
+        NSUInteger index = [[clipboard items] indexOfObject:item];
+        NSAttributedString *string = [item string];
+        [clipboardView setHidden:NO
+                  forItemAtIndex:index];
+        [clipboardView setString:string
+                  forItemAtIndex:index];
     }
 }
 
