@@ -23,15 +23,15 @@
 - (void)insertItem:(CBItem *)newItem
            atIndex:(NSInteger)anIndex
 {
-    [clipboard insertItem:newItem atIndex:0];
+    [clipboard insertItem:newItem
+                  atIndex:0];
     for (CBItem *item in [clipboard items])
     {
         NSUInteger index = [[clipboard items] indexOfObject:item];
         id itemView = [clipboardView viewAtIndex:index];
         [itemView setText:[item string]];
     }
-    [clipboardView setNeedsDisplay:YES];
-    //notify changelistener:
+    
     if (changeListener != nil)
     {
         [changeListener insertedItem:newItem
@@ -49,7 +49,7 @@
     NSLog(@"%i", anIndex);
 }
 
-- (void)didReceiveDismissClickFirItemAtIndex:(NSUInteger)anIndex
+- (void)didReceiveDismissClickForItemAtIndex:(NSUInteger)anIndex
 {
     NSLog(@"%i", anIndex);
 }

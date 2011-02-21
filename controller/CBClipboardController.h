@@ -26,6 +26,6 @@
 
 - (void)didReceiveClickForItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDismissClickFirItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveDismissClickForItemAtIndex:(NSUInteger)anIndex;
 
 @end

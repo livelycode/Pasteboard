@@ -114,7 +114,7 @@
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
 {
     NSUInteger index = [itemViews indexOfObject:itemView];
-    [delegate didReceiveDismissClickFirItemAtIndex:index];
+    [delegate didReceiveDismissClickForItemAtIndex:index];
 }
 
 @end
