@@ -12,6 +12,10 @@
     {
         [delegate itemViewClicked:self];
     }
+    else
+    {
+        [[self superview] mouseDown:theEvent];
+    }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -20,6 +24,10 @@
     {
         [delegate itemView:self
              dragWithEvent:theEvent];
+    }
+    else
+    {
+        [[self superview] mouseDragged:theEvent];
     }
 }
 
