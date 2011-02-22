@@ -58,9 +58,11 @@
 
 @implementation CBClipboardController(Delegation)
 
-- (void)didReceiveClickForVisibleItemAtIndex:(NSUInteger)anIndex
+- (void)itemViewAtIndex:(NSUInteger)anIndex
+       clickedWithEvent:(NSEvent *)anEvent
 {
-    NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
+    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
+    NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
     NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
     [systemPasteboard clearContents];
     [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
@@ -85,6 +87,13 @@
 {
     [clipboardView setVisible:YES
                forItemAtIndex:anIndex];
+    [clipboardView setString:anObject
+              forItemAtIndex:anIndex];
+    
+    CBItem *newItem = [[CBItem alloc] initWithString:anObject];
+    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
+    [clipboard insertItem:newItem
+                  atIndex:newIndex];
 }
 
 @end

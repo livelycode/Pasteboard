@@ -10,7 +10,8 @@
 {
     if (visible)
     {
-        [delegate itemViewClicked:self];
+        [delegate itemView:self
+          clickedWithEvent:theEvent];
     }
     else
     {

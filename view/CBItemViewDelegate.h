@@ -5,7 +5,8 @@
 @protocol CBItemViewDelegate <NSObject>
 
 @optional
-- (void)itemViewClicked:(CBItemView *)itemView;
+- (void)itemView:(CBItemView *)itemView
+clickedWithEvent:(NSEvent *)anEvent;
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView;
 

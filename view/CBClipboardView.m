@@ -124,7 +124,7 @@
     [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
-- (NSUInteger)numberOfInvisibleItemsUpToIndex:(NSUInteger)anIndex
+- (NSUInteger)invisibleItemsUpToIndex:(NSUInteger)anIndex
 {
     NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
     NSUInteger tailLength = [itemViewsCopy count] - anIndex;
@@ -145,7 +145,7 @@
                              object:(id <NSPasteboardWriting>)anObject
               forVisibleItemAtIndex:(NSUInteger)anIndex;
 {
-    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:anIndex];
+    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:anIndex];
     NSUInteger newIndex = anIndex + hiddenViews;
     CBItemView *itemView = [itemViews objectAtIndex:newIndex];
     [itemView startDragWithEvent:anEvent
@@ -156,12 +156,12 @@
 
 @implementation CBClipboardView(Delegation)
 
-- (void)itemViewClicked:(CBItemView *)itemView
+- (void)itemView:(CBItemView *)itemView
+clickedWithEvent:(NSEvent *)anEvent;
 {
-    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
-    NSUInteger newIndex = oldIndex - hiddenViews;
-    [delegate didReceiveClickForVisibleItemAtIndex:newIndex];
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate itemViewAtIndex:index
+             clickedWithEvent:anEvent];
 }
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
@@ -169,7 +169,7 @@
     [itemView setVisible:NO];
     
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
+    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:oldIndex];
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
@@ -178,7 +178,7 @@
    dragWithEvent:(NSEvent *)anEvent;
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
+    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:oldIndex];
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDraggingForVisibleItemAtIndex:newIndex
                                             withEvent:anEvent];
