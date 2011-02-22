@@ -141,6 +141,18 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
     [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
+- (void)startDrapOperationWithEvent:(id <NSPasteboardWriting>)anObject
+                             object:(NSEvent *)anEvent
+              forVisibleItemAtIndex:(NSUInteger)anIndex
+{
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, anIndex);
+    NSUInteger newIndex = anIndex + hiddenViews;
+    CBItemView *itemView = [itemViews objectAtIndex:newIndex];
+    [itemView startDragWithEvent:anEvent
+                          object:anObject];
+}
+
 @end
 
 @implementation CBClipboardView(Delegation)
@@ -165,13 +177,15 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
 
-- (void)itemViewDragOperationStarted:(CBItemView *)itemView;
+- (void)itemViewDragged:(CBItemView *)itemView
+              withEvent:(NSEvent *)anEvent;
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
     NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
     NSUInteger newIndex = oldIndex - hiddenViews;
-    [delegate didReceiveDragOperationForVisibleItemAtIndex:newIndex];
+    [delegate didReceiveDraggingForVisibleItemAtIndex:newIndex
+                                            withEvent:anEvent];
 }
 
 @end

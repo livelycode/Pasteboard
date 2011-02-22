@@ -33,6 +33,10 @@
 - (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex;
 
+- (void)startDrapOperationWithEvent:(id <NSPasteboardWriting>)anObject
+                             object:(NSEvent *)anEvent
+              forVisibleItemAtIndex:(NSUInteger)anIndex;
+
 @end
 
 @interface CBClipboardView(Delegation) <CBItemViewDelegate>
@@ -41,6 +45,7 @@
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView;
 
-- (void)itemViewDragOperationStarted:(CBItemView *)itemsView;
+- (void)itemViewDragged:(CBItemView *)itemView
+              withEvent:(NSEvent *)anEvent;
 
 @end
