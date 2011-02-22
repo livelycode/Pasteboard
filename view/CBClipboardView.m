@@ -5,24 +5,6 @@
 #define BORDER_SPACING 32
 #define ROW_SPACING 8
 
-static NSUInteger
-hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
-{
-    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger tailLength = [itemViewsCopy count] - anIndex;
-    NSRange range = NSMakeRange(anIndex, tailLength);
-    [itemViewsCopy removeObjectsInRange:range];
-    NSUInteger hiddenItemViews = 0;
-    for (CBItemView *itemView in itemViewsCopy)
-    {
-        if ([itemView isVisible] == NO)
-        {
-            hiddenItemViews = hiddenItemViews + 1;
-        }
-    }
-    return hiddenItemViews;
-}
-
 @implementation CBClipboardView
 
 - (id)init
@@ -142,12 +124,28 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
     [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
+- (NSUInteger)numberOfInvisibleItemsUpToIndex:(NSUInteger)anIndex
+{
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger tailLength = [itemViewsCopy count] - anIndex;
+    NSRange range = NSMakeRange(anIndex, tailLength);
+    [itemViewsCopy removeObjectsInRange:range];
+    NSUInteger hiddenItemViews = 0;
+    for (CBItemView *itemView in itemViewsCopy)
+    {
+        if ([itemView isVisible] == NO)
+        {
+            hiddenItemViews = hiddenItemViews + 1;
+        }
+    }
+    return hiddenItemViews;
+}
+
 - (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
               forVisibleItemAtIndex:(NSUInteger)anIndex;
 {
-    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, anIndex);
+    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:anIndex];
     NSUInteger newIndex = anIndex + hiddenViews;
     CBItemView *itemView = [itemViews objectAtIndex:newIndex];
     [itemView startDragWithEvent:anEvent
@@ -161,7 +159,7 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
 - (void)itemViewClicked:(CBItemView *)itemView
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
+    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveClickForVisibleItemAtIndex:newIndex];
 }
@@ -171,7 +169,7 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
     [itemView setVisible:NO];
     
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
+    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
@@ -180,7 +178,7 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
    dragWithEvent:(NSEvent *)anEvent;
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
+    NSUInteger hiddenViews = [self numberOfInvisibleItemsUpToIndex:oldIndex];
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDraggingForVisibleItemAtIndex:newIndex
                                             withEvent:anEvent];
@@ -191,7 +189,7 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     [delegate didReceiveDropWithObject:anObject
-                 forVisibleItemAtIndex:oldIndex];
+                       fromItemAtIndex:oldIndex];
 }
 
 @end

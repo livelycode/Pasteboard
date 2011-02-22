@@ -33,6 +33,8 @@
 - (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex;
 
+- (NSUInteger)numberOfInvisibleItemsUpToIndex:(NSUInteger)anIndex;
+
 - (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
               forVisibleItemAtIndex:(NSUInteger)anIndex;
