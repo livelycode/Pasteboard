@@ -13,10 +13,14 @@
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
+    [delegate itemViewDragOperationStarted:self];
+    
+/*    NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
     NSImage *dragImage = [[NSImage alloc] initWithData:imageData];
     NSPoint leftBottom = [self bounds].origin;
     NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
+    [pasteboard clearContents];
+    [pasteboard writeObjects:[NSArray arrayWithObject:@"foo"]];
         
     [self dragImage:dragImage
                  at:leftBottom
@@ -24,9 +28,7 @@
               event:theEvent
          pasteboard:pasteboard
              source:self
-          slideBack:YES];
-    
-    [delegate itemView:self startedDragWithPasteboard:pasteboard];
+          slideBack:YES];*/    
 }
 
 - (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
