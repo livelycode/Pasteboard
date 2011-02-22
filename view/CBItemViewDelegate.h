@@ -2,7 +2,6 @@
 
 @class CBItemView;
 
-
 @protocol CBItemViewDelegate <NSObject>
 
 @optional
@@ -13,6 +12,7 @@
 - (void)itemViewDragged:(CBItemView *)itemView
               withEvent:(NSEvent *)anEvent;
 
-- (void)itemViewReceivedDropWithObject:(id <NSPasteboardReading>)anObject;
+- (void)itemView:(CBItemView *)itemView
+  dropWithObject:(id <NSPasteboardReading>)anObject;
 
 @end
