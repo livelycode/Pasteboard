@@ -9,6 +9,6 @@
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView;
 
-- (void)itemViewDragOperationStarted:(CBItemView *)itemsView;
+- (void)itemViewDragOperationStarted:(CBItemView *)itemView;
 
 @end

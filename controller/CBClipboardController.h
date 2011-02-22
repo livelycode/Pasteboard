@@ -30,4 +30,6 @@
 
 - (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
+- (void)didReceiveDragOperationForVisibleItemAtIndex:(NSUInteger)anIndex;
+
 @end

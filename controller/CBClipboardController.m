@@ -54,6 +54,10 @@
     changeListener = anObject;
 }
 
+@end
+
+@implementation CBClipboardController(Delegation)
+
 - (void)didReceiveClickForVisibleItemAtIndex:(NSUInteger)anIndex
 {
     NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
@@ -65,6 +69,11 @@
 - (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex
 {
     [clipboard removeItemAtIndex:anIndex];
+}
+
+- (void)didReceiveDragOperationForVisibleItemAtIndex:(NSUInteger)anIndex;
+{
+    NSLog(@"bar");
 }
 
 @end
