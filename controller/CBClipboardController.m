@@ -24,7 +24,7 @@
            atIndex:(NSInteger)anIndex
 {
     [clipboard insertItem:newItem
-                  atIndex:0];
+                  atIndex:anIndex];
     
     if (changeListener != nil)
     {
@@ -78,6 +78,14 @@
     [clipboardView startDrapOperationWithEvent:anEvent
                                         object:string
                         forVisibleItemAtIndex:anIndex];
+}
+
+- (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
+           forVisibleItemAtIndex:(NSUInteger)anIndex
+{
+    CBItem *newItem = [[CBItem alloc] initWithString:anObject];
+    [self insertItem:newItem
+             atIndex:anIndex];
 }
 
 @end
