@@ -141,9 +141,9 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
     [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
-- (void)startDrapOperationWithEvent:(id <NSPasteboardWriting>)anObject
-                             object:(NSEvent *)anEvent
-              forVisibleItemAtIndex:(NSUInteger)anIndex
+- (void)startDrapOperationWithEvent:(NSEvent *)anEvent
+                             object:(id <NSPasteboardWriting>)anObject
+              forVisibleItemAtIndex:(NSUInteger)anIndex;
 {
     NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
     NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, anIndex);
