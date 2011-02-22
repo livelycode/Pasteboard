@@ -18,8 +18,8 @@
 {
     if (visible)
     {
-        [delegate itemViewDragged:self
-                        withEvent:theEvent]; 
+        [delegate itemView:self
+             dragWithEvent:theEvent];
     }
 }
 

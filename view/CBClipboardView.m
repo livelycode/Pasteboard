@@ -176,8 +176,8 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
 
-- (void)itemViewDragged:(CBItemView *)itemView
-              withEvent:(NSEvent *)anEvent;
+- (void)itemView:(CBItemView *)itemView
+   dragWithEvent:(NSEvent *)anEvent;
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
