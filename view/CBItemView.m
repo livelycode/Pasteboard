@@ -8,13 +8,19 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    [delegate itemViewClicked:self];
+    if (visible)
+    {
+        [delegate itemViewClicked:self];
+    }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    [delegate itemViewDragged:self
-                    withEvent:theEvent];
+    if (visible)
+    {
+        [delegate itemViewDragged:self
+                        withEvent:theEvent]; 
+    }
 }
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
@@ -74,6 +80,8 @@
     self = [super initWithFrame:aRect];
     if (self != nil)
     {
+        visible = YES;
+        
         [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
         
         textField = [[NSTextField alloc] initWithFrame:CGRectZero];
@@ -127,7 +135,8 @@
 
 - (void)setVisible:(BOOL)isVisible
 {
-    if (isVisible)
+    visible = isVisible;
+    if (visible)
     {
         [self setAlphaValue:1];
     }
@@ -139,12 +148,7 @@
 
 - (BOOL)isVisible
 {
-    BOOL isVisible = NO;
-    if ([self alphaValue] == 1)
-    {
-        isVisible = YES;
-    }
-    return isVisible;
+    return visible;
 }
 
 - (void)drawRect:(NSRect)aRect

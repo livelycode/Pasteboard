@@ -9,6 +9,7 @@
     NSButton *button;
     NSAttributedString *string;
     NSGradient *gradient;
+    BOOL visible;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent;
