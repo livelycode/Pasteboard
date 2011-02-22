@@ -48,4 +48,7 @@
 - (void)itemViewDragged:(CBItemView *)itemView
               withEvent:(NSEvent *)anEvent;
 
+- (void)itemView:(CBItemView *)itemView
+  dropWithObject:(id <NSPasteboardReading>)anObject;
+
 @end

@@ -188,4 +188,12 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
                                             withEvent:anEvent];
 }
 
+- (void)itemView:(CBItemView *)itemView
+  dropWithObject:(id <NSPasteboardReading>)anObject;
+{
+    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
+    [delegate didReceiveDropWithObject:anObject
+                 forVisibleItemAtIndex:oldIndex];
+}
+
 @end
