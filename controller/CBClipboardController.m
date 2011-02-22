@@ -74,9 +74,10 @@
 - (void)didReceiveDraggingForVisibleItemAtIndex:(NSUInteger)anIndex
                                       withEvent:(NSEvent *)anEvent
 {
-    [clipboardView startDrapOperationWithEvent:@"foo"
-                                          object:anEvent
-                          forVisibleItemAtIndex:anIndex];
+    NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
+    [clipboardView startDrapOperationWithEvent:anEvent
+                                        object:string
+                        forVisibleItemAtIndex:anIndex];
 }
 
 @end
