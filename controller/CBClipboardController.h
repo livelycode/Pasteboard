@@ -34,6 +34,6 @@
                                       withEvent:(NSEvent *)anEvent;
 
 - (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
-           forVisibleItemAtIndex:(NSUInteger)anIndex;
+                 fromItemAtIndex:(NSUInteger)anIndex;
 
 @end

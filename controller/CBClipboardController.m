@@ -77,15 +77,14 @@
     NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
     [clipboardView startDragOperationWithEvent:anEvent
                                         object:string
-                        forVisibleItemAtIndex:anIndex];
+                         forVisibleItemAtIndex:anIndex];
 }
 
 - (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
-           forVisibleItemAtIndex:(NSUInteger)anIndex
+                 fromItemAtIndex:(NSUInteger)anIndex
 {
-    CBItem *newItem = [[CBItem alloc] initWithString:anObject];
-    [self insertItem:newItem
-             atIndex:anIndex];
+    [clipboardView setVisible:YES
+               forItemAtIndex:anIndex];
 }
 
 @end
