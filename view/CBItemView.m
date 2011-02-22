@@ -25,6 +25,8 @@
          pasteboard:pasteboard
              source:self
           slideBack:YES];
+    
+    [delegate itemView:self startedDragWithPasteboard:pasteboard];
 }
 
 - (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
