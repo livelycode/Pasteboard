@@ -12,4 +12,7 @@
 - (void)didReceiveDraggingForVisibleItemAtIndex:(NSUInteger)anIndex
                                       withEvent:(NSEvent *)anEvent;
 
+- (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
+           forVisibleItemAtIndex:(NSUInteger)anIndex;
+
 @end
