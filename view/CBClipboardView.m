@@ -165,4 +165,16 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
 
+- (void)itemView:(CBItemView *)itemView
+startedDragWithPasteboard:(NSPasteboard *)aPasteboard
+{
+    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger newIndex = oldIndex - hiddenViews;
+    [delegate didReceiveDragForVisibleItemAtIndex:newIndex
+                                   withPasteboard:aPasteboard];
+}
+
+
 @end

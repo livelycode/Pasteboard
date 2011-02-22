@@ -41,4 +41,7 @@
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView;
 
+- (void)itemView:(CBItemView *)itemView
+startedDragWithPasteboard:(NSPasteboard *)aPasteboard;
+
 @end
