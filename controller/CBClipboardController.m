@@ -75,7 +75,7 @@
                                       withEvent:(NSEvent *)anEvent
 {
     NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
-    [clipboardView startDrapOperationWithEvent:anEvent
+    [clipboardView startDragOperationWithEvent:anEvent
                                         object:string
                         forVisibleItemAtIndex:anIndex];
 }

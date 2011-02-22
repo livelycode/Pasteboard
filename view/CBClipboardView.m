@@ -142,7 +142,7 @@ hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
     [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
 }
 
-- (void)startDrapOperationWithEvent:(NSEvent *)anEvent
+- (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
               forVisibleItemAtIndex:(NSUInteger)anIndex;
 {

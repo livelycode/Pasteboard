@@ -33,7 +33,7 @@
 - (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)startDrapOperationWithEvent:(NSEvent *)anEvent
+- (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
               forVisibleItemAtIndex:(NSUInteger)anIndex;
 
