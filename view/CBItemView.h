@@ -25,9 +25,13 @@
 
 - (void)drawRect:(NSRect)aRect;
 
+- (void)startDragWithEvent:(NSEvent *)anEvent
+                    object:(id <NSPasteboardWriting>)anObject;
+
+
 @end
 
-@interface CBItemView(DragAndDrop)
+@interface CBItemView(Delegation)
 
 - (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal;
 
