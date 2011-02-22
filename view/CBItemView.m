@@ -137,6 +137,16 @@
     }
 }
 
+- (BOOL)isVisible
+{
+    BOOL isVisible = NO;
+    if ([self alphaValue] == 1)
+    {
+        isVisible = YES;
+    }
+    return isVisible;
+}
+
 - (void)drawRect:(NSRect)aRect
 {
     CGRect viewBounds = [self bounds];

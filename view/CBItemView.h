@@ -23,6 +23,8 @@
 
 - (void)setVisible:(BOOL)isVisible;
 
+- (BOOL)isVisible;
+
 - (void)drawRect:(NSRect)aRect;
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
