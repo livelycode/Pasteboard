@@ -71,9 +71,12 @@
     [clipboard removeItemAtIndex:anIndex];
 }
 
-- (void)didReceiveDragOperationForVisibleItemAtIndex:(NSUInteger)anIndex;
+- (void)didReceiveDraggingForVisibleItemAtIndex:(NSUInteger)anIndex
+                                      withEvent:(NSEvent *)anEvent
 {
-    NSLog(@"bar");
+    [clipboardView startDrapOperationWithEvent:@"foo"
+                                          object:anEvent
+                          forVisibleItemAtIndex:anIndex];
 }
 
 @end
