@@ -6,15 +6,16 @@
 #define ROW_SPACING 8
 
 static NSUInteger
-hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
+hiddenItemViewsUntilIndex(NSArray *itemViews, NSUInteger anIndex)
 {
-    NSUInteger tailLength = [itemViews count] - anIndex;
+    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
+    NSUInteger tailLength = [itemViewsCopy count] - anIndex;
     NSRange range = NSMakeRange(anIndex, tailLength);
-    [itemViews removeObjectsInRange:range];
+    [itemViewsCopy removeObjectsInRange:range];
     NSUInteger hiddenItemViews = 0;
-    for (CBItemView *itemView in itemViews)
+    for (CBItemView *itemView in itemViewsCopy)
     {
-        if ([itemView isHidden])
+        if ([itemView isVisible] == NO)
         {
             hiddenItemViews = hiddenItemViews + 1;
         }
@@ -160,19 +161,17 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
 - (void)itemViewClicked:(CBItemView *)itemView
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveClickForVisibleItemAtIndex:newIndex];
 }
 
 - (void)itemViewDismissButtonClicked:(CBItemView *)itemView
 {
-    [itemView setHidden:YES];
+    [itemView setVisible:NO];
     
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
 }
@@ -181,8 +180,7 @@ hiddenItemViewsUntilIndex(NSMutableArray *itemViews, NSUInteger anIndex)
               withEvent:(NSEvent *)anEvent;
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSMutableArray *itemViewsCopy = [NSMutableArray arrayWithArray:itemViews];
-    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViewsCopy, oldIndex);
+    NSUInteger hiddenViews = hiddenItemViewsUntilIndex(itemViews, oldIndex);
     NSUInteger newIndex = oldIndex - hiddenViews;
     [delegate didReceiveDraggingForVisibleItemAtIndex:newIndex
                                             withEvent:anEvent];
