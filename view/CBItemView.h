@@ -28,7 +28,6 @@
 - (void)startDragWithEvent:(NSEvent *)anEvent
                     object:(id <NSPasteboardWriting>)anObject;
 
-
 @end
 
 @interface CBItemView(Delegation)
@@ -38,6 +37,8 @@
 - (BOOL)ignoreModifierKeysWhileDragging;
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender;
 

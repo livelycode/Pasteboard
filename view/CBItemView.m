@@ -52,6 +52,18 @@
     return [sender draggingSourceOperationMask];
 }
 
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    NSArray *copiedItems = [pasteboard readObjectsForClasses:classes
+                                                     options:nil];
+    NSAttributedString *copiedString = [copiedItems objectAtIndex:0];
+    [delegate itemView:self
+        dropWithObject:copiedString];
+    return YES;
+}
+
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
     NSLog(@"exit");
