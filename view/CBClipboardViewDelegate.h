@@ -9,7 +9,6 @@
 
 - (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDragForVisibleItemAtIndex:(NSUInteger)anIndex
-                             withPasteboard:(NSPasteboard *)aPasteboard;
+- (void)didReceiveDragOperationForVisibleItemAtIndex:(NSUInteger)anIndex;
 
 @end
