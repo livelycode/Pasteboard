@@ -58,8 +58,9 @@
 
 @implementation CBClipboardController(Delegation)
 
-- (void)itemViewAtIndex:(NSUInteger)anIndex
-       clickedWithEvent:(NSEvent *)anEvent
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+      didReceiveClick:(NSEvent *)theEvent
+       forItemAtIndex:(NSUInteger)anIndex
 {
     NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
     NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
@@ -68,22 +69,27 @@
     [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
 }
 
-- (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+      didReceiveClick:(NSEvent *)theEvent
+    forButtonWithName:(NSString *)aName
+              atIndex:(NSUInteger)anIndex
 {
     [clipboard removeItemAtIndex:anIndex];
 }
 
-- (void)didReceiveDraggingForVisibleItemAtIndex:(NSUInteger)anIndex
-                                      withEvent:(NSEvent *)anEvent
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+   didReceiveDragging:(NSEvent *)theEvent
+       forItemAtIndex:(NSUInteger)anIndex;
 {
     NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
-    [clipboardView startDragOperationWithEvent:anEvent
+    [clipboardView startDragOperationWithEvent:theEvent
                                         object:string
                          forVisibleItemAtIndex:anIndex];
 }
 
-- (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
-                 fromItemAtIndex:(NSUInteger)anIndex
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+       didReceiveDrop:(id <NSPasteboardReading>)anObject
+      fromItemAtIndex:(NSUInteger)anIndex
 {
     [clipboardView setVisible:YES
                forItemAtIndex:anIndex];

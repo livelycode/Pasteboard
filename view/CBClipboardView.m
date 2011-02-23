@@ -160,8 +160,9 @@
 clickedWithEvent:(NSEvent *)anEvent;
 {
     NSUInteger index = [itemViews indexOfObject:itemView];
-    [delegate itemViewAtIndex:index
-             clickedWithEvent:anEvent];
+    [delegate clipboardView:self
+            didReceiveClick:anEvent
+             forItemAtIndex:index];
 }
 
 - (void)itemView:(CBItemView *)itemView
@@ -170,28 +171,29 @@ clickedWithEvent:(NSEvent *)anEvent;
 {
     [itemView setVisible:NO];
     
-    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:oldIndex];
-    NSUInteger newIndex = oldIndex - hiddenViews;
-    [delegate didReceiveDismissClickForVisibleItemAtIndex:newIndex];
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate clipboardView:self
+            didReceiveClick:anEvent
+          forButtonWithName:nil
+                    atIndex:index];
 }
 
 - (void)itemView:(CBItemView *)itemView
 draggedWithEvent:(NSEvent *)anEvent
 {
-    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:oldIndex];
-    NSUInteger newIndex = oldIndex - hiddenViews;
-    [delegate didReceiveDraggingForVisibleItemAtIndex:newIndex
-                                            withEvent:anEvent];
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate clipboardView:self
+         didReceiveDragging:anEvent
+             forItemAtIndex:index];
 }
 
 - (void)itemView:(CBItemView *)itemView
   dropWithObject:(id <NSPasteboardReading>)anObject;
 {
-    NSUInteger oldIndex = [itemViews indexOfObject:itemView];
-    [delegate didReceiveDropWithObject:anObject
-                       fromItemAtIndex:oldIndex];
+    NSUInteger index = [itemViews indexOfObject:itemView];
+    [delegate clipboardView:self
+             didReceiveDrop:anObject
+            fromItemAtIndex:index];
 }
 
 @end

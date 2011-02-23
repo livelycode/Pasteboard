@@ -1,19 +1,25 @@
 #import "Cocoa.h"
 
-@class CBClipboardViewDelegate;
+@class CBClipboardView;
 
 @protocol CBClipboardViewDelegate <NSObject>
 
 @optional
-- (void)itemViewAtIndex:(NSUInteger)anIndex
-       clickedWithEvent:(NSEvent *)anEvent;
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+      didReceiveClick:(NSEvent *)theEvent
+       forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDismissClickForVisibleItemAtIndex:(NSUInteger)anIndex;
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+      didReceiveClick:(NSEvent *)theEvent
+    forButtonWithName:(NSString *)aName
+              atIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDraggingForVisibleItemAtIndex:(NSUInteger)anIndex
-                                      withEvent:(NSEvent *)anEvent;
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+   didReceiveDragging:(NSEvent *)theEvent
+       forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)didReceiveDropWithObject:(id <NSPasteboardReading>)anObject
-                 fromItemAtIndex:(NSUInteger)anIndex;
+- (void)clipboardView:(CBClipboardView *)aClipboardView
+       didReceiveDrop:(id <NSPasteboardReading>)anObject
+      fromItemAtIndex:(NSUInteger)anIndex;
 
 @end
