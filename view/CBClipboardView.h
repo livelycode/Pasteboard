@@ -23,6 +23,12 @@
 
 - (void)setPadding:(CGFloat)thePadding;
 
+- (NSUInteger)itemViews;
+
+- (BOOL)itemAtIndexIsVisible:(NSUInteger)anIndex;
+
+- (NSAttributedString *)stringForItemAtIndex:(NSUInteger)anIndex;
+
 - (void)setDelegate:(id <CBClipboardViewDelegate>)anObject;
 
 - (void)setString:(NSAttributedString *)aString
@@ -37,7 +43,7 @@
 
 - (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
-              forVisibleItemAtIndex:(NSUInteger)anIndex;
+                     forItemAtIndex:(NSUInteger)anIndex;
 
 @end
 

@@ -99,6 +99,21 @@
     }
 }
 
+- (NSUInteger)itemViews
+{
+    return [itemViews count];
+}
+
+- (BOOL)itemAtIndexIsVisible:(NSUInteger)anIndex
+{
+    return [[itemViews objectAtIndex:anIndex] isVisible];
+}
+
+- (NSAttributedString *)stringForItemAtIndex:(NSUInteger)anIndex
+{
+    return [[itemViews objectAtIndex:anIndex] text];
+}
+
 - (void)setDelegate:(id <CBItemViewDelegate>)anObject
 {
     delegate = anObject;
@@ -143,11 +158,9 @@
 
 - (void)startDragOperationWithEvent:(NSEvent *)anEvent
                              object:(id <NSPasteboardWriting>)anObject
-              forVisibleItemAtIndex:(NSUInteger)anIndex;
+                     forItemAtIndex:(NSUInteger)anIndex;
 {
-    NSUInteger hiddenViews = [self invisibleItemsUpToIndex:anIndex];
-    NSUInteger newIndex = anIndex + hiddenViews;
-    CBItemView *itemView = [itemViews objectAtIndex:newIndex];
+    CBItemView *itemView = [itemViews objectAtIndex:anIndex];
     [itemView startDragWithEvent:anEvent
                           object:anObject];
 }
@@ -169,8 +182,6 @@ clickedWithEvent:(NSEvent *)anEvent;
    buttonClicked:(NSString *)aName
        withEvent:(NSEvent *)anEvent
 {
-    [itemView setVisible:NO];
-    
     NSUInteger index = [itemViews indexOfObject:itemView];
     [delegate clipboardView:self
             didReceiveClick:anEvent
