@@ -142,6 +142,11 @@
     [self setNeedsDisplay:YES];
 }
 
+- (NSAttributedString *)text
+{
+    return string;
+}
+
 - (void)setVisible:(BOOL)isVisible
 {
     visible = isVisible;

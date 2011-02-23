@@ -22,6 +22,8 @@
 
 - (void)setText:(NSAttributedString *)aString;
 
+- (NSAttributedString *)text;
+
 - (void)setVisible:(BOOL)isVisible;
 
 - (BOOL)isVisible;
