@@ -166,7 +166,7 @@ clickedWithEvent:(NSEvent *)anEvent;
 }
 
 - (void)itemView:(CBItemView *)itemView
-   buttonClicked:(NSView *)aButton
+   buttonClicked:(NSString *)aName
        withEvent:(NSEvent *)anEvent
 {
     [itemView setVisible:NO];

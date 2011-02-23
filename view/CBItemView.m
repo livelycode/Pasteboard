@@ -200,7 +200,7 @@
 - (void)dismiss
 {
     [delegate itemView:self
-         buttonClicked:button
+         buttonClicked:@"dissmissButton"
              withEvent:nil];
 }
 
