@@ -32,6 +32,18 @@
     }
 }
 
+- (void)mouseEntered:(NSEvent *)theEvent
+{
+    highlighted = YES
+    [self needsDisplay];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent
+{
+    highlighted = NO;
+    [self needsDisplay];
+}
+
 - (void)startDragWithEvent:(NSEvent *)anEvent
                     object:(id <NSPasteboardWriting>)anObject
 {
@@ -63,7 +75,6 @@
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
-    NSLog(@"enter");
     return [sender draggingSourceOperationMask];
 }
 
@@ -90,6 +101,7 @@
     if (self != nil)
     {
         visible = YES;
+        highlighted = NO;
         
         [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
         
@@ -196,6 +208,11 @@
     [path closePath];
     [gradient drawInBezierPath:path
                          angle:90];
+    
+    if (highlighted)
+    {
+        /* highlight code */
+    }
 }
 
 @end

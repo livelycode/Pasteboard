@@ -10,6 +10,7 @@
     NSAttributedString *string;
     NSGradient *gradient;
     BOOL visible;
+    BOOL highlighted;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent;
