@@ -8,10 +8,12 @@
 - (void)itemView:(CBItemView *)itemView
 clickedWithEvent:(NSEvent *)anEvent;
 
-- (void)itemViewDismissButtonClicked:(CBItemView *)itemView;
+- (void)itemView:(CBItemView *)itemView
+   buttonClicked:(NSView *)aButton
+       withEvent:(NSEvent *)anEvent;
 
 - (void)itemView:(CBItemView *)itemView
-   dragWithEvent:(NSEvent *)anEvent;
+draggedWithEvent:(NSEvent *)anEvent;
 
 - (void)itemView:(CBItemView *)itemView
   dropWithObject:(id <NSPasteboardReading>)anObject;

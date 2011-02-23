@@ -164,7 +164,9 @@ clickedWithEvent:(NSEvent *)anEvent;
              clickedWithEvent:anEvent];
 }
 
-- (void)itemViewDismissButtonClicked:(CBItemView *)itemView
+- (void)itemView:(CBItemView *)itemView
+   buttonClicked:(NSView *)aButton
+       withEvent:(NSEvent *)anEvent
 {
     [itemView setVisible:NO];
     
@@ -175,7 +177,7 @@ clickedWithEvent:(NSEvent *)anEvent;
 }
 
 - (void)itemView:(CBItemView *)itemView
-   dragWithEvent:(NSEvent *)anEvent;
+draggedWithEvent:(NSEvent *)anEvent
 {
     NSUInteger oldIndex = [itemViews indexOfObject:itemView];
     NSUInteger hiddenViews = [self invisibleItemsUpToIndex:oldIndex];

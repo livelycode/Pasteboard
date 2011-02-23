@@ -24,7 +24,7 @@
     if (visible)
     {
         [delegate itemView:self
-             dragWithEvent:theEvent];
+          draggedWithEvent:theEvent];
     }
     else
     {
@@ -199,7 +199,9 @@
 
 - (void)dismiss
 {
-    [delegate itemViewDismissButtonClicked:self];
+    [delegate itemView:self
+         buttonClicked:button
+             withEvent:nil];
 }
 
 @end
