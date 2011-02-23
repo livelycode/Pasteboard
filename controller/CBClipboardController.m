@@ -23,24 +23,33 @@
 - (void)insertItem:(CBItem *)newItem
            atIndex:(NSInteger)anIndex
 {
+    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
     [clipboard insertItem:newItem
-                  atIndex:anIndex];
+                  atIndex:newIndex];
+    
+    NSUInteger indexMove = [clipboardView itemViews] - 1;
+    while (indexMove != anIndex)
+    {
+        NSUInteger previousIndex = indexMove - 1;
+        BOOL previousVisible = [clipboardView itemAtIndexIsVisible:previousIndex];
+        NSAttributedString *previousString = [clipboardView stringForItemAtIndex:previousIndex];
+        [clipboardView setVisible:previousVisible
+                   forItemAtIndex:indexMove];
+        [clipboardView setString:previousString
+                  forItemAtIndex:indexMove];
+        indexMove = indexMove - 1;
+    }
+    
+    NSAttributedString *string = [newItem string];
+    [clipboardView setVisible:YES
+               forItemAtIndex:anIndex];
+    [clipboardView setString:string
+              forItemAtIndex:newIndex];
     
     if (changeListener != nil)
     {
         [changeListener insertedItem:newItem
                              atIndex:anIndex];
-    }
-    
-    [clipboardView setAllViewItemsInvisible];
-    for (CBItem *item in [clipboard items])
-    {
-        NSUInteger index = [[clipboard items] indexOfObject:item];
-        NSAttributedString *string = [item string];
-        [clipboardView setVisible:YES
-                  forItemAtIndex:index];
-        [clipboardView setString:string
-                  forItemAtIndex:index];
     }
 }
 
@@ -74,17 +83,21 @@
     forButtonWithName:(NSString *)aName
               atIndex:(NSUInteger)anIndex
 {
-    [clipboard removeItemAtIndex:anIndex];
+    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
+    [clipboard removeItemAtIndex:newIndex];
+    [clipboardView setVisible:NO
+               forItemAtIndex:anIndex];
 }
 
 - (void)clipboardView:(CBClipboardView *)aClipboardView
    didReceiveDragging:(NSEvent *)theEvent
        forItemAtIndex:(NSUInteger)anIndex;
 {
-    NSAttributedString *string = [[clipboard itemAtIndex:anIndex] string];
+    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
+    NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
     [clipboardView startDragOperationWithEvent:theEvent
                                         object:string
-                         forVisibleItemAtIndex:anIndex];
+                                forItemAtIndex:anIndex];
 }
 
 - (void)clipboardView:(CBClipboardView *)aClipboardView
