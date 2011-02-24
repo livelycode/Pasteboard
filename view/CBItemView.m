@@ -6,42 +6,43 @@
 
 @implementation CBItemView
 
-- (void)mouseDown:(NSEvent *)theEvent
+- (id <CBItemViewDelegate>)delegate
 {
+    return delegate;
+}
+
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject
+{
+    delegate = anObject;
+}
+
+- (NSAttributedString *)text
+{
+    return string;
+}
+
+- (void)setText:(NSAttributedString *)aString;
+{
+    string = aString;
+    [self setNeedsDisplay:YES];
+}
+
+- (BOOL)isVisible
+{
+    return visible;
+}
+
+- (void)setVisible:(BOOL)isVisible
+{
+    visible = isVisible;
     if (visible)
     {
-        [delegate itemView:self
-          clickedWithEvent:theEvent];
+        [self setAlphaValue:1];
     }
     else
     {
-        [[self superview] mouseDown:theEvent];
+        [self setAlphaValue:0];
     }
-}
-
-- (void)mouseDragged:(NSEvent *)theEvent
-{
-    if (visible)
-    {
-        [delegate itemView:self
-          draggedWithEvent:theEvent];
-    }
-    else
-    {
-        [[self superview] mouseDragged:theEvent];
-    }
-}
-
-- (void)mouseEntered:(NSEvent *)theEvent
-{
-    highlighted = YES
-    [self needsDisplay];
-}
-
-- (void)mouseExited:(NSEvent *)theEvent
-{
-    highlighted = NO;
-    [self needsDisplay];
 }
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
@@ -53,7 +54,7 @@
     NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
     [pasteboard clearContents];
     [pasteboard writeObjects:[NSArray arrayWithObject:anObject]];
-
+    
     [self dragImage:dragImage
                  at:leftBottom
              offset:NSZeroSize
@@ -63,37 +64,9 @@
           slideBack:YES];
 }
 
-- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
-{
-    return NSDragOperationMove;
-}
+@end
 
-- (BOOL)ignoreModifierKeysWhileDragging
-{
-    return YES;
-}
-
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
-{
-    return [sender draggingSourceOperationMask];
-}
-
-- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
-{
-    NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
-    NSPasteboard *pasteboard = [sender draggingPasteboard];
-    NSArray *copiedItems = [pasteboard readObjectsForClasses:classes
-                                                     options:nil];
-    NSAttributedString *copiedString = [copiedItems objectAtIndex:0];
-    [delegate itemView:self
-        dropWithObject:copiedString];
-    return YES;
-}
-
-- (void)draggingExited:(id <NSDraggingInfo>)sender
-{
-    NSLog(@"exit");
-}
+@implementation CBItemView(Overridden)
 
 - (id)initWithFrame:(NSRect)aRect;
 {
@@ -128,53 +101,55 @@
         [self setShadow:pageShadow];
         
         NSColor *startingColor = [NSColor colorWithCalibratedRed:0.9
-                                                         green:0.8
-                                                          blue:0.3
-                                                         alpha:1];
-        NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9
                                                            green:0.8
-                                                            blue:0.4
+                                                            blue:0.3
                                                            alpha:1];
+        NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9
+                                                         green:0.8
+                                                          blue:0.4
+                                                         alpha:1];
         gradient = [[NSGradient alloc] initWithStartingColor:startingColor
                                                  endingColor:endingColor];
-        
-        
     }
     return self;
 }
 
-- (void)setDelegate:(id <CBItemViewDelegate>)anObject
+- (void)mouseDown:(NSEvent *)theEvent
 {
-    delegate = anObject;
-}
-
-- (void)setText:(NSAttributedString *)aString;
-{
-    string = aString;
-    [self setNeedsDisplay:YES];
-}
-
-- (NSAttributedString *)text
-{
-    return string;
-}
-
-- (void)setVisible:(BOOL)isVisible
-{
-    visible = isVisible;
     if (visible)
     {
-        [self setAlphaValue:1];
+        [delegate itemView:self
+          clickedWithEvent:theEvent];
     }
     else
     {
-        [self setAlphaValue:0];
+        [[self superview] mouseDown:theEvent];
     }
 }
 
-- (BOOL)isVisible
+- (void)mouseDragged:(NSEvent *)theEvent
 {
-    return visible;
+    if (visible)
+    {
+        [delegate itemView:self
+          draggedWithEvent:theEvent];
+    }
+    else
+    {
+        [[self superview] mouseDragged:theEvent];
+    }
+}
+
+- (void)mouseEntered:(NSEvent *)theEvent
+{
+    highlighted = YES;
+    [self needsDisplay];
+}
+
+- (void)mouseExited:(NSEvent *)theEvent
+{
+    highlighted = NO;
+    [self needsDisplay];
 }
 
 - (void)drawRect:(NSRect)aRect
@@ -213,6 +188,42 @@
     {
         /* highlight code */
     }
+}
+
+@end
+
+@implementation CBItemView(Delegation)
+
+- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal
+{
+    return NSDragOperationMove;
+}
+
+- (BOOL)ignoreModifierKeysWhileDragging
+{
+    return YES;
+}
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+    return [sender draggingSourceOperationMask];
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    NSArray *copiedItems = [pasteboard readObjectsForClasses:classes
+                                                     options:nil];
+    NSAttributedString *copiedString = [copiedItems objectAtIndex:0];
+    [delegate itemView:self
+        dropWithObject:copiedString];
+    return YES;
+}
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender
+{
+    NSLog(@"exit");
 }
 
 @end

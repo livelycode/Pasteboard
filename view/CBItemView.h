@@ -13,26 +13,36 @@
     BOOL highlighted;
 }
 
+- (id <CBItemViewDelegate>)delegate;
+
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject;
+
+- (NSAttributedString *)text;
+
+- (void)setText:(NSAttributedString *)aString;
+
+- (BOOL)isVisible;
+
+- (void)setVisible:(BOOL)isVisible;
+
+- (void)startDragWithEvent:(NSEvent *)anEvent
+                    object:(id <NSPasteboardWriting>)anObject;
+
+@end
+
+@interface CBItemView(Overridden)
+
+- (id)initWithFrame:(NSRect)aRect;
+
 - (void)mouseDown:(NSEvent *)theEvent;
 
 - (void)mouseDragged:(NSEvent *)theEvent;
 
-- (id)initWithFrame:(NSRect)aRect;
+- (void)mouseEntered:(NSEvent *)theEvent;
 
-- (void)setDelegate:(id <CBItemViewDelegate>)anObject;
-
-- (void)setText:(NSAttributedString *)aString;
-
-- (NSAttributedString *)text;
-
-- (void)setVisible:(BOOL)isVisible;
-
-- (BOOL)isVisible;
+- (void)mouseExited:(NSEvent *)theEvent;
 
 - (void)drawRect:(NSRect)aRect;
-
-- (void)startDragWithEvent:(NSEvent *)anEvent
-                    object:(id <NSPasteboardWriting>)anObject;
 
 @end
 
