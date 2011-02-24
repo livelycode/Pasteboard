@@ -73,18 +73,35 @@
     self = [super initWithFrame:aRect];
     if (self != nil)
     {
+        delegate = nil;
         visible = YES;
         highlighted = NO;
         
-        [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
+        CGRect viewBounds = [self bounds];
+        NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
+                                         NSTrackingActiveAlways);
+        NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:viewBounds
+                                                            options:options
+                                                              owner:self
+                                                           userInfo:nil];
+        [self addTrackingArea:area];
         
-        textField = [[NSTextField alloc] initWithFrame:CGRectZero];
+        
+        CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
+        CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
+        CGFloat textX = TEXT_PADDING;
+        CGFloat textY = TEXT_PADDING;
+        textField = [[NSTextField alloc] initWithFrame:CGRectMake(textX, textY, textWidth, textHeight)];
         [textField setBordered:NO];
         [textField setBackgroundColor:[NSColor clearColor]];
         [textField setSelectable:NO];
         [self addSubview:textField];
         
-        button = [[NSButton alloc] initWithFrame:CGRectZero];
+        CGFloat buttonWidth = BUTTON_LENGTH;
+        CGFloat buttonHeight = BUTTON_LENGTH;
+        CGFloat buttonX = viewBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
+        CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;
+        button = [[NSButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
         [button setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
         [button setButtonType:NSMomentaryChangeButton];
         [button setBordered:NO];
@@ -110,6 +127,8 @@
                                                          alpha:1];
         gradient = [[NSGradient alloc] initWithStartingColor:startingColor
                                                  endingColor:endingColor];
+        
+        [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
     }
     return self;
 }
@@ -142,14 +161,16 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
+    NSLog(@"in");
     highlighted = YES;
-    [self needsDisplay];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
+    NSLog(@"out");
     highlighted = NO;
-    [self needsDisplay];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)drawRect:(NSRect)aRect
@@ -159,21 +180,7 @@
     NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
     NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
     NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
-    
-    CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
-    CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
-    CGFloat textX = TEXT_PADDING;
-    CGFloat textY = TEXT_PADDING;
-    [textField setFrame:CGRectMake(textX, textY, textWidth, textHeight)];
-    [textField setAttributedStringValue:string];
-    [textField setNeedsDisplay:YES];
-    
-    CGFloat buttonWidth = BUTTON_LENGTH;
-    CGFloat buttonHeight = BUTTON_LENGTH;
-    CGFloat buttonX = viewBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
-    CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;;
-    [button setFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
-    
+        
     NSBezierPath *path = [NSBezierPath bezierPath];
     [path moveToPoint:leftBottom];
     [path lineToPoint:rightBottom];
@@ -186,8 +193,13 @@
     
     if (highlighted)
     {
-        /* highlight code */
+        NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
+                                                              alpha:0.2];
+        [highlightColor set];
+        [path fill];
     }
+    
+    [textField setAttributedStringValue:string];
 }
 
 @end

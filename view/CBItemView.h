@@ -4,7 +4,7 @@
 @interface CBItemView : NSView
 {
     @private
-    id delegate; 
+    id delegate;
     NSTextField *textField;
     NSButton *button;
     NSAttributedString *string;
