@@ -29,21 +29,21 @@
 
 - (BOOL)isVisible
 {
-    return visible;
+    return isVisible;
 }
 
-- (void)setVisible:(BOOL)isVisible
+- (void)setVisible:(BOOL)visible
 {
-    visible = isVisible;
-    if (isVisible)
+    visible = visible;
+    if (visible)
     {
-        [button setHidden:NO];
+        [dismissButton setHidden:NO];
     }
     else
     {
-        [button setHidden:YES];
+        [dismissButton setHidden:YES];
     }
-    [button setNeedsDisplay:YES];
+    [dismissButton setNeedsDisplay:YES];
     [self setNeedsDisplay:YES];
 }
 
@@ -76,8 +76,8 @@
     if (self != nil)
     {
         delegate = nil;
-        visible = YES;
-        highlighted = NO;
+        isVisible = YES;
+        isHightlighted = NO;
         
         CGRect viewBounds = [self bounds];
         NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
@@ -102,14 +102,14 @@
         CGFloat buttonHeight = BUTTON_LENGTH;
         CGFloat buttonX = viewBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
         CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;
-        button = [[NSButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
-        [button setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
-        [button setButtonType:NSMomentaryChangeButton];
-        [button setBordered:NO];
-        [[button cell] setImageScaling:NSImageScaleProportionallyDown];
-        [button setAction:@selector(dismiss)];
-        [button setTarget:self];
-        [self addSubview:button];	
+        dismissButton = [[NSButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
+        [dismissButton setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
+        [dismissButton setButtonType:NSMomentaryChangeButton];
+        [dismissButton setBordered:NO];
+        [[dismissButton cell] setImageScaling:NSImageScaleProportionallyDown];
+        [dismissButton setAction:@selector(dismiss)];
+        [dismissButton setTarget:self];
+        [self addSubview:dismissButton];	
         
         NSShadow *pageShadow = [[NSShadow alloc] init];
         [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0
@@ -136,7 +136,7 @@
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if (visible)
+    if (isVisible)
     {
         [delegate itemView:self
           clickedWithEvent:theEvent];
@@ -149,7 +149,7 @@
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    if (visible)
+    if (isVisible)
     {
         [delegate itemView:self
           draggedWithEvent:theEvent];
@@ -162,13 +162,13 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-    highlighted = YES;
+    isHightlighted = YES;
     [self setNeedsDisplay:YES];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
-    highlighted = NO;
+    isHightlighted = NO;
     [self setNeedsDisplay:YES];
 }
 
@@ -176,7 +176,7 @@
 {
     CGRect viewBounds = [self bounds];
     
-    if (visible)
+    if (isVisible)
     {
         NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
         NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
@@ -193,7 +193,7 @@
         [gradient drawInBezierPath:path
                              angle:90];
         
-        if (highlighted)
+        if (isHightlighted)
         {
             NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
                                                                   alpha:0.2];
@@ -210,7 +210,7 @@
         [clearColor set];
         [path fill];
         
-        if (backlit)
+        if (isBacklighted)
         {
             NSColor *highlightColor = [NSColor colorWithCalibratedRed:0.5
                                                                 green:0.5
@@ -236,6 +236,19 @@
     return YES;
 }
 
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+    isBacklighted = YES;
+    [self setNeedsDisplay:YES];
+    return [sender draggingSourceOperationMask];
+}
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender
+{
+    isBacklighted = NO;
+    [self setNeedsDisplay:YES];
+}
+
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
     NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
@@ -246,19 +259,6 @@
     [delegate itemView:self
         dropWithObject:copiedString];
     return YES;
-}
-
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
-{
-    backlit = YES;
-    [self setNeedsDisplay:YES];
-    return [sender draggingSourceOperationMask];
-}
-
-- (void)draggingExited:(id <NSDraggingInfo>)sender
-{
-    backlit = NO;
-    [self setNeedsDisplay:YES];
 }
 
 @end

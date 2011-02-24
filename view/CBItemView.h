@@ -6,12 +6,12 @@
     @private
     id delegate;
     NSTextField *textField;
-    NSButton *button;
+    NSButton *dismissButton;
     NSGradient *gradient;
     NSAttributedString *string;
-    BOOL visible;
-    BOOL highlighted;
-    BOOL backlit;
+    BOOL isVisible;
+    BOOL isHightlighted;
+    BOOL isBacklighted;
 }
 
 - (id <CBItemViewDelegate>)delegate;
@@ -24,7 +24,7 @@
 
 - (BOOL)isVisible;
 
-- (void)setVisible:(BOOL)isVisible;
+- (void)setVisible:(BOOL)visible;
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
                     object:(id <NSPasteboardWriting>)anObject;
@@ -53,11 +53,11 @@
 
 - (BOOL)ignoreModifierKeysWhileDragging;
 
-- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
-
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender;
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
 
 @end
 
