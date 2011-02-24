@@ -7,10 +7,11 @@
     id delegate;
     NSTextField *textField;
     NSButton *button;
-    NSAttributedString *string;
     NSGradient *gradient;
+    NSAttributedString *string;
     BOOL visible;
     BOOL highlighted;
+    BOOL backlit;
 }
 
 - (id <CBItemViewDelegate>)delegate;
@@ -52,9 +53,9 @@
 
 - (BOOL)ignoreModifierKeysWhileDragging;
 
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
-
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender;
 

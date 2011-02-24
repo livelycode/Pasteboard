@@ -35,14 +35,16 @@
 - (void)setVisible:(BOOL)isVisible
 {
     visible = isVisible;
-    if (visible)
+    if (isVisible)
     {
-        [self setAlphaValue:1];
+        [button setHidden:NO];
     }
     else
     {
-        [self setAlphaValue:0];
+        [button setHidden:YES];
     }
+    [button setNeedsDisplay:YES];
+    [self setNeedsDisplay:YES];
 }
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
@@ -85,7 +87,6 @@
                                                               owner:self
                                                            userInfo:nil];
         [self addTrackingArea:area];
-        
         
         CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
         CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
@@ -161,14 +162,12 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-    NSLog(@"in");
     highlighted = YES;
     [self setNeedsDisplay:YES];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
-    NSLog(@"out");
     highlighted = NO;
     [self setNeedsDisplay:YES];
 }
@@ -176,30 +175,51 @@
 - (void)drawRect:(NSRect)aRect
 {
     CGRect viewBounds = [self bounds];
-    NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
-    NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
-    NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
-    NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
-        
-    NSBezierPath *path = [NSBezierPath bezierPath];
-    [path moveToPoint:leftBottom];
-    [path lineToPoint:rightBottom];
-    [path lineToPoint:rightTop];
-    [path lineToPoint:leftTop];
-    [path lineToPoint:leftBottom];
-    [path closePath];
-    [gradient drawInBezierPath:path
-                         angle:90];
     
-    if (highlighted)
+    if (visible)
     {
-        NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
-                                                              alpha:0.2];
-        [highlightColor set];
-        [path fill];
+        NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
+        NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
+        NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
+        NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
+        
+        NSBezierPath *path = [NSBezierPath bezierPath];
+        [path moveToPoint:leftBottom];
+        [path lineToPoint:rightBottom];
+        [path lineToPoint:rightTop];
+        [path lineToPoint:leftTop];
+        [path lineToPoint:leftBottom];
+        [path closePath];
+        [gradient drawInBezierPath:path
+                             angle:90];
+        
+        if (highlighted)
+        {
+            NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
+                                                                  alpha:0.2];
+            [highlightColor set];
+            [path fill];
+        }
+        
+        [textField setAttributedStringValue:string]; 
     }
-    
-    [textField setAttributedStringValue:string];
+    else
+    {
+        NSBezierPath *path = [NSBezierPath bezierPathWithRect:viewBounds];
+        NSColor *clearColor = [NSColor clearColor];
+        [clearColor set];
+        [path fill];
+        
+        if (backlit)
+        {
+            NSColor *highlightColor = [NSColor colorWithCalibratedRed:0.5
+                                                                green:0.5
+                                                                 blue:1
+                                                                alpha:0.2];
+            [highlightColor set];
+            [path fill];
+        }
+    }
 }
 
 @end
@@ -216,11 +236,6 @@
     return YES;
 }
 
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
-{
-    return [sender draggingSourceOperationMask];
-}
-
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
 {
     NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
@@ -233,9 +248,17 @@
     return YES;
 }
 
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+    backlit = YES;
+    [self setNeedsDisplay:YES];
+    return [sender draggingSourceOperationMask];
+}
+
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
-    NSLog(@"exit");
+    backlit = NO;
+    [self setNeedsDisplay:YES];
 }
 
 @end
