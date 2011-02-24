@@ -10,10 +10,10 @@
     {
         clipboard = [[CBClipboard alloc] initWithCapacity:8];
       
-        clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame	
+        clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame
+                                                       padding:20
                                                           Rows:4
                                                        Columns:2];
-        [clipboardView setPadding:20];
         [clipboardView setDelegate:self];
         [viewController addSubview:clipboardView];
     }

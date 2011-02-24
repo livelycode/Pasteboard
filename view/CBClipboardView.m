@@ -10,13 +10,15 @@
 - (id)init
 {
     return [self initWithFrame:CGRectZero
+                       padding:0
                           Rows:0
                        Columns:0];
 }
 
 - (id)initWithFrame:(CGRect)aFrame
+            padding:(CGFloat)thePadding
                Rows:(NSUInteger)numberRows
-            Columns:(NSUInteger)numberColumns;
+            Columns:(NSUInteger)numberColumns
 {
     self = [super initWithFrame:aFrame];
     if (self != nil)
@@ -24,19 +26,36 @@
         rows = numberRows;
         columns = numberColumns;
         
+        CGRect mainBounds = [self bounds];
+        CGFloat itemWidth = (mainBounds.size.width - ((columns + 1) * thePadding)) / columns;
+        CGFloat itemHeight = (mainBounds.size.height - ((rows + 1) * thePadding)) / rows;
+        
+        CGPoint origin = CGPointMake(thePadding, (mainBounds.size.height - itemHeight - thePadding));
+        NSUInteger currentRow = 0;
+        NSUInteger currentColumn = 0;
+        
         NSUInteger numberItems = rows * columns;
         itemViews = [NSMutableArray arrayWithCapacity:numberItems];
         while (numberItems != 0)
         {
-            CBItemView *itemView = [[CBItemView alloc] initWithFrame:CGRectZero];
+            CGFloat x = origin.x + (currentColumn * (itemWidth + thePadding));
+            CGFloat y = origin.y - (currentRow * (itemHeight + thePadding));
+            CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
+            
+            currentColumn = currentColumn + 1;
+            if (currentColumn >= columns)
+            {
+                currentColumn = 0;
+                currentRow = currentRow + 1;
+            }
+            
+            CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame];
             [itemView setVisible:NO];
             [itemView setDelegate:self];
             [itemViews addObject:itemView];
             [self addSubview:itemView];
             numberItems = numberItems - 1;
         }
-        
-        [self setPadding:0];
     }
     return self;
 }
@@ -76,27 +95,7 @@
 
 - (void)setPadding:(CGFloat)thePadding
 {
-    CGRect mainBounds = [self bounds];
-    CGFloat itemWidth = (mainBounds.size.width - ((columns + 1) * thePadding)) / columns;
-    CGFloat itemHeight = (mainBounds.size.height - ((rows + 1) * thePadding)) / rows;
     
-    CGPoint origin = CGPointMake(thePadding, (mainBounds.size.height - itemHeight - thePadding));
-    NSUInteger currentRow = 0;
-    NSUInteger currentColumn = 0;
-    
-    for (NSView *itemView in itemViews)
-    {
-        CGFloat x = origin.x + (currentColumn * (itemWidth + thePadding));
-        CGFloat y = origin.y - (currentRow * (itemHeight + thePadding));
-        CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
-        [itemView setFrame:itemFrame];
-        currentColumn = currentColumn + 1;
-        if (currentColumn >= columns)
-        {
-            currentColumn = 0;
-            currentRow = currentRow + 1;
-        }
-    }
 }
 
 - (NSUInteger)itemViews

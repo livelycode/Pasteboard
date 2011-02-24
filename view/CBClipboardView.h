@@ -16,6 +16,7 @@
 - (id)init;
 
 - (id)initWithFrame:(CGRect)aFrame
+            padding:(CGFloat)thePadding
                Rows:(NSUInteger)numberRows
             Columns:(NSUInteger)numberColumns;
 	
