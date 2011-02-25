@@ -39,7 +39,7 @@
   //start Server in new thread
   [self searchRemotes];
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
-  //[serverThread start];
+  [serverThread start];
   return self;
 }
 
@@ -79,6 +79,8 @@
   if([clients containsObject: newClient] == NO) {
     NSLog(@"added client: %@", [newClient URL]);
     [clients addObject: newClient];    
+  } else {
+    NSLog(@"client already added: %@", [newClient URL]);
   }
 }
 

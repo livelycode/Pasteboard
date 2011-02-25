@@ -62,6 +62,23 @@
 - (NSURL*)URL {
   return url;
 }
+
+- (BOOL)isEqual:(id)anObject {
+  if([anObject respondsToSelector:@selector(URL)]) {
+    if([[self URL] isEqual: [anObject URL]]) {
+      return YES;
+    } else {
+      return NO;
+    }
+  } else {
+    return NO;
+  }
+}
+
+- (NSUInteger)hash {
+  return [[url absoluteString] hash];
+}
+
 - (void)dealloc
 {
     [super dealloc];
