@@ -1,0 +1,24 @@
+
+common:
+  controller:
+  - ClipboardController
+  model:
+  - Clipboard
+  - Item
+  syncing:
+  - RemoteCloudboard
+  - SyncController
+
+only OS X:
+  - main
+  controller:
+  - ApplicationController
+  - HotKeyObserver
+  - MainWindowController
+  - PasteboardObserver
+
+
+only iOS:
+  - main
+  controller:
+  - ApplicationController

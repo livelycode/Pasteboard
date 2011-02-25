@@ -8,22 +8,23 @@
 
 #import <Foundation/Foundation.h>
 #import "Cloudboard.h"
+@class CBRemoteCloudboard;
 
 @interface CBSyncController : NSObject {
 @private
   NSNetServiceBrowser *serviceBrowser;
   NSTimer *timer;
-  NSNetService *service;
+  NSNetService *serverService;
   NSMutableArray *clients;
-  NSInteger myPort;
-  NSString *myServiceName;
+  NSURL* myAddress;
+  NSString* myServiceName;
   CBClipboardController *clipboardController;
 }
 - (id) initWithClipboardController: (CBClipboardController*)controller;
 - (void)launchHTTPServer;
 - (void) searchRemotes;
-- (void) addClient: (NSURL*) client;
-- (void) registerAsClientOf: (NSURL*) server;
+- (void) addClient: (CBRemoteCloudboard*)client;
+- (void) registerAsClientOf: (CBRemoteCloudboard*)server;
 - (void) syncItem: (CBItem*)item atIndex: (NSInteger)index;
 - (NSURL*) URL;
 @end

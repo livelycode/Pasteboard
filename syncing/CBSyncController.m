@@ -22,22 +22,35 @@
   serviceBrowser = [[NSNetServiceBrowser alloc] init];
   [serviceBrowser setDelegate:self];
   clients = [NSMutableArray array];
-  [self searchRemotes];
-  myServiceName = [NSMutableString string];
-  myPort = 8090;
-  [myServiceName appendString: @"Cloudboard Server "];
-  [myServiceName appendString: [[NSHost currentHost] name]];
+  
+  NSUInteger myPort = 8090;
+  NSMutableString *URLString = [NSMutableString string];
+  [URLString appendString:@"http://"];
+  [URLString appendString:[[NSHost currentHost] name]];
+  [URLString appendString:@":"];
+  [URLString appendString:[[NSNumber numberWithUnsignedInteger: myPort] stringValue]];
+  myAddress = [NSURL URLWithString:URLString];
+  
+  NSMutableString* tempServiceString = [NSMutableString string];
+  [tempServiceString appendString: @"Cloudboard Server "];
+  [tempServiceString appendString: [myAddress host]];
+  myServiceName = [NSString stringWithString:tempServiceString];
   //start Server in new thread
+  [self searchRemotes];
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
-  [serverThread start];
+  //[serverThread start];
   return self;
+}
+
+-(NSURL*) URL {
+  return myAddress;
 }
 
 - (void)launchHTTPServer {
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
-  [server setName:myServiceName];
-  [server setPort: myPort];
+  [server setName: myServiceName];
+  [server setPort: [myAddress port]];
   HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
@@ -56,60 +69,40 @@
 }
 
 
-- (void) setService: (NSNetService*) newService {
-  service = newService;
+- (void) setServerService: (NSNetService*) newService {
+  serverService = newService;
   [self resolveService];
 }
 
-- (void) addClient: (NSURL*) client {
-  if([clients containsObject: client] == NO) {
-    NSLog(@"added client: %@", client);
-    [clients addObject: client];    
+- (void) addClient: (CBRemoteCloudboard*) newClient {
+  if([clients containsObject: newClient] == NO) {
+    NSLog(@"added client: %@", newClient);
+    [clients addObject: newClient];    
   }
 }
 
-- (void) registerAsClientOf: (NSURL*) server {
-  NSURL* myHost = [self urlWithHost: [[NSHost currentHost] name] port: myPort];
-  NSURL *requestURL = [server URLByAppendingPathComponent:@"register"];
+- (void) registerAsClientOf: (CBRemoteCloudboard*)server {
+  NSURL *requestURL = [[server URL] URLByAppendingPathComponent:@"register"];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:[[myHost absoluteString] dataUsingEncoding: NSUTF8StringEncoding]];
+  [URLRequest setHTTPBody:[[myAddress absoluteString] dataUsingEncoding: NSUTF8StringEncoding]];
   NSURLResponse *URLResponse = nil;
   NSError *receivedError = nil;
   NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
                                                returningResponse:&URLResponse
                                                            error:&receivedError];
   NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  [self addClient:server];
 }
 
 - (void) resolveService {
-  [service setDelegate: self];
-  [service resolveWithTimeout:5];
-}
-
-- (NSURL *)urlWithHost: (NSString*)host port: (NSInteger)port
-{
-  NSMutableString *URLString = [NSMutableString string];
-  [URLString appendString:@"http://"];
-  [URLString appendString:host];
-  [URLString appendString:@":"];
-  [URLString appendString:[[NSNumber numberWithUnsignedInteger:port] stringValue]];
-  return [NSURL URLWithString:URLString];
+  [serverService setDelegate: self];
+  [serverService resolveWithTimeout:5];
 }
 
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(NSURL* client in clients) {
-    NSURL *requestURL = [client URLByAppendingPathComponent:[[NSNumber numberWithInt: index] stringValue]];
-    NSData* archivedItem = [NSArchiver archivedDataWithRootObject: [item string]];
-    NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
-    [URLRequest setHTTPMethod:@"POST"];
-    [URLRequest setHTTPBody:archivedItem];
-    NSURLResponse *URLResponse = nil;
-    NSError *receivedError = nil;
-    NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
-                                                 returningResponse:&URLResponse
-                                                             error:&receivedError];
-    NSLog(@"sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  for(CBRemoteCloudboard* client in clients) {
+    [client syncItem: item atIndex: index];
   }
 }
 
@@ -138,12 +131,7 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
   NSLog(@"found service: %@ on port: %i, more coming: %i", newService, [newService port], more);
   if([[newService name] hasPrefix: @"Cloudboard Server"] & ([[newService name] isEqual: myServiceName] == NO)) {
-      [self setService: newService];      
-  } else {
-   /* if((more == NO) && (service == nil)) {
-      [browser stop];
-      [NSTimer scheduledTimerWithTimeInterval:2 target: self selector:@selector(searchRemotes:) userInfo:nil repeats: NO];
-    }*/
+      [self setServerService: newService];      
   }
 }
 
@@ -159,9 +147,8 @@
 - (void)netServiceDidResolveAddress:(NSNetService *)netService {
   NSInteger port = [netService port];
   NSString *host = [netService hostName];
-  NSURL *client = [self urlWithHost:host port: port];
-  [self registerAsClientOf: client];
-  [self addClient: client];
+  CBRemoteCloudboard* newServer = [[CBRemoteCloudboard alloc] initWithHost:host port:port];
+  [newServer addClient:self];
 }
 
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {
