@@ -39,7 +39,7 @@
   //start Server in new thread
   [self searchRemotes];
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
-  //[serverThread start];
+  [serverThread start];
   return self;
 }
 
@@ -51,7 +51,7 @@
   HTTPServer *server = [[HTTPServer alloc] init];
   [server setType:@"_http._tcp."];
   [server setName: myServiceName];
-  [server setPort: [myAddress port]];
+  [server setPort: [[myAddress port] intValue]];
   HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
   [server setDelegate: connectionDelegate];
   
