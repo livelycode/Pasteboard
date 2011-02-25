@@ -74,12 +74,12 @@
         
         [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
         
-        CGRect viewBounds = [self bounds];
+        CGRect mainBounds = [self bounds];
                 
-        NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
-        NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
-        NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
-        NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
+        NSPoint leftBottom = NSMakePoint(mainBounds.origin.x, mainBounds.origin.y);
+        NSPoint leftTop = NSMakePoint(mainBounds.origin.x, mainBounds.size.height);
+        NSPoint rightBottom = NSMakePoint(mainBounds.size.width, mainBounds.origin.y);
+        NSPoint rightTop = NSMakePoint(mainBounds.size.width, mainBounds.size.height);
         notePath = [NSBezierPath bezierPath];
         [notePath moveToPoint:leftBottom];
         [notePath lineToPoint:rightBottom];
@@ -88,16 +88,16 @@
         [notePath lineToPoint:leftBottom];
         [notePath closePath];
         
-        CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
-        CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
+        CGFloat textWidth = mainBounds.size.width - (2 * TEXT_PADDING);
+        CGFloat textHeight = mainBounds.size.height - (2 * TEXT_PADDING);
         CGFloat textX = TEXT_PADDING;
         CGFloat textY = TEXT_PADDING;
         textRect = NSMakeRect(textX, textY, textWidth, textHeight);
         
         CGFloat buttonWidth = BUTTON_LENGTH;
         CGFloat buttonHeight = BUTTON_LENGTH;
-        CGFloat buttonX = viewBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
-        CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;
+        CGFloat buttonX = mainBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
+        CGFloat buttonY = mainBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;
         buttonRect = NSMakeRect(buttonX, buttonY, buttonWidth, buttonHeight);
         
         NSShadow *pageShadow = [[NSShadow alloc] init];
@@ -120,11 +120,11 @@
         
         NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
                                          NSTrackingActiveAlways);
-        NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:viewBounds
+        NSTrackingArea *mainArea = [[NSTrackingArea alloc] initWithRect:mainBounds
                                                             options:options
                                                               owner:self
                                                            userInfo:nil];
-        [self addTrackingArea:area];
+        [self addTrackingArea:mainArea];
     }
     return self;
 }
