@@ -11,10 +11,11 @@
     NSBezierPath *notePath;
     NSRect textRect;
     NSRect buttonRect;
-    
-    BOOL isVisible;
-    BOOL isHightlighted;
-    BOOL isBacklighted;
+            
+    BOOL noteVisible;
+    BOOL noteHightlighted;
+    BOOL noteBacklighted;
+    BOOL buttonIsHighlighted;
 }
 
 - (id <CBItemViewDelegate>)delegate;
@@ -25,9 +26,9 @@
 
 - (void)setText:(NSAttributedString *)aString;
 
-- (BOOL)isVisible;
+- (BOOL)isNoteVisible;
 
-- (void)setVisible:(BOOL)visible;
+- (void)setNoteVisible:(BOOL)visible;
 
 - (void)startDragWithEvent:(NSEvent *)anEvent
                     object:(id <NSPasteboardWriting>)anObject;

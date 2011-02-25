@@ -50,7 +50,7 @@
             }
             
             CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame];
-            [itemView setVisible:NO];
+            [itemView setNoteVisible:NO];
             [itemView setDelegate:self];
             [itemViews addObject:itemView];
             [self addSubview:itemView];
@@ -105,7 +105,7 @@
 
 - (BOOL)itemAtIndexIsVisible:(NSUInteger)anIndex
 {
-    return [[itemViews objectAtIndex:anIndex] isVisible];
+    return [[itemViews objectAtIndex:anIndex] isNoteVisible];
 }
 
 - (NSAttributedString *)stringForItemAtIndex:(NSUInteger)anIndex
@@ -128,14 +128,14 @@
 {
     for (CBItemView *itemView in itemViews)
     {
-        [itemView setVisible:NO];
+        [itemView setNoteVisible:NO];
     }
 }
 
 - (void)setVisible:(BOOL)isVisible
    forItemAtIndex:(NSUInteger)anIndex
 {
-    [[itemViews objectAtIndex:anIndex] setVisible:isVisible];
+    [[itemViews objectAtIndex:anIndex] setNoteVisible:isVisible];
 }
 
 - (NSUInteger)invisibleItemsUpToIndex:(NSUInteger)anIndex
@@ -147,7 +147,7 @@
     NSUInteger hiddenItemViews = 0;
     for (CBItemView *itemView in itemViewsCopy)
     {
-        if ([itemView isVisible] == NO)
+        if ([itemView isNoteVisible] == NO)
         {
             hiddenItemViews = hiddenItemViews + 1;
         }

@@ -3,6 +3,13 @@
 #define TEXT_PADDING 12
 #define BUTTON_PADDING 8
 #define BUTTON_LENGTH 16
+#define CROSS_PADDING 4
+
+static inline void
+drawButton(NSRect aRect)
+{
+    
+}
 
 @implementation CBItemView
 
@@ -27,14 +34,14 @@
     [self setNeedsDisplay:YES];
 }
 
-- (BOOL)isVisible
+- (BOOL)isNoteVisible
 {
-    return isVisible;
+    return noteVisible;
 }
 
-- (void)setVisible:(BOOL)visible
+- (void)setNoteVisible:(BOOL)visible
 {
-    isVisible = visible;
+    noteVisible = visible;
     [self setNeedsDisplay:YES];
 }
 
@@ -68,9 +75,9 @@
     {
         delegate = nil;
         
-        isVisible = YES;
-        isHightlighted = NO;
-        isBacklighted = NO;
+        noteVisible = YES;
+        noteHightlighted = NO;
+        noteBacklighted = NO;
         
         [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
         
@@ -120,21 +127,43 @@
         
         NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
                                          NSTrackingActiveAlways);
+        NSDictionary *mainData = [NSDictionary dictionaryWithObject:@"note"
+                                                              forKey:@"area"];
         NSTrackingArea *mainArea = [[NSTrackingArea alloc] initWithRect:mainBounds
                                                             options:options
                                                               owner:self
-                                                           userInfo:nil];
+                                                           userInfo:mainData];
         [self addTrackingArea:mainArea];
+        
+        NSDictionary *buttonData = [NSDictionary dictionaryWithObject:@"button"
+                                                              forKey:@"area"];
+        NSTrackingArea *buttonArea = [[NSTrackingArea alloc] initWithRect:buttonRect
+                                                                  options:options
+                                                                    owner:self
+                                                                 userInfo:buttonData];
+        [self addTrackingArea:buttonArea];
     }
     return self;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if (isVisible)
+    if (noteVisible)
     {
-        [delegate itemView:self
-          clickedWithEvent:theEvent];
+        NSPoint eventPoint = [theEvent locationInWindow];
+        NSPoint localPoint = [self convertPoint:eventPoint
+                                       fromView:nil];
+        if (NSPointInRect(localPoint, buttonRect))
+        {
+            [delegate itemView:self
+                 buttonClicked:@"dissmissButton"
+                     withEvent:nil];
+        }
+        else
+        {
+            [delegate itemView:self
+              clickedWithEvent:theEvent];
+        }
     }
     else
     {
@@ -144,7 +173,7 @@
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    if (isVisible)
+    if (noteVisible)
     {
         [delegate itemView:self
           draggedWithEvent:theEvent];
@@ -157,13 +186,30 @@
 
 - (void)mouseEntered:(NSEvent *)theEvent
 {
-    isHightlighted = YES;
+    NSDictionary *userData = [theEvent userData];
+    if ([[userData objectForKey:@"area"] isEqual:@"note"])
+    {
+        noteHightlighted = YES;
+    }
+    if ([[userData objectForKey:@"area"] isEqual:@"button"])
+    {
+        buttonIsHighlighted = YES;
+    }
+    
     [self setNeedsDisplay:YES];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent
 {
-    isHightlighted = NO;
+    NSDictionary *userData = [theEvent userData];
+    if ([[userData objectForKey:@"area"] isEqual:@"note"])
+    {
+        noteHightlighted = NO;
+    }
+    if ([[userData objectForKey:@"area"] isEqual:@"button"])
+    {
+        buttonIsHighlighted = NO;
+    }
     [self setNeedsDisplay:YES];
 }
 
@@ -171,20 +217,38 @@
 {
     CGRect viewBounds = [self bounds];
     
-    if (isVisible)
+    if (noteVisible)
     {
         [gradient drawInBezierPath:notePath
                              angle:90];
-        
         [string drawInRect:textRect];
         
-        if (isHightlighted)
+        if (noteHightlighted)
         {
             NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
                                                                   alpha:0.2];
             [highlightColor set];
             [notePath fill];
         }
+        
+        NSColor* buttonColor = [NSColor colorWithCalibratedWhite:0.3
+                                                           alpha:1];
+        if (buttonIsHighlighted)
+        {
+            buttonColor = [NSColor blackColor];
+
+        }
+        [buttonColor set];
+        
+        CGFloat leftX = buttonRect.origin.x + CROSS_PADDING;
+        CGFloat rightX = buttonRect.origin.x + buttonRect.size.width - CROSS_PADDING;
+        CGFloat bottomY = buttonRect.origin.y + CROSS_PADDING;
+        CGFloat topY = buttonRect.origin.y + buttonRect.size.height - CROSS_PADDING;
+        [NSBezierPath setDefaultLineWidth:3];
+        [NSBezierPath strokeLineFromPoint:NSMakePoint(leftX, bottomY)
+                                  toPoint:NSMakePoint(rightX, topY)];
+        [NSBezierPath strokeLineFromPoint:NSMakePoint(rightX, bottomY)
+                                  toPoint:NSMakePoint(leftX, topY)];
     }
     else
     {
@@ -193,7 +257,7 @@
         [clearColor set];
         [path fill];
         
-        if (isBacklighted)
+        if (noteBacklighted)
         {
             NSColor *highlightColor = [NSColor colorWithCalibratedRed:0.5
                                                                 green:0.5
@@ -221,14 +285,14 @@
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
-    isBacklighted = YES;
+    noteBacklighted = YES;
     [self setNeedsDisplay:YES];
     return [sender draggingSourceOperationMask];
 }
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
-    isBacklighted = NO;
+    noteBacklighted = NO;
     [self setNeedsDisplay:YES];
 }
 
