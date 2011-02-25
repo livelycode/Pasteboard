@@ -54,8 +54,8 @@
     NSData* body = (NSData*) CFHTTPMessageCopyBody(message);
     if([path isEqual:@"register"]) {
       NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
-      NSURL* clientURL = [NSURL URLWithString: clientName];
-      [syncController addClient:clientURL];
+      CBRemoteCloudboard* newClient = [[CBRemoteCloudboard alloc] initWithURL: [NSURL URLWithString: clientName]];
+      [syncController addClient:newClient];	
       responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
     } else {
       // Set clipboard item at URL

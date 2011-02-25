@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "Cloudboard.h"
 
 @interface CBRemoteCloudboard : NSObject {
 @private
-    
+  NSURL* url;
 }
-
+- (id)initWithURL:(NSURL*)url;
+- (id)initWithHost:(NSString*)host port:(NSInteger)port;
+- (void)addClient:(CBSyncController*)client;
+- (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
+- (NSURL*)URL;
 @end
