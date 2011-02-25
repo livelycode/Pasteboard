@@ -5,10 +5,13 @@
 {
     @private
     id delegate;
-    NSTextField *textField;
-    NSButton *dismissButton;
-    NSGradient *gradient;
     NSAttributedString *string;
+    
+    NSGradient *gradient;
+    NSBezierPath *notePath;
+    NSRect textRect;
+    NSRect buttonRect;
+    
     BOOL isVisible;
     BOOL isHightlighted;
     BOOL isBacklighted;
