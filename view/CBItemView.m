@@ -34,8 +34,8 @@
 
 - (void)setVisible:(BOOL)visible
 {
-    visible = visible;
-    if (visible)
+    isVisible = visible;
+    if (isVisible)
     {
         [dismissButton setHidden:NO];
     }
