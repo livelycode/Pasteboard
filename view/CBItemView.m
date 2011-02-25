@@ -35,15 +35,6 @@
 - (void)setVisible:(BOOL)visible
 {
     isVisible = visible;
-    if (isVisible)
-    {
-        [dismissButton setHidden:NO];
-    }
-    else
-    {
-        [dismissButton setHidden:YES];
-    }
-    [dismissButton setNeedsDisplay:YES];
     [self setNeedsDisplay:YES];
 }
 
@@ -76,40 +67,38 @@
     if (self != nil)
     {
         delegate = nil;
+        
         isVisible = YES;
         isHightlighted = NO;
+        isBacklighted = NO;
+        
+        [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
         
         CGRect viewBounds = [self bounds];
-        NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
-                                         NSTrackingActiveAlways);
-        NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:viewBounds
-                                                            options:options
-                                                              owner:self
-                                                           userInfo:nil];
-        [self addTrackingArea:area];
+                
+        NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
+        NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
+        NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
+        NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
+        notePath = [NSBezierPath bezierPath];
+        [notePath moveToPoint:leftBottom];
+        [notePath lineToPoint:rightBottom];
+        [notePath lineToPoint:rightTop];
+        [notePath lineToPoint:leftTop];
+        [notePath lineToPoint:leftBottom];
+        [notePath closePath];
         
         CGFloat textWidth = viewBounds.size.width - (2 * TEXT_PADDING);
         CGFloat textHeight = viewBounds.size.height - (2 * TEXT_PADDING);
         CGFloat textX = TEXT_PADDING;
         CGFloat textY = TEXT_PADDING;
-        textField = [[NSTextField alloc] initWithFrame:CGRectMake(textX, textY, textWidth, textHeight)];
-        [textField setBordered:NO];
-        [textField setBackgroundColor:[NSColor clearColor]];
-        [textField setSelectable:NO];
-        [self addSubview:textField];
+        textRect = NSMakeRect(textX, textY, textWidth, textHeight);
         
         CGFloat buttonWidth = BUTTON_LENGTH;
         CGFloat buttonHeight = BUTTON_LENGTH;
         CGFloat buttonX = viewBounds.size.width - BUTTON_LENGTH - BUTTON_PADDING;
         CGFloat buttonY = viewBounds.size.height - BUTTON_LENGTH - BUTTON_PADDING;
-        dismissButton = [[NSButton alloc] initWithFrame:CGRectMake(buttonX, buttonY, buttonWidth, buttonHeight)];
-        [dismissButton setImage:[NSImage imageNamed:NSImageNameStopProgressTemplate]];
-        [dismissButton setButtonType:NSMomentaryChangeButton];
-        [dismissButton setBordered:NO];
-        [[dismissButton cell] setImageScaling:NSImageScaleProportionallyDown];
-        [dismissButton setAction:@selector(dismiss)];
-        [dismissButton setTarget:self];
-        [self addSubview:dismissButton];	
+        buttonRect = NSMakeRect(buttonX, buttonY, buttonWidth, buttonHeight);
         
         NSShadow *pageShadow = [[NSShadow alloc] init];
         [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0
@@ -129,7 +118,13 @@
         gradient = [[NSGradient alloc] initWithStartingColor:startingColor
                                                  endingColor:endingColor];
         
-        [self registerForDraggedTypes:[NSArray arrayWithObject:NSPasteboardTypeString]];
+        NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited|
+                                         NSTrackingActiveAlways);
+        NSTrackingArea *area = [[NSTrackingArea alloc] initWithRect:viewBounds
+                                                            options:options
+                                                              owner:self
+                                                           userInfo:nil];
+        [self addTrackingArea:area];
     }
     return self;
 }
@@ -178,30 +173,18 @@
     
     if (isVisible)
     {
-        NSPoint leftBottom = NSMakePoint(viewBounds.origin.x, viewBounds.origin.y);
-        NSPoint leftTop = NSMakePoint(viewBounds.origin.x, viewBounds.size.height);
-        NSPoint rightBottom = NSMakePoint(viewBounds.size.width, viewBounds.origin.y);
-        NSPoint rightTop = NSMakePoint(viewBounds.size.width, viewBounds.size.height);
-        
-        NSBezierPath *path = [NSBezierPath bezierPath];
-        [path moveToPoint:leftBottom];
-        [path lineToPoint:rightBottom];
-        [path lineToPoint:rightTop];
-        [path lineToPoint:leftTop];
-        [path lineToPoint:leftBottom];
-        [path closePath];
-        [gradient drawInBezierPath:path
+        [gradient drawInBezierPath:notePath
                              angle:90];
+        
+        [string drawInRect:textRect];
         
         if (isHightlighted)
         {
             NSColor *highlightColor = [NSColor colorWithCalibratedWhite:1
                                                                   alpha:0.2];
             [highlightColor set];
-            [path fill];
+            [notePath fill];
         }
-        
-        [textField setAttributedStringValue:string]; 
     }
     else
     {
