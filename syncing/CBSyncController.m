@@ -35,6 +35,7 @@
   [tempServiceString appendString: @"Cloudboard Server "];
   [tempServiceString appendString: [myAddress host]];
   myServiceName = [NSString stringWithString:tempServiceString];
+  
   //start Server in new thread
   [self searchRemotes];
   NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
@@ -76,7 +77,7 @@
 
 - (void) addClient: (CBRemoteCloudboard*) newClient {
   if([clients containsObject: newClient] == NO) {
-    NSLog(@"added client: %@", newClient);
+    NSLog(@"added client: %@", [newClient URL]);
     [clients addObject: newClient];    
   }
 }

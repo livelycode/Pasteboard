@@ -31,6 +31,7 @@
 }
 
 - (void)addClient:(CBSyncController*)client {
+  NSLog(@"register as client of: %@", [self URL]);
   NSURL *requestURL = [url URLByAppendingPathComponent:@"register"];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
