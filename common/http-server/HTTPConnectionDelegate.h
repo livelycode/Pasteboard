@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Cloudboard.h"
 
-@class HTTPServer, HTTPConnection;
+@class HTTPServer, HTTPConnection, CBSyncController;
 
 @interface HTTPConnectionDelegate : NSObject {
 @private
