@@ -19,9 +19,11 @@
 #define BACKLIGHT_BLUE 1
 #define BACKLIGHT_ALPHA 0.2
 
-#define SHADOW_ALPHA 0.5
-#define SHADOW_BLUR 2
+#define SHADOW_ALPHA 0.8
+#define SHADOW_BLUR 3
 #define SHADOW_OFFSET -4
+
+#define BORDER_ALPHA 1
 
 @implementation CBItemView
 
