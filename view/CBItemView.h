@@ -3,19 +3,25 @@
 
 @interface CBItemView : NSView
 {
-    @private
-    id delegate;
-    NSAttributedString *string;
-    
-    NSGradient *gradient;
-    NSBezierPath *notePath;
-    NSRect textRect;
-    NSRect buttonRect;
-            
-    BOOL noteVisible;
-    BOOL noteHightlighted;
-    BOOL noteBacklighted;
-    BOOL buttonIsHighlighted;
+  @private
+  id delegate;
+  NSAttributedString *string;
+  
+  NSBezierPath *notePath;
+  NSBezierPath *crossPath;
+  NSRect textRect;
+  NSRect buttonRect;
+  
+  NSColor *noteDarkColor;
+  NSColor *noteLightColor;
+  NSColor *crossDarkColor;
+  NSColor *crossLightColor;
+  NSColor *backlightColor;
+          
+  BOOL noteVisible;
+  BOOL noteHightlighted;
+  BOOL noteBacklighted;
+  BOOL buttonIsHighlighted;
 }
 
 - (id <CBItemViewDelegate>)delegate;
@@ -62,11 +68,5 @@
 - (void)draggingExited:(id <NSDraggingInfo>)sender;
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
-
-@end
-
-@interface CBItemView(Private)
-
-- (void)dismiss;
 
 @end
