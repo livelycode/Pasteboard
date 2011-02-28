@@ -13,7 +13,6 @@
 @interface CBSyncController : NSObject {
 @private
   NSNetServiceBrowser *serviceBrowser;
-  NSTimer *timer;
   NSNetService *serverService;
   NSMutableArray *clients;
   NSURL* myAddress;

@@ -18,10 +18,10 @@
       // Initialization code here.
   }
   [controller addChangeListener: self];
-  clipboardController = controller;
+  clipboardController = [controller retain];
   serviceBrowser = [[NSNetServiceBrowser alloc] init];
   [serviceBrowser setDelegate:self];
-  clients = [NSMutableArray array];
+  clients = [[NSMutableArray alloc] init];
   
   NSUInteger myPort = 8090;
   NSMutableString *URLString = [NSMutableString string];
@@ -29,12 +29,12 @@
   [URLString appendString:[[NSHost currentHost] name]];
   [URLString appendString:@":"];
   [URLString appendString:[[NSNumber numberWithUnsignedInteger: myPort] stringValue]];
-  myAddress = [NSURL URLWithString:URLString];
+  myAddress = [[NSURL URLWithString:URLString] retain];
   
   NSMutableString* tempServiceString = [NSMutableString string];
   [tempServiceString appendString: @"Cloudboard Server "];
   [tempServiceString appendString: [myAddress host]];
-  myServiceName = [NSString stringWithString:tempServiceString];
+  myServiceName = [[NSString alloc] initWithString:tempServiceString];
   
   //start Server in new thread
   [self searchRemotes];
@@ -71,7 +71,8 @@
 
 
 - (void) setServerService: (NSNetService*) newService {
-  serverService = newService;
+  [serverService autorelease];
+  serverService = [newService retain];
   [self resolveService];
 }
 
@@ -111,7 +112,13 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+  [serviceBrowser release];
+  [serverService release];
+  [clients release];
+  [myAddress release];
+  [myServiceName release];
+  [clipboardController release];
+  [super dealloc];
 }
 
 @end
