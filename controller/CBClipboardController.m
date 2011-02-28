@@ -60,7 +60,14 @@
 
 - (void)addChangeListener:(id)anObject
 {
-    changeListener = anObject;
+    changeListener = [anObject retain];
+}
+
+- (void)dealloc {
+  [clipboard release];
+  [clipboardView release];
+  [changeListener release];
+  [super dealloc];
 }
 
 @end
