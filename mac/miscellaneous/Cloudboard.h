@@ -14,3 +14,4 @@
 #import "CBItemView.h"
 #import "CBClipboardView.h"
 #import "CBWindowView.h"
+#import "CBSettingsController.h"
