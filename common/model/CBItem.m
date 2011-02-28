@@ -7,7 +7,7 @@
     self = [super init];
     if (self != nil)
     {
-        string = aString;
+        string = [aString retain];
     }
     return self;
 }
@@ -33,6 +33,11 @@
 - (NSUInteger)hash
 {
     return [string hash];
+}
+
+- (void)dealloc {
+  [string release];
+  [super dealloc];
 }
 
 @end

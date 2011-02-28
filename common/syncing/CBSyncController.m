@@ -29,7 +29,7 @@
   [URLString appendString:[[NSHost currentHost] name]];
   [URLString appendString:@":"];
   [URLString appendString:[[NSNumber numberWithUnsignedInteger: myPort] stringValue]];
-  myAddress = [[NSURL URLWithString:URLString] retain];
+  myAddress = [[NSURL alloc] initWithString:URLString];
   
   NSMutableString* tempServiceString = [NSMutableString string];
   [tempServiceString appendString: @"Cloudboard Server "];

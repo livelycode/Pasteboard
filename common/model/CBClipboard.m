@@ -12,7 +12,7 @@
     self = [super init];
     if (self != nil)
     {
-        items = [NSMutableArray array];
+        items = [[NSMutableArray alloc] init];
         capacity = aCapacity;
     }
     return self;
@@ -43,6 +43,11 @@
 - (NSArray *)items
 {
   	return [NSArray arrayWithArray:items];
+}
+
+- (void)dealloc {
+  [items release];
+  [super dealloc];
 }
 
 @end
