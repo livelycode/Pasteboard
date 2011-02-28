@@ -6,11 +6,12 @@
 
 @interface CBClipboardView : NSView
 {
-    @private
-    id delegate;
-    NSMutableArray *itemViews;
-    NSUInteger rows;
-    NSUInteger columns;
+  @private
+  id delegate;
+  NSMutableArray *itemViews;
+  NSUInteger rows;
+  NSUInteger columns;
+  NSButton *settingsButton;
 }	
 
 - (id)init;
