@@ -15,7 +15,7 @@
     CBPasteboardObserver *pasteboardObserver;		
     CBHotKeyObserver *hotKey;
     CBClipboardController *syncingClipboardController;
-    CBMainWindowController *windowController;
+    UIWindow *window;
     CBSyncController *syncController;
     HTTPConnectionDelegate *connectionDelegate;
     NSArray *pasteboardClasses;
