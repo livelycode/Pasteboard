@@ -8,14 +8,14 @@
     self = [super init];
     if (self != nil)
     {
-        clipboard = [[CBClipboard alloc] initWithCapacity:8];
+      clipboard = [[CBClipboard alloc] initWithCapacity:8];
       
-        clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame
-                                                       padding:20
-                                                          Rows:4
-                                                       Columns:2];
-        [clipboardView setDelegate:self];
-        [viewController addSubview:clipboardView];
+      clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame
+                                                     padding:20
+                                                        Rows:4
+                                                     Columns:2];
+      [clipboardView setDelegate:self];
+      [viewController addSubview:clipboardView];
     }
     return self;
 }

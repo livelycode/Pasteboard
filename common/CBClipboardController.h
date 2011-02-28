@@ -3,6 +3,7 @@
 
 @class CBClipboard;
 @class CBClipboardView;
+@class CBSettingsController;
 
 @interface CBClipboardController : NSObject
 {
@@ -10,6 +11,8 @@
     CBClipboard *clipboard;
     CBClipboardView *clipboardView;
     id changeListener;
+    CBSettingsController *settingsController;
+    NSButton *settingsButton;
 }
 							
 - (id)initWithFrame:(CGRect)aFrame
