@@ -14,11 +14,9 @@
     @private
     CBPasteboardObserver *pasteboardObserver;		
     CBHotKeyObserver *hotKey;
-    CBClipboard *leftClipboard;
     CBClipboardController *historyClipboardController;
     CBClipboardController *syncingClipboardController;
     CBMainWindowController *windowController;
-    CBClipboardController *clipboardController;
     CBSyncController *syncController;
     HTTPConnectionDelegate *connectionDelegate;
     NSArray *pasteboardClasses;

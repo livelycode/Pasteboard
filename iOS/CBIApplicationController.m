@@ -10,16 +10,14 @@
   CGFloat marginBottom = 90;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
-  CGRect leftFrame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
-  CGRect rightFrame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
-  historyClipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame viewController: self];
-  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: rightFrame viewController: self];
+  CGRect frame = CGRectMake(screenWidth - marginSide - clipboardWidth, marginBottom, clipboardWidth, clipboardHeight);
+  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: frame viewController: self];
 }
 
 -(void) initPasteboardObserver {
   CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
   pasteboardObserver = [[CBPasteboardObserver alloc] init];
-  pasteboardClasses = [NSArray arrayWithObject:[NSAttributedString class]];
+  pasteboardClasses = [[NSArray alloc] initWithObject:[NSAttributedString class]];
   [pasteboardObserver setDelegate:self];
   [pasteboardObserver observeWithTimeInterval:time];
 }
