@@ -15,7 +15,7 @@
 {
     self = [super init];
     if (self) {
-      url = baseURL;
+      url = [baseURL retain];
     }
     return self;
 }
@@ -81,7 +81,8 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+  [url release];
+  [super dealloc];
 }
 
 @end

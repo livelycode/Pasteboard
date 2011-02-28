@@ -16,6 +16,6 @@
 - (id)initWithURL:(NSURL*)url;
 - (id)initWithHost:(NSString*)host port:(NSInteger)port;
 - (void)addClient:(CBSyncController*)client;
-- (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
+- (void)syncItem: (CBItem*)item atIndex: (NSUInteger)index;
 - (NSURL*)URL;
 @end
