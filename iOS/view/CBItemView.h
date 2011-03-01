@@ -1,16 +1,15 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@interface CBItemView : NSView
+@interface CBItemView : UIView
 {
     @private
     id delegate;
     NSAttributedString *string;
     
-    NSGradient *gradient;
-    NSBezierPath *notePath;
-    NSRect textRect;
-    NSRect buttonRect;
+    UIBezierPath *notePath;
+    CGRect textRect;
+    CGRect buttonRect;
             
     BOOL noteVisible;
     BOOL noteHightlighted;
@@ -30,38 +29,15 @@
 
 - (void)setNoteVisible:(BOOL)visible;
 
-- (void)startDragWithEvent:(NSEvent *)anEvent
-                    object:(id <NSPasteboardWriting>)anObject;
-
 @end
 
 @interface CBItemView(Overridden)
 
-- (id)initWithFrame:(NSRect)aRect;
-
-- (void)mouseDown:(NSEvent *)theEvent;
-
-- (void)mouseDragged:(NSEvent *)theEvent;
-
-- (void)mouseEntered:(NSEvent *)theEvent;
-
-- (void)mouseExited:(NSEvent *)theEvent;
-
-- (void)drawRect:(NSRect)aRect;
 
 @end
 
 @interface CBItemView(Delegation)
 
-- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal;
-
-- (BOOL)ignoreModifierKeysWhileDragging;
-
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
-
-- (void)draggingExited:(id <NSDraggingInfo>)sender;
-
-- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
 
 @end
 

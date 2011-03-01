@@ -96,30 +96,4 @@
                forItemAtIndex:anIndex];
 }
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-   didReceiveDragging:(NSEvent *)theEvent
-       forItemAtIndex:(NSUInteger)anIndex;
-{
-    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-    NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
-    [clipboardView startDragOperationWithEvent:theEvent
-                                        object:string
-                                forItemAtIndex:anIndex];
-}
-
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-       didReceiveDrop:(id <NSPasteboardReading>)anObject
-      fromItemAtIndex:(NSUInteger)anIndex
-{
-    [clipboardView setVisible:YES
-               forItemAtIndex:anIndex];
-    [clipboardView setString:anObject
-              forItemAtIndex:anIndex];
-    
-    CBItem *newItem = [[CBItem alloc] initWithString:anObject];
-    NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-    [clipboard insertItem:newItem
-                  atIndex:newIndex];
-}
-
 @end

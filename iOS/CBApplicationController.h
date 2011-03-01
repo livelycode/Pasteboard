@@ -1,5 +1,4 @@
 #import "Cocoa.h"
-#import "CBPasteboardObserver.h"
 
 @class CBClipboard;
 @class CBClipboardController;
@@ -9,11 +8,9 @@
 @class HTTPConnectionDelegate;
 @class CBSyncController;
 
-@interface CBApplicationController : NSObject 
+@interface CBApplicationController : NSObject <UIApplicationDelegate>
 {
     @private
-    CBPasteboardObserver *pasteboardObserver;		
-    CBHotKeyObserver *hotKey;
     CBClipboardController *syncingClipboardController;
     UIWindow *window;
     CBSyncController *syncController;
@@ -23,15 +20,6 @@
 }
 - (void)initClipboards;
 - (void)initPasteboardObserver;
-- (void)addSubview: (NSView*) view;
+- (void)addSubview: (UIView*) view;
 - (void)startSyncing;
-@end
-
-@interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
-//NSApplicationDelegate
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
-
-//CBPasteboardOberserverDelegate
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
-
 @end
