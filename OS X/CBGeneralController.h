@@ -2,7 +2,7 @@
 
 @interface CBGeneralController : NSViewController {
 @private
-    
+  
 }
 
 @end

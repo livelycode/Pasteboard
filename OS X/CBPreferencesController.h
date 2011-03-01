@@ -1,10 +1,16 @@
 #import "Cocoa.h"
 
+@class CBGeneralController;
+@class CBDevicesController;
+
 @interface CBPreferencesController : NSWindowController {
   @private
-  NSWindowController *windowController;
+  CBGeneralController *generalController;
+  CBDevicesController *devicesController;
 }
 
+- (IBAction)showGeneralViewAnimated:(BOOL)performAnimation;
 
+- (IBAction)showDevicesView;
 
 @end
