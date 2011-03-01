@@ -11,22 +11,40 @@
       generalController = [[CBGeneralController alloc] initWithNibName:@"general" bundle:nil];
       devicesController = [[CBDevicesController alloc] initWithNibName:@"devices" bundle:nil];
       
-      [self showGeneralViewAnimated:YES];
+      [self showGeneralView:nil];
     }
     return self;
 }
 
-- (IBAction)showGeneralViewAnimated:(BOOL)performAnimation {
-  CGRect newFrame = CGRectZero;
-  CGPoint newOrigin =CGPointMake(500, 500);
-  CGSize newSize = [[generalController view] frame].size;
-  newFrame.size = newSize;
-  newFrame.origin = newOrigin;
-  [[self window] setFrame:newFrame display:YES animate:performAnimation];
+- (void)windowDidLoad {
+  [[[self window] toolbar] validateVisibleItems];
 }
 
-- (IBAction)showDevicesView {
-  
+- (IBAction)showGeneralView:(id)sender {
+  NSView *contentView = [[self window] contentView];
+  NSView *generalView = [generalController view];
+  [self resizeWindowWithViewFrame:[generalView frame]];
+  [contentView setSubviews:[NSArray arrayWithObject:generalView]];
+}
+
+- (IBAction)showDevicesView:(id)sender {
+  NSView *contentView = [[self window] contentView];
+  NSView *devicesView = [devicesController view];
+  [self resizeWindowWithViewFrame:[devicesView frame]];
+  [contentView setSubviews:[NSArray arrayWithObject:devicesView]];
+}
+
+- (void)resizeWindowWithViewFrame:(NSRect)newFrame
+{
+  CGRect windowFrame = [[self window] frame];
+  CGRect viewFrame = [[[self window] contentView] frame];
+  CGFloat titleBarHeight = CGRectGetHeight(windowFrame) - CGRectGetHeight(viewFrame);
+  CGFloat x = CGRectGetMinX(windowFrame);
+  CGFloat y = CGRectGetMinY(windowFrame) + titleBarHeight;
+  CGFloat width = CGRectGetWidth(newFrame);
+  CGFloat height = CGRectGetHeight(newFrame) + titleBarHeight;
+  CGRect newWindowFrame = CGRectMake(x, y, width, height);
+  [[self window] setFrame:newWindowFrame display:YES animate:YES];
 }
 
 @end

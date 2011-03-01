@@ -4,13 +4,15 @@
 @class CBDevicesController;
 
 @interface CBPreferencesController : NSWindowController {
-  @private
+  @private  
   CBGeneralController *generalController;
   CBDevicesController *devicesController;
 }
 
-- (IBAction)showGeneralViewAnimated:(BOOL)performAnimation;
+- (IBAction)showGeneralView:(id)sender;
 
-- (IBAction)showDevicesView;
+- (IBAction)showDevicesView:(id)sender;
+
+- (void)resizeWindowWithViewFrame:(NSRect)newFrame;
 
 @end
