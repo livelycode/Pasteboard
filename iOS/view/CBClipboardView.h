@@ -19,6 +19,7 @@
             padding:(CGFloat)thePadding
                Rows:(NSUInteger)numberRows
             Columns:(NSUInteger)numberColumns;
+- (void)setDelegate:(id <CBClipboardViewDelegate>)anObject;
 	
 @end
 

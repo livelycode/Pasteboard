@@ -18,7 +18,6 @@
     CBClipboardController *syncingClipboardController;
     CBMainWindowController *windowController;
     CBSyncController *syncController;
-    HTTPConnectionDelegate *connectionDelegate;
     NSArray *pasteboardClasses;
     BOOL windowHidden;
 }

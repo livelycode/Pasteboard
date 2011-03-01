@@ -14,12 +14,8 @@
     CBClipboardController *syncingClipboardController;
     UIWindow *window;
     CBSyncController *syncController;
-    HTTPConnectionDelegate *connectionDelegate;
-    NSArray *pasteboardClasses;
-    BOOL windowHidden;
 }
 - (void)initClipboards;
-- (void)initPasteboardObserver;
 - (void)addSubview: (UIView*) view;
 - (void)startSyncing;
 @end

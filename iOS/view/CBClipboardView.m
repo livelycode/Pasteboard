@@ -60,4 +60,9 @@
     return self;
 }
 
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject
+{
+  delegate = [anObject retain];
+}
+
 @end
