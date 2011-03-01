@@ -18,8 +18,10 @@
 
 - (IBAction)showGeneralViewAnimated:(BOOL)performAnimation {
   CGRect newFrame = CGRectZero;
-  CGSize newSize = CGSizeMake(300, 200);
+  CGPoint newOrigin =CGPointMake(500, 500);
+  CGSize newSize = [[generalController view] frame].size;
   newFrame.size = newSize;
+  newFrame.origin = newOrigin;
   [[self window] setFrame:newFrame display:YES animate:performAnimation];
 }
 
