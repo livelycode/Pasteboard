@@ -38,9 +38,8 @@
        CGFloat y = origin.y - (row * (itemHeight + padding));
        CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
        CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame];
-       [itemView setNoteVisible:NO];
        [itemView setDelegate:self];
-       [self addSubview:itemView];
+       [clipboardView addSubview:itemView];
        [rowArray insertObject:itemView atIndex:column];
      }
   }
@@ -70,6 +69,7 @@
   [clipboard release];
   [clipboardView release];
   [changeListener release];
+  [itemViews release];
   [super dealloc];
 }
 

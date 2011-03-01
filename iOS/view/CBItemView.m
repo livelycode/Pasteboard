@@ -30,7 +30,7 @@ static inline void drawButton(CGRect aRect)
 - (void)setText:(NSAttributedString *)aString;
 {
     string = aString;
-    [self setNeedsDisplay:YES];
+    [self setNeedsDisplay];
 }
 
 - (BOOL)isNoteVisible
@@ -41,7 +41,7 @@ static inline void drawButton(CGRect aRect)
 - (void)setNoteVisible:(BOOL)visible
 {
     noteVisible = visible;
-    [self setNeedsDisplay:YES];
+    [self setNeedsDisplay];
 }
 
 @end
@@ -50,5 +50,7 @@ static inline void drawButton(CGRect aRect)
 
 - (id)initWithFrame:(CGRect)aRect {
   self = [super initWithFrame:aRect];
+  [self setBackgroundColor:[UIColor redColor]];
   return self;
 }
+@end
