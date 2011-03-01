@@ -61,7 +61,7 @@
       // Set clipboard item at URL
       if([postURLs containsObject: path]) {
         NSInteger itemIndex = [path intValue];
-        CBItem* item = [[CBItem alloc] initWithString: [NSUnarchiver unarchiveObjectWithData:body]];
+        CBItem* item = [[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]];
         [syncController receivedItem:item atIndex:itemIndex];
         responseData = [@"success" dataUsingEncoding: NSUTF8StringEncoding];
       } else {

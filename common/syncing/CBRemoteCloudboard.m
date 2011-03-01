@@ -47,7 +47,7 @@
 
 - (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
   NSURL *requestURL = [url URLByAppendingPathComponent:[[NSNumber numberWithInt: index] stringValue]];
-  NSData* archivedItem = [NSArchiver archivedDataWithRootObject: [item string]];
+  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [item string]];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
   [URLRequest setHTTPBody:archivedItem];
