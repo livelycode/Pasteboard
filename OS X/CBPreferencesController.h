@@ -1,6 +1,6 @@
 #import "Cocoa.h"
 
-@interface CBSettingsController : NSObject {
+@interface CBPreferencesController : NSWindowController {
   @private
   NSWindowController *windowController;
 }
