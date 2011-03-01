@@ -5,12 +5,13 @@
 - (void)initClipboards {
   CGRect mainFrame = [[UIScreen mainScreen] bounds];
   window = [[UIWindow alloc] initWithFrame:mainFrame];
+  [window makeKeyAndVisible];
   CGFloat screenHeight = CGRectGetHeight(mainFrame);
   CGFloat screenWidth = CGRectGetWidth(mainFrame);
   CGFloat marginSide = 20;
   CGFloat marginBottom = 20;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
-  CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
+  CGFloat clipboardWidth = (screenWidth - (2 * marginSide));
   CGRect frame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
   syncingClipboardController = [[CBClipboardController alloc] initWithFrame: frame viewController: self];
 }

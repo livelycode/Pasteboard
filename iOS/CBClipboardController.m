@@ -17,6 +17,7 @@
 - (void)initializeClipboardViewWithFrame:(CGRect)aFrame {
   clipboardView = [[UIView alloc] initWithFrame:aFrame];
   [clipboardView setBackgroundColor:[UIColor lightGrayColor]];
+  [clipboardView setNeedsDisplay];
 }
 
 - (void)initializeItemViews {
@@ -48,7 +49,7 @@
 - (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [clipboard insertItem:newItem atIndex:anIndex];
   NSAttributedString *string = [newItem string];
-  [clipboardView setString:string forItemAtIndex:anIndex];
+  
   if (changeListener != nil)
   {
     [changeListener insertedItem:newItem atIndex:anIndex];
