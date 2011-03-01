@@ -15,3 +15,5 @@
 #import "CBClipboardView.h"
 #import "CBWindowView.h"
 #import "CBPreferencesController.h"
+#import "CBGeneralController.h"
+#import "CBDevicesController.h"

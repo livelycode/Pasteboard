@@ -6,6 +6,7 @@
 @class CBHotKeyObserver;
 @class CBPasteboardObserver;
 @class CBMainWindowController;
+@class CBPreferencesController;
 @class HTTPConnectionDelegate;
 @class CBSyncController;
 
@@ -18,6 +19,7 @@
     CBClipboardController *historyClipboardController;
     CBClipboardController *syncingClipboardController;
     CBMainWindowController *windowController;
+    CBPreferencesController *preferencesController;
     CBClipboardController *clipboardController;
     CBSyncController *syncController;
     HTTPConnectionDelegate *connectionDelegate;
@@ -28,6 +30,7 @@
 - (void)initPasteboardObserver;
 - (void)addSubview: (NSView*) view;
 - (void)startSyncing;
+- (void)openPreferences;
 @end
 
 @interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>

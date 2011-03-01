@@ -5,9 +5,9 @@
 - (id)initWithWindowNibName:(NSString *)nibName {
     self = [super initWithWindowNibName:nibName];
     if (self) {
-      [[self window] setLevel:NSScreenSaverWindowLevel];
+      [[self window] setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+      [[self window] setLevel:NSStatusWindowLevel];
     }
-    
     return self;
 }
 

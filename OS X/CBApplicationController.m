@@ -32,6 +32,15 @@
   syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController];
 }
 
+- (void)openPreferences {
+  if (preferencesController == nil) {
+    preferencesController = [[CBPreferencesController alloc] initWithWindowNibName:@"preferences"];
+  }
+  [preferencesController showWindow:nil];
+  [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+  [[preferencesController window] makeKeyAndOrderFront:nil];
+}
+
 @end
 
 @implementation CBApplicationController(Delegation)
@@ -44,6 +53,7 @@
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
   [self startSyncing];
+  [self openPreferences];
 }
 
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
