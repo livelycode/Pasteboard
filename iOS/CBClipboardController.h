@@ -1,29 +1,26 @@
 #import "Cocoa.h"
-#import "CBClipboardViewDelegate.h"
+#import "CBItemViewDelegate.h"
 
-@class CBClipboard;
-@class CBClipboardView;
-
-@interface CBClipboardController : NSObject
-{
+@interface CBClipboardController : NSObject {
 @private
-  CBClipboard *clipboard;
-  CBClipboardView *clipboardView;
+  CBClipboard* clipboard;
+  UIView* clipboardView;
+  NSMutableArray* itemViews;
   id changeListener;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
      viewController:(id)viewController;
 
-- (void)insertItem:(CBItem *)newItem
+- (void)insertItem:(CBItem*)newItem
            atIndex:(NSInteger)anIndex;
 
-- (BOOL)clipboardContainsItem:(CBItem *)anItem;
+- (BOOL)clipboardContainsItem:(CBItem*)anItem;
 
 - (void)addChangeListener:(id)anObject;
 
 @end
 
-@interface CBClipboardController(Delegation) <CBClipboardViewDelegate>
+@interface CBClipboardController(Delegation) <CBItemViewDelegate>
 
 @end

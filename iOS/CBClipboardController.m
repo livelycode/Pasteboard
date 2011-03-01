@@ -7,15 +7,43 @@
   if (self != nil)
   {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
-    
-    clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame
-                                                   padding:20
-                                                      Rows:4
-                                                   Columns:2];
-    [clipboardView setDelegate:self];
+    [self initializeClipboardViewWithFrame: aFrame];
+    [self initializeItemViews];
     [viewController addSubview:clipboardView];
   }
   return self;
+}
+
+- (void)initializeClipboardViewWithFrame:(CGRect)aFrame {
+  clipboardView = [[UIView alloc] initWithFrame:aFrame];
+  [clipboardView setBackgroundColor:[UIColor lightGrayColor]];
+}
+
+- (void)initializeItemViews {
+  NSInteger rows = 4;
+  NSInteger columns = 2;
+  NSInteger padding = 20;
+  
+  CGRect mainBounds = [clipboardView bounds];
+  CGFloat itemWidth = (mainBounds.size.width - ((columns + 1) * padding)) / columns;
+  CGFloat itemHeight = (mainBounds.size.height - ((rows + 1) * padding)) / rows;
+  CGPoint origin = CGPointMake(padding, (mainBounds.size.height - itemHeight - padding));
+  
+  itemViews = [[NSMutableArray alloc] init];
+  for(NSInteger row=0; row<rows; row++) {
+    NSMutableArray* rowArray = [[NSMutableArray alloc] init];
+    [itemViews insertObject:rowArray atIndex:row];
+     for(NSInteger column=0; column<columns; column++) {
+       CGFloat x = origin.x + (column * (itemWidth + padding));
+       CGFloat y = origin.y - (row * (itemHeight + padding));
+       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
+       CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame];
+       [itemView setNoteVisible:NO];
+       [itemView setDelegate:self];
+       [self addSubview:itemView];
+       [rowArray insertObject:itemView atIndex:column];
+     }
+  }
 }
 
 - (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {

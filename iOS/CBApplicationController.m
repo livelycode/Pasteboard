@@ -1,6 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation AppDelegate
+@implementation CBApplicationController
 
 - (void)initClipboards {
   CGRect mainFrame = [[UIScreen mainScreen] bounds];

@@ -141,7 +141,7 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
   NSLog(@"found service: %@ on port: %i, more coming: %i", newService, [newService port], more);
   if([[newService name] hasPrefix: @"Cloudboard Server"] & ([[newService name] isEqual: myServiceName] == NO)) {
-      [self setServerService: newService];      
+      [self setServerService: newService];     
   }
 }
 
