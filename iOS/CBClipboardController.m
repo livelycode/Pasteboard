@@ -2,9 +2,7 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame
-     viewController:(id)viewController;
-{
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
   self = [super init];
   if (self != nil)
   {
@@ -20,36 +18,14 @@
   return self;
 }
 
-- (void)insertItem:(CBItem *)newItem
-           atIndex:(NSInteger)anIndex
-{
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  [clipboard insertItem:newItem
-                atIndex:newIndex];
-  
-  NSUInteger indexMove = [clipboardView itemViews] - 1;
-  while (indexMove != anIndex)
-  {
-    NSUInteger previousIndex = indexMove - 1;
-    BOOL previousVisible = [clipboardView itemAtIndexIsVisible:previousIndex];
-    NSAttributedString *previousString = [clipboardView stringForItemAtIndex:previousIndex];
-    [clipboardView setVisible:previousVisible
-               forItemAtIndex:indexMove];
-    [clipboardView setString:previousString
-              forItemAtIndex:indexMove];
-    indexMove = indexMove - 1;
-  }
-  
+- (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
+  [clipboard insertItem:newItem atIndex:anIndex];
   NSAttributedString *string = [newItem string];
-  [clipboardView setVisible:YES
-             forItemAtIndex:anIndex];
-  [clipboardView setString:string
-            forItemAtIndex:newIndex];
-  
+  [clipboardView setVisible:YES forItemAtIndex:anIndex];
+  [clipboardView setString:string forItemAtIndex:anIndex];
   if (changeListener != nil)
   {
-    [changeListener insertedItem:newItem
-                         atIndex:anIndex];
+    [changeListener insertedItem:newItem atIndex:anIndex];
   }
 }
 
