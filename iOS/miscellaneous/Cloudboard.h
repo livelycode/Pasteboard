@@ -6,7 +6,7 @@
 #import "CBSyncController.h"
 #import "CBRemoteCloudboard.h"
 
-#import "CBIApplicationController.h"
-#import "CBISettings.h"
-#import "CBIItemView.h"
-#import "CBIClipboardView.h"
+#import "CBApplicationController.h"
+#import "CBSettings.h"
+#import "CBItemView.h"
+#import "CBClipboardView.h"

@@ -15,14 +15,12 @@
     @private
     CBPasteboardObserver *pasteboardObserver;		
     CBHotKeyObserver *hotKey;
-    CBClipboard *leftClipboard;
     CBClipboardController *historyClipboardController;
     CBClipboardController *syncingClipboardController;
     CBMainWindowController *windowController;
     CBPreferencesController *preferencesController;
     CBClipboardController *clipboardController;
     CBSyncController *syncController;
-    HTTPConnectionDelegate *connectionDelegate;
     NSArray *pasteboardClasses;
     BOOL windowHidden;
 }

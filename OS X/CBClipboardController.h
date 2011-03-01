@@ -3,18 +3,15 @@
 
 @class CBClipboard;
 @class CBClipboardView;
-@class CBPreferencesController;
 
 @interface CBClipboardController : NSObject
 {
-    @private
-    CBClipboard *clipboard;
-    CBClipboardView *clipboardView;
-    id changeListener;
-    CBPreferencesController *settingsController;
-    NSButton *settingsButton;
+@private
+  CBClipboard *clipboard;
+  CBClipboardView *clipboardView;
+  id changeListener;
 }
-							
+
 - (id)initWithFrame:(CGRect)aFrame
      viewController:(id)viewController;
 
