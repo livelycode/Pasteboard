@@ -21,7 +21,6 @@
 - (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [clipboard insertItem:newItem atIndex:anIndex];
   NSAttributedString *string = [newItem string];
-  [clipboardView setVisible:YES forItemAtIndex:anIndex];
   [clipboardView setString:string forItemAtIndex:anIndex];
   if (changeListener != nil)
   {

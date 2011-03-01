@@ -1,6 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation CBApplicationController
+@implementation AppDelegate
 
 - (void)initClipboards {
   CGRect mainFrame = [[UIScreen mainScreen] bounds];
@@ -24,8 +24,8 @@
   syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  NSLog(@"didFinishLaunching");
   [self initClipboards];
   [self startSyncing];
   return YES;

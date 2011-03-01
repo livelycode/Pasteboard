@@ -8,7 +8,7 @@
 @class HTTPConnectionDelegate;
 @class CBSyncController;
 
-@interface CBApplicationController : NSObject <UIApplicationDelegate>
+@interface AppDelegate : NSObject <UIApplicationDelegate>
 {
     @private
     CBClipboardController *syncingClipboardController;

@@ -5,8 +5,7 @@
 #define BUTTON_LENGTH 16
 #define CROSS_PADDING 4
 
-static inline void
-drawButton(NSRect aRect)
+static inline void drawButton(CGRect aRect)
 {
     
 }
