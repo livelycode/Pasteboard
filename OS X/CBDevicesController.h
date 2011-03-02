@@ -14,6 +14,8 @@
 
 - (IBAction)removeDevice:(id)sender;
 
+- (void)awakeFromNib;
+
 @end
 
 @interface CBDevicesController(Delegation) <NSTableViewDataSource, NSTableViewDelegate>

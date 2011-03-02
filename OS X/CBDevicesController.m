@@ -14,11 +14,21 @@
 }
 
 - (IBAction)addDevice:(id)sender {
-  NSLog(@"add");
+  NSUInteger index = [foundClipboardsView selectedRow];
+  id device = [foundClipboards objectAtIndex:index];
+  [registeredClipboards addObject:device];
+  [registeredClipboardsView reloadData];
 }
 
 - (IBAction)removeDevice:(id)sender {
-  NSLog(@"remove");
+  NSUInteger index = [registeredClipboardsView selectedRow];
+  [registeredClipboards removeObjectAtIndex:index];
+  [registeredClipboardsView reloadData];
+}
+
+- (void)awakeFromNib {
+  [addButton setEnabled:NO];
+  [removeButton setEnabled:NO];
 }
 
 @end
@@ -45,6 +55,26 @@
     object = [registeredClipboards objectAtIndex:rowIndex];
   }
   return object;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification {
+  if ([aNotification object] == foundClipboardsView) {
+    if ([foundClipboardsView numberOfSelectedRows] != 0) {
+      [addButton setEnabled:YES];
+    }
+    else {
+      [addButton setEnabled:NO];
+    }
+  }
+  
+  if ([aNotification object] == registeredClipboardsView) {
+    if ([registeredClipboardsView numberOfSelectedRows] != 0) {
+      [removeButton setEnabled:YES];
+    }
+    else {
+      [removeButton setEnabled:NO];
+    }
+  }
 }
 
 @end
