@@ -25,6 +25,43 @@
 
 #define BORDER_ALPHA 1
 
+@implementation CBItemView(Private)
+
+- (void)drawNotePathAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
+  notePath = [UIBezierPath bezierPath];
+  [notePath moveToPoint:CGPointMake(left, bottom)];
+  [notePath addLineToPoint:CGPointMake(right, bottom)];
+  [notePath addLineToPoint:CGPointMake(right, top)];
+  [notePath addLineToPoint:CGPointMake(left, top)];
+  [notePath closePath];
+  UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
+  [noteDarkColor setFill];
+  [notePath fill];
+}
+
+- (void)drawTextAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
+  CGFloat textWidth = right - left;
+  CGFloat textHeight = top - bottom;
+  CGFloat textX = TEXT_PADDING;
+  CGFloat textY = TEXT_PADDING;
+  textRect = CGRectMake(textX, textY, textWidth, textHeight);
+  [string drawInRect:textRect];
+}
+
+- (void)drawCrossAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
+  crossPath = [UIBezierPath bezierPath];
+  [crossPath moveToPoint:CGPointMake(left, bottom)];
+  [crossPath addLineToPoint:CGPointMake(right, top)];
+  [crossPath moveToPoint:CGPointMake(right, bottom)];
+  [crossPath addLineToPoint:CGPointMake(left, top)];
+  [crossPath setLineWidth:CROSS_LINE_WIDTH];
+  UIColor* crossDarkColor = [UIColor blackColor];
+  [crossDarkColor setStroke];
+  [crossPath stroke];
+}
+
+@end
+
 @implementation CBItemView
 
 - (id <CBItemViewDelegate>)delegate {
@@ -35,91 +72,42 @@
   delegate = anObject;
 }
 
-- (NSAttributedString *)text {
-  return string;
-}
-
-- (void)setText:(NSAttributedString *)aString; {
-  [string autorelease];
-  string = aString;
-  [self setNeedsDisplay];
-}
-
-- (BOOL)isNoteVisible {
-  return noteVisible;
-}
-
-- (void)setNoteVisible:(BOOL)visible {
-  noteVisible = visible;
-  [self setNeedsDisplay];
-}
-
 @end
 
 @implementation CBItemView(Overridden)
 
-- (id)initWithFrame:(CGRect)aRect {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*) content {
   self = [super initWithFrame:aRect];
   if (self != nil) {
+    index = itemIndex;
     delegate = nil;
-    noteVisible = NO;
+    string = content;
     [self setBackgroundColor:[UIColor clearColor]];
-    
-    CGRect mainBounds = [self bounds];
-    
-    CGFloat noteLeftX = mainBounds.origin.x + NOTE_PADDING;
-    CGFloat noteRightX = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
-    CGFloat noteBottomY = mainBounds.origin.y + NOTE_PADDING;
-    CGFloat noteTopY = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
-    
-    notePath = [UIBezierPath bezierPath];
-    [notePath moveToPoint:CGPointMake(noteLeftX, noteBottomY)];
-    [notePath addLineToPoint:CGPointMake(noteRightX, noteBottomY)];
-    [notePath addLineToPoint:CGPointMake(noteRightX, noteTopY)];
-    [notePath addLineToPoint:CGPointMake(noteLeftX, noteTopY)];
-    [notePath closePath];
-    
-    CGFloat textWidth = noteRightX - noteLeftX;
-    CGFloat textHeight = noteTopY - noteBottomY;
-    CGFloat textX = TEXT_PADDING;
-    CGFloat textY = TEXT_PADDING;
-    textRect = CGRectMake(textX, textY, textWidth, textHeight);
-    
-    CGFloat crossLeftX = noteRightX - CROSS_WIDTH - CROSS_PADDING;
-    CGFloat crossRightX = noteRightX - CROSS_PADDING;
-    CGFloat crossBottomY = noteBottomY + CROSS_WIDTH + CROSS_PADDING;
-    CGFloat crossTopY = noteBottomY + CROSS_PADDING;
-    crossPath = [UIBezierPath bezierPath];
-    [crossPath moveToPoint:CGPointMake(crossLeftX, crossBottomY)];
-    [crossPath addLineToPoint:CGPointMake(crossRightX, crossTopY)];
-    [crossPath moveToPoint:CGPointMake(crossRightX, crossBottomY)];
-    [crossPath addLineToPoint:CGPointMake(crossLeftX, crossTopY)];
-    [crossPath setLineWidth:CROSS_LINE_WIDTH];
   }
   return self;
 }
 
 - (void)drawRect:(CGRect)aRect {
-  if (noteVisible) {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-    UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:SHADOW_ALPHA];
-    CGContextSetShadowWithColor(context, CGSizeMake(0, SHADOW_OFFSET), SHADOW_BLUR, [shadowColor CGColor]);
-    UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
-    [noteDarkColor setFill];
-    [notePath fill];
-    CGContextRestoreGState(context);
-    
-    [string drawInRect:textRect];
-    
-    UIColor* crossDarkColor = [UIColor blackColor];
-    [crossDarkColor setStroke];
-    [crossPath stroke];
-  }
-  else {
-    [[UIColor whiteColor] setFill];
-    [notePath fill];
-  }
+  CGRect mainBounds = [self bounds];
+  CGFloat noteLeft = mainBounds.origin.x + NOTE_PADDING;
+  CGFloat noteRight = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
+  CGFloat noteBottom = mainBounds.origin.y + NOTE_PADDING;
+  CGFloat noteTop = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
+  
+  CGFloat crossLeft = noteRight - CROSS_WIDTH - CROSS_PADDING;
+  CGFloat crossRight = noteRight - CROSS_PADDING;
+  CGFloat crossBottom = noteBottom + CROSS_WIDTH + CROSS_PADDING;
+  CGFloat crossTop = noteBottom + CROSS_PADDING;
+  
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:SHADOW_ALPHA];
+  CGContextSetShadowWithColor(context, CGSizeMake(0, SHADOW_OFFSET), SHADOW_BLUR, [shadowColor CGColor]);
+  [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
+  CGContextRestoreGState(context);
+  
+  [self drawCrossAtLeft:crossLeft right:crossRight top:crossTop bottom:crossBottom];
+  [self drawTextAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
 }
 
 - (void)dealloc {

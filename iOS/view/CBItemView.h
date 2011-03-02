@@ -5,27 +5,22 @@
 {
   @private
   id delegate;
+  NSInteger index;
   NSAttributedString* string;
     
   UIBezierPath* notePath;
   UIBezierPath* crossPath;
   CGRect textRect;
   CGRect buttonRect;
-
-  BOOL noteVisible;
 }
+
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content;
 
 - (id <CBItemViewDelegate>)delegate;
 
 - (void)setDelegate:(id <CBItemViewDelegate>)anObject;
 
 - (NSAttributedString *)text;
-
-- (void)setText:(NSAttributedString *)aString;
-
-- (BOOL)isNoteVisible;
-
-- (void)setNoteVisible:(BOOL)visible;
 
 @end
 

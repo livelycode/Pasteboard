@@ -20,18 +20,20 @@
   
   itemViews = [[NSMutableArray alloc] init];
   for(NSInteger row=0; row<rows; row++) {
-    NSMutableArray* rowArray = [[NSMutableArray alloc] init];
-    [itemViews insertObject:rowArray atIndex:row];
     for(NSInteger column=0; column<columns; column++) {
       CGFloat x = origin.x + (column * (itemWidth + padding));
       CGFloat y = origin.y - (row * (itemHeight + padding));
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
-      CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame];
+      CBItemView *itemView = [[CBItemView alloc] initWithFrame:itemFrame index: (row*columns + column) content:nil];
       [itemView setDelegate:self];
       [clipboardView addSubview:itemView];
-      [rowArray insertObject:itemView atIndex:column];
+      [itemViews addObject:itemView];
     }
   }
+}
+
+- (void)itemChangedAtIndex:(NSInteger)index {
+  
 }
 
 @end
@@ -53,7 +55,6 @@
 - (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [clipboard insertItem:newItem atIndex:anIndex];
   NSAttributedString *string = [newItem string];
-  
   if (changeListener != nil)
   {
     [changeListener insertedItem:newItem atIndex:anIndex];
