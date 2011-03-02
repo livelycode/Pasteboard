@@ -3,6 +3,7 @@
 @interface CBDevicesController : NSViewController {
 @private
   NSMutableArray *foundClipboards;
+  NSMutableArray *registeredClipboards;
   IBOutlet NSTableView *foundClipboardsView;
   IBOutlet NSTableView *registeredClipboardsView;
   IBOutlet NSButton *addButton;

@@ -7,6 +7,8 @@
   if (self) {
     foundClipboards = [NSMutableArray array];
     [foundClipboards addObject:@"foo"];
+    registeredClipboards = [NSMutableArray array];
+    [registeredClipboards addObject:@"bar"];
   }
   return self;
 }
@@ -24,16 +26,23 @@
 @implementation CBDevicesController(Delegation)
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-  return [foundClipboards count];
+  NSUInteger count = 0;
+  if (aTableView == foundClipboardsView) {
+    count = [foundClipboards count];
+  }
+  if (aTableView == registeredClipboardsView) {
+    count = [registeredClipboards count];
+  }
+  return count;
 }
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
   id object = nil;
   if (aTableView == foundClipboardsView) {
-    object = @"foo";
+    object = [foundClipboards objectAtIndex:rowIndex];
   }
   if (aTableView == registeredClipboardsView) {
-    object = @"bar";
+    object = [registeredClipboards objectAtIndex:rowIndex];
   }
   return object;
 }
