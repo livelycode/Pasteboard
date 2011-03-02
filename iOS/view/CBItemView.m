@@ -62,7 +62,7 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     delegate = nil;
-    noteVisible = YES;
+    noteVisible = NO;
     [self setBackgroundColor:[UIColor clearColor]];
     
     CGRect mainBounds = [self bounds];
@@ -117,7 +117,7 @@
     [crossPath stroke];
   }
   else {
-    [[UIColor clearColor] setFill];
+    [[UIColor whiteColor] setFill];
     [notePath fill];
   }
 }
