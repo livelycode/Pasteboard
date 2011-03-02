@@ -3,18 +3,16 @@
 
 @interface CBItemView : UIView
 {
-    @private
-    id delegate;
-    NSAttributedString *string;
+  @private
+  id delegate;
+  NSAttributedString *string;
     
-    UIBezierPath *notePath;
-    CGRect textRect;
-    CGRect buttonRect;
-            
-    BOOL noteVisible;
-    BOOL noteHightlighted;
-    BOOL noteBacklighted;
-    BOOL buttonIsHighlighted;
+  UIBezierPath *notePath;
+  UIBezierPath *crossPath;
+  CGRect textRect;
+  CGRect buttonRect;
+
+  BOOL noteVisible;
 }
 
 - (id <CBItemViewDelegate>)delegate;
