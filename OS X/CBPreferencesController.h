@@ -7,12 +7,17 @@
   @private  
   CBGeneralController *generalController;
   CBDevicesController *devicesController;
+  NSView *intermediateView;
 }
 
 - (IBAction)showGeneralView:(id)sender;
 
 - (IBAction)showDevicesView:(id)sender;
 
-- (void)resizeWindowWithViewFrame:(NSRect)newFrame;
+@end
+
+@interface CBPreferencesController(Overridden)
+
+- (void)windowDidLoad;
 
 @end
