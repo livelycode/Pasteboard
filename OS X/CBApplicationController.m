@@ -17,11 +17,10 @@
 }
 
 -(void) initPasteboardObserver {
-  CGFloat time = [[CBSettings sharedSettings] floatForKey:@"timeInterval"];
   pasteboardObserver = [[CBPasteboardObserver alloc] init];
   pasteboardClasses = [NSArray arrayWithObject:[NSAttributedString class]];
   [pasteboardObserver setDelegate:self];
-  [pasteboardObserver observeWithTimeInterval:time];
+  [pasteboardObserver observeWithTimeInterval:0.1];
 }
 
 - (void)addSubview: (NSView*) subView {
