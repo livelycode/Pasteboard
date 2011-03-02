@@ -28,7 +28,7 @@
 @implementation CBItemView(Private)
 
 - (void)drawNotePathAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  notePath = [UIBezierPath bezierPath];
+  UIBezierPath* notePath = [UIBezierPath bezierPath];
   [notePath moveToPoint:CGPointMake(left, bottom)];
   [notePath addLineToPoint:CGPointMake(right, bottom)];
   [notePath addLineToPoint:CGPointMake(right, top)];
@@ -44,12 +44,12 @@
   CGFloat textHeight = top - bottom;
   CGFloat textX = TEXT_PADDING;
   CGFloat textY = TEXT_PADDING;
-  textRect = CGRectMake(textX, textY, textWidth, textHeight);
+  CGRect textRect = CGRectMake(textX, textY, textWidth, textHeight);
   [string drawInRect:textRect];
 }
 
 - (void)drawCrossAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  crossPath = [UIBezierPath bezierPath];
+  UIBezierPath* crossPath = [UIBezierPath bezierPath];
   [crossPath moveToPoint:CGPointMake(left, bottom)];
   [crossPath addLineToPoint:CGPointMake(right, top)];
   [crossPath moveToPoint:CGPointMake(right, bottom)];
@@ -64,17 +64,9 @@
 
 @implementation CBItemView
 
-- (id <CBItemViewDelegate>)delegate {
-  return delegate;
-}
-
 - (void)setDelegate:(id <CBItemViewDelegate>)anObject {
   delegate = anObject;
 }
-
-@end
-
-@implementation CBItemView(Overridden)
 
 - (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*) content {
   self = [super initWithFrame:aRect];
@@ -86,6 +78,10 @@
   }
   return self;
 }
+
+@end
+
+@implementation CBItemView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
   CGRect mainBounds = [self bounds];
@@ -111,9 +107,8 @@
 }
 
 - (void)dealloc {
-  [crossPath release];
-  [notePath release];
   [string release];
+  [delegate release];
   [super dealloc];
 }
 @end
