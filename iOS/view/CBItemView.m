@@ -1,5 +1,7 @@
 #import "Cloudboard.h"
 
+#define NOTE_PADDING 10
+
 #define TEXT_PADDING 12
 
 #define CROSS_WIDTH 16
@@ -23,43 +25,33 @@
 
 #define BORDER_ALPHA 1
 
-static inline void drawButton(CGRect aRect)
-{
-    
-}
-
 @implementation CBItemView
 
-- (id <CBItemViewDelegate>)delegate
-{
-    return delegate;
+- (id <CBItemViewDelegate>)delegate {
+  return delegate;
 }
 
-- (void)setDelegate:(id <CBItemViewDelegate>)anObject
-{
-    delegate = anObject;
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject {
+  delegate = anObject;
 }
 
-- (NSAttributedString *)text
-{
-    return string;
+- (NSAttributedString *)text {
+  return string;
 }
 
-- (void)setText:(NSAttributedString *)aString;
-{
-    string = aString;
-    [self setNeedsDisplay];
+- (void)setText:(NSAttributedString *)aString; {
+  [string autorelease];
+  string = aString;
+  [self setNeedsDisplay];
 }
 
-- (BOOL)isNoteVisible
-{
-    return noteVisible;
+- (BOOL)isNoteVisible {
+  return noteVisible;
 }
 
-- (void)setNoteVisible:(BOOL)visible
-{
-    noteVisible = visible;
-    [self setNeedsDisplay];
+- (void)setNoteVisible:(BOOL)visible {
+  noteVisible = visible;
+  [self setNeedsDisplay];
 }
 
 @end
@@ -71,19 +63,15 @@ static inline void drawButton(CGRect aRect)
   if (self != nil) {
     delegate = nil;
     noteVisible = YES;
+    [self setBackgroundColor:[UIColor clearColor]];
     
     CGRect mainBounds = [self bounds];
     
-    CGFloat textWidth = mainBounds.size.width - (2 * TEXT_PADDING);
-    CGFloat textHeight = mainBounds.size.height - (2 * TEXT_PADDING);
-    CGFloat textX = TEXT_PADDING;
-    CGFloat textY = TEXT_PADDING;
-    textRect = CGRectMake(textX, textY, textWidth, textHeight);
+    CGFloat noteLeftX = mainBounds.origin.x + NOTE_PADDING;
+    CGFloat noteRightX = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
+    CGFloat noteBottomY = mainBounds.origin.y + NOTE_PADDING;
+    CGFloat noteTopY = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
     
-    CGFloat noteLeftX = mainBounds.origin.x;
-    CGFloat noteRightX = mainBounds.origin.x + mainBounds.size.width;
-    CGFloat noteBottomY = mainBounds.origin.y;
-    CGFloat noteTopY = mainBounds.origin.y + mainBounds.size.height;
     notePath = [UIBezierPath bezierPath];
     [notePath moveToPoint:CGPointMake(noteLeftX, noteBottomY)];
     [notePath addLineToPoint:CGPointMake(noteRightX, noteBottomY)];
@@ -91,10 +79,16 @@ static inline void drawButton(CGRect aRect)
     [notePath addLineToPoint:CGPointMake(noteLeftX, noteTopY)];
     [notePath closePath];
     
+    CGFloat textWidth = noteRightX - noteLeftX;
+    CGFloat textHeight = noteTopY - noteBottomY;
+    CGFloat textX = TEXT_PADDING;
+    CGFloat textY = TEXT_PADDING;
+    textRect = CGRectMake(textX, textY, textWidth, textHeight);
+    
     CGFloat crossLeftX = noteRightX - CROSS_WIDTH - CROSS_PADDING;
     CGFloat crossRightX = noteRightX - CROSS_PADDING;
-    CGFloat crossBottomY = CROSS_WIDTH + CROSS_PADDING;
-    CGFloat crossTopY = CROSS_PADDING;
+    CGFloat crossBottomY = noteBottomY + CROSS_WIDTH + CROSS_PADDING;
+    CGFloat crossTopY = noteBottomY + CROSS_PADDING;
     crossPath = [UIBezierPath bezierPath];
     [crossPath moveToPoint:CGPointMake(crossLeftX, crossBottomY)];
     [crossPath addLineToPoint:CGPointMake(crossRightX, crossTopY)];
@@ -107,13 +101,14 @@ static inline void drawButton(CGRect aRect)
 
 - (void)drawRect:(CGRect)aRect {
   if (noteVisible) {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+    UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:SHADOW_ALPHA];
+    CGContextSetShadowWithColor(context, CGSizeMake(0, SHADOW_OFFSET), SHADOW_BLUR, [shadowColor CGColor]);
     UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
     [noteDarkColor setFill];
     [notePath fill];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:SHADOW_ALPHA];
-    CGContextSetShadowWithColor(context, CGSizeMake(0, SHADOW_OFFSET), SHADOW_BLUR, [shadowColor CGColor]);
+    CGContextRestoreGState(context);
     
     [string drawInRect:textRect];
     
@@ -125,5 +120,12 @@ static inline void drawButton(CGRect aRect)
     [[UIColor clearColor] setFill];
     [notePath fill];
   }
+}
+
+- (void)dealloc {
+  [crossPath release];
+  [notePath release];
+  [string release];
+  [super dealloc];
 }
 @end
