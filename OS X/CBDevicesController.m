@@ -11,6 +11,14 @@
   return self;
 }
 
+- (IBAction)addDevice:(id)sender {
+  NSLog(@"add");
+}
+
+- (IBAction)removeDevice:(id)sender {
+  NSLog(@"remove");
+}
+
 @end
 
 @implementation CBDevicesController(Delegation)

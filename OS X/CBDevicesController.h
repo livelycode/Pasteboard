@@ -5,7 +5,13 @@
   NSMutableArray *foundClipboards;
   IBOutlet NSTableView *foundClipboardsView;
   IBOutlet NSTableView *registeredClipboardsView;
+  IBOutlet NSButton *addButton;
+  IBOutlet NSButton *removeButton;
 }
+
+- (IBAction)addDevice:(id)sender;
+
+- (IBAction)removeDevice:(id)sender;
 
 @end
 
