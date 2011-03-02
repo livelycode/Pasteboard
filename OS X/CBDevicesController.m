@@ -2,38 +2,47 @@
 
 @implementation CBDevicesController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-  if (self) {
-    foundClipboards = [NSMutableArray array];
-    [foundClipboards addObject:@"foo"];
-    registeredClipboards = [NSMutableArray array];
-    [registeredClipboards addObject:@"bar"];
-  }
-  return self;
-}
-
 - (IBAction)addDevice:(id)sender {
   NSUInteger index = [foundClipboardsView selectedRow];
   id device = [foundClipboards objectAtIndex:index];
   [registeredClipboards addObject:device];
+  [registeredClipboards writeToURL:devicesURL atomically:YES];
   [registeredClipboardsView reloadData];
 }
 
 - (IBAction)removeDevice:(id)sender {
   NSUInteger index = [registeredClipboardsView selectedRow];
   [registeredClipboards removeObjectAtIndex:index];
+  [registeredClipboards writeToURL:devicesURL atomically:YES];
   [registeredClipboardsView reloadData];
 }
 
-- (void)awakeFromNib {
-  [addButton setEnabled:NO];
-  [removeButton setEnabled:NO];
+@end
+
+@implementation CBDevicesController(Overridden)
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle {
+  self = [super initWithNibName:nibName bundle:nibBundle];
+  if (self) {
+    devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
+    foundClipboards = [NSMutableArray array];
+    [foundClipboards addObject:@"foo"];
+    registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
+    if (registeredClipboards == nil) {
+      registeredClipboards = [NSMutableArray array];
+    }
+  }
+  return self;
 }
 
 @end
 
 @implementation CBDevicesController(Delegation)
+
+- (void)awakeFromNib {
+  [addButton setEnabled:NO];
+  [removeButton setEnabled:NO];
+}
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
   NSUInteger count = 0;

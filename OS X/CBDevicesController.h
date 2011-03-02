@@ -4,6 +4,7 @@
 @private
   NSMutableArray *foundClipboards;
   NSMutableArray *registeredClipboards;
+  NSURL *devicesURL;
   IBOutlet NSTableView *foundClipboardsView;
   IBOutlet NSTableView *registeredClipboardsView;
   IBOutlet NSButton *addButton;
@@ -14,11 +15,17 @@
 
 - (IBAction)removeDevice:(id)sender;
 
-- (void)awakeFromNib;
+@end
+
+@interface CBDevicesController(Overridden)
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
 
 @end
 
 @interface CBDevicesController(Delegation) <NSTableViewDataSource, NSTableViewDelegate>
+
+- (void)awakeFromNib;
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
 
