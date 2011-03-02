@@ -8,8 +8,8 @@
   [window makeKeyAndVisible];
   CGFloat screenHeight = CGRectGetHeight(mainFrame);
   CGFloat screenWidth = CGRectGetWidth(mainFrame);
-  CGFloat marginSide = 20;
-  CGFloat marginBottom = 20;
+  CGFloat marginSide = 0;
+  CGFloat marginBottom = 10;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (2 * marginSide));
   CGRect frame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);

@@ -5,10 +5,10 @@
 {
   @private
   id delegate;
-  NSAttributedString *string;
+  NSAttributedString* string;
     
-  UIBezierPath *notePath;
-  UIBezierPath *crossPath;
+  UIBezierPath* notePath;
+  UIBezierPath* crossPath;
   CGRect textRect;
   CGRect buttonRect;
 
