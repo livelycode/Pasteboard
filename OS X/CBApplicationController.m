@@ -28,7 +28,7 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
 }
 
 - (void)openPreferences {

@@ -6,13 +6,14 @@
   CBClipboard* clipboard;
   UIView* clipboardView;
   NSMutableArray* itemViews;
+  NSMutableArray* frames;
   id changeListener;
 }
 
 - (id)initWithFrame:(CGRect)aFrame
      viewController:(id)viewController;
 
-- (void)insertItem:(CBItem*)newItem
+- (void)setItem:(CBItem*)newItem
            atIndex:(NSInteger)anIndex;
 
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;

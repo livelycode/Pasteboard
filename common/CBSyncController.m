@@ -166,7 +166,7 @@
 }
 
 //CBClipboardControllerDelegate
-- (void)insertedItem:(CBItem*)item atIndex: (NSInteger) index {
+- (void)didSetItem:(CBItem*)item atIndex: (NSInteger) index {
   [self syncItem: item atIndex: index];
   NSLog(@"received notification");
 }

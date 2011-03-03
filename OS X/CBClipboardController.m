@@ -48,8 +48,7 @@
   
   if (changeListener != nil)
   {
-    [changeListener insertedItem:newItem
-                         atIndex:anIndex];
+    [changeListener didSetItem:newItem atIndex:anIndex];
   }
 }
 
