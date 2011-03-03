@@ -34,9 +34,12 @@
     indexMove = indexMove - 1;
   }
   
-  NSAttributedString *string = [newItem string];
   [clipboardView setVisible:YES forItemAtIndex:anIndex];
-  [clipboardView setString:string forItemAtIndex:newIndex];
+  [clipboardView setString:[newItem string] forItemAtIndex:newIndex];
+  //remove again:
+  if (changeListener != nil) {
+    [changeListener didSetItem:newItem atIndex:anIndex];
+  }
 }
 
 - (BOOL)clipboardContainsItem:(CBItem *)anItem {
