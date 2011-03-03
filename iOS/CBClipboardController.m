@@ -74,7 +74,7 @@
   [self drawItem:newItem atIndex:anIndex];
   if (changeListener != nil)
   {
-    [changeListener didSetItem:newItem atIndex:anIndex];
+    //[changeListener didSetItem:newItem atIndex:anIndex];
   }
 }
 

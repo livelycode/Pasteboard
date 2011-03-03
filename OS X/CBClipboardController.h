@@ -12,11 +12,11 @@
   id changeListener;
 }
 
-- (id)initWithFrame:(CGRect)aFrame
-     viewController:(id)viewController;
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
 
-- (void)insertItem:(CBItem *)newItem
-           atIndex:(NSInteger)anIndex;
+- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex;
+
+- (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex;
 
 - (BOOL)clipboardContainsItem:(CBItem *)anItem;
 
@@ -26,21 +26,16 @@
 
 @interface CBClipboardController(Delegation) <CBClipboardViewDelegate>
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-      didReceiveClick:(NSEvent *)theEvent
+- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
        forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-      didReceiveClick:(NSEvent *)theEvent
-    forButtonWithName:(NSString *)aName
-              atIndex:(NSUInteger)anIndex;
+- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
+    forButtonWithName:(NSString *)aName atIndex:(NSUInteger)anIndex;
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-   didReceiveDragging:(NSEvent *)theEvent
+- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDragging:(NSEvent *)theEvent
        forItemAtIndex:(NSUInteger)anIndex;
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView
-       didReceiveDrop:(id <NSPasteboardReading>)anObject
+- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDrop:(id <NSPasteboardReading>)anObject
       fromItemAtIndex:(NSUInteger)anIndex;
 
 @end

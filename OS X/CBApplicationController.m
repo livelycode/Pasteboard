@@ -29,6 +29,7 @@
 
 - (void)startSyncing {
   syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  [syncingClipboardController addChangeListener: syncController];
 }
 
 - (void)openPreferences {

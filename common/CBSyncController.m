@@ -167,12 +167,13 @@
 
 //CBClipboardControllerDelegate
 - (void)didSetItem:(CBItem*)item atIndex: (NSInteger) index {
+  NSLog(@"sync item");
   [self syncItem: item atIndex: index];
   NSLog(@"received notification");
 }
 
 //HTTPConnectionDelegateDelegate
 - (void)receivedItem: (CBItem*)item atIndex: (NSInteger) index {
-  NSLog(@"got item: %@", [[item string] string]);
+  [clipboardController setItem:item atIndex:index];
 }
 @end
