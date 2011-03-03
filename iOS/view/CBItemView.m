@@ -45,7 +45,7 @@
   CGFloat textX = TEXT_PADDING;
   CGFloat textY = TEXT_PADDING;
   CGRect textRect = CGRectMake(textX, textY, textWidth, textHeight);
-  [string drawInRect:textRect];
+  [[string string] drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
 }
 
 - (void)drawCrossAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {

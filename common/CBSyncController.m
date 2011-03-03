@@ -174,6 +174,7 @@
 
 //HTTPConnectionDelegateDelegate
 - (void)receivedItem: (CBItem*)item atIndex: (NSInteger) index {
+  NSLog(@"received item: %@", [[item string] string]);
   [clipboardController setItem:item atIndex:index];
 }
 @end
