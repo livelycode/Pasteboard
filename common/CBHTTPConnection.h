@@ -9,8 +9,16 @@
   CBSyncController *syncController;
   NSMutableArray* postURLs;
 }
-- (id)initWithSyncController: (CBSyncController*)controller;
-- (void)HTTPServer:(HTTPServer *)server didMakeNewConnection:(HTTPConnection *)connection;
-- (void)HTTPConnection:(HTTPConnection *)connection didReceiveRequest:(CFHTTPMessageRef)request;
 
+@end
+
+@interface CBHTTPConnection(Private)
+  - (NSData*)handlePOSTWithPath:(NSString*)path body:(NSData*)body;
+@end
+
+@interface CBHTTPConnection(Overridden)
+- (BOOL)supportsMethod:(NSString *)method atPath:(NSString *)path;
+- (BOOL)expectsRequestBodyFromMethod:(NSString *)method atPath:(NSString *)path;
+- (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path;
+- (void)processDataChunk:(NSData *)postDataChunk;
 @end

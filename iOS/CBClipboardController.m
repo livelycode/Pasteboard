@@ -58,8 +58,7 @@
 
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
   self = [super init];
-  if (self != nil)
-  {
+  if (self != nil) {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
     frames = [[NSMutableArray alloc] init];
     itemViews = [[NSMutableArray alloc] init];

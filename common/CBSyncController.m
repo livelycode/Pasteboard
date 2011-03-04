@@ -70,7 +70,6 @@
   [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@"local."];    
 }
 
-
 - (void) setServerService: (NSNetService*) newService {
   [serverService autorelease];
   serverService = [newService retain];
