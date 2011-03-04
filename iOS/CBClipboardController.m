@@ -70,7 +70,7 @@
 }
 
 - (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
-  [clipboard insertItem:newItem atIndex:anIndex];
+  [clipboard setItem:newItem atIndex:anIndex];
   [self drawItem:newItem atIndex:anIndex];
   if (changeListener != nil)
   {
