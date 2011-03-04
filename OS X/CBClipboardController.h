@@ -1,41 +1,43 @@
 #import "Cocoa.h"
-#import "CBClipboardViewDelegate.h"
+#import "CBItemViewDelegate.h"
 
 @class CBClipboard;
 @class CBClipboardView;
 
 @interface CBClipboardController : NSObject
 {
-@private
+  @private
+  id changeListener;
   CBClipboard *clipboard;
   CBClipboardView *clipboardView;
-  id changeListener;
+  NSMutableArray *frames;
+  NSMutableArray *itemViews;
 }
 
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index;
 
-- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex;
+- (void)addItem:(CBItem *)item;
 
-- (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex;
+- (BOOL)clipboardContainsItem:(CBItem *)item;
 
-- (BOOL)clipboardContainsItem:(CBItem *)anItem;
-
-- (void)addChangeListener:(id)anObject;
+- (void)addChangeListener:(id)object;
 
 @end
 
-@interface CBClipboardController(Delegation) <CBClipboardViewDelegate>
+@interface CBClipboardController(Overridden)
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
-       forItemAtIndex:(NSUInteger)anIndex;
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
-    forButtonWithName:(NSString *)aName atIndex:(NSUInteger)anIndex;
+@end
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDragging:(NSEvent *)theEvent
-       forItemAtIndex:(NSUInteger)anIndex;
+@interface CBClipboardController(Delegation) <CBItemViewDelegate>
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDrop:(id <NSPasteboardReading>)anObject
-      fromItemAtIndex:(NSUInteger)anIndex;
+- (void)itemView:(CBItemView *)view clickedWithEvent:(NSEvent *)event;
+
+- (void)itemView:(CBItemView *)view areaClicked:(CBItemViewArea)area withEvent:(NSEvent *)event;
+
+- (void)itemView:(CBItemView *)view draggedWithEvent:(NSEvent *)event;
+
+- (void)itemView:(CBItemView *)view didReceiveDropWithObject:(id <NSPasteboardReading>)object;
 
 @end
