@@ -9,9 +9,7 @@
   NSAttributedString* string;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content;
-
-- (void)setDelegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
 @end
 
