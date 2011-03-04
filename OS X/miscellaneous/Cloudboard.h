@@ -2,7 +2,7 @@
 #import "CBItem.h"
 #import "CBClipboardController.h"
 #import "HTTPServer.h"
-#import "HTTPConnectionDelegate.h"
+#import "CBHTTPConnection.h"
 #import "CBSyncController.h"
 #import "CBRemoteCloudboard.h"
 

@@ -3,6 +3,10 @@
 #import "HTTPDataResponse.h"
 #import "DDNumber.h"
 
+@implementation CBHTTPConnection
+
+@end
+
 @implementation CBHTTPConnection(Private)
 
 - (NSData*)handlePOSTWithPath:(NSString*)path body:(NSData*)body {

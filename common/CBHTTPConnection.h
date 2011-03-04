@@ -13,7 +13,7 @@
 @end
 
 @interface CBHTTPConnection(Private)
-  - (NSData*)handlePOSTWithPath:(NSString*)path body:(NSData*)body;
+- (NSData*)handlePOSTWithPath:(NSString*)path body:(NSData*)body;
 @end
 
 @interface CBHTTPConnection(Overridden)
