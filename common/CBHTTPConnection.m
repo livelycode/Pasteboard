@@ -1,4 +1,4 @@
-#import "MyHTTPConnection.h"
+#import "CBHTTPConnection.h"
 #import "HTTPMessage.h"
 #import "HTTPDataResponse.h"
 #import "DDNumber.h"
@@ -13,7 +13,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
  * All we have to do is override appropriate methods in HTTPConnection.
 **/
 
-@implementation MyHTTPConnection
+@implementation CBHTTPConnection
 
 
 //old methods

@@ -4,7 +4,7 @@
 
 @class CBSyncController;
 
-@interface MyHTTPConnection : HTTPConnection {
+@interface CBHTTPConnection : HTTPConnection {
 @private
   CBSyncController *syncController;
   NSMutableArray* postURLs;

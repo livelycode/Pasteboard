@@ -38,8 +38,7 @@
   
   //start Server in new thread
   [self searchRemotes];
-  NSThread *serverThread = [[NSThread alloc] initWithTarget:self selector: @selector(launchHTTPServer) object:nil];
-  [serverThread start];
+  [self launchHTTPServer];
   return self;
 }
 
@@ -48,20 +47,22 @@
 }
 
 - (void)launchHTTPServer {
-  HTTPServer *server = [[HTTPServer alloc] init];
-  [server setType:@"_http._tcp."];
-  [server setName: myServiceName];
-  [server setPort: [[myAddress port] intValue]];
-  HTTPConnectionDelegate *connectionDelegate = [[HTTPConnectionDelegate alloc] initWithSyncController: self];
-  [server setDelegate: connectionDelegate];
+  httpServer = [[HTTPServer alloc] init];
   
-  NSError *startError = nil;
-  if (![server start:&startError] ) {
-    NSLog(@"Error starting server: %@", startError);
-  } else {
-    NSLog(@"Starting server on port %d", [server port]);
+  // Tell the server to broadcast its presence via Bonjour.
+  [httpServer setType:@"_http._tcp."];
+  [httpServer setName:myServiceName];
+  
+  // Normally there's no need to run our server on any specific port.
+  [httpServer setPort:8090];
+  
+  [httpServer setConnectionClass:[CBHTTPConnection class]];
+  
+  NSError *error = nil;
+  if(![httpServer start:&error])
+  {
+    NSLog(@"Error starting HTTP Server: %@", error);
   }
-  [[NSRunLoop currentRunLoop] run];
 }
 
 - (void) searchRemotes {
