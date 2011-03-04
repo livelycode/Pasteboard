@@ -4,7 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-  NSLog(@"main mac");
     CBApplicationController *delegate = [[CBApplicationController alloc] init];
     NSApplication *app = [NSApplication sharedApplication];
     [app setDelegate:delegate];
