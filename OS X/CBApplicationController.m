@@ -41,6 +41,10 @@
   [[preferencesController window] makeKeyAndOrderFront:nil];
 }
 
+- (CBSyncController*)syncController {
+  return syncController;  
+}
+
 @end
 
 @implementation CBApplicationController(Delegation)

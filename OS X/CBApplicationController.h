@@ -29,6 +29,7 @@
 - (void)addSubview: (NSView*) view;
 - (void)startSyncing;
 - (void)openPreferences;
+- (CBSyncController*)syncController;
 @end
 
 @interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
