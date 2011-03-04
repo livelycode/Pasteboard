@@ -73,14 +73,22 @@
 
 @implementation CBItemView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex style:(CBItemViewStyle)aStyle {
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
-    delegate = anObject;
-    string = content;
+    style = aStyle;
   }
   return self;
+}
+
+- (void)setContent:(NSAttributedString *)aString {
+  string = aString;
+  [self setNeedsDisplay:YES];
+}
+
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject {
+  delegate = anObject;
 }
 
 - (void)startDragWithEvent:(NSEvent *)anEvent object:(id <NSPasteboardWriting>)anObject {
@@ -98,7 +106,7 @@
 @implementation CBItemView(Overridden)
 
 - (void)mouseDown:(NSEvent *)theEvent {
-  if (noteVisible) {
+  if (style == CBItemViewStyleNote) {
     NSPoint eventPoint = [theEvent locationInWindow];
     NSPoint localPoint = [self convertPoint:eventPoint fromView:nil];
     
@@ -110,16 +118,18 @@
       [delegate itemView:self clickedWithEvent:theEvent];
     }
   }
-  else {
+  
+  if (style == CBItemViewStyleSlot) {
     [[self superview] mouseDown:theEvent];
   }
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-  if (noteVisible) {
+  if (style == CBItemViewStyleNote) {
     [delegate itemView:self draggedWithEvent:theEvent];
   }
-  else {
+  
+  if (style == CBItemViewStyleSlot) {
     [[self superview] mouseDragged:theEvent];
   }
 }
@@ -153,6 +163,7 @@
 }
 
 - (void)drawRect:(NSRect)aRect {
+NSLog(@"draw");
   CGRect mainBounds = [self bounds];
   CGFloat noteLeft = mainBounds.origin.x + NOTE_PADDING;
   CGFloat noteRight = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
@@ -168,9 +179,9 @@
   NSColor *crossColor = [NSColor blackColor];
   NSColor *backlightColor = [NSColor blueColor];
 
-  if (noteVisible) {
+  if (style == CBItemViewStyleNote) {
     if (noteHightlighted) {
-      [noteColor setFill];;
+      [noteColor setFill];
     }
     else {
       [noteColor setFill];
@@ -187,7 +198,8 @@
     }
     [self drawCrossAtLeft:crossLeft right:crossRight top:crossTop bottom:crossBottom];
   }
-  else {
+  
+  if (style == CBItemViewStyleSlot) {
     if (noteBacklighted) {
       [backlightColor setFill];
     }

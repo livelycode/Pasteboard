@@ -1,6 +1,11 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
+typedef enum {
+  CBItemViewStyleNote,
+  CBItemViewStyleSlot
+} CBItemViewStyle;
+
 @interface CBItemView : NSView
 {
   @private
@@ -9,13 +14,17 @@
   NSTrackingArea *noteArea;
   NSTrackingArea *buttonArea;
   NSInteger index;
-  BOOL noteVisible;
+  CBItemViewStyle style;
   BOOL noteHightlighted;
   BOOL noteBacklighted;
   BOOL buttonIsHighlighted;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex style:(CBItemViewStyle)aStyle;
+
+- (void)setContent:(NSAttributedString *)aString;
+
+- (void)setDelegate:(id <CBItemViewDelegate>)anObject;
 
 - (void)startDragWithEvent:(NSEvent *)anEvent object:(id <NSPasteboardWriting>)anObject;
 
