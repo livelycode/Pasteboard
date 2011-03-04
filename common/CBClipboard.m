@@ -2,13 +2,11 @@
 
 @implementation CBClipboard
 
-- (id)init
-{
+- (id)init {
     return [self initWithCapacity:0];
 }
 
-- (id)initWithCapacity:(NSUInteger)aCapacity
-{
+- (id)initWithCapacity:(NSUInteger)aCapacity {
     self = [super init];
     if (self != nil)
     {
@@ -18,11 +16,12 @@
     return self;
 }
 
-- (void)insertItem:(CBItem *)anItem
-           atIndex:(NSUInteger)anIndex;
-{
-    [items insertObject:anItem
-                atIndex:anIndex];
+- (void)setItem:(CBItem*)anItem atIndex:(NSInteger)anIndex {
+  [items replaceObjectAtIndex:anIndex withObject:anItem];
+}
+
+- (void)insertItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex {
+    [items insertObject:anItem atIndex:anIndex];
     if ([items count] > capacity)
     {
         NSRange tail = NSMakeRange(capacity, [items count] - capacity);
@@ -30,18 +29,15 @@
     }
 }
 
-- (void)removeItemAtIndex:(NSUInteger)anIndex
-{
-    [items removeObjectAtIndex:anIndex];
+- (void)removeItemAtIndex:(NSUInteger)anIndex {
+    [items replaceObjectAtIndex:anIndex withObject: [NSNull null]];
 }
 
-- (CBItem *)itemAtIndex:(NSUInteger)anIndex
-{
+- (CBItem *)itemAtIndex:(NSUInteger)anIndex {
     return [items objectAtIndex:anIndex];
 }
 
-- (NSArray *)items
-{
+- (NSArray *)items {
   	return [NSArray arrayWithArray:items];
 }
 
