@@ -2,13 +2,11 @@
 
 @implementation CBClipboard
 
-- (id)init
-{
+- (id)init {
     return [self initWithCapacity:0];
 }
 
-- (id)initWithCapacity:(NSUInteger)aCapacity
-{
+- (id)initWithCapacity:(NSUInteger)aCapacity {
     self = [super init];
     if (self != nil)
     {
@@ -31,18 +29,15 @@
     }
 }
 
-- (void)removeItemAtIndex:(NSUInteger)anIndex
-{
+- (void)removeItemAtIndex:(NSUInteger)anIndex {
     [items replaceObjectAtIndex:anIndex withObject: [NSNull null]];
 }
 
-- (CBItem *)itemAtIndex:(NSUInteger)anIndex
-{
+- (CBItem *)itemAtIndex:(NSUInteger)anIndex {
     return [items objectAtIndex:anIndex];
 }
 
-- (NSArray *)items
-{
+- (NSArray *)items {
   	return [NSArray arrayWithArray:items];
 }
 
