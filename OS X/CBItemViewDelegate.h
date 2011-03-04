@@ -2,20 +2,20 @@
 
 @class CBItemView;
 
+typedef enum {
+  CBItemViewAreaMain,
+  CBItemViewAreaDismiss
+} CBItemViewArea;
+
 @protocol CBItemViewDelegate <NSObject>
 
 @optional
-- (void)itemView:(CBItemView *)itemView
-clickedWithEvent:(NSEvent *)anEvent;
+- (void)itemView:(CBItemView *)view clickedWithEvent:(NSEvent *)event;
 
-- (void)itemView:(CBItemView *)itemView
-   buttonClicked:(NSString *)aName
-       withEvent:(NSEvent *)anEvent;
+- (void)itemView:(CBItemView *)view areaClicked:(CBItemViewArea)area withEvent:(NSEvent *)event;
 
-- (void)itemView:(CBItemView *)itemView
-draggedWithEvent:(NSEvent *)anEvent;
+- (void)itemView:(CBItemView *)view draggedWithEvent:(NSEvent *)event;
 
-- (void)itemView:(CBItemView *)itemView
-  dropWithObject:(id <NSPasteboardReading>)anObject;
+- (void)itemView:(CBItemView *)view didReceiveDropWithObject:(id <NSPasteboardReading>)object;
 
 @end

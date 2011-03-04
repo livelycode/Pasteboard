@@ -1,100 +1,108 @@
 #import "Cloudboard.h"
 
+#define ROWS 4
+#define COLUMNS 2
+#define PADDING 20
+
+@implementation CBClipboardController(Private)
+
+- (void)drawItem:(CBItem *)item atIndex:(NSInteger)index {
+  CGRect frame = [[frames objectAtIndex:index] rectValue];
+  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index style:CBItemViewStyleNote];
+  [itemView setContent:[item string]];
+  [itemView setDelegate:self];
+  if([itemViews count] > index) {
+    [[itemViews objectAtIndex:index] removeFromSuperview];
+  }
+  [itemViews insertObject:itemView atIndex:index];
+  [clipboardView addSubview:itemView];
+}
+
+- (void)drawSlotAtIndex:(NSInteger)index {
+  CGRect frame = [[frames objectAtIndex:index] rectValue];
+  NSView *slotView = [[NSView alloc] initWithFrame:frame];
+  if([itemViews count] > index) {
+    [[itemViews objectAtIndex:index] removeFromSuperview];
+  }
+  [itemViews insertObject:slotView atIndex:index];
+  [clipboardView addSubview:slotView];
+}
+
+- (void)initializeItemSlots {
+  CGRect mainBounds = [clipboardView bounds];
+  CGFloat itemWidth = (mainBounds.size.width - ((COLUMNS + 1) * PADDING)) / COLUMNS;
+  CGFloat itemHeight = (mainBounds.size.height - ((ROWS + 1) * PADDING)) / ROWS;
+  CGPoint origin = CGPointMake(PADDING, (mainBounds.size.height - itemHeight - PADDING));
+  
+  for(NSInteger row=0; row<ROWS; row++) {
+    for(NSInteger column=0; column<COLUMNS; column++) {
+      CGFloat x = origin.x + (column * (itemWidth + PADDING));
+      CGFloat y = origin.y - (row * (itemHeight + PADDING));
+      CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
+      [frames addObject:[NSValue valueWithRect:itemFrame]];
+      [self drawSlotAtIndex:(row*2 + column)];
+    }
+  }
+}
+
+@end
+
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame
-     viewController:(id)viewController;
-{
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index {
+  [clipboard setItem:item atIndex:index];
+  [self drawItem:item atIndex:index];
+}
+
+
+- (void)addItem:(CBItem *)item {
+  [clipboard insertItem:item atIndex:0];
+  [self drawItem:item atIndex:0];
+}
+
+- (BOOL)clipboardContainsItem:(CBItem *)item {
+  return [[clipboard items] containsObject:item];
+}
+
+- (void)addChangeListener:(id)object {
+  changeListener = object;
+}
+
+@end
+
+@implementation CBClipboardController(Overridden)
+
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
   self = [super init];
-  if (self != nil)
-  {
-    clipboard = [[CBClipboard alloc] initWithCapacity:8];
-    
-    clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame padding:20 Rows:4 Columns:2];
-    [clipboardView setDelegate:self];
+  if (self != nil) {
+    frames = [[NSMutableArray alloc] init];
+    itemViews = [[NSMutableArray alloc] init];
+    clipboard = [[CBClipboard alloc] initWithCapacity:(ROWS * COLUMNS)];
+    clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
+    [self initializeItemSlots];
     [viewController addSubview:clipboardView];
   }
   return self;
-}
-
-- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
-  NSLog(@"setItem %@", newItem);
-}
-
-- (void)insertItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  [clipboard insertItem:newItem atIndex:newIndex];
-  NSUInteger indexMove = [clipboardView itemViews] - 1;
-  while (indexMove != anIndex) {
-    NSUInteger previousIndex = indexMove - 1;
-    BOOL previousVisible = [clipboardView itemAtIndexIsVisible:previousIndex];
-    NSAttributedString *previousString = [clipboardView stringForItemAtIndex:previousIndex];
-    [clipboardView setVisible:previousVisible forItemAtIndex:indexMove];
-    [clipboardView setString:previousString forItemAtIndex:indexMove];
-    indexMove = indexMove - 1;
-  }
-  
-  [clipboardView setVisible:YES forItemAtIndex:anIndex];
-  [clipboardView setString:[newItem string] forItemAtIndex:newIndex];
-  //remove again:
-  if (changeListener != nil) {
-    [changeListener didSetItem:newItem atIndex:anIndex];
-  }
-}
-
-- (BOOL)clipboardContainsItem:(CBItem *)anItem {
-  return [[clipboard items] containsObject:anItem];
-}
-
-- (void)addChangeListener:(id)anObject {
-  changeListener = anObject;
-}
-
-- (void)dealloc {
-  [clipboard release];
-  [clipboardView release];
-  [changeListener release];
-  [super dealloc];
 }
 
 @end
 
 @implementation CBClipboardController(Delegation)
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
-       forItemAtIndex:(NSUInteger)anIndex {
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
-  NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
-  [systemPasteboard clearContents];
-  [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
+- (void)itemView:(CBItemView *)view clickedWithEvent:(NSEvent *)event {
+
 }
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveClick:(NSEvent *)theEvent
-    forButtonWithName:(NSString *)aName atIndex:(NSUInteger)anIndex {
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  [clipboard removeItemAtIndex:newIndex];
-  [clipboardView setVisible:NO forItemAtIndex:anIndex];
+- (void)itemView:(CBItemView *)view areaClicked:(CBItemViewArea)area withEvent:(NSEvent *)event {
+  
 }
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDragging:(NSEvent *)theEvent
-       forItemAtIndex:(NSUInteger)anIndex {
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  NSAttributedString *string = [[clipboard itemAtIndex:newIndex] string];
-  [clipboardView startDragOperationWithEvent:theEvent object:string forItemAtIndex:anIndex];
+- (void)itemView:(CBItemView *)view draggedWithEvent:(NSEvent *)event {
+  
 }
 
-- (void)clipboardView:(CBClipboardView *)aClipboardView didReceiveDrop:(id <NSPasteboardReading>)anObject
-      fromItemAtIndex:(NSUInteger)anIndex {
-  [clipboardView setVisible:YES forItemAtIndex:anIndex];
-  [clipboardView setString:anObject forItemAtIndex:anIndex];
-  if (changeListener != nil) {
-    //This is very bad!!!!!!!:
-    [changeListener didSetItem:[[CBItem alloc] initWithString:anObject] atIndex:anIndex];
-  }
-  CBItem *newItem = [[CBItem alloc] initWithString:anObject];
-  NSUInteger newIndex = anIndex - [clipboardView invisibleItemsUpToIndex:anIndex];
-  [clipboard insertItem:newItem atIndex:newIndex];
+- (void)itemView:(CBItemView *)view didReceiveDropWithObject:(id <NSPasteboardReading>)object {
+  
 }
 
 @end

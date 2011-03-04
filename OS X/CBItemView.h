@@ -1,49 +1,36 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
+typedef enum {
+  CBItemViewStyleNote,
+  CBItemViewStyleSlot
+} CBItemViewStyle;
+
 @interface CBItemView : NSView
 {
   @private
   id delegate;
   NSAttributedString *string;
-  
-  NSBezierPath *notePath;
-  NSBezierPath *crossPath;
-  NSRect textRect;
-  NSRect buttonRect;
-  
-  NSColor *noteDarkColor;
-  NSColor *noteLightColor;
-  NSColor *crossDarkColor;
-  NSColor *crossLightColor;
-  NSColor *backlightColor;
-          
-  BOOL noteVisible;
+  NSTrackingArea *noteArea;
+  NSTrackingArea *buttonArea;
+  NSInteger index;
+  CBItemViewStyle style;
   BOOL noteHightlighted;
   BOOL noteBacklighted;
   BOOL buttonIsHighlighted;
 }
 
-- (id <CBItemViewDelegate>)delegate;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex style:(CBItemViewStyle)aStyle;
+
+- (void)setContent:(NSAttributedString *)aString;
 
 - (void)setDelegate:(id <CBItemViewDelegate>)anObject;
 
-- (NSAttributedString *)text;
-
-- (void)setText:(NSAttributedString *)aString;
-
-- (BOOL)isNoteVisible;
-
-- (void)setNoteVisible:(BOOL)visible;
-
-- (void)startDragWithEvent:(NSEvent *)anEvent
-                    object:(id <NSPasteboardWriting>)anObject;
+- (void)startDragWithEvent:(NSEvent *)anEvent object:(id <NSPasteboardWriting>)anObject;
 
 @end
 
 @interface CBItemView(Overridden)
-
-- (id)initWithFrame:(NSRect)aRect;
 
 - (void)mouseDown:(NSEvent *)theEvent;
 

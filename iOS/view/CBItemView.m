@@ -64,15 +64,11 @@
 
 @implementation CBItemView
 
-- (void)setDelegate:(id <CBItemViewDelegate>)anObject {
-  delegate = anObject;
-}
-
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*) content {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
-    delegate = nil;
+    delegate = anObject;
     string = content;
     [self setBackgroundColor:[UIColor clearColor]];
   }

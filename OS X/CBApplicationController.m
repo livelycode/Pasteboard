@@ -66,8 +66,7 @@
         CBItem *item = [[CBItem alloc] initWithString:copiedItem];
         if ([historyClipboardController clipboardContainsItem:item] == NO)
         {
-            [historyClipboardController insertItem:item
-                                           atIndex:0]; 
+            [historyClipboardController addItem:item]; 
         }
     }
 }
