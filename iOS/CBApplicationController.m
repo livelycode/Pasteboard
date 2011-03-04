@@ -25,6 +25,10 @@
   syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
 }
 
+- (CBSyncController*) syncController {
+  return syncController;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   NSLog(@"didFinishLaunching");
   [self initClipboards];

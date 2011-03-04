@@ -12,6 +12,7 @@
 
 @interface CBSyncController : NSObject {
 @private
+  HTTPServer* httpServer;
   NSNetServiceBrowser *serviceBrowser;
   NSNetService *serverService;
   NSMutableArray *clients;

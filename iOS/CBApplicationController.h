@@ -18,4 +18,5 @@
 - (void)initClipboards;
 - (void)addSubview: (UIView*) view;
 - (void)startSyncing;
+- (CBSyncController*) syncController;
 @end

@@ -17,6 +17,7 @@
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
   UIButton* pasteButton = [[UIButton alloc] initWithFrame:frame];
   [pasteButton setTitle:@"Paste" forState:UIControlStateNormal];
+  pasteButton.layer.borderWidth = 1;
   if([itemViews count] > index) {
     [[itemViews objectAtIndex:index] removeFromSuperview];
   }
@@ -57,8 +58,7 @@
 
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
   self = [super init];
-  if (self != nil)
-  {
+  if (self != nil) {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
     frames = [[NSMutableArray alloc] init];
     itemViews = [[NSMutableArray alloc] init];
