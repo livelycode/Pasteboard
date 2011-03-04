@@ -25,3 +25,10 @@
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
 
 @end
+
+@interface CBClipboardController(Private)
+- (void)drawItem:(CBItem*)item atIndex:(NSInteger)index;
+- (void)drawPasteButtonAtIndex:(NSInteger)index;
+- (void)initializeClipboardViewWithFrame:(CGRect)aFrame;
+- (void)initializeItemViews;
+@end

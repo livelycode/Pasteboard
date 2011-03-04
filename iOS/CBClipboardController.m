@@ -17,6 +17,7 @@
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
   UIButton* pasteButton = [[UIButton alloc] initWithFrame:frame];
   [pasteButton setTitle:@"Paste" forState:UIControlStateNormal];
+  pasteButton.layer.borderWidth = 1;
   if([itemViews count] > index) {
     [[itemViews objectAtIndex:index] removeFromSuperview];
   }
