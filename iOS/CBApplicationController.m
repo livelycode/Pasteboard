@@ -22,7 +22,7 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
+  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
 }
 
 - (CBSyncController*) syncController {

@@ -15,6 +15,7 @@
 - (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 - (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 - (NSDate*)lastChanged;
+- (NSArray*)allItems;
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
 
 - (void)addChangeListener:(id)anObject;

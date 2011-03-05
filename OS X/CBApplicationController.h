@@ -1,5 +1,6 @@
 #import "Cocoa.h"
 #import "CBPasteboardObserver.h"
+#import "CBSyncControllerProtocol.h"
 
 @class CBClipboard;
 @class CBClipboardController;
@@ -32,7 +33,8 @@
 - (CBSyncController*)syncController;
 @end
 
-@interface CBApplicationController(Delegation) <NSApplicationDelegate, CBPasteboardOberserverDelegate>
+@interface CBApplicationController(Delegation)
+  <NSApplicationDelegate, CBPasteboardOberserverDelegate, CBSyncControllerProtocol>
 //NSApplicationDelegate
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
 
@@ -40,6 +42,6 @@
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
 //CBSyncControllerDelegate
-- (void)clientAsksForRegistration:(NSString*)client;
+- (void)clientRequiresUserConfirmation:(NSString*)clientName;
 
 @end

@@ -19,6 +19,7 @@
 - (BOOL)clipboardContainsItem:(CBItem *)item;
 - (void)addChangeListener:(id)object;
 - (NSDate*)lastChanged;
+- (NSArray*)allItems;
 @end
 
 @interface CBClipboardController(Overridden)

@@ -28,8 +28,9 @@
 }
 
 - (void)startSyncing {
-  //syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
-  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController appController:self];
+  //syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController];
+  [syncController addDelegate:self];
 }
 
 - (void)openPreferences {
@@ -74,7 +75,7 @@
 }
 
 //CBSyncControllerDelegate
-- (void)clientAsksForRegistration:(NSString *)clientName {
+- (void)clientRequiresUserConfirmation:(NSString*)clientName {
   NSLog(@"client asks for registration: %@", clientName);
 }
 

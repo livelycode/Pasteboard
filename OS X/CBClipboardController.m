@@ -45,6 +45,10 @@
   }
 }
 
+- (NSArray*)allItems {
+  return [clipboard items];
+}
+
 @end
 
 @implementation CBClipboardController

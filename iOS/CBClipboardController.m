@@ -5,14 +5,12 @@
 - (void)drawItem:(CBItem*)item atIndex:(NSInteger)index {
   if([viewSlots count] > index) {
     UIView* oldView = [viewSlots objectAtIndex:index];
-    [oldView removeFromSuperview];
     oldView.hidden = YES;
+    [oldView removeFromSuperview];
     [oldView setNeedsDisplay];
   }
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
-  NSLog(@"draw item view at: %i", index);
   CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index: index content:[item string] delegate:self];
-  NSLog(@"finished drawing: %i", index);
   [viewSlots insertObject:itemView atIndex:index];
   [clipboardView addSubview:itemView];
 }
@@ -100,6 +98,10 @@
 
 - (NSDate*)lastChanged {
   return lastChanged;
+}
+
+- (NSArray*)allItems {
+  return [clipboard items];
 }
 
 - (void)dealloc {

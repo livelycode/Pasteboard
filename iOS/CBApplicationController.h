@@ -21,7 +21,7 @@
 - (CBSyncController*) syncController;
 @end
 
-@interface CBApplicationController(Delegation)
+@interface CBApplicationController(Delegation)<CBSyncControllerProtocol>
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName;
 @end
