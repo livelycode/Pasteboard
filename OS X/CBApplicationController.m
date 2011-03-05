@@ -28,7 +28,7 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
   [syncingClipboardController addChangeListener: syncController];
 }
 
@@ -42,15 +42,14 @@
 }
 
 - (CBSyncController*)syncController {
-  return syncController;  
+  return syncController;
 }
 
 @end
 
 @implementation CBApplicationController(Delegation)
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   windowController = [[CBMainWindowController alloc] init];
   [self initClipboards];
   hotKey = [[CBHotKeyObserver alloc] init];
@@ -60,8 +59,7 @@
   [self openPreferences];
 }
 
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
-{
+- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard {
     NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses
                                                       options:nil];
     if([copiedItems count] > 0)
@@ -73,6 +71,11 @@
             [historyClipboardController addItem:item]; 
         }
     }
+}
+
+//CBSyncControllerDelegate
+- (void)clientAsksForRegistration:(NSString *)clientName {
+  NSLog(@"client asks for registration: %@", clientName);
 }
 
 @end

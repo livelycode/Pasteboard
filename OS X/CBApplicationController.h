@@ -39,4 +39,7 @@
 //CBPasteboardOberserverDelegate
 - (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
 
+//CBSyncControllerDelegate
+- (void)clientAsksForRegistration:(NSString*)client;
+
 @end

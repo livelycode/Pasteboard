@@ -49,11 +49,17 @@
 
 @implementation CBClipboardController
 
-- (void)setItem:(CBItem *)item atIndex:(NSInteger)index {
+- (void)setItemQuiet:(CBItem *)item atIndex:(NSInteger)index {
   [clipboard setItem:item atIndex:index];
   [self drawItem:item atIndex:index];
 }
 
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index {
+  [self setItemQuiet:item atIndex:index];
+  if(changeListener) {
+    [changeListener insertedItem:item atIndex:index];
+  }
+}
 
 - (void)addItem:(CBItem *)item {
   [clipboard insertItem:item atIndex:0];

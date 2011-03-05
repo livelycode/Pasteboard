@@ -22,7 +22,7 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
 }
 
 - (CBSyncController*) syncController {
@@ -30,7 +30,6 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  NSLog(@"didFinishLaunching");
   [self initClipboards];
   [self startSyncing];
   return YES;
@@ -71,4 +70,11 @@
    */
 }
 
+@end
+
+@implementation CBApplicationController(Delegation)
+//CBSyncControllerDelegate
+- (void)clientAsksForRegistration:(NSString *)clientName {
+  NSLog(@"client asks for registration: %@", clientName);
+}
 @end

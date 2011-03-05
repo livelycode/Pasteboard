@@ -69,12 +69,15 @@
   return self;
 }
 
-- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
+- (void)setItemQuiet:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [clipboard setItem:newItem atIndex:anIndex];
   [self drawItem:newItem atIndex:anIndex];
-  if (changeListener != nil)
-  {
-    //[changeListener didSetItem:newItem atIndex:anIndex];
+}
+
+- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
+  [self setItemQuiet:newItem atIndex:anIndex];
+  if (changeListener != nil) {
+    [changeListener didSetItem:newItem atIndex:anIndex];
   }
 }
 

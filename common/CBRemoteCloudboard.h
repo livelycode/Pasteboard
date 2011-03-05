@@ -11,11 +11,27 @@
 
 @interface CBRemoteCloudboard : NSObject {
 @private
+  CBSyncController* syncController;
+  NSNetService* service;
   NSURL* url;
+  BOOL confirmClient;
+  BOOL registerClient;
 }
-- (id)initWithURL:(NSURL*)url;
-- (id)initWithHost:(NSString*)host port:(NSInteger)port;
-- (void)addClient:(CBSyncController*)client;
+- (id)initWithService:(NSNetService*)service syncController:(CBSyncController*)syncController;
+- (void)registerAsClient;
+- (void)confirmClient;
 - (void)syncItem: (CBItem*)item atIndex: (NSUInteger)index;
-- (NSURL*)URL;
+- (NSString*)serviceName;
+@end
+
+@interface CBRemoteCloudboard(Private)
+- (void)resolveService;
+- (void)sendRegistration;
+- (void)sendRegistrationConfirmation;
+@end
+
+@interface CBRemoteCloudboard(Delegation)
+//NSNetServiceDelegate
+- (void)netServiceDidResolveAddress:(NSNetService *)netService;
+- (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict;
 @end

@@ -10,13 +10,18 @@
 
 @interface CBApplicationController : NSObject <UIApplicationDelegate>
 {
-    @private
-    CBClipboardController *syncingClipboardController;
-    UIWindow *window;
-    CBSyncController *syncController;
+  @private
+  CBClipboardController *syncingClipboardController;
+  UIWindow *window;
+  CBSyncController *syncController;
 }
 - (void)initClipboards;
 - (void)addSubview: (UIView*) view;
 - (void)startSyncing;
 - (CBSyncController*) syncController;
+@end
+
+@interface CBApplicationController(Delegation)
+//CBSyncControllerDelegate
+- (void)clientAsksForRegistration:(NSString *)clientName;
 @end

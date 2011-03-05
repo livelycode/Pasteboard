@@ -10,11 +10,9 @@
   id changeListener;
 }
 
-- (id)initWithFrame:(CGRect)aFrame
-     viewController:(id)viewController;
-
-- (void)setItem:(CBItem*)newItem
-           atIndex:(NSInteger)anIndex;
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
+- (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
+- (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
 

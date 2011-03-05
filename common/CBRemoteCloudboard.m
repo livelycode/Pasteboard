@@ -11,38 +11,33 @@
 
 @implementation CBRemoteCloudboard
 
-- (id)initWithURL:(NSURL*)baseURL
+- (id)initWithService:(NSNetService*)aService syncController:(CBSyncController*)aSyncController
 {
     self = [super init];
     if (self) {
-      url = [baseURL retain];
+      service = [aService retain];
+      syncController = [aSyncController retain];
+      confirmClient = NO;
+      registerClient = NO;
     }
     return self;
 }
 
-- (id)initWithHost:(NSString*)host port:(NSInteger)port
-{
-  NSMutableString *URLString = [NSMutableString string];
-  [URLString appendString:@"http://"];
-  [URLString appendString:host];
-  [URLString appendString:@":"];
-  [URLString appendString:[[NSNumber numberWithUnsignedInteger:port] stringValue]];
-  return [self initWithURL:[NSURL URLWithString:URLString]];
-}
+- (void)registerAsClient {
+  if(url) {
+    [self sendRegistration];
+  } else {
+    registerClient = YES;
+    [self resolveService];
+  }}
 
-- (void)addClient:(CBSyncController*)client {
-  NSLog(@"register as client of: %@", [self URL]);
-  NSURL *requestURL = [url URLByAppendingPathComponent:@"register"];
-  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
-  [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:[[[client URL] absoluteString] dataUsingEncoding: NSUTF8StringEncoding]];
-  NSURLResponse *URLResponse = nil;
-  NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
-                                               returningResponse:&URLResponse
-                                                           error:&receivedError];
-  NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
-  [client addClient: self];
+- (void)confirmClient {
+  if(url) {
+    [self sendRegistrationConfirmation];
+  } else {
+    confirmClient = YES;
+    [self resolveService];
+  }
 }
 
 - (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
@@ -59,13 +54,13 @@
   NSLog(@"sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
 }
 
-- (NSURL*)URL {
-  return url;
+- (NSString*)serviceName {
+  return [service name];
 }
 
 - (BOOL)isEqual:(id)anObject {
-  if([anObject respondsToSelector:@selector(URL)]) {
-    if([[self URL] isEqual: [anObject URL]]) {
+  if([anObject respondsToSelector:@selector(serviceName)]) {
+    if([[self serviceName] isEqual: [anObject serviceName]]) {
       return YES;
     } else {
       return NO;
@@ -79,10 +74,73 @@
   return [[url absoluteString] hash];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
+  [syncController release];
+  [service release];
   [url release];
   [super dealloc];
 }
 
+@end
+
+@implementation CBRemoteCloudboard(Delegation)
+
+//NSNetServiceDelegate
+- (void)netServiceDidResolveAddress:(NSNetService *)netService {
+  NSInteger port = [netService port];
+  NSString *host = [netService hostName];
+  NSMutableString *URLString = [NSMutableString string];
+  [URLString appendString:@"http://"];
+  [URLString appendString:host];
+  [URLString appendString:@":"];
+  [URLString appendString:[[NSNumber numberWithUnsignedInteger:port] stringValue]];
+  url = [[NSURL alloc] initWithString:URLString];
+  if(registerClient) {
+    [self sendRegistration];
+  }
+  if(confirmClient) {
+    [self sendRegistrationConfirmation];
+  }
+}
+
+- (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {
+  NSLog(@"error: not resolved address: %@", errorDict);
+}
+
+@end
+
+@implementation CBRemoteCloudboard(Private)
+
+- (void)resolveService {
+  [service setDelegate: self];
+  [service resolveWithTimeout:5];
+}
+
+- (void)sendRegistration {
+  NSLog(@"try to register as client of: %@", url);
+  NSURL *requestURL = [url URLByAppendingPathComponent:@"register"];
+  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
+  [URLRequest setHTTPMethod:@"POST"];
+  [URLRequest setHTTPBody:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
+  NSURLResponse *URLResponse = nil;
+  NSError *receivedError = nil;
+  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
+                                               returningResponse:&URLResponse
+                                                           error:&receivedError];
+  NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+}
+
+- (void)sendRegistrationConfirmation {
+  NSLog(@"confirm registration of: %@", url);
+  NSURL *requestURL = [url URLByAppendingPathComponent:@"confirm"];
+  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
+  [URLRequest setHTTPMethod:@"POST"];
+  [URLRequest setHTTPBody:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
+  NSURLResponse *URLResponse = nil;
+  NSError *receivedError = nil;
+  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
+                                               returningResponse:&URLResponse
+                                                           error:&receivedError];
+  NSLog(@"confirmation response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+}
 @end
