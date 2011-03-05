@@ -5,10 +5,12 @@
 
 @interface CBPreferencesController : NSWindowController {
   @private  
+  CBApplicationController* appController;
   CBGeneralController *generalController;
   CBDevicesController *devicesController;
   NSView *intermediateView;
 }
+- (id)initWithAppController:(CBApplicationController*)appController;
 
 - (IBAction)showGeneralView:(id)sender;
 

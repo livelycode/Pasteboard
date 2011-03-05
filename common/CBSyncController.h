@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Cloudboard.h"
+#import "CBSyncControllerProtocol.h"
 @class CBRemoteCloudboard, CBApplicationController;
 
 @interface CBSyncController : NSObject {
@@ -16,16 +17,26 @@
   NSNetServiceBrowser* serviceBrowser;
   NSString* myServiceName;
   CBClipboardController* clipboardController;
-  CBApplicationController* appController;
+  NSMutableArray* delegates;
   
+  //CBRemoteCloudboardArrays:
   NSMutableDictionary* clientsVisible;
-  NSMutableDictionary* clientsToSearch;
   NSMutableDictionary* clientsConnected;
-  NSMutableDictionary* clientsAwaitingConfirm;
+  NSMutableDictionary* clientsIAwaitConfirm;
+  //Service Name Arrays:
+  NSMutableArray* clientsToSearch;
+  NSMutableArray* clientsUserNeedsToConfirm;
+  NSMutableArray* clientsQueuedForConfirm;
 }
-- (id) initWithClipboardController: (CBClipboardController*)controller
-                     appController:(CBApplicationController*)appController;
+- (id) initWithClipboardController: (CBClipboardController*)controller;
+- (void)addDelegate:(id<CBSyncControllerProtocol>)delegate;
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
+- (void)setClientsToSearch:(NSArray*)clientNames;
+- (void)addClientToSearch:(NSString*)clientName;
+- (void)removeClientToSearch:(NSString*)clientName;
+- (NSArray*)visibleClients;
+- (NSArray*)connectedClients;
+- (NSArray*)clientsRequiringUserConfirm;
 - (NSString*) serviceName;
 @end
 
@@ -33,17 +44,22 @@
 - (void)launchHTTPServer;
 - (void)searchRemotes;
 - (void)foundClient:(CBRemoteCloudboard*)client;
-- (BOOL)clientToRegister:(CBRemoteCloudboard*)client;
-- (void)addClient: (CBRemoteCloudboard*)client;
+- (void)registerAsClientOf:(CBRemoteCloudboard*)client;
+- (void)confirmClient:(CBRemoteCloudboard*)client;
+- (void)initialSyncToClient:(CBRemoteCloudboard*)client;
+- (void)informDelegatesWith:(SEL)selector object:(id)object;
 @end
 
 @interface CBSyncController(Delegation)<NSNetServiceBrowserDelegate, NSNetServiceDelegate>
 //NSNetServiceBrowserDelegate
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser;
-- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo;
-- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainName moreComing:(BOOL)moreDomainsComing;
-- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) service moreComing: (BOOL)more;
-- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) service moreComing: (BOOL)more;
+- (void)netServiceBrowser:(NSNetServiceBrowser*)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo;
+- (void)netServiceBrowser:(NSNetServiceBrowser*)netServiceBrowser didFindDomain:(NSString *)domainName
+               moreComing:(BOOL)moreDomainsComing;
+- (void)netServiceBrowser:(NSNetServiceBrowser*)browser didFindService:(NSNetService*)service 
+               moreComing:(BOOL)more;
+- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService:(NSNetService*)service 
+               moreComing:(BOOL)more;
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser;
 
 //CBClipboardControllerDelegate

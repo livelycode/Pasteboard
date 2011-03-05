@@ -9,21 +9,22 @@
 #import "CBSyncController.h"
 
 @implementation CBSyncController
-- (id)initWithClipboardController: (CBClipboardController*) aSyncController
-                    appController:(CBApplicationController *)anAppController{
+- (id)initWithClipboardController: (CBClipboardController*) aSyncController {
   self = [super init];
   if (self) {
-    appController = [anAppController retain];
     clipboardController = [aSyncController retain];
-    [aSyncController addChangeListener: self];
-    
+    [clipboardController addChangeListener: self];
+    delegates = [[NSMutableArray alloc] init];
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
     
     clientsVisible = [[NSMutableDictionary alloc] init];
-    clientsToSearch = [[NSMutableDictionary alloc] init];
     clientsConnected = [[NSMutableDictionary alloc] init];
-    clientsAwaitingConfirm = [[NSMutableDictionary alloc] init];
+    clientsIAwaitConfirm = [[NSMutableDictionary alloc] init];
+    
+    clientsToSearch = [[NSMutableArray alloc] init];
+    clientsUserNeedsToConfirm = [[NSMutableArray alloc] init];
+    clientsQueuedForConfirm = [[NSMutableArray alloc] init];
     
     NSMutableString* tempServiceString = [NSMutableString string];
     [tempServiceString appendString: @"Cloudboard "];
@@ -36,14 +37,55 @@
   return self;
 }
 
+- (void)addDelegate:(id<CBSyncControllerProtocol>)delegate {
+  if([delegates containsObject:delegate] == NO) {
+    [delegates addObject:delegate];
+  }
+}
+
 -(NSString*) serviceName {
   return myServiceName;
 }
 
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(CBRemoteCloudboard* client in clientsConnected) {
+  for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
+    NSLog(@"sync to client: %@", [client serviceName]);
     [client syncItem: item atIndex: index];
   }
+}
+
+- (void)setClientsToSearch:(NSArray *)clientNames {
+  for(NSString* clientName in clientNames) {
+    [self addClientToSearch:clientName];
+  }
+}
+
+- (void)addClientToSearch:(NSString *)clientName {
+  if([clientsToSearch containsObject:clientName] == NO) {
+    [clientsToSearch addObject:clientName];
+    CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
+    if(visibleClient) {
+      [self registerAsClientOf:visibleClient];
+    }
+  }
+}
+
+- (void)removeClientToSearch:(NSString*)clientName {
+  [clientsToSearch removeObject:clientName];
+  [clientsConnected setValue:nil forKey:clientName];
+  [self informDelegatesWith:@selector(clientDisconnected:) object:clientName]; 
+}
+
+- (NSArray*)visibleClients {
+  return [clientsVisible allKeys];
+}
+
+- (NSArray*)connectedClients {
+  return [clientsConnected allKeys];
+}
+
+- (NSArray*)clientsRequiringUserConfirm {
+  return clientsUserNeedsToConfirm;
 }
 
 - (void)dealloc {
@@ -56,6 +98,7 @@
 @end
 
 @implementation CBSyncController(Private)
+
 - (void)launchHTTPServer {
   httpServer = [[HTTPServer alloc] init];
   
@@ -81,30 +124,41 @@
 - (void)foundClient:(CBRemoteCloudboard *)client {
   NSLog(@"found client: %@", [client serviceName]);
   [clientsVisible setValue:client forKey:[client serviceName]];
-  if([self clientToRegister:client]) {
-    [client registerAsClient];
+  [self informDelegatesWith:@selector(clientBecameVisible:) object:[client serviceName]];
+  if([clientsQueuedForConfirm containsObject:[client serviceName]]) {
+    [self confirmClient:client];
+    [clientsQueuedForConfirm removeObject:[client serviceName]];
+  }
+  if([clientsToSearch containsObject:[client serviceName]]) {
+    [self registerAsClientOf:client];
   }
 }
 
-- (BOOL)clientToRegister:(CBRemoteCloudboard*)client {
-  CBRemoteCloudboard* clientInList = [clientsToSearch objectForKey:[client serviceName]];
-  //only for testing:
-  return true;
-  if(clientInList) {
-    CBRemoteCloudboard* alreadyRegisteredClient = [clientsConnected objectForKey:[client serviceName]];
-    CBRemoteCloudboard* alreadyAwaitingClient = [clientsAwaitingConfirm objectForKey:[client serviceName]];
-    if((alreadyRegisteredClient == nil) & (alreadyAwaitingClient == nil)) {
-      return YES;
-    } else {
-      return NO;
+- (void)confirmClient:(CBRemoteCloudboard*)client {
+  [client confirmClient];
+  [self informDelegatesWith:@selector(clientConfirmed:) object:[client serviceName]];
+}
+
+- (void)registerAsClientOf:(CBRemoteCloudboard*)client {
+  [client registerAsClient];
+  [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
+}
+
+- (void)initialSyncToClient:(CBRemoteCloudboard *)client {
+  NSLog(@"starting initial sync to %@", [client serviceName]);
+  NSInteger index = 0;
+  for(CBItem* item in [clipboardController allItems]) {
+    [self syncItem:item atIndex:index];
+    index++;
+  }
+}
+
+- (void)informDelegatesWith:(SEL)selector object:(id)object {
+  for(id<CBSyncControllerProtocol> delegate in delegates) {
+    if([delegate respondsToSelector:selector]) {
+      [delegate performSelector:selector withObject:object];
     }
-  } else {
-    return NO;
   }
-}
-
-- (void) addClient: (CBRemoteCloudboard*) client {
-  NSLog(@"added client: %@", [client serviceName]);
 }
 @end
 
@@ -133,6 +187,9 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) netService moreComing: (BOOL)more {
   NSLog(@"removed service: %@", netService);
+  if([[netService name] hasPrefix: @"Cloudboard"]) {
+    [self informDelegatesWith:@selector(clientBecameInvisible:) object:[netService name]]; 
+  }
 }
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
@@ -147,21 +204,27 @@
 }
 
 //CBHTTPConnectionDelegate
-- (void)registrationRequestFrom:(NSString *)serviceName {
-  //CBRemoteCloudboard* validClient = [clientsToSearch objectForKey:serviceName];
-  //always valid for testing:
-  CBRemoteCloudboard* validClient = [clientsVisible objectForKey:serviceName];
-  if(validClient) {
-    [validClient confirmClient];
+- (void)registrationRequestFrom:(NSString *)clientName {
+  //if([clientsToSearch containsObject:clientName]) {
+  //always true for testing:
+  if(YES) {
+    CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
+    if(visibleClient) {
+      [self confirmClient:visibleClient];
+    } else {
+      [clientsQueuedForConfirm addObject:clientName];    
+    }
   } else {
-    [appController clientAsksForRegistration:serviceName];
+    [self informDelegatesWith:@selector(clientRequiresUserConfirmation:) object:clientName];
   }
 }
 
 - (void)registrationConfirmationFrom:(NSString *)serviceName {
-  CBRemoteCloudboard* client = [clientsAwaitingConfirm objectForKey:serviceName];
+  CBRemoteCloudboard* client = [clientsIAwaitConfirm objectForKey:serviceName];
   [clientsConnected setValue:client forKey:serviceName];
-  [clientsAwaitingConfirm setValue:nil forKey:serviceName];
+  [clientsIAwaitConfirm setValue:nil forKey:serviceName];
+  [self informDelegatesWith:@selector(clientConnected:)object:serviceName];
+  [self initialSyncToClient: client];
 }
 
 - (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index {

@@ -5,15 +5,17 @@
 @private
   CBClipboard* clipboard;
   UIView* clipboardView;
-  NSMutableArray* itemViews;
+  NSMutableArray* viewSlots;
   NSMutableArray* frames;
+  NSDate* lastChanged;
   id changeListener;
 }
 
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
 - (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 - (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex;
-
+- (NSDate*)lastChanged;
+- (NSArray*)allItems;
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
 
 - (void)addChangeListener:(id)anObject;

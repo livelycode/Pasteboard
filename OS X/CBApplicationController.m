@@ -28,13 +28,14 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
-  [syncingClipboardController addChangeListener: syncController];
+  //syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController];
+  [syncController addDelegate:self];
 }
 
 - (void)openPreferences {
   if (preferencesController == nil) {
-    preferencesController = [[CBPreferencesController alloc] initWithWindowNibName:@"preferences"];
+    preferencesController = [[CBPreferencesController alloc] initWithAppController: self];
   }
   [preferencesController showWindow:nil];
   [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
@@ -74,7 +75,7 @@
 }
 
 //CBSyncControllerDelegate
-- (void)clientAsksForRegistration:(NSString *)clientName {
+- (void)clientRequiresUserConfirmation:(NSString*)clientName {
   NSLog(@"client asks for registration: %@", clientName);
 }
 

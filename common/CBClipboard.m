@@ -10,8 +10,11 @@
     self = [super init];
     if (self != nil)
     {
-        items = [[NSMutableArray alloc] init];
-        capacity = aCapacity;
+      items = [[NSMutableArray alloc] init];
+      capacity = aCapacity;
+      for(NSInteger i = 0; i<8; i++) {
+        [items addObject:[NSNull null]];
+      }
     }
     return self;
 }

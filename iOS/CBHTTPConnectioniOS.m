@@ -7,9 +7,9 @@
   if (self != nil) {
     NSMutableArray* postURLsTemp = [NSMutableArray array];
     for(NSInteger i = 0; i<8 ; i++) {
-      [postURLs addObject: [[NSNumber numberWithInt: i] stringValue]];
+      [postURLsTemp addObject: [[NSNumber numberWithInt: i] stringValue]];
     }
-    postURLs = [NSArray arrayWithArray: postURLsTemp];
+    postURLs = [[NSArray alloc] initWithArray: postURLsTemp];
     syncController = [[[UIApplication sharedApplication] delegate] syncController];
   }
   return self;

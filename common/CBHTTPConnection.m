@@ -16,13 +16,17 @@
   if([path isEqual:@"register"]) {
     match = YES;
     NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
-    [syncController registrationRequestFrom:clientName];	
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [syncController registrationRequestFrom:clientName];
+    });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
   if([path isEqual:@"confirm"]) {
     match = YES;
     NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
-    [syncController registrationConfirmationFrom:clientName];	
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [syncController registrationConfirmationFrom:clientName];
+    });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
   // Set clipboard item at URL
@@ -32,7 +36,9 @@
     NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: 
                                       [NSKeyedUnarchiver unarchiveObjectWithData:body]];
     CBItem* item = [[CBItem alloc] initWithString: itemString];
-    [syncController receivedRemoteItem:item atIndex:itemIndex];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [syncController receivedRemoteItem:item atIndex:itemIndex];
+    });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
   if(match == NO) {

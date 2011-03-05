@@ -24,12 +24,20 @@
 
 @implementation CBPreferencesController
 
+- (id)initWithAppController:(CBApplicationController*)anAppController {
+  self = [super initWithWindowNibName:@"preferences"];
+  if(self != nil) {
+    appController = anAppController;
+  }
+  return self;
+}
+
 - (void)windowDidLoad {
   [super windowDidLoad];
   [[self window] setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
   [[self window] setLevel:NSStatusWindowLevel];
   generalController = [[CBGeneralController alloc] initWithNibName:@"general" bundle:nil];
-  devicesController = [[CBDevicesController alloc] initWithNibName:@"devices" bundle:nil];
+  devicesController = [[CBDevicesController alloc] initWithSyncController:[appController syncController]];
   intermediateView = [[NSView alloc] init];
   NSView *generalView = [generalController view];
   [self setVisibleView:generalView animated:NO];

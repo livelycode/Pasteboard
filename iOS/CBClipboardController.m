@@ -3,25 +3,28 @@
 @implementation CBClipboardController(Private)
 
 - (void)drawItem:(CBItem*)item atIndex:(NSInteger)index {
-  CGRect frame = [[frames objectAtIndex:index] CGRectValue];
-  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index: index content:[item string]];
-  [itemView setDelegate:self];
-  if([itemViews count] > index) {
-    [[itemViews objectAtIndex:index] removeFromSuperview];
+  if([viewSlots count] > index) {
+    UIView* oldView = [viewSlots objectAtIndex:index];
+    oldView.hidden = YES;
+    [oldView removeFromSuperview];
+    [oldView setNeedsDisplay];
   }
-  [itemViews insertObject:itemView atIndex:index];
+  CGRect frame = [[frames objectAtIndex:index] CGRectValue];
+  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index: index content:[item string] delegate:self];
+  [viewSlots insertObject:itemView atIndex:index];
   [clipboardView addSubview:itemView];
 }
 
 - (void)drawPasteButtonAtIndex:(NSInteger)index {
+  NSLog(@"draw empty view at: %i", index);
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
   UIButton* pasteButton = [[UIButton alloc] initWithFrame:frame];
   [pasteButton setTitle:@"Paste" forState:UIControlStateNormal];
   pasteButton.layer.borderWidth = 1;
-  if([itemViews count] > index) {
-    [[itemViews objectAtIndex:index] removeFromSuperview];
+  if([viewSlots count] > index) {
+    [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
-  [itemViews insertObject:pasteButton atIndex:index];
+  [viewSlots insertObject:pasteButton atIndex:index];
   [clipboardView addSubview:pasteButton];
 }
 
@@ -61,7 +64,8 @@
   if (self != nil) {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
     frames = [[NSMutableArray alloc] init];
-    itemViews = [[NSMutableArray alloc] init];
+    viewSlots = [[NSMutableArray alloc] init];
+    lastChanged = [[NSDate alloc] init];
     [self initializeClipboardViewWithFrame: aFrame];
     [self initializeItemViews];
     [viewController addSubview:clipboardView];
@@ -76,6 +80,7 @@
 
 - (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [self setItemQuiet:newItem atIndex:anIndex];
+  lastChanged = [[NSDate alloc] init];
   if (changeListener != nil) {
     [changeListener didSetItem:newItem atIndex:anIndex];
   }
@@ -91,11 +96,19 @@
   changeListener = [anObject retain];
 }
 
+- (NSDate*)lastChanged {
+  return lastChanged;
+}
+
+- (NSArray*)allItems {
+  return [clipboard items];
+}
+
 - (void)dealloc {
   [clipboard release];
   [clipboardView release];
   [changeListener release];
-  [itemViews release];
+  [viewSlots release];
   [super dealloc];
 }
 

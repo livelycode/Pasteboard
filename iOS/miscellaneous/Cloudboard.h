@@ -5,6 +5,7 @@
 #import "CBHTTPConnection.h"
 #import "CBSyncController.h"
 #import "CBRemoteCloudboard.h"
+#import "CBSyncControllerProtocol.h";
 
 #import "CBApplicationController.h"
 #import "CBSettings.h"
