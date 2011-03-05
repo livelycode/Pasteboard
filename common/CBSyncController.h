@@ -33,6 +33,7 @@
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
 - (void)setClientsToSearch:(NSArray*)clientNames;
 - (void)addClientToSearch:(NSString*)clientName;
+- (void)removeClientToSearch:(NSString*)clientName;
 - (NSArray*)visibleClients;
 - (NSArray*)connectedClients;
 - (NSArray*)clientsRequiringUserConfirm;
@@ -43,7 +44,7 @@
 - (void)launchHTTPServer;
 - (void)searchRemotes;
 - (void)foundClient:(CBRemoteCloudboard*)client;
-- (BOOL)clientToRegister:(CBRemoteCloudboard*)client;
+- (void)registerAsClientOf:(CBRemoteCloudboard*)client;
 - (void)confirmClient:(CBRemoteCloudboard*)client;
 - (void)initialSyncToClient:(CBRemoteCloudboard*)client;
 - (void)informDelegatesWith:(SEL)selector object:(id)object;

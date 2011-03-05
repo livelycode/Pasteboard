@@ -2,37 +2,38 @@
 
 @implementation CBDevicesController
 
-- (IBAction)addDevice:(id)sender {
-  NSUInteger index = [foundClipboardsView selectedRow];
-  id device = [foundClipboards objectAtIndex:index];
-  [registeredClipboards addObject:device];
-  [registeredClipboards writeToURL:devicesURL atomically:YES];
-  [registeredClipboardsView reloadData];
-}
-
-- (IBAction)removeDevice:(id)sender {
-  NSUInteger index = [registeredClipboardsView selectedRow];
-  [registeredClipboards removeObjectAtIndex:index];
-  [registeredClipboards writeToURL:devicesURL atomically:YES];
-  [registeredClipboardsView reloadData];
-}
-
-@end
-
-@implementation CBDevicesController(Overridden)
-
-- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle {
-  self = [super initWithNibName:nibName bundle:nibBundle];
-  if (self) {
+- (id)initWithSyncController:(CBSyncController *)aSyncController {
+  self = [super initWithNibName:@"devices" bundle:nil];
+  if(self != nil) {
+    syncController = aSyncController;
+    [syncController addDelegate:self];
     devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
-    foundClipboards = [NSMutableArray array];
-    [foundClipboards addObject:@"foo"];
+    NSArray* visibleClients = [syncController visibleClients];
+    foundClipboards = [NSMutableArray arrayWithArray:visibleClients];
     registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
     }
   }
   return self;
+}
+
+- (IBAction)addDevice:(id)sender {
+  NSUInteger index = [foundClipboardsView selectedRow];
+  id device = [foundClipboards objectAtIndex:index];
+  [registeredClipboards addObject:device];
+  [registeredClipboards writeToURL:devicesURL atomically:YES];
+  [registeredClipboardsView reloadData];
+  [syncController addClientToSearch:device];
+}
+
+- (IBAction)removeDevice:(id)sender {
+  NSUInteger index = [registeredClipboardsView selectedRow];
+  id device = [registeredClipboards objectAtIndex:index];
+  [registeredClipboards removeObjectAtIndex:index];
+  [registeredClipboards writeToURL:devicesURL atomically:YES];
+  [registeredClipboardsView reloadData];
+  [syncController removeClientToSearch:device];
 }
 
 @end
@@ -84,6 +85,29 @@
       [removeButton setEnabled:NO];
     }
   }
+}
+
+//CBSyncControllerDelegate
+- (void)clientBecameVisible:(NSString*)clientName {
+  NSLog(@"client visible %@", clientName);
+  [foundClipboards addObject:clientName];
+  [foundClipboardsView reloadData];
+}
+- (void)clientBecameInvisible:(NSString*)clientName {
+  NSLog(@"client invisible %@", clientName);
+  [foundClipboards removeObject:clientName];
+  [foundClipboardsView reloadData];
+}
+- (void)clientConnected:(NSString*)clientName {
+  NSLog(@"client connected %@", clientName);
+}
+
+- (void)clientDisconnected:(NSString*)clientName {
+  NSLog(@"client disconnected %@", clientName);
+}
+
+- (void)clientConfirmed:(NSString*)clientName {
+  NSLog(@"client confirmed %@", clientName);
 }
 
 @end

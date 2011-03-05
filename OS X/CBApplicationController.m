@@ -35,7 +35,7 @@
 
 - (void)openPreferences {
   if (preferencesController == nil) {
-    preferencesController = [[CBPreferencesController alloc] initWithWindowNibName:@"preferences"];
+    preferencesController = [[CBPreferencesController alloc] initWithAppController: self];
   }
   [preferencesController showWindow:nil];
   [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];

@@ -1,7 +1,9 @@
 #import "Cocoa.h"
+#import "CBSyncControllerProtocol.h"
 
 @interface CBDevicesController : NSViewController {
 @private
+  CBSyncController* syncController;
   NSMutableArray *foundClipboards;
   NSMutableArray *registeredClipboards;
   NSURL *devicesURL;
@@ -11,6 +13,7 @@
   IBOutlet NSButton *removeButton;
 }
 
+- (id)initWithSyncController:(CBSyncController*)sync;
 - (IBAction)addDevice:(id)sender;
 
 - (IBAction)removeDevice:(id)sender;
@@ -23,7 +26,8 @@
 
 @end
 
-@interface CBDevicesController(Delegation) <NSTableViewDataSource, NSTableViewDelegate>
+@interface CBDevicesController(Delegation)
+  <NSTableViewDataSource, NSTableViewDelegate, CBSyncControllerProtocol>
 
 - (void)awakeFromNib;
 
@@ -31,4 +35,9 @@
 
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex;
 
+//CBSyncControllerDelegate
+- (void)clientBecameVisible:(NSString*)clientName;
+- (void)clientBecameInvisible:(NSString*)clientName;
+- (void)clientConnected:(NSString*)clientName;
+- (void)clientConfirmed:(NSString*)clientName;
 @end

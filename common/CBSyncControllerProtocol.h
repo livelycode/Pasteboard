@@ -19,6 +19,8 @@
 
 - (void)clientConnected:(NSString*)clientName;
 
+- (void)clientDisconnected:(NSString*)clientName;
+
 - (void)clientRequiresUserConfirmation:(NSString*)clientName;
 
 - (void)clientConfirmed:(NSString*)clientName;

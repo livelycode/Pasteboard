@@ -55,13 +55,25 @@
 }
 
 - (void)setClientsToSearch:(NSArray *)clientNames {
-  clientsToSearch = [[NSMutableArray alloc] initWithArray: clientNames];
+  for(NSString* clientName in clientNames) {
+    [self addClientToSearch:clientName];
+  }
 }
 
 - (void)addClientToSearch:(NSString *)clientName {
   if([clientsToSearch containsObject:clientName] == NO) {
     [clientsToSearch addObject:clientName];
+    CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
+    if(visibleClient) {
+      [self registerAsClientOf:visibleClient];
+    }
   }
+}
+
+- (void)removeClientToSearch:(NSString*)clientName {
+  [clientsToSearch removeObject:clientName];
+  [clientsConnected setValue:nil forKey:clientName];
+  [self informDelegatesWith:@selector(clientDisconnected:) object:clientName]; 
 }
 
 - (NSArray*)visibleClients {
@@ -117,30 +129,19 @@
     [self confirmClient:client];
     [clientsQueuedForConfirm removeObject:[client serviceName]];
   }
-  if([self clientToRegister:client]) {
-    [client registerAsClient];
-    [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
-  }
-}
-
-- (BOOL)clientToRegister:(CBRemoteCloudboard*)client {
-  //only for testing:
-  return true;
   if([clientsToSearch containsObject:[client serviceName]]) {
-    CBRemoteCloudboard* alreadyRegisteredClient = [clientsConnected objectForKey:[client serviceName]];
-    if(alreadyRegisteredClient == nil) {
-      return YES;
-    } else {
-      return NO;
-    }
-  } else {
-    return NO;
+    [self registerAsClientOf:client];
   }
 }
 
 - (void)confirmClient:(CBRemoteCloudboard*)client {
   [client confirmClient];
   [self informDelegatesWith:@selector(clientConfirmed:) object:[client serviceName]];
+}
+
+- (void)registerAsClientOf:(CBRemoteCloudboard*)client {
+  [client registerAsClient];
+  [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
 }
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
@@ -204,9 +205,9 @@
 
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString *)clientName {
-  if([clientsToSearch containsObject:clientName]) {
+  //if([clientsToSearch containsObject:clientName]) {
   //always true for testing:
-  //if(YES) {
+  if(YES) {
     CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
     if(visibleClient) {
       [self confirmClient:visibleClient];
