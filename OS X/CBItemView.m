@@ -2,13 +2,14 @@
 
 #define NOTE_PADDING 0
 
-#define TEXT_PADDING 12
+#define TEXT_PADDING 10
 
 #define BUTTON_PADDING 8
 #define BUTTON_LENGTH 16
 
 #define CROSS_PADDING 4
-#define CROSS_WIDTH 3
+#define CROSS_WIDTH 10
+#define CROSS_LINE_WIDTH 3
 #define CROSS_HIGHLIGHT 0.2
 
 #define NOTE_RED 0.9
@@ -59,7 +60,7 @@
   [crossPath lineToPoint:CGPointMake(right, top)];
   [crossPath moveToPoint:CGPointMake(right, bottom)];
   [crossPath lineToPoint:CGPointMake(left, top)];
-  [crossPath setLineWidth:CROSS_WIDTH];
+  [crossPath setLineWidth:CROSS_LINE_WIDTH];
   [crossPath stroke];
   
   CGRect areaRect = CGRectMake(left, bottom, (right - left), (top - bottom));
@@ -172,8 +173,8 @@ NSLog(@"draw");
   
   CGFloat crossLeft = noteRight - CROSS_WIDTH - CROSS_PADDING;
   CGFloat crossRight = noteRight - CROSS_PADDING;
-  CGFloat crossBottom = noteBottom + CROSS_WIDTH + CROSS_PADDING;
-  CGFloat crossTop = noteBottom + CROSS_PADDING;
+  CGFloat crossBottom = noteTop - CROSS_WIDTH - CROSS_PADDING;
+  CGFloat crossTop = noteTop - CROSS_PADDING;
   
   NSColor *noteColor = [NSColor colorWithCalibratedRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
   NSColor *crossColor = [NSColor blackColor];
@@ -187,9 +188,7 @@ NSLog(@"draw");
       [noteColor setFill];
     }
     [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
-    
     [self drawTextAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
-    
     if (buttonIsHighlighted) {
       [crossColor setStroke];
     }
@@ -197,6 +196,11 @@ NSLog(@"draw");
       [crossColor setStroke];
     }
     [self drawCrossAtLeft:crossLeft right:crossRight top:crossTop bottom:crossBottom];
+    NSShadow *pageShadow = [[NSShadow alloc] init];
+    [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
+    [pageShadow setShadowBlurRadius:SHADOW_BLUR];
+    [pageShadow setShadowOffset:CGSizeMake(0, SHADOW_OFFSET)];
+    [self setShadow:pageShadow];
   }
   
   if (style == CBItemViewStyleSlot) {
