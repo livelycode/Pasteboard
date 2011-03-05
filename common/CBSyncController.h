@@ -18,14 +18,21 @@
   CBClipboardController* clipboardController;
   CBApplicationController* appController;
   
+  //CBRemoteCloudboardArrays:
   NSMutableDictionary* clientsVisible;
-  NSMutableDictionary* clientsToSearch;
   NSMutableDictionary* clientsConnected;
-  NSMutableDictionary* clientsAwaitingConfirm;
+  NSMutableDictionary* clientsIAwaitConfirm;
+  //Service Name Arrays:
+  NSMutableArray* clientsToSearch;
+  NSMutableArray* clientsUserNeedsToConfirm;
+  NSMutableArray* clientsQueuedForConfirm;
 }
 - (id) initWithClipboardController: (CBClipboardController*)controller
                      appController:(CBApplicationController*)appController;
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
+- (void)setClientsToSearch:(NSArray*)clientNames;
+- (void)addClientToSearch:(NSString*)clientName;
+- (NSArray*)clientsRequiringUserConfirm;
 - (NSString*) serviceName;
 @end
 
@@ -34,7 +41,9 @@
 - (void)searchRemotes;
 - (void)foundClient:(CBRemoteCloudboard*)client;
 - (BOOL)clientToRegister:(CBRemoteCloudboard*)client;
-- (void)addClient: (CBRemoteCloudboard*)client;
+- (void)initialSyncTo:(CBRemoteCloudboard*)client;
+- (void)clientNeedsUserConfirm:(NSString*)clientName;
+- (void)queueClientForConfirm:(NSString*)clientName;
 @end
 
 @interface CBSyncController(Delegation)<NSNetServiceBrowserDelegate, NSNetServiceDelegate>

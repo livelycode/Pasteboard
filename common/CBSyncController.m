@@ -21,9 +21,12 @@
     [serviceBrowser setDelegate:self];
     
     clientsVisible = [[NSMutableDictionary alloc] init];
-    clientsToSearch = [[NSMutableDictionary alloc] init];
     clientsConnected = [[NSMutableDictionary alloc] init];
-    clientsAwaitingConfirm = [[NSMutableDictionary alloc] init];
+    clientsIAwaitConfirm = [[NSMutableDictionary alloc] init];
+    
+    clientsToSearch = [[NSMutableArray alloc] init];
+    clientsUserNeedsToConfirm = [[NSMutableArray alloc] init];
+    clientsQueuedForConfirm = [[NSMutableArray alloc] init];
     
     NSMutableString* tempServiceString = [NSMutableString string];
     [tempServiceString appendString: @"Cloudboard "];
@@ -46,6 +49,20 @@
   }
 }
 
+- (void)setClientsToSearch:(NSArray *)clientNames {
+  clientsToSearch = [[NSMutableArray alloc] initWithArray: clientNames];
+}
+
+- (void)addClientToSearch:(NSString *)clientName {
+  if([clientsToSearch containsObject:clientName] == NO) {
+    [clientsToSearch addObject:clientName];
+  }
+}
+
+- (NSArray*)clientsRequiringUserConfirm {
+  return clientsUserNeedsToConfirm;
+}
+
 - (void)dealloc {
   [serviceBrowser release];
   [clientsConnected release];
@@ -56,6 +73,7 @@
 @end
 
 @implementation CBSyncController(Private)
+
 - (void)launchHTTPServer {
   httpServer = [[HTTPServer alloc] init];
   
@@ -81,18 +99,25 @@
 - (void)foundClient:(CBRemoteCloudboard *)client {
   NSLog(@"found client: %@", [client serviceName]);
   [clientsVisible setValue:client forKey:[client serviceName]];
-  if([self clientToRegister:client]) {
-    [client registerAsClient];
+  
+  //if client already asked me to confirm then confirm otherwise register myself if client is valid:
+  if([clientsQueuedForConfirm containsObject:[client serviceName]]) {
+    [client confirmClient];
+    [clientsQueuedForConfirm removeObject:[client serviceName]];
+  } else {
+    if([self clientToRegister:client]) {
+      [client registerAsClient];
+      [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
+    }
   }
 }
 
 - (BOOL)clientToRegister:(CBRemoteCloudboard*)client {
-  CBRemoteCloudboard* clientInList = [clientsToSearch objectForKey:[client serviceName]];
   //only for testing:
   return true;
-  if(clientInList) {
+  if([clientsToSearch containsObject:[client serviceName]]) {
     CBRemoteCloudboard* alreadyRegisteredClient = [clientsConnected objectForKey:[client serviceName]];
-    CBRemoteCloudboard* alreadyAwaitingClient = [clientsAwaitingConfirm objectForKey:[client serviceName]];
+    CBRemoteCloudboard* alreadyAwaitingClient = [clientsIAwaitConfirm objectForKey:[client serviceName]];
     if((alreadyRegisteredClient == nil) & (alreadyAwaitingClient == nil)) {
       return YES;
     } else {
@@ -103,8 +128,16 @@
   }
 }
 
-- (void) addClient: (CBRemoteCloudboard*) client {
-  NSLog(@"added client: %@", [client serviceName]);
+- (void)clientNeedsUserConfirm:(NSString*)clientName {
+  [appController clientAsksForRegistration:clientName];
+}
+
+- (void)queueClientForConfirm:(NSString*)clientName {
+  [clientsQueuedForConfirm addObject:clientName];
+}
+
+- (void)initialSyncTo:(CBRemoteCloudboard *)client {
+  NSLog(@"starting initial sync to %@", [client serviceName]);
 }
 @end
 
@@ -148,20 +181,20 @@
 
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString *)serviceName {
-  //CBRemoteCloudboard* validClient = [clientsToSearch objectForKey:serviceName];
   //always valid for testing:
   CBRemoteCloudboard* validClient = [clientsVisible objectForKey:serviceName];
-  if(validClient) {
-    [validClient confirmClient];
+  if([clientsToSearch containsObject:serviceName]) {
+    [self queueClientForConfirm:serviceName];
   } else {
-    [appController clientAsksForRegistration:serviceName];
+    [self clientNeedsUserConfirm:serviceName];
   }
 }
 
 - (void)registrationConfirmationFrom:(NSString *)serviceName {
-  CBRemoteCloudboard* client = [clientsAwaitingConfirm objectForKey:serviceName];
+  CBRemoteCloudboard* client = [clientsIAwaitConfirm objectForKey:serviceName];
   [clientsConnected setValue:client forKey:serviceName];
-  [clientsAwaitingConfirm setValue:nil forKey:serviceName];
+  [clientsIAwaitConfirm setValue:nil forKey:serviceName];
+  [self initialSyncTo: client];
 }
 
 - (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index {

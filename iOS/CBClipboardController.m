@@ -62,6 +62,7 @@
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
     frames = [[NSMutableArray alloc] init];
     itemViews = [[NSMutableArray alloc] init];
+    lastChanged = [[NSDate alloc] init];
     [self initializeClipboardViewWithFrame: aFrame];
     [self initializeItemViews];
     [viewController addSubview:clipboardView];
@@ -76,6 +77,7 @@
 
 - (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
   [self setItemQuiet:newItem atIndex:anIndex];
+  lastChanged = [[NSDate alloc] init];
   if (changeListener != nil) {
     [changeListener didSetItem:newItem atIndex:anIndex];
   }
@@ -89,6 +91,10 @@
 - (void)addChangeListener:(id)anObject
 {
   changeListener = [anObject retain];
+}
+
+- (NSDate*)lastChanged {
+  return lastChanged;
 }
 
 - (void)dealloc {

@@ -11,13 +11,14 @@
   CBClipboardView *clipboardView;
   NSMutableArray *frames;
   NSMutableArray *itemViews;
+  NSDate* lastChanged;
 }
 - (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index;
 - (void)addItem:(CBItem *)item;
 - (BOOL)clipboardContainsItem:(CBItem *)item;
 - (void)addChangeListener:(id)object;
-
+- (NSDate*)lastChanged;
 @end
 
 @interface CBClipboardController(Overridden)

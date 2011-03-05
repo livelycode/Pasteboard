@@ -56,6 +56,7 @@
 
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index {
   [self setItemQuiet:item atIndex:index];
+  lastChanged = [[NSDate alloc] init];
   if(changeListener) {
     [changeListener insertedItem:item atIndex:index];
   }
@@ -85,10 +86,15 @@
     itemViews = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:(ROWS * COLUMNS)];
     clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
+    lastChanged = [[NSDate alloc] init];
     [self initializeItemSlots];
     [viewController addSubview:clipboardView];
   }
   return self;
+}
+
+- (NSDate*)lastChanged {
+  return lastChanged;
 }
 
 @end
