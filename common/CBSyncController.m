@@ -15,7 +15,7 @@
   if (self) {
     appController = [anAppController retain];
     clipboardController = [aSyncController retain];
-    [aSyncController addChangeListener: self];
+    [clipboardController addChangeListener: self];
     
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
@@ -44,7 +44,8 @@
 }
 
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(CBRemoteCloudboard* client in clientsConnected) {
+  for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
+    NSLog(@"sync to client: %@", [client serviceName]);
     [client syncItem: item atIndex: index];
   }
 }
@@ -115,8 +116,7 @@
   return true;
   if([clientsToSearch containsObject:[client serviceName]]) {
     CBRemoteCloudboard* alreadyRegisteredClient = [clientsConnected objectForKey:[client serviceName]];
-    CBRemoteCloudboard* alreadyAwaitingClient = [clientsIAwaitConfirm objectForKey:[client serviceName]];
-    if((alreadyRegisteredClient == nil) & (alreadyAwaitingClient == nil)) {
+    if(alreadyRegisteredClient == nil) {
       return YES;
     } else {
       return NO;
@@ -184,7 +184,9 @@
 
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString *)serviceName {
-  if([clientsToSearch containsObject:serviceName]) {
+  //if([clientsToSearch containsObject:serviceName]) {
+  //always true for testing:
+  if(YES) {
     [self queueClientForConfirm:serviceName];
   } else {
     [self clientNeedsUserConfirm:serviceName];

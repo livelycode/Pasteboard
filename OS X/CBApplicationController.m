@@ -28,8 +28,8 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
-  [syncingClipboardController addChangeListener: syncController];
+  //syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController appController:self];
+  syncController = [[CBSyncController alloc] initWithClipboardController: historyClipboardController appController:self];
 }
 
 - (void)openPreferences {

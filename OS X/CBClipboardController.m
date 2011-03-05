@@ -11,20 +11,20 @@
   CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index style:CBItemViewStyleNote];
   [itemView setContent:[item string]];
   [itemView setDelegate:self];
-  if([itemViews count] > index) {
-    [[itemViews objectAtIndex:index] removeFromSuperview];
+  if([viewSlots count] > index) {
+    [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
-  [itemViews insertObject:itemView atIndex:index];
+  [viewSlots insertObject:itemView atIndex:index];
   [clipboardView addSubview:itemView];
 }
 
-- (void)drawSlotAtIndex:(NSInteger)index {
+- (void)drawEmptySlotAtIndex:(NSInteger)index {
   CGRect frame = [[frames objectAtIndex:index] rectValue];
   NSView *slotView = [[NSView alloc] initWithFrame:frame];
-  if([itemViews count] > index) {
-    [[itemViews objectAtIndex:index] removeFromSuperview];
+  if([viewSlots count] > index) {
+    [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
-  [itemViews insertObject:slotView atIndex:index];
+  [viewSlots insertObject:slotView atIndex:index];
   [clipboardView addSubview:slotView];
 }
 
@@ -40,7 +40,7 @@
       CGFloat y = origin.y - (row * (itemHeight + PADDING));
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithRect:itemFrame]];
-      [self drawSlotAtIndex:(row*2 + column)];
+      [self drawEmptySlotAtIndex:(row*2 + column)];
     }
   }
 }
@@ -58,13 +58,24 @@
   [self setItemQuiet:item atIndex:index];
   lastChanged = [[NSDate alloc] init];
   if(changeListener) {
-    [changeListener insertedItem:item atIndex:index];
+    [changeListener didSetItem:item atIndex:index];
   }
 }
 
 - (void)addItem:(CBItem *)item {
   [clipboard insertItem:item atIndex:0];
-  [self drawItem:item atIndex:0];
+  NSArray* items = [clipboard items];
+  for(NSInteger index=0; index<8; index++) {
+    id object = [items objectAtIndex:index];
+    if([object isEqualTo: [NSNull null]]) {
+      [self drawEmptySlotAtIndex:index];
+    } else {
+      [self drawItem:object atIndex:index];
+      if(changeListener) {
+        [changeListener didSetItem:object atIndex:index];
+      }
+    }
+  }
 }
 
 - (BOOL)clipboardContainsItem:(CBItem *)item {
@@ -83,7 +94,7 @@
   self = [super init];
   if (self != nil) {
     frames = [[NSMutableArray alloc] init];
-    itemViews = [[NSMutableArray alloc] init];
+    viewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:(ROWS * COLUMNS)];
     clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
     lastChanged = [[NSDate alloc] init];

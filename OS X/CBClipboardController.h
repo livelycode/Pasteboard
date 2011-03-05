@@ -10,7 +10,7 @@
   CBClipboard *clipboard;
   CBClipboardView *clipboardView;
   NSMutableArray *frames;
-  NSMutableArray *itemViews;
+  NSMutableArray *viewSlots;
   NSDate* lastChanged;
 }
 - (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;

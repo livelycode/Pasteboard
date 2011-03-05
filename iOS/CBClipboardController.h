@@ -5,7 +5,7 @@
 @private
   CBClipboard* clipboard;
   UIView* clipboardView;
-  NSMutableArray* itemViews;
+  NSMutableArray* viewSlots;
   NSMutableArray* frames;
   NSDate* lastChanged;
   id changeListener;
