@@ -100,15 +100,13 @@
   NSLog(@"found client: %@", [client serviceName]);
   [clientsVisible setValue:client forKey:[client serviceName]];
   
-  //if client already asked me to confirm then confirm otherwise register myself if client is valid:
   if([clientsQueuedForConfirm containsObject:[client serviceName]]) {
     [client confirmClient];
     [clientsQueuedForConfirm removeObject:[client serviceName]];
-  } else {
-    if([self clientToRegister:client]) {
-      [client registerAsClient];
-      [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
-    }
+  }
+  if([self clientToRegister:client]) {
+    [client registerAsClient];
+    [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
   }
 }
 
@@ -133,7 +131,12 @@
 }
 
 - (void)queueClientForConfirm:(NSString*)clientName {
-  [clientsQueuedForConfirm addObject:clientName];
+  CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
+  if(visibleClient) {
+    [visibleClient confirmClient];
+  } else {
+    [clientsQueuedForConfirm addObject:clientName];    
+  }
 }
 
 - (void)initialSyncTo:(CBRemoteCloudboard *)client {
@@ -181,8 +184,6 @@
 
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString *)serviceName {
-  //always valid for testing:
-  CBRemoteCloudboard* validClient = [clientsVisible objectForKey:serviceName];
   if([clientsToSearch containsObject:serviceName]) {
     [self queueClientForConfirm:serviceName];
   } else {
