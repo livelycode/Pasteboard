@@ -116,20 +116,12 @@
 
 @implementation CBClipboardController(Delegation)
 
-- (void)itemView:(CBItemView *)view clickedWithEvent:(NSEvent *)event {
-
-}
-
-- (void)itemView:(CBItemView *)view areaClicked:(CBItemViewArea)area withEvent:(NSEvent *)event {
-  
-}
-
-- (void)itemView:(CBItemView *)view draggedWithEvent:(NSEvent *)event {
-  
-}
-
-- (void)itemView:(CBItemView *)view didReceiveDropWithObject:(id <NSPasteboardReading>)object {
-  
+//CBItemViewDelegate
+- (void)itemViewClicked:(CBItemView *)view index:(NSInteger)index {
+  NSAttributedString *string = [[clipboard itemAtIndex:index] string];
+  NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
+  [systemPasteboard clearContents];
+  [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
 }
 
 @end

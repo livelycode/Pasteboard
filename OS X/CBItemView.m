@@ -105,8 +105,8 @@
 
 - (void)mouseDown:(NSEvent *)theEvent {
   mouseDown = YES;
-  NSLog(@"clicked");
   [self setNeedsDisplay:YES];
+  [delegate itemViewClicked:self index:index];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
