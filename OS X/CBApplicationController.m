@@ -57,18 +57,23 @@
   [self openPreferences];
 }
 
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard {
-    NSArray *copiedItems = [aPasteboard readObjectsForClasses:pasteboardClasses
-                                                      options:nil];
-    if([copiedItems count] > 0)
-    {
-        id copiedItem = [copiedItems objectAtIndex:0];
-        CBItem *item = [[CBItem alloc] initWithString:copiedItem];
-        if ([clipboardController clipboardContainsItem:item] == NO)
-        {
-            [clipboardController addItem:item]; 
-        }
+- (void)systemPasteboardDidChange {
+  CBItem* newItem = [self currentPasteboardItem];
+  if(newItem) {
+    if ([clipboardController clipboardContainsItem:newItem] == NO) {
+      [clipboardController addItem:newItem];
     }
+  }
+}
+
+- (CBItem*)currentPasteboardItem {
+  CBItem *item;
+  NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:pasteboardClasses options:nil];
+  if([items count] > 0) {
+    id copiedItem = [items objectAtIndex:0];
+    item = [[CBItem alloc] initWithString:copiedItem];
+  }
+  return item;
 }
 
 //CBSyncControllerDelegate

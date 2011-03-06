@@ -1,26 +1,20 @@
 #import "Cocoa.h"
-#import "CBItemViewDelegate.h"
 
-@interface CBItemView : NSView
+@interface CBPasteView : NSView
 {
   @private
   id delegate;
-  NSAttributedString *string;
   NSTrackingArea *noteArea;
   NSInteger index;
   BOOL mouseOver;
   BOOL mouseDown;
-  BOOL noteBacklighted;
 }
-
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex delegate:(id)anObject;
 @end
 
-@interface CBItemView(Overridden)
-
+@interface CBPasteView(Overridden)
 - (void)mouseDown:(NSEvent *)theEvent;
 - (void)mouseEntered:(NSEvent *)theEvent;
 - (void)mouseExited:(NSEvent *)theEvent;
 - (void)drawRect:(NSRect)aRect;
-
 @end

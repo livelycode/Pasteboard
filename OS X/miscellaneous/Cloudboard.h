@@ -13,6 +13,7 @@
 #import "CBPasteboardObserver.h"
 #import "CBSettings.h"
 #import "CBItemView.h"
+#import "CBPasteView.h"
 #import "CBClipboardView.h"
 #import "CBWindowView.h"
 #import "CBPreferencesController.h"

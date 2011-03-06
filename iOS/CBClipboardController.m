@@ -11,7 +11,7 @@
   }
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
   CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index: index content:[item string] delegate:self];
-  [viewSlots insertObject:itemView atIndex:index];
+  [viewSlots replaceObjectAtIndex:index withObject:itemView];
   [clipboardView addSubview:itemView];
 }
 
@@ -24,7 +24,7 @@
   if([viewSlots count] > index) {
     [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
-  [viewSlots insertObject:pasteButton atIndex:index];
+  [viewSlots replaceObjectAtIndex:index withObject:pasteButton];
   [clipboardView addSubview:pasteButton];
 }
 

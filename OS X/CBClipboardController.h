@@ -13,6 +13,7 @@
   NSMutableArray *viewSlots;
   NSDate* lastChanged;
 }
+- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
 - (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index;
 - (void)addItem:(CBItem *)item;
@@ -22,10 +23,7 @@
 - (NSArray*)allItems;
 @end
 
-@interface CBClipboardController(Overridden)
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
-@end
-
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
 - (void)itemViewClicked:(CBItemView *)view index:(NSInteger)index;
+- (void)pasteViewClicked:(CBItemView *)view index:(NSInteger)index;
 @end

@@ -11,18 +11,13 @@
 #define NOTE_BLUE 0.3
 #define NOTE_HIGHLIGHT 0.2
 
-#define BACKLIGHT_RED 0.5
-#define BACKLIGHT_GREEN 0.5
-#define BACKLIGHT_BLUE 1
-#define BACKLIGHT_ALPHA 0.2
-
 #define SHADOW_ALPHA 0.8
 #define SHADOW_BLUR 3
 #define SHADOW_OFFSET -4
 
 #define BORDER_ALPHA 1
 
-@implementation CBItemView(Private)
+@implementation CBPasteView(Private)
 
 - (void)drawNotePathAtRect:(CGRect)noteRect {
   NSBezierPath *notePath = [NSBezierPath bezierPath];
@@ -39,21 +34,7 @@
   [self addTrackingArea:noteArea];
 }
 
-- (void)drawTextAtRect:(CGRect)textRect faded:(BOOL)faded {
-  if(faded) {
-    NSMutableAttributedString* fadedString = [[NSMutableAttributedString alloc] initWithAttributedString:string];
-    [fadedString beginEditing];
-    [fadedString addAttribute:NSForegroundColorAttributeName
-                        value:[NSColor grayColor]
-                        range:NSMakeRange(0, [fadedString length])];
-    [fadedString endEditing];
-    [fadedString drawInRect:textRect];
-  } else {
-    [string drawInRect:textRect];
-  }
-}
-
-- (void)drawCopyButtonAtRect:(CGRect)rect {
+- (void)drawPasteButtonAtRect:(CGRect)rect {
   NSColor* textColor;
   if(mouseDown) {
     textColor = [NSColor grayColor];
@@ -67,34 +48,28 @@
                               textColor, NSForegroundColorAttributeName, 
                               centerStyle, NSParagraphStyleAttributeName,
                               nil];
-  NSAttributedString *copyText = [[NSAttributedString alloc] initWithString:@"Copy" attributes:attributes];
+  NSAttributedString *copyText = [[NSAttributedString alloc] initWithString:@"Paste" attributes:attributes];
   [copyText drawInRect:rect];
 }
 
 @end
 
-@implementation CBItemView
+@implementation CBPasteView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex delegate:(id)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
-    string = content;
     delegate = anObject;
     mouseOver = NO;
     mouseDown = NO;
-    NSShadow *pageShadow = [[NSShadow alloc] init];
-    [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
-    [pageShadow setShadowBlurRadius:SHADOW_BLUR];
-    [pageShadow setShadowOffset:CGSizeMake(0, SHADOW_OFFSET)];
-    [self setShadow:pageShadow];
   }
   return self;
 }
 
 @end
 
-@implementation CBItemView(Overridden)
+@implementation CBPasteView(Overridden)
 
 - (void)mouseDown:(NSEvent *)theEvent {
   mouseDown = YES;
@@ -105,11 +80,10 @@
   mouseDown = NO;
   NSLog(@"up");
   [self setNeedsDisplay:YES];
-  [delegate itemViewClicked:self index:index];
+  [delegate pasteViewClicked:self index:index];
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent {
-  NSLog(@"entered");
   if(mouseOver == NO) {
     mouseOver = YES;
     [self setNeedsDisplay:YES];
@@ -117,7 +91,6 @@
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-  NSLog(@"exited");
   if(mouseOver == YES) {
     mouseOver = NO;
     [self setNeedsDisplay:YES];
@@ -125,7 +98,6 @@
 }
 
 - (void)drawRect:(NSRect)aRect {
-  NSLog(@"draw");
   CGRect mainBounds = [self bounds];
   CGRect noteRect = CGRectMake(CGRectGetMinX(mainBounds) + NOTE_PADDING,
                                CGRectGetMinY(mainBounds) + NOTE_PADDING,
@@ -134,10 +106,9 @@
   NSColor *noteColor = [NSColor colorWithCalibratedRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
   [noteColor setFill];
   [self drawNotePathAtRect:noteRect];
-  [self drawTextAtRect:CGRectInset(noteRect, TEXT_PADDING, TEXT_PADDING) faded:mouseOver];
-  if(mouseOver) {
-    [self drawCopyButtonAtRect: CGRectOffset(noteRect, 0, -(CGRectGetHeight(noteRect) - COPY_FONT_SIZE)/2)];
-  }
+  //if(mouseOver) {
+    [self drawPasteButtonAtRect: CGRectOffset(noteRect, 0, -(CGRectGetHeight(noteRect) - COPY_FONT_SIZE)/2)];
+  //}
 }
 
 @end

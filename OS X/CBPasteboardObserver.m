@@ -34,7 +34,7 @@
 	NSInteger currentChangeCount = [systemPasteboard changeCount];
 	if (currentChangeCount != changeCount)
     {
-        [delegate systemPasteboardDidChange:systemPasteboard];
+        [delegate systemPasteboardDidChange];
         changeCount = currentChangeCount;
     }
 }

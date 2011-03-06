@@ -2,14 +2,7 @@
 #import "CBPasteboardObserver.h"
 #import "CBSyncControllerProtocol.h"
 
-@class CBClipboard;
-@class CBClipboardController;
-@class CBHotKeyObserver;
-@class CBPasteboardObserver;
-@class CBMainWindowController;
-@class CBPreferencesController;
-@class HTTPConnectionDelegate;
-@class CBSyncController;
+@class CBClipboard, CBClipboardController, CBItem, CBHotKeyObserver, CBPasteboardObserver, CBMainWindowController, CBPreferencesController, HTTPConnectionDelegate, CBSyncController;
 
 @interface CBApplicationController : NSObject 
 {
@@ -28,6 +21,7 @@
 - (void)addSubview: (NSView*) view;
 - (void)startSyncing;
 - (void)openPreferences;
+- (CBItem*)currentPasteboardItem;
 - (CBSyncController*)syncController;
 @end
 
@@ -37,7 +31,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
 
 //CBPasteboardOberserverDelegate
-- (void)systemPasteboardDidChange:(NSPasteboard *)aPasteboard;
+- (void)systemPasteboardDidChange;
 
 //CBSyncControllerDelegate
 - (void)clientRequiresUserConfirmation:(NSString*)clientName;
