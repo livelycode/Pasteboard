@@ -16,16 +16,14 @@
     @private
     CBPasteboardObserver *pasteboardObserver;		
     CBHotKeyObserver *hotKey;
-    CBClipboardController *historyClipboardController;
-    CBClipboardController *syncingClipboardController;
+    CBClipboardController *clipboardController;
     CBMainWindowController *windowController;
     CBPreferencesController *preferencesController;
-    CBClipboardController *clipboardController;
     CBSyncController *syncController;
     NSArray *pasteboardClasses;
     BOOL windowHidden;
 }
-- (void)initClipboards;
+- (void)initClipboard;
 - (void)initPasteboardObserver;
 - (void)addSubview: (NSView*) view;
 - (void)startSyncing;
