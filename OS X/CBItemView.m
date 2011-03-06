@@ -2,15 +2,9 @@
 
 #define NOTE_PADDING 0
 
-#define TEXT_PADDING 10
+#define TEXT_PADDING 5
 
-#define BUTTON_PADDING 8
-#define BUTTON_LENGTH 16
-
-#define CROSS_PADDING 4
-#define CROSS_WIDTH 10
-#define CROSS_LINE_WIDTH 3
-#define CROSS_HIGHLIGHT 0.2
+#define COPY_FONT_SIZE 50
 
 #define NOTE_RED 0.9
 #define NOTE_GREEN 0.8
@@ -30,44 +24,51 @@
 
 @implementation CBItemView(Private)
 
-- (void)drawNotePathAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
+- (void)drawNotePathAtRect:(CGRect)noteRect {
   NSBezierPath *notePath = [NSBezierPath bezierPath];
-  [notePath moveToPoint:CGPointMake(left, bottom)];
-  [notePath lineToPoint:CGPointMake(right, bottom)];
-  [notePath lineToPoint:CGPointMake(right, top)];
-  [notePath lineToPoint:CGPointMake(left, top)];
+  [notePath moveToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMinY(noteRect))];
+  [notePath lineToPoint:CGPointMake(CGRectGetMaxX(noteRect), CGRectGetMinY(noteRect))];
+  [notePath lineToPoint:CGPointMake(CGRectGetMaxX(noteRect), CGRectGetMaxY(noteRect))];
+  [notePath lineToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMaxY(noteRect))];
   [notePath closePath];
   [notePath fill];
   
-  CGRect areaRect = CGRectMake(left, bottom, (right - left), (top - bottom));
   NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
   NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"note" forKey:@"area"];
-  noteArea = [[NSTrackingArea alloc] initWithRect:areaRect options:options owner:self userInfo:userInfo];
+  noteArea = [[NSTrackingArea alloc] initWithRect:noteRect options:options owner:self userInfo:userInfo];
   [self addTrackingArea:noteArea];
 }
 
-- (void)drawTextAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  CGFloat textWidth = right - left;
-  CGFloat textHeight = top - bottom;
-  CGFloat textX = TEXT_PADDING;
-  CGFloat textY = TEXT_PADDING;
-  [string drawInRect:CGRectMake(textX, textY, textWidth, textHeight)];
+- (void)drawTextAtRect:(CGRect)textRect faded:(BOOL)faded {
+  if(faded) {
+    NSMutableAttributedString* fadedString = [[NSMutableAttributedString alloc] initWithAttributedString:string];
+    [fadedString beginEditing];
+    [fadedString addAttribute:NSForegroundColorAttributeName
+                        value:[NSColor grayColor]
+                        range:NSMakeRange(0, [fadedString length])];
+    [fadedString endEditing];
+    [fadedString drawInRect:textRect];
+  } else {
+    [string drawInRect:textRect];
+  }
 }
 
-- (void)drawCrossAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  NSBezierPath *crossPath = [NSBezierPath bezierPath];
-  [crossPath moveToPoint:CGPointMake(left, bottom)];
-  [crossPath lineToPoint:CGPointMake(right, top)];
-  [crossPath moveToPoint:CGPointMake(right, bottom)];
-  [crossPath lineToPoint:CGPointMake(left, top)];
-  [crossPath setLineWidth:CROSS_LINE_WIDTH];
-  [crossPath stroke];
-  
-  CGRect areaRect = CGRectMake(left, bottom, (right - left), (top - bottom));
-  NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-  NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"button" forKey:@"area"];
-  buttonArea = [[NSTrackingArea alloc] initWithRect:areaRect options:options owner:self userInfo:userInfo];
-  [self addTrackingArea:buttonArea];
+- (void)drawCopyButtonAtRect:(CGRect)rect {
+  NSColor* textColor;
+  if(mouseDown) {
+    textColor = [NSColor grayColor];
+  } else {
+    textColor = [NSColor blackColor];
+  }
+  NSMutableParagraphStyle* centerStyle = [[NSMutableParagraphStyle alloc] init];
+  [centerStyle setAlignment:NSCenterTextAlignment];
+  NSDictionary *attributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              [NSFont fontWithName:@"Monaco" size:COPY_FONT_SIZE], NSFontAttributeName,
+                              textColor, NSForegroundColorAttributeName, 
+                              centerStyle, NSParagraphStyleAttributeName,
+                              nil];
+  NSAttributedString *copyText = [[NSAttributedString alloc] initWithString:@"Copy" attributes:attributes];
+  [copyText drawInRect:rect];
 }
 
 @end
@@ -78,7 +79,13 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
-    style = aStyle;
+    mouseOver = NO;
+    mouseDown = NO;
+    NSShadow *pageShadow = [[NSShadow alloc] init];
+    [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
+    [pageShadow setShadowBlurRadius:SHADOW_BLUR];
+    [pageShadow setShadowOffset:CGSizeMake(0, SHADOW_OFFSET)];
+    [self setShadow:pageShadow];
   }
   return self;
 }
@@ -92,159 +99,56 @@
   delegate = anObject;
 }
 
-- (void)startDragWithEvent:(NSEvent *)anEvent object:(id <NSPasteboardWriting>)anObject {
-  NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
-  NSImage *dragImage = [[NSImage alloc] initWithData:imageData];
-  NSPoint leftBottom = [self bounds].origin;
-  NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-  [pasteboard clearContents];
-  [pasteboard writeObjects:[NSArray arrayWithObject:anObject]];
-  [self dragImage:dragImage at:leftBottom offset:NSZeroSize event:anEvent pasteboard:pasteboard source:self slideBack:YES];
-}
-
 @end
 
 @implementation CBItemView(Overridden)
 
 - (void)mouseDown:(NSEvent *)theEvent {
-  if (style == CBItemViewStyleNote) {
-    NSPoint eventPoint = [theEvent locationInWindow];
-    NSPoint localPoint = [self convertPoint:eventPoint fromView:nil];
-    
-    if (NSPointInRect(localPoint, [buttonArea rect])) {
-      [delegate itemView:self buttonClicked:@"dissmissButton" withEvent:nil];
-    }
-    
-    if (NSPointInRect(localPoint, [noteArea rect])) {
-      [delegate itemView:self clickedWithEvent:theEvent];
-    }
-  }
-  
-  if (style == CBItemViewStyleSlot) {
-    [[self superview] mouseDown:theEvent];
-  }
+  mouseDown = YES;
+  NSLog(@"clicked");
+  [self setNeedsDisplay:YES];
 }
 
-- (void)mouseDragged:(NSEvent *)theEvent {
-  if (style == CBItemViewStyleNote) {
-    [delegate itemView:self draggedWithEvent:theEvent];
-  }
-  
-  if (style == CBItemViewStyleSlot) {
-    [[self superview] mouseDragged:theEvent];
-  }
+- (void)mouseUp:(NSEvent *)theEvent {
+  mouseDown = NO;
+  NSLog(@"up");
+  [self setNeedsDisplay:YES];
 }
 
 - (void)mouseEntered:(NSEvent *)theEvent {
-  NSDictionary *userData = [theEvent userData];
-  
-  if ([[userData objectForKey:@"area"] isEqual:@"note"]) {
-    noteHightlighted = YES;
+  NSLog(@"entered");
+  if(mouseOver == NO) {
+    mouseOver = YES;
+    [self setNeedsDisplay:YES];
   }
-  
-  if ([[userData objectForKey:@"area"] isEqual:@"button"]) {
-    buttonIsHighlighted = YES;
-  }
-    
-  [self setNeedsDisplay:YES];
 }
 
 - (void)mouseExited:(NSEvent *)theEvent {
-  NSDictionary *userData = [theEvent userData];
-  
-  if ([[userData objectForKey:@"area"] isEqual:@"note"]) {
-    noteHightlighted = NO;
+  NSLog(@"exited");
+  if(mouseOver == YES) {
+    mouseOver = NO;
+    [self setNeedsDisplay:YES];
   }
-  
-  if ([[userData objectForKey:@"area"] isEqual:@"button"]) {
-    buttonIsHighlighted = NO;
-  }
-  
-  [self setNeedsDisplay:YES];
 }
 
 - (void)drawRect:(NSRect)aRect {
-NSLog(@"draw");
+  NSLog(@"draw");
   CGRect mainBounds = [self bounds];
-  CGFloat noteLeft = mainBounds.origin.x + NOTE_PADDING;
-  CGFloat noteRight = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
-  CGFloat noteBottom = mainBounds.origin.y + NOTE_PADDING;
-  CGFloat noteTop = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
-  
-  CGFloat crossLeft = noteRight - CROSS_WIDTH - CROSS_PADDING;
-  CGFloat crossRight = noteRight - CROSS_PADDING;
-  CGFloat crossBottom = noteTop - CROSS_WIDTH - CROSS_PADDING;
-  CGFloat crossTop = noteTop - CROSS_PADDING;
-  
+  CGRect noteRect = CGRectMake(CGRectGetMinX(mainBounds) + NOTE_PADDING,
+                               CGRectGetMinY(mainBounds) + NOTE_PADDING,
+                               CGRectGetWidth(mainBounds) - 2*NOTE_PADDING,
+                               CGRectGetHeight(mainBounds) - 2*NOTE_PADDING);
   NSColor *noteColor = [NSColor colorWithCalibratedRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
-  NSColor *crossColor = [NSColor blackColor];
-  NSColor *backlightColor = [NSColor blueColor];
-
-  if (style == CBItemViewStyleNote) {
-    if (noteHightlighted) {
-      [noteColor setFill];
-    }
-    else {
-      [noteColor setFill];
-    }
-    [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
-    [self drawTextAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
-    if (buttonIsHighlighted) {
-      [crossColor setStroke];
-    }
-    else {
-      [crossColor setStroke];
-    }
-    [self drawCrossAtLeft:crossLeft right:crossRight top:crossTop bottom:crossBottom];
-    NSShadow *pageShadow = [[NSShadow alloc] init];
-    [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
-    [pageShadow setShadowBlurRadius:SHADOW_BLUR];
-    [pageShadow setShadowOffset:CGSizeMake(0, SHADOW_OFFSET)];
-    [self setShadow:pageShadow];
-  }
-  
-  if (style == CBItemViewStyleSlot) {
-    if (noteBacklighted) {
-      [backlightColor setFill];
-    }
-    else {
-      [[NSColor clearColor] setFill];
-    }
-    [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
+  [noteColor setFill];
+  [self drawNotePathAtRect:noteRect];
+  [self drawTextAtRect:CGRectInset(noteRect, TEXT_PADDING, TEXT_PADDING) faded:mouseOver];
+  if(mouseOver) {
+    [self drawCopyButtonAtRect: CGRectOffset(noteRect, 0, -(CGRectGetHeight(noteRect) - COPY_FONT_SIZE)/2)];
   }
 }
 
 @end
 
 @implementation CBItemView(Delegation)
-
-- (NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)isLocal {
-  return NSDragOperationMove;
-}
-
-- (BOOL)ignoreModifierKeysWhileDragging {
-  return YES;
-}
-
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-  noteBacklighted = YES;
-  [self setNeedsDisplay:YES];
-  return [sender draggingSourceOperationMask];
-}
-
-- (void)draggingExited:(id <NSDraggingInfo>)sender {
-  noteBacklighted = NO;
-  [self setNeedsDisplay:YES];
-}
-
-- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
-  NSArray *classes = [NSArray arrayWithObject:[NSAttributedString class]];
-  NSPasteboard *pasteboard = [sender draggingPasteboard];
-  NSArray *copiedItems = [pasteboard readObjectsForClasses:classes options:nil];
-  NSAttributedString *copiedString = [copiedItems objectAtIndex:0];
-  [delegate itemView:self dropWithObject:copiedString];
-  noteBacklighted = NO;
-  return YES;
-}
 
 @end
