@@ -1,31 +1,42 @@
 #import "Cloudboard.h"
 
+#define ROWS 4
+#define COLUMNS 2
+#define PADDING_TOP 40
+#define PADDING_LEFT 20
+
 @implementation CBClipboardController(Private)
 
-- (void)drawItem:(CBItem*)item atIndex:(NSInteger)index {
-  if([viewSlots count] > index) {
-    UIView* oldView = [viewSlots objectAtIndex:index];
-    oldView.hidden = YES;
-    [oldView removeFromSuperview];
-    [oldView setNeedsDisplay];
-  }
+- (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
-  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index: index content:[item string] delegate:self];
-  [viewSlots replaceObjectAtIndex:index withObject:itemView];
+  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index-1 content:[item string] delegate:self];
+  [self removeViewAtViewIndex:index];
+  if([viewSlots count] > index) {
+    [viewSlots replaceObjectAtIndex:index withObject:itemView];
+  } else {
+    [viewSlots addObject:itemView];
+  }
   [clipboardView addSubview:itemView];
 }
 
-- (void)drawPasteButtonAtIndex:(NSInteger)index {
-  NSLog(@"draw empty view at: %i", index);
-  CGRect frame = [[frames objectAtIndex:index] CGRectValue];
-  UIButton* pasteButton = [[UIButton alloc] initWithFrame:frame];
-  [pasteButton setTitle:@"Paste" forState:UIControlStateNormal];
-  pasteButton.layer.borderWidth = 1;
+- (void)drawPasteButton {
+  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
+  UIButton* pasteView = [[UIButton alloc] initWithFrame:CGRectInset(frame, 10, 10)];
+  [pasteView setTitle:@"Paste" forState:UIControlStateNormal];
+  pasteView.layer.borderWidth = 1;
+  [self removeViewAtViewIndex:0];
+  if([viewSlots count] > 0) {
+    [viewSlots replaceObjectAtIndex:0 withObject:pasteView];
+  } else {
+    [viewSlots addObject:pasteView];
+  }
+  [clipboardView addSubview:pasteView];
+}
+
+- (void)removeViewAtViewIndex:(NSInteger)index {
   if([viewSlots count] > index) {
     [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
-  [viewSlots replaceObjectAtIndex:index withObject:pasteButton];
-  [clipboardView addSubview:pasteButton];
 }
 
 - (void)initializeClipboardViewWithFrame:(CGRect)aFrame {
@@ -35,22 +46,21 @@
 }
 
 - (void)initializeItemViews {
-  NSInteger rows = 4;
-  NSInteger columns = 2;
-  NSInteger padding = 20;
-  
+  NSInteger rows = ROWS;
+  NSInteger columns = COLUMNS;
+  NSInteger paddingTop = PADDING_TOP;
+  NSInteger paddingLeft = PADDING_LEFT;
   CGRect mainBounds = [clipboardView bounds];
-  CGFloat itemWidth = (mainBounds.size.width - ((columns + 1) * padding)) / columns;
-  CGFloat itemHeight = (mainBounds.size.height - ((rows + 1) * padding)) / rows;
-  CGPoint origin = CGPointMake(padding, (mainBounds.size.height - itemHeight - padding));
-  
-  for(NSInteger row=0; row<rows; row++) {
-    for(NSInteger column=0; column<columns; column++) {
-      CGFloat x = origin.x + (column * (itemWidth + padding));
-      CGFloat y = origin.y - (row * (itemHeight + padding));
+  CGFloat clipboardHeight = CGRectGetHeight(mainBounds);
+  CGFloat clipboardWidth = CGRectGetWidth(mainBounds);
+  CGFloat itemWidth = (clipboardWidth-2*paddingLeft) / columns;
+  CGFloat itemHeight = (clipboardHeight-2*paddingTop) / rows;  
+  for(NSInteger row=1; row<=rows; row++) {
+    for(NSInteger column=1; column<=columns; column++) {
+      CGFloat x = paddingLeft + itemWidth*(column-1);
+      CGFloat y = paddingTop +(row-1)*itemHeight;
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithCGRect:itemFrame]];
-      [self drawPasteButtonAtIndex:(row*2 + column)];
     }
   }
 }
@@ -68,21 +78,37 @@
     lastChanged = [[NSDate alloc] init];
     [self initializeClipboardViewWithFrame: aFrame];
     [self initializeItemViews];
+    [self drawPasteButton];
     [viewController addSubview:clipboardView];
   }
   return self;
 }
 
-- (void)setItemQuiet:(CBItem *)newItem atIndex:(NSInteger)anIndex {
-  [clipboard setItem:newItem atIndex:anIndex];
-  [self drawItem:newItem atIndex:anIndex];
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
+  [clipboard setItem:item atIndex:index];
+  [self drawItem:item atViewIndex:index+1];
+  if(sync) {
+    if(changeListener) {
+      [changeListener didSetItem:item atIndex:index];
+    } 
+  }
 }
 
-- (void)setItem:(CBItem *)newItem atIndex:(NSInteger)anIndex {
-  [self setItemQuiet:newItem atIndex:anIndex];
-  lastChanged = [[NSDate alloc] init];
-  if (changeListener != nil) {
-    [changeListener didSetItem:newItem atIndex:anIndex];
+- (void)addItem:(CBItem *)item syncing:(BOOL)sync {
+  [clipboard insertItem:item atIndex:0];
+  NSArray* items = [clipboard items];
+  for(NSInteger index=0; index<(ROWS*COLUMNS-1); index++) {
+    id object = [items objectAtIndex:index];
+    if([object isEqual: [NSNull null]]) {
+      [self removeViewAtViewIndex:index+1];
+    } else {
+      [self drawItem:object atViewIndex:index+1];
+      if(sync) {
+        if(changeListener) {
+          [changeListener didAddItem:object];
+        } 
+      }
+    }
   }
 }
 

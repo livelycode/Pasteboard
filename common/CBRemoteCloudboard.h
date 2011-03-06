@@ -20,6 +20,7 @@
 - (id)initWithService:(NSNetService*)service syncController:(CBSyncController*)syncController;
 - (void)registerAsClient;
 - (void)confirmClient;
+- (void)syncAddedItem: (CBItem*)item;
 - (void)syncItem: (CBItem*)item atIndex: (NSUInteger)index;
 - (NSString*)serviceName;
 @end

@@ -40,6 +40,19 @@
   }
 }
 
+- (void)syncAddedItem:(CBItem*)item {
+  NSURL *requestURL = [url URLByAppendingPathComponent:@"add"];
+  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
+  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
+  [URLRequest setHTTPMethod:@"POST"];
+  [URLRequest setHTTPBody:archivedItem];
+  NSURLResponse *URLResponse = nil;
+  NSError *receivedError = nil;
+  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
+                                                           error:&receivedError];
+  NSLog(@"add sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+}
+
 - (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
   NSURL *requestURL = [url URLByAppendingPathComponent:[[NSNumber numberWithInt: index] stringValue]];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
@@ -48,8 +61,7 @@
   [URLRequest setHTTPBody:archivedItem];
   NSURLResponse *URLResponse = nil;
   NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
-                                               returningResponse:&URLResponse
+  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
                                                            error:&receivedError];
   NSLog(@"sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
 }

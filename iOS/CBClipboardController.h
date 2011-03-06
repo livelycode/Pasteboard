@@ -4,6 +4,7 @@
 @interface CBClipboardController : NSObject {
 @private
   CBClipboard* clipboard;
+  UIView* coordView;
   UIView* clipboardView;
   NSMutableArray* viewSlots;
   NSMutableArray* frames;
@@ -12,8 +13,8 @@
 }
 
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
-- (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
-- (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex;
+- (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex syncing:(BOOL)sync;
+- (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
@@ -27,8 +28,9 @@
 @end
 
 @interface CBClipboardController(Private)
-- (void)drawItem:(CBItem*)item atIndex:(NSInteger)index;
-- (void)drawPasteButtonAtIndex:(NSInteger)index;
+- (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index;
+- (void)removeViewAtViewIndex:(NSInteger)index;
+- (void)drawPasteButton;
 - (void)initializeClipboardViewWithFrame:(CGRect)aFrame;
 - (void)initializeItemViews;
 @end

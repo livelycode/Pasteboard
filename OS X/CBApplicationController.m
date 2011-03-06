@@ -61,7 +61,7 @@
   CBItem* newItem = [self currentPasteboardItem];
   if(newItem) {
     if ([clipboardController clipboardContainsItem:newItem] == NO) {
-      [clipboardController addItem:newItem];
+      [clipboardController addItem:newItem syncing:YES];
     }
   }
 }

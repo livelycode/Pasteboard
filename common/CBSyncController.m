@@ -47,6 +47,13 @@
   return myServiceName;
 }
 
+- (void)syncAddedItem: (CBItem*)item {
+  for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
+    NSLog(@"sync to client: %@", [client serviceName]);
+    [client syncAddedItem: item];
+  }
+}
+
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
   for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
     NSLog(@"sync to client: %@", [client serviceName]);
@@ -197,10 +204,9 @@
 }
 
 //CBClipboardControllerDelegate
-- (void)didSetItem:(CBItem*)item atIndex: (NSInteger) index {
+- (void)didAddItem:(CBItem*)item {
   NSLog(@"sync item");
-  [self syncItem: item atIndex: index];
-  NSLog(@"received notification");
+  [self syncAddedItem:item];
 }
 
 //CBHTTPConnectionDelegate
@@ -227,8 +233,13 @@
   [self initialSyncToClient: client];
 }
 
+- (void)receivedAddedRemoteItem: (CBItem*)item {
+  NSLog(@"received item: %@", [[item string] string]);
+  [clipboardController addItem:item syncing:NO];
+}
+
 - (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index {
   NSLog(@"received item: %@", [[item string] string]);
-  [clipboardController setItemQuiet:item atIndex:index];
+  [clipboardController setItem:item atIndex:index syncing:NO];
 }
 @end

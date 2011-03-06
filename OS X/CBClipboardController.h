@@ -14,9 +14,8 @@
   NSDate* lastChanged;
 }
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
-- (void)setItemQuiet:(CBItem*)newItem atIndex:(NSInteger)anIndex;
-- (void)setItem:(CBItem *)item atIndex:(NSInteger)index;
-- (void)addItem:(CBItem *)item;
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync;
+- (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (BOOL)clipboardContainsItem:(CBItem *)item;
 - (void)addChangeListener:(id)object;
 - (NSDate*)lastChanged;

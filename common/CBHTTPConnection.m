@@ -41,6 +41,16 @@
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
+  if([path isEqualToString:@"add"]) {
+    match = YES;
+    NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: 
+                                      [NSKeyedUnarchiver unarchiveObjectWithData:body]];
+    CBItem* item = [[CBItem alloc] initWithString: itemString];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [syncController receivedAddedRemoteItem:item];
+    });
+    responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
+  }
   if(match == NO) {
     responseData = [@"invalid" dataUsingEncoding: NSUTF8StringEncoding];
   }

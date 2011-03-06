@@ -6,7 +6,7 @@
 
 @implementation CBClipboardController(Private)
 
-- (void)removeItemViewAtViewIndex:(NSInteger)index {
+- (void)removeViewAtViewIndex:(NSInteger)index {
   if([viewSlots count] > index) {
     [[viewSlots objectAtIndex:index] removeFromSuperview];
   }
@@ -15,7 +15,7 @@
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
   CGRect frame = [[frames objectAtIndex:index] rectValue];
   CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index-1 content:[item string] delegate:self];
-  [self removeItemViewAtViewIndex:index];
+  [self removeViewAtViewIndex:index];
   if([viewSlots count] > index) {
     [viewSlots replaceObjectAtIndex:index withObject:itemView];
   } else {
@@ -27,6 +27,7 @@
 - (void)drawPasteView {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
   NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame index:0 delegate:self];
+  [self removeViewAtViewIndex:0];
   if([viewSlots count] > 0) {
     [viewSlots replaceObjectAtIndex:0 withObject:pasteView];
   } else {
@@ -72,32 +73,31 @@
   return self;
 }
 
-- (void)setItemQuiet:(CBItem *)item atIndex:(NSInteger)index {
+- (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
   [clipboard setItem:item atIndex:index];
-  [self drawItem:item atViewIndex:index];
-}
-
-- (void)setItem:(CBItem *)item atIndex:(NSInteger)index {
-  [self setItemQuiet:item atIndex:index];
-  lastChanged = [[NSDate alloc] init];
-  if(changeListener) {
-    [changeListener didSetItem:item atIndex:index];
+  [self drawItem:item atViewIndex:index+1];
+  if(sync) {
+    if(changeListener) {
+      [changeListener didSetItem:item atIndex:index];
+    } 
   }
 }
 
-- (void)addItem:(CBItem *)item {
+- (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard insertItem:item atIndex:0];
   NSArray* items = [clipboard items];
   for(NSInteger index=0; index<(ROWS*COLUMNS-1); index++) {
     id object = [items objectAtIndex:index];
-    if([object isEqualTo: [NSNull null]]) {
-      [self removeItemViewAtViewIndex:index+1];
+    if([object isEqual: [NSNull null]]) {
+      [self removeViewAtViewIndex:index+1];
     } else {
       [self drawItem:object atViewIndex:index+1];
-      if(changeListener) {
-        [changeListener didSetItem:object atIndex:index];
-      }
     }
+  }
+  if(sync) {
+    if(changeListener) {
+      [changeListener didAddItem:item];
+    } 
   }
 }
 
