@@ -44,7 +44,7 @@
 
 - (void)initializeClipboardViewWithFrame:(CGRect)aFrame {
   clipboardView = [[UIView alloc] initWithFrame:aFrame];
-  [clipboardView setBackgroundColor:[UIColor lightGrayColor]];
+  [clipboardView setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
   [clipboardView setNeedsDisplay];
 }
 
