@@ -1,7 +1,13 @@
 #import "Cloudboard.h"
 
 #define CORNER_RADIUS 16
-#define LINE_WIDTH 2
+#define BORDER_WIDTH 2
+#define BORDER_ALPHA 0.6
+#define INNER_SHADOW_BLUR 400
+#define INNER_SHADOW_ALPHA 0.8
+#define DROP_SHADOW_OFFSET -4
+#define DROP_SHADOW_BLUR 8
+#define DROP_SHADOW_ALPHA 0.8
 
 @implementation CBClipboardView(Private)
 
@@ -14,14 +20,13 @@
 }
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
-  NSColor *shadowColor = [[NSColor blackColor] colorWithAlphaComponent:0.8];
   NSShadow* shadow = [[NSShadow alloc] init];
   [shadow setShadowOffset:NSZeroSize];
-  [shadow setShadowBlurRadius:200];
-  [shadow setShadowColor:shadowColor];
+  [shadow setShadowBlurRadius:INNER_SHADOW_BLUR];
+  [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:INNER_SHADOW_ALPHA]];
   [shadow set];
-  [[[NSColor whiteColor] colorWithAlphaComponent:0.8] setStroke];
-  [aPath setLineWidth:LINE_WIDTH];
+  [[[NSColor whiteColor] colorWithAlphaComponent:BORDER_ALPHA] setStroke];
+  [aPath setLineWidth:BORDER_WIDTH];
   [aPath stroke];
 }
 
@@ -41,5 +46,16 @@
 
 @implementation CBClipboardView
 
-@end
+- (id)initWithFrame:(NSRect)aRect {
+  self = [super initWithFrame:aRect];
+  if (self != nil) {
+    NSShadow *dropShadow = [[NSShadow alloc] init];
+    [dropShadow setShadowOffset:CGSizeMake(0, DROP_SHADOW_OFFSET)];
+    [dropShadow setShadowBlurRadius:DROP_SHADOW_BLUR];
+    [dropShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:DROP_SHADOW_ALPHA]];
+    [self setShadow:dropShadow];
+  }
+  return self;
+}
 
+@end
