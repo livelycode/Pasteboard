@@ -29,6 +29,16 @@
   return syncController;
 }
 
+- (CBItem*)currentPasteboardItem {
+  CBItem *item;
+//  kUTTypeText
+  //public.plain-text
+  NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:@"kUTTypePlainText"];
+  NSLog(@"pasted: %@", value);
+    //item = [[CBItem alloc] initWithString:copiedItem];
+  //return item;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [self initClipboards];
   [self startSyncing];

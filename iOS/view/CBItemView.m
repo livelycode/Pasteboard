@@ -48,18 +48,6 @@
   [[string string] drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
 }
 
-- (void)drawCrossAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  UIBezierPath* crossPath = [UIBezierPath bezierPath];
-  [crossPath moveToPoint:CGPointMake(left, bottom)];
-  [crossPath addLineToPoint:CGPointMake(right, top)];
-  [crossPath moveToPoint:CGPointMake(right, bottom)];
-  [crossPath addLineToPoint:CGPointMake(left, top)];
-  [crossPath setLineWidth:CROSS_LINE_WIDTH];
-  UIColor* crossDarkColor = [UIColor blackColor];
-  [crossDarkColor setStroke];
-  [crossPath stroke];
-}
-
 @end
 
 @implementation CBItemView
@@ -98,7 +86,6 @@
   [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
   CGContextRestoreGState(context);
   
-  [self drawCrossAtLeft:crossLeft right:crossRight top:crossTop bottom:crossBottom];
   [self drawTextAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
 }
 
