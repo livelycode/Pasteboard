@@ -17,7 +17,7 @@
 }
 - (void)initClipboards;
 - (void)addSubview: (UIView*) view;
-- (void)startSyncing;
+- (void)startSyncingWith:(CBClipboardController*)controller;
 - (CBSyncController*) syncController;
 - (CBItem*)currentPasteboardItem;
 @end

@@ -164,7 +164,7 @@
 }
 
 - (void)viewDidLoad {
-  [delegate startSyncing];
+  [delegate startSyncingWith:self];
 }
 
 @end

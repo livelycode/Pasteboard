@@ -14,8 +14,8 @@
   [window addSubview:subView];
 }
 
-- (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController:syncingClipboardController];
+- (void)startSyncingWith:(CBClipboardController*)controller {
+  syncController = [[CBSyncController alloc] initWithClipboardController:controller];
 }
 
 - (CBSyncController*) syncController {
