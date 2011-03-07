@@ -10,3 +10,4 @@
 #import "CBApplicationController.h"
 #import "CBSettings.h"
 #import "CBItemView.h"
+#import "CBDevicesView.h"

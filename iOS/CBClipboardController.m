@@ -13,9 +13,13 @@
   CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
   CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
   [toolbar setFrame:toolbarRect];
-  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
   [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self.view addSubview:toolbar];
+  
+  devicesViewController = [[UIViewController alloc] init];
+  devicesViewController.view = [[CBDevicesView alloc] init];
+  popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
 }
 
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
@@ -158,8 +162,6 @@
   [delegate addSubview:clipboardView];
   [self drawToolbar];
   [self initializeItemViewFrames];
-  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
-  [self setToolbarItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self drawPasteButton];
 }
 
@@ -186,6 +188,6 @@
 
 //UIToolbarDelegate
 - (void)devicesButtonTapped:(id)event {
-  NSLog(@"devices tapped");
+  [popoverController presentPopoverFromBarButtonItem:devicesButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
 }
 @end
