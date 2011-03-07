@@ -3,26 +3,23 @@
 
 @class CBApplicationController;
 
-@interface CBClipboardController : NSObject {
+@interface CBClipboardController : UIViewController {
 @private
+  UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
-  UIView* coordView;
-  UIView* clipboardView;
-  UIToolbar* toolbar;
   NSMutableArray* viewSlots;
   NSMutableArray* frames;
   NSDate* lastChanged;
   id changeListener;
 }
 
-- (id)initWithFrame:(CGRect)aFrame delegate:(id)viewController;
+- (id)initWithDelegate:(id)viewController;
 - (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex syncing:(BOOL)sync;
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
-
 - (void)addChangeListener:(id)anObject;
 
 @end
@@ -38,6 +35,5 @@
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index;
 - (void)removeViewAtViewIndex:(NSInteger)index;
 - (void)drawPasteButton;
-- (void)initializeClipboardViewWithFrame:(CGRect)aFrame;
-- (void)initializeItemViews;
+- (void)initializeItemViewFrames;
 @end
