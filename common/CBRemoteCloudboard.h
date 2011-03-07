@@ -27,6 +27,7 @@
 
 @interface CBRemoteCloudboard(Private)
 - (void)resolveService;
+- (void)postToPath:(NSString*)path WithData:(NSData*)data;
 - (void)sendRegistration;
 - (void)sendRegistrationConfirmation;
 @end
@@ -35,4 +36,6 @@
 //NSNetServiceDelegate
 - (void)netServiceDidResolveAddress:(NSNetService *)netService;
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict;
+//NSURLConnectionDelegate
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 @end

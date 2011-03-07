@@ -41,29 +41,13 @@
 }
 
 - (void)syncAddedItem:(CBItem*)item {
-  NSURL *requestURL = [url URLByAppendingPathComponent:@"add"];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
-  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
-  [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:archivedItem];
-  NSURLResponse *URLResponse = nil;
-  NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
-                                                           error:&receivedError];
-  NSLog(@"add sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  [self postToPath:@"add" WithData:archivedItem];
 }
 
 - (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
-  NSURL *requestURL = [url URLByAppendingPathComponent:[[NSNumber numberWithInt: index] stringValue]];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
-  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
-  [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:archivedItem];
-  NSURLResponse *URLResponse = nil;
-  NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
-                                                           error:&receivedError];
-  NSLog(@"sync response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  [self postToPath:[[NSNumber numberWithInt: index] stringValue] WithData:archivedItem];
 }
 
 - (NSString*)serviceName {
@@ -119,6 +103,11 @@
   NSLog(@"error: not resolved address: %@", errorDict);
 }
 
+//NSURLConnectionDelegate
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+  
+}
+
 @end
 
 @implementation CBRemoteCloudboard(Private)
@@ -128,31 +117,31 @@
   [service resolveWithTimeout:5];
 }
 
-- (void)sendRegistration {
-  NSLog(@"try to register as client of: %@", url);
-  NSURL *requestURL = [url URLByAppendingPathComponent:@"register"];
+- (void)postToPath:(NSString*)path WithData:(NSData*)data {
+  NSURL *requestURL = [url URLByAppendingPathComponent:path];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
+  [URLRequest setHTTPBody:data];
   NSURLResponse *URLResponse = nil;
   NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
-                                               returningResponse:&URLResponse
-                                                           error:&receivedError];
-  NSLog(@"registration response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  //[[NSURLConnection alloc] initWithRequest:URLRequest delegate:self];
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
+  dispatch_async(queue,^{
+    NSURLResponse *URLResponse = nil;
+    NSError *receivedError = nil;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
+                                                             error:&receivedError];
+    NSLog(@"post to path: %@ response: %@", path, [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  });
+}
+
+- (void)sendRegistration {
+  NSLog(@"try to register as client of: %@", url);
+  [self postToPath:@"register" WithData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
 - (void)sendRegistrationConfirmation {
   NSLog(@"confirm registration of: %@", url);
-  NSURL *requestURL = [url URLByAppendingPathComponent:@"confirm"];
-  NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
-  [URLRequest setHTTPMethod:@"POST"];
-  [URLRequest setHTTPBody:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
-  NSURLResponse *URLResponse = nil;
-  NSError *receivedError = nil;
-  NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest
-                                               returningResponse:&URLResponse
-                                                           error:&receivedError];
-  NSLog(@"confirmation response: %@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
+  [self postToPath:@"confirm" WithData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 @end
