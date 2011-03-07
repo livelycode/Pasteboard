@@ -1,5 +1,7 @@
 #import "Cloudboard.h"
 
+#define WINDOW_ALPHA 0.4
+
 @implementation CBMainWindowController
 
 - (id)init;
@@ -12,7 +14,7 @@
         rootView = [[CBWindowView alloc] initWithFrame:mainFrame];
         [rootView setWantsLayer:YES];
         [rootView setColor:[NSColor colorWithCalibratedWhite:0
-                                                       alpha:0.5]];
+                                                       alpha:WINDOW_ALPHA]];
         
         mainWindow = [[NSWindow alloc] initWithContentRect:mainFrame
                                                  styleMask:NSBorderlessWindowMask
