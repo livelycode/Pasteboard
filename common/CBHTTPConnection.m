@@ -25,6 +25,7 @@
     match = YES;
     NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
     dispatch_async(dispatch_get_main_queue(), ^{
+      NSLog(@"confirm in dispatch queue");
       [syncController registrationConfirmationFrom:clientName];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
