@@ -14,10 +14,6 @@
   [window addSubview:subView];
 }
 
-- (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController:syncingClipboardController];
-}
-
 - (CBSyncController*) syncController {
   return syncController;
 }
@@ -78,5 +74,10 @@
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName {
   NSLog(@"client asks for registration: %@", clientName);
+}
+
+//CBClipboardControllerDelegate
+- (void)startSyncingWith:(CBClipboardController*)controller {
+  syncController = [[CBSyncController alloc] initWithClipboardController:controller];
 }
 @end

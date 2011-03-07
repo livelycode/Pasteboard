@@ -8,6 +8,9 @@
   UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
+  UIBarButtonItem* devicesButton;
+  UIViewController* devicesViewController;
+  UIPopoverController* popoverController;
   NSMutableArray* viewSlots;
   NSMutableArray* frames;
   NSDate* lastChanged;

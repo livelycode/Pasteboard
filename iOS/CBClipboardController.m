@@ -13,9 +13,14 @@
   CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
   CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
   [toolbar setFrame:toolbarRect];
-  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
   [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self.view addSubview:toolbar];
+  
+  devicesViewController = [[UIViewController alloc] init];
+  devicesViewController.view = [[CBDevicesView alloc] initWithFrame:CGRectMake(0, 0, 300, 500) delegate:self];
+  popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
+  popoverController.popoverContentSize = CGSizeMake(300, 500);
 }
 
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
@@ -114,7 +119,7 @@
   if(sync) {
     if(changeListener) {
       [changeListener didAddItem:item];
-    } 
+    }
   }
 }
 
@@ -158,13 +163,11 @@
   [delegate addSubview:clipboardView];
   [self drawToolbar];
   [self initializeItemViewFrames];
-  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
-  [self setToolbarItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self drawPasteButton];
 }
 
 - (void)viewDidLoad {
-  [delegate startSyncing];
+  [delegate startSyncingWith:self];
 }
 
 @end
@@ -186,6 +189,10 @@
 
 //UIToolbarDelegate
 - (void)devicesButtonTapped:(id)event {
-  NSLog(@"devices tapped");
+  if(popoverController.popoverVisible) {
+    [popoverController dismissPopoverAnimated:NO]; 
+  } else {
+    [popoverController presentPopoverFromBarButtonItem:devicesButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+  }
 }
 @end
