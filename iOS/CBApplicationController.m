@@ -6,14 +6,7 @@
   CGRect mainFrame = [[UIScreen mainScreen] bounds];
   window = [[UIWindow alloc] initWithFrame:mainFrame];
   [window makeKeyAndVisible];
-  CGFloat screenHeight = CGRectGetHeight(mainFrame);
-  CGFloat screenWidth = CGRectGetWidth(mainFrame);
-  /*CGFloat marginSide = 0;
-  CGFloat marginBottom = 10;
-  CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
-  CGFloat clipboardWidth = (screenWidth - (2 * marginSide));*/
-  CGRect frame = CGRectMake(0, 0, screenWidth, screenHeight);
-  syncingClipboardController = [[CBClipboardController alloc] initWithFrame:frame delegate:self];
+  syncingClipboardController = [[CBClipboardController alloc] initWithDelegate:self];
 }
 
 
@@ -41,7 +34,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [self initClipboards];
-  [self startSyncing];
   return YES;
 }
 

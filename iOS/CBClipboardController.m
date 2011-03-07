@@ -7,6 +7,17 @@
 
 @implementation CBClipboardController(Private)
 
+- (void)drawToolbar {
+  toolbar = [[UIToolbar alloc] init];
+  [toolbar sizeToFit];
+  CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
+  CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
+  [toolbar setFrame:toolbarRect];
+  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
+  [self.view addSubview:toolbar];
+}
+
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
   CGRect frame = [[frames objectAtIndex:index] CGRectValue];
   CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index-1 content:[item string] delegate:self];
@@ -16,7 +27,7 @@
   } else {
     [viewSlots addObject:itemView];
   }
-  [clipboardView addSubview:itemView];
+  [self.view addSubview:itemView];
 }
 
 - (void)drawPasteButton {
@@ -33,18 +44,7 @@
   } else {
     [viewSlots addObject:pasteView];
   }
-  [clipboardView addSubview:pasteView];
-}
-
-- (void)drawToolbarWithFrame:(CGRect)aFrame {
-  toolbar = [[UIToolbar alloc] init];
-  [toolbar sizeToFit];
-  CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
-  CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(aFrame), toolbarHeight);
-  [toolbar setFrame:toolbarRect];
-  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
-  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
-  [clipboardView addSubview:toolbar];
+  [self.view addSubview:pasteView];
 }
 
 - (void)removeViewAtViewIndex:(NSInteger)index {
@@ -53,18 +53,12 @@
   }
 }
 
-- (void)initializeClipboardViewWithFrame:(CGRect)aFrame {
-  clipboardView = [[UIView alloc] initWithFrame:aFrame];
-  [clipboardView setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
-  [clipboardView setNeedsDisplay];
-}
-
-- (void)initializeItemViews {
+- (void)initializeItemViewFrames {
   NSInteger rows = ROWS;
   NSInteger columns = COLUMNS;
-  CGFloat paddingTop = PADDING_TOP + CGRectGetHeight([toolbar frame]);
+  CGFloat paddingTop = PADDING_TOP + CGRectGetHeight(toolbar.frame);
   CGFloat paddingLeft = PADDING_LEFT;
-  CGRect mainBounds = [clipboardView bounds];
+  CGRect mainBounds = [self.view bounds];
   CGFloat clipboardHeight = CGRectGetHeight(mainBounds);
   CGFloat clipboardWidth = CGRectGetWidth(mainBounds);
   CGFloat itemWidth = (clipboardWidth-2*paddingLeft) / columns;
@@ -83,19 +77,15 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame delegate:(id)appController {
+- (id)initWithDelegate:(id)appController {
   self = [super init];
   if (self != nil) {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
     frames = [[NSMutableArray alloc] init];
     viewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
-    [self initializeClipboardViewWithFrame: aFrame];
-    [self drawToolbarWithFrame:aFrame];
-    [self initializeItemViews];
-    [self drawPasteButton];
     delegate = appController;
-    [delegate addSubview:clipboardView];
+    [self view];
   }
   return self;
 }
@@ -148,10 +138,33 @@
 
 - (void)dealloc {
   [clipboard release];
-  [clipboardView release];
   [changeListener release];
   [viewSlots release];
   [super dealloc];
+}
+
+@end
+
+@implementation CBClipboardController(Overriden)
+
+- (void)loadView {
+  CGRect mainFrame = [[UIScreen mainScreen] bounds];
+  CGFloat screenHeight = CGRectGetHeight(mainFrame);
+  CGFloat screenWidth = CGRectGetWidth(mainFrame);
+  CGRect frame = CGRectMake(0, 0, screenWidth, screenHeight);
+  UIView* clipboardView = [[UIView alloc] initWithFrame:frame];
+  [clipboardView setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
+  [self setView:clipboardView];
+  [delegate addSubview:clipboardView];
+  [self drawToolbar];
+  [self initializeItemViewFrames];
+  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  [self setToolbarItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
+  [self drawPasteButton];
+}
+
+- (void)viewDidLoad {
+  [delegate startSyncing];
 }
 
 @end
