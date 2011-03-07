@@ -17,7 +17,6 @@
 }
 - (void)initClipboards;
 - (void)addSubview: (UIView*) view;
-- (void)startSyncingWith:(CBClipboardController*)controller;
 - (CBSyncController*) syncController;
 - (CBItem*)currentPasteboardItem;
 @end
@@ -25,4 +24,5 @@
 @interface CBApplicationController(Delegation)<CBSyncControllerProtocol>
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName;
+- (void)startSyncingWith:(CBClipboardController*)controller;
 @end
