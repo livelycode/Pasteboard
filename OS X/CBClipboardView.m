@@ -1,8 +1,7 @@
 #import "Cloudboard.h"
 
 #define CORNER_RADIUS 16
-#define LINE_WIDTH 8
-#define STROKE_APLPHA 0.8
+#define LINE_WIDTH 2
 
 @implementation CBClipboardView(Private)
 
@@ -14,8 +13,14 @@
   [aPath fill];
 }
 
-- (void)drawStrokeWithPath:(NSBezierPath *)aPath {
-  [[NSColor colorWithDeviceWhite:1 alpha:STROKE_APLPHA] setStroke];
+- (void)drawBorderWithPath:(NSBezierPath *)aPath {
+  NSColor *shadowColor = [[NSColor blackColor] colorWithAlphaComponent:0.8];
+  NSShadow* shadow = [[NSShadow alloc] init];
+  [shadow setShadowOffset:NSZeroSize];
+  [shadow setShadowBlurRadius:200];
+  [shadow setShadowColor:shadowColor];
+  [shadow set];
+  [[[NSColor whiteColor] colorWithAlphaComponent:0.8] setStroke];
   [aPath setLineWidth:LINE_WIDTH];
   [aPath stroke];
 }
@@ -29,7 +34,7 @@
   NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:contentFrame xRadius:CORNER_RADIUS yRadius:CORNER_RADIUS];
   [path addClip];
   [self drawBackgroundWithPath:path];
-  [self drawStrokeWithPath:path];
+  [self drawBorderWithPath:path];
 }
 
 @end
