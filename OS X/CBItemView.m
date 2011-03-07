@@ -32,11 +32,6 @@
   [notePath lineToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMaxY(noteRect))];
   [notePath closePath];
   [notePath fill];
-  
-  NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-  NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"note" forKey:@"area"];
-  noteArea = [[NSTrackingArea alloc] initWithRect:noteRect options:options owner:self userInfo:userInfo];
-  [self addTrackingArea:noteArea];
 }
 
 - (void)drawTextAtRect:(CGRect)textRect faded:(BOOL)faded {
@@ -83,6 +78,10 @@
     delegate = anObject;
     mouseOver = NO;
     mouseDown = NO;
+    NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"note" forKey:@"area"];
+    noteArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options owner:self userInfo:userInfo];
+    [self addTrackingArea:noteArea];
     NSShadow *pageShadow = [[NSShadow alloc] init];
     [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
     [pageShadow setShadowBlurRadius:SHADOW_BLUR];
