@@ -19,8 +19,7 @@
 @end
 
 @interface CBItemView(Delegation)
-
-
+- (void)handleTap:(UITapGestureRecognizer*)recognizer;
 @end
 
 @interface CBItemView(Private)

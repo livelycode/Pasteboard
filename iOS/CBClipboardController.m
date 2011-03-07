@@ -147,11 +147,15 @@
 @implementation CBClipboardController(Delegation)
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer {
-  NSLog(@"tapped paste");
   CBItem* newItem = [delegate currentPasteboardItem];
   if(newItem != nil) {
     [self addItem:newItem syncing:YES];
   }
 }
 
+- (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index {
+  NSString *string = [[[clipboard itemAtIndex:index] string] string];
+  UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
+  [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
+}
 @end

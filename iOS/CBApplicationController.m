@@ -1,5 +1,4 @@
 #import "Cloudboard.h"
-#import <MobileCoreServices/UTCoreTypes.h>
 
 @implementation CBApplicationController
 

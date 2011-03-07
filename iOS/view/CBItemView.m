@@ -59,6 +59,10 @@
     delegate = anObject;
     string = content;
     [self setBackgroundColor:[UIColor clearColor]];
+    UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleTap:)];
+    [self addGestureRecognizer:recognizer];
+
   }
   return self;
 }
@@ -95,3 +99,12 @@
   [super dealloc];
 }
 @end
+
+@implementation CBItemView(Delegation)
+
+- (void)handleTap:(UITapGestureRecognizer*)recognizer {
+  [delegate handleTapFromItemView:self index:index];
+}
+
+@end
+
