@@ -149,7 +149,9 @@
 - (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer {
   NSLog(@"tapped paste");
   CBItem* newItem = [delegate currentPasteboardItem];
-  [self addItem:newItem syncing:YES];
+  if(newItem != nil) {
+    [self addItem:newItem syncing:YES];
+  }
 }
 
 @end

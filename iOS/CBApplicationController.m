@@ -33,7 +33,7 @@
 - (CBItem*)currentPasteboardItem {
   NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:(NSString*)kUTTypeUTF8PlainText];
   NSLog(@"pasted: %@", value);
-  if(value) {
+  if(value != nil) {
     CBItem* item = [[CBItem alloc] initWithString:[[NSAttributedString alloc] initWithString:value]];
     return item;
   }
