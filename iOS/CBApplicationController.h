@@ -19,6 +19,7 @@
 - (void)addSubview: (UIView*) view;
 - (void)startSyncing;
 - (CBSyncController*) syncController;
+- (CBItem*)currentPasteboardItem;
 @end
 
 @interface CBApplicationController(Delegation)<CBSyncControllerProtocol>

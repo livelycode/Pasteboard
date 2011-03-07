@@ -41,13 +41,22 @@
 }
 
 - (void)syncAddedItem:(CBItem*)item {
-  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
-  [self postToPath:@"add" WithData:archivedItem];
+  if([item isEqual:[NSNull null]]) {
+    
+  } else {
+    NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:[[item string] string]];
+    [self postToPath:@"add" WithData:archivedItem];
+  }
+  
 }
 
 - (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
-  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject: [[item string] string]];
-  [self postToPath:[[NSNumber numberWithInt: index] stringValue] WithData:archivedItem];
+  if([item isEqual:[NSNull null]]) {
+    
+  } else {
+    NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:[[item string] string]];
+    [self postToPath:[[NSNumber numberWithInt: index] stringValue] WithData:archivedItem];
+  }
 }
 
 - (NSString*)serviceName {

@@ -1,9 +1,12 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
+@class CBApplicationController;
+
 @interface CBClipboardController : NSObject {
 @private
   CBClipboard* clipboard;
+  CBApplicationController* delegate;
   UIView* coordView;
   UIView* clipboardView;
   NSMutableArray* viewSlots;
@@ -12,7 +15,7 @@
   id changeListener;
 }
 
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
+- (id)initWithFrame:(CGRect)aFrame delegate:(id)viewController;
 - (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex syncing:(BOOL)sync;
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (NSDate*)lastChanged;
@@ -24,7 +27,8 @@
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
-
+//UIGestureRecognizerDelegate
+- (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer;
 @end
 
 @interface CBClipboardController(Private)

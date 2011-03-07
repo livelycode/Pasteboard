@@ -1,4 +1,5 @@
 #import "Cloudboard.h"
+#import <MobileCoreServices/UTCoreTypes.h>
 
 @implementation CBApplicationController
 
@@ -13,7 +14,7 @@
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (2 * marginSide));
   CGRect frame = CGRectMake(marginSide, marginBottom, clipboardWidth, clipboardHeight);
-  syncingClipboardController = [[CBClipboardController alloc] initWithFrame: frame viewController: self];
+  syncingClipboardController = [[CBClipboardController alloc] initWithFrame:frame delegate:self];
 }
 
 
@@ -22,7 +23,7 @@
 }
 
 - (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: syncingClipboardController];
+  syncController = [[CBSyncController alloc] initWithClipboardController:syncingClipboardController];
 }
 
 - (CBSyncController*) syncController {
@@ -30,13 +31,13 @@
 }
 
 - (CBItem*)currentPasteboardItem {
-  CBItem *item;
-//  kUTTypeText
-  //public.plain-text
-  NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:@"kUTTypePlainText"];
+  NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:(NSString*)kUTTypeUTF8PlainText];
   NSLog(@"pasted: %@", value);
-    //item = [[CBItem alloc] initWithString:copiedItem];
-  //return item;
+  if(value) {
+    CBItem* item = [[CBItem alloc] initWithString:[[NSAttributedString alloc] initWithString:value]];
+    return item;
+  }
+  return nil;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

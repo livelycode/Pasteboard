@@ -1,17 +1,16 @@
 
 Mac:
 - Devices button
-- proper drag&drop
 - menu bar icon
 - pretty items
 - client add, remove, add issue
+- readding item after copying it from pasteboard
 - confirm new client window
 - autostart setting
 
 iOS:
 - devices button / window
 - copy/paste of items
-- deletable items
 - pretty items
 - confirm new client window
 - proper starting/resuming etc.

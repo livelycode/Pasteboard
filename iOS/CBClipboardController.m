@@ -25,6 +25,9 @@
   [pasteView setTitle:@"Paste" forState:UIControlStateNormal];
   pasteView.layer.borderWidth = 1;
   [self removeViewAtViewIndex:0];
+  UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
+                                        initWithTarget:self action:@selector(handleTapFromPasteView:)];
+  [pasteView addGestureRecognizer:recognizer];
   if([viewSlots count] > 0) {
     [viewSlots replaceObjectAtIndex:0 withObject:pasteView];
   } else {
@@ -69,7 +72,7 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
+- (id)initWithFrame:(CGRect)aFrame delegate:(id)appController {
   self = [super init];
   if (self != nil) {
     clipboard = [[CBClipboard alloc] initWithCapacity:8];
@@ -79,7 +82,8 @@
     [self initializeClipboardViewWithFrame: aFrame];
     [self initializeItemViews];
     [self drawPasteButton];
-    [viewController addSubview:clipboardView];
+    delegate = appController;
+    [delegate addSubview:clipboardView];
   }
   return self;
 }
@@ -103,12 +107,12 @@
       [self removeViewAtViewIndex:index+1];
     } else {
       [self drawItem:object atViewIndex:index+1];
-      if(sync) {
-        if(changeListener) {
-          [changeListener didAddItem:object];
-        } 
-      }
     }
+  }
+  if(sync) {
+    if(changeListener) {
+      [changeListener didAddItem:item];
+    } 
   }
 }
 
@@ -141,5 +145,11 @@
 @end
 
 @implementation CBClipboardController(Delegation)
+//UIGestureRecognizerDelegate
+- (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer {
+  NSLog(@"tapped paste");
+  CBItem* newItem = [delegate currentPasteboardItem];
+  [self addItem:newItem syncing:YES];
+}
 
 @end

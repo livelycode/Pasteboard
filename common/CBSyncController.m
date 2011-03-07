@@ -49,14 +49,12 @@
 
 - (void)syncAddedItem: (CBItem*)item {
   for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
-    NSLog(@"sync to client: %@", [client serviceName]);
     [client syncAddedItem: item];
   }
 }
 
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
   for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
-    NSLog(@"sync to client: %@", [client serviceName]);
     [client syncItem: item atIndex: index];
   }
 }
@@ -72,7 +70,7 @@
     [clientsToSearch addObject:clientName];
     CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
     if(visibleClient) {
-      [self registerAsClientOf:visibleClient];
+      [self foundClient:visibleClient];
     }
   }
 }
@@ -136,9 +134,10 @@
     [self confirmClient:client];
     [clientsQueuedForConfirm removeObject:[client serviceName]];
   }
-  if([clientsToSearch containsObject:[client serviceName]]) {
+  //for testing always register:
+  //if([clientsToSearch containsObject:[client serviceName]]) {
     [self registerAsClientOf:client];
-  }
+  //}
 }
 
 - (void)confirmClient:(CBRemoteCloudboard*)client {
@@ -185,7 +184,6 @@
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
-  NSLog(@"found service: %@ on port: %i, more coming: %i", newService, [newService port], more);
   if([[newService name] hasPrefix: @"Cloudboard"] & ([[newService name] isEqual: myServiceName] == NO)) {
     CBRemoteCloudboard* client = [[CBRemoteCloudboard alloc] initWithService:newService syncController:self];
     [self foundClient:client];
