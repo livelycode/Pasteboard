@@ -1,5 +1,7 @@
 #import "Cloudboard.h"
 
+#define COUNT 7
+
 @implementation CBClipboard
 
 - (id)init {
@@ -12,7 +14,7 @@
     {
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
-      for(NSInteger i = 0; i<8; i++) {
+      for(NSInteger i = 0; i<COUNT; i++) {
         [items addObject:[NSNull null]];
       }
     }

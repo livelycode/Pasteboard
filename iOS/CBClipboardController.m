@@ -36,6 +36,17 @@
   [clipboardView addSubview:pasteView];
 }
 
+- (void)drawToolbarWithFrame:(CGRect)aFrame {
+  toolbar = [[UIToolbar alloc] init];
+  [toolbar sizeToFit];
+  CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
+  CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(aFrame), toolbarHeight);
+  [toolbar setFrame:toolbarRect];
+  UIBarButtonItem* devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
+  [clipboardView addSubview:toolbar];
+}
+
 - (void)removeViewAtViewIndex:(NSInteger)index {
   if([viewSlots count] > index) {
     [[viewSlots objectAtIndex:index] removeFromSuperview];
@@ -51,8 +62,8 @@
 - (void)initializeItemViews {
   NSInteger rows = ROWS;
   NSInteger columns = COLUMNS;
-  NSInteger paddingTop = PADDING_TOP;
-  NSInteger paddingLeft = PADDING_LEFT;
+  CGFloat paddingTop = PADDING_TOP + CGRectGetHeight([toolbar frame]);
+  CGFloat paddingLeft = PADDING_LEFT;
   CGRect mainBounds = [clipboardView bounds];
   CGFloat clipboardHeight = CGRectGetHeight(mainBounds);
   CGFloat clipboardWidth = CGRectGetWidth(mainBounds);
@@ -80,6 +91,7 @@
     viewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
     [self initializeClipboardViewWithFrame: aFrame];
+    [self drawToolbarWithFrame:aFrame];
     [self initializeItemViews];
     [self drawPasteButton];
     delegate = appController;
@@ -147,11 +159,20 @@
 @implementation CBClipboardController(Delegation)
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer {
-  NSLog(@"tapped paste");
   CBItem* newItem = [delegate currentPasteboardItem];
   if(newItem != nil) {
     [self addItem:newItem syncing:YES];
   }
 }
 
+- (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index {
+  NSString *string = [[[clipboard itemAtIndex:index] string] string];
+  UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
+  [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
+}
+
+//UIToolbarDelegate
+- (void)devicesButtonTapped:(id)event {
+  NSLog(@"devices tapped");
+}
 @end

@@ -9,6 +9,7 @@
   CBApplicationController* delegate;
   UIView* coordView;
   UIView* clipboardView;
+  UIToolbar* toolbar;
   NSMutableArray* viewSlots;
   NSMutableArray* frames;
   NSDate* lastChanged;
@@ -29,6 +30,8 @@
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer;
+- (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index;
+- (void)devicesButtonTapped:(id)event;
 @end
 
 @interface CBClipboardController(Private)
