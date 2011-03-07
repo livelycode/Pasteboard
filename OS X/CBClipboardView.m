@@ -3,7 +3,7 @@
 #define CORNER_RADIUS 16
 #define BORDER_WIDTH 2
 #define BORDER_ALPHA 0.6
-#define INNER_SHADOW_BLUR 400
+#define INNER_SHADOW_BLUR 40
 #define INNER_SHADOW_ALPHA 0.8
 #define DROP_SHADOW_OFFSET -4
 #define DROP_SHADOW_BLUR 8
@@ -42,10 +42,6 @@
   [self drawBorderWithPath:path];
 }
 
-@end
-
-@implementation CBClipboardView
-
 - (id)initWithFrame:(NSRect)aRect {
   self = [super initWithFrame:aRect];
   if (self != nil) {
@@ -57,5 +53,11 @@
   }
   return self;
 }
+
+- (void)mouseDown:(NSEvent *)theEvent {}
+
+@end
+
+@implementation CBClipboardView
 
 @end
