@@ -7,15 +7,14 @@
 //
 
 #import "CBDevicesView.h"
-
+#import "Cloudboard.h"
 
 @implementation CBDevicesView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame delegate:(CBClipboardController*)delegate {
     self = [super initWithFrame:frame];
     if(self) {
-        [self setBackgroundColor:[UIColor blueColor]];
+        [self setBackgroundColor:[UIColor whiteColor]];
     }
     return self;
 }

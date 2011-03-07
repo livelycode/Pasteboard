@@ -18,8 +18,9 @@
   [self.view addSubview:toolbar];
   
   devicesViewController = [[UIViewController alloc] init];
-  devicesViewController.view = [[CBDevicesView alloc] init];
+  devicesViewController.view = [[CBDevicesView alloc] initWithFrame:CGRectMake(0, 0, 300, 500) delegate:self];
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
+  popoverController.popoverContentSize = CGSizeMake(300, 500);
 }
 
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
@@ -118,7 +119,7 @@
   if(sync) {
     if(changeListener) {
       [changeListener didAddItem:item];
-    } 
+    }
   }
 }
 
@@ -188,6 +189,10 @@
 
 //UIToolbarDelegate
 - (void)devicesButtonTapped:(id)event {
-  [popoverController presentPopoverFromBarButtonItem:devicesButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+  if(popoverController.popoverVisible) {
+    [popoverController dismissPopoverAnimated:NO]; 
+  } else {
+    [popoverController presentPopoverFromBarButtonItem:devicesButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+  }
 }
 @end
