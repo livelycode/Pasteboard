@@ -65,6 +65,7 @@
 
 //CBClipboardControllerDelegate
 - (void)didAddItem: (CBItem *)item;
+- (void)didSetItem:(CBItem*)item atIndex:(NSUInteger)index;
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString*)serviceName;
 - (void)registrationConfirmationFrom:(NSString*)serviceName;

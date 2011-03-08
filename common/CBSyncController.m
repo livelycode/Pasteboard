@@ -202,8 +202,13 @@
 }
 
 //CBClipboardControllerDelegate
-- (void)didAddItem:(CBItem*)item {
+- (void)didSetItem:(CBItem*)item atIndex:(NSUInteger)index {
   NSLog(@"sync item");
+  [self syncItem:item atIndex:index];
+}
+
+- (void)didAddItem:(CBItem*)item {
+  NSLog(@"sync added item");
   [self syncAddedItem:item];
 }
 
