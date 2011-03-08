@@ -139,7 +139,7 @@
 }
 
 - (void)showSettings:(id)sender {
-  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:changeListener];
+  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:syncController];
   NSView *view = [settings view];
   [view setFrameOrigin:CGPointMake((NSWidth([clipboardView bounds]) - NSWidth([view frame])) / 2,
                                    (NSHeight([clipboardView bounds]) - NSHeight([view frame])) / 2
