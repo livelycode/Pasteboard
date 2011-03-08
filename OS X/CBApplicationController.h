@@ -12,7 +12,6 @@
     CBClipboardController *clipboardController;
     CBMainWindowController *windowController;
     CBSyncController *syncController;
-    NSArray *pasteboardClasses;
     BOOL windowHidden;
 }
 - (void)initClipboard;

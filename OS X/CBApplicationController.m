@@ -16,7 +16,6 @@
 
 -(void) initPasteboardObserver {
   pasteboardObserver = [[CBPasteboardObserver alloc] init];
-  pasteboardClasses = [NSArray arrayWithObject:[NSAttributedString class]];
   [pasteboardObserver setDelegate:self];
   [pasteboardObserver observeWithTimeInterval:0.1];
 }
@@ -57,13 +56,8 @@
 }
 
 - (CBItem*)currentPasteboardItem {
-  CBItem *item;
-  NSArray *items = [[NSPasteboard generalPasteboard] readObjectsForClasses:pasteboardClasses options:nil];
-  if([items count] > 0) {
-    id copiedItem = [items objectAtIndex:0];
-    item = [[CBItem alloc] initWithString:copiedItem];
-  }
-  return item;
+  NSString* copyString = [[NSPasteboard generalPasteboard] stringForType:(NSString*)kUTTypeUTF8PlainText];
+  return [[CBItem alloc] initWithString:[[NSAttributedString alloc] initWithString:copyString]];
 }
 
 //CBSyncControllerDelegate
