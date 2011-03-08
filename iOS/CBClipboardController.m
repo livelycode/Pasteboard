@@ -17,8 +17,7 @@
   [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self.view addSubview:toolbar];
   
-  devicesViewController = [[UIViewController alloc] init];
-  devicesViewController.view = [[CBDevicesView alloc] initWithFrame:CGRectMake(0, 0, 300, 500) delegate:self];
+  devicesViewController = [[CBDevicesViewController alloc] initWithDelegate:self];
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
   popoverController.popoverContentSize = CGSizeMake(300, 500);
 }

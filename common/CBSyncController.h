@@ -64,8 +64,8 @@
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser;
 
 //CBClipboardControllerDelegate
-- (void)didSetItem: (CBItem *)item atIndex: (NSInteger)index;
 - (void)didAddItem: (CBItem *)item;
+- (void)didSetItem:(CBItem*)item atIndex:(NSUInteger)index;
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString*)serviceName;
 - (void)registrationConfirmationFrom:(NSString*)serviceName;

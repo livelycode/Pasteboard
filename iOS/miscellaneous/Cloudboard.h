@@ -11,3 +11,4 @@
 #import "CBSettings.h"
 #import "CBItemView.h"
 #import "CBDevicesView.h"
+#import "CBDevicesViewController.h"
