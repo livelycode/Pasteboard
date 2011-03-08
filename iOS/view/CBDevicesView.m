@@ -11,7 +11,7 @@
 
 @implementation CBDevicesView
 
-- (id)initWithFrame:(CGRect)frame delegate:(CBClipboardController*)delegate {
+- (id)initWithFrame:(CGRect)frame delegate:(CBDevicesViewController*)delegate {
     self = [super initWithFrame:frame];
     if(self) {
         [self setBackgroundColor:[UIColor whiteColor]];

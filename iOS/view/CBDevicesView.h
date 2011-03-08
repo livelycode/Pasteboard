@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class CBClipboardController;
+@class CBDevicesViewController;
 
 @interface CBDevicesView : UIView {
     
 }
-- (id)initWithFrame:(CGRect)frame delegate:(CBClipboardController*)delegate;
+- (id)initWithFrame:(CGRect)frame delegate:(CBDevicesViewController*)delegate;
 @end
