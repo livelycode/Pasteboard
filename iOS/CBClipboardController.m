@@ -20,8 +20,10 @@
   UIBarButtonItem* removeAllButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove All" style:UIBarButtonItemStyleBordered target:self action:@selector(clearAllButtonTapped:)];
   [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, flexibleSpace, removeAllButton, nil] animated:NO];
   [self.view addSubview:toolbar];
-  
-  devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
+}
+
+- (void)preparePopoverView {
+  CBDevicesViewController* devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
   popoverController.popoverContentSize = CGSizeMake(300, 300);
 }
@@ -93,7 +95,7 @@
     viewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
     delegate = appController;
-    syncController = [[CBSyncController alloc] initWithClipboardController:self];
+    [self startSyncing];
     [self view];
   }
   return self;
@@ -149,6 +151,16 @@
   return syncController;
 }
 
+- (void)stopSyncing {
+  [syncController release];
+  [popoverController release];
+}
+
+- (void)startSyncing {
+  syncController = [[CBSyncController alloc] initWithClipboardController:self];
+  [self preparePopoverView];
+}
+
 - (void)dealloc {
   [clipboard release];
   [syncController release];
@@ -170,6 +182,7 @@
   [self setView:clipboardView];
   [delegate addSubview:clipboardView];
   [self drawToolbar];
+  [self preparePopoverView];
   [self initializeItemViewFrames];
   [self drawPasteButton];
 }

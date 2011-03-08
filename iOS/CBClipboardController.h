@@ -9,7 +9,6 @@
   CBClipboard* clipboard;
   CBApplicationController* delegate;
   UIBarButtonItem* devicesButton;
-  UIViewController* devicesViewController;
   UIPopoverController* popoverController;
   NSMutableArray* viewSlots;
   NSMutableArray* frames;
@@ -25,6 +24,8 @@
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;
 - (void)addSyncController:(id)anObject;
 - (CBSyncController*)syncController;
+- (void)stopSyncing;
+- (void)startSyncing;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>

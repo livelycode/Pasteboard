@@ -53,12 +53,20 @@
    */
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+  NSLog(@"moved to background");
+  [syncingClipboardController stopSyncing];
+}
 
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-  /*
-   Called when the application is about to terminate.
-   */
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+  NSLog(@"entering foreground");
+  [syncingClipboardController startSyncing];
+}
+
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+  NSLog(@"will terminate");
+  [syncingClipboardController stopSyncing];
 }
 
 
