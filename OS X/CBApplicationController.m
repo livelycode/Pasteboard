@@ -10,8 +10,8 @@
   CGFloat marginBottom = 50;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
-  CGRect leftFrame = CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
-  clipboardController = [[CBClipboardController alloc] initWithFrame: leftFrame viewController: self];
+  CGRect frame = CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
+  clipboardController = [[CBClipboardController alloc] initWithFrame: frame viewController: self];
 }
 
 -(void) initPasteboardObserver {
@@ -24,13 +24,8 @@
   [[windowController rootView] addSubview:subView];
 }
 
-- (void)startSyncing {
-  syncController = [[CBSyncController alloc] initWithClipboardController: clipboardController];
-  [syncController addDelegate:self];
-}
-
 - (CBSyncController*)syncController {
-  return syncController;
+  return [clipboardController syncController];
 }
 
 @end
@@ -43,7 +38,6 @@
   hotKey = [[CBHotKeyObserver alloc] init];
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
-  [self startSyncing];
 }
 
 - (void)systemPasteboardDidChange {
@@ -58,11 +52,6 @@
 - (CBItem*)currentPasteboardItem {
   NSString* copyString = [[NSPasteboard generalPasteboard] stringForType:(NSString*)kUTTypeUTF8PlainText];
   return [[CBItem alloc] initWithString:[[NSAttributedString alloc] initWithString:copyString]];
-}
-
-//CBSyncControllerDelegate
-- (void)clientRequiresUserConfirmation:(NSString*)clientName {
-  NSLog(@"client asks for registration: %@", clientName);
 }
 
 @end

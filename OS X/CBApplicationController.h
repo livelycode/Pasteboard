@@ -30,8 +30,4 @@
 
 //CBPasteboardOberserverDelegate
 - (void)systemPasteboardDidChange;
-
-//CBSyncControllerDelegate
-- (void)clientRequiresUserConfirmation:(NSString*)clientName;
-
 @end

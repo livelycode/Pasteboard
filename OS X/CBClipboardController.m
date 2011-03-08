@@ -64,8 +64,19 @@
   [clipboardView addSubview:button];
 }
 
-- (NSArray*)allItems {
-  return [clipboard items];
+- (void)clearClipboard:(id)sender {
+  for (int i=0; i < (ROWS * COLUMNS-1); i++) {
+    [self setItem:[NSNull null] atIndex:i syncing:YES];
+  }
+}
+
+- (void)showSettings:(id)sender {
+  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:syncController];
+  NSView *view = [settings view];
+  [view setFrameOrigin:CGPointMake((NSWidth([clipboardView bounds]) - NSWidth([view frame])) / 2,
+                                   (NSHeight([clipboardView bounds]) - NSHeight([view frame])) / 2
+                                   )];
+  [clipboardView addSubview:[settings view]];
 }
 @end
 
@@ -79,6 +90,7 @@
     clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
     clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
     lastChanged = [[NSDate alloc] init];
+    syncController = [[CBSyncController alloc] initWithClipboardController: self];
     [self initializeItemSlots];
     [self drawPasteView];
     [viewController addSubview:clipboardView];
@@ -132,27 +144,12 @@
   }
 }
 
-- (void)clearClipboard:(id)sender {
-  for (int i=0; i < (ROWS * COLUMNS-1); i++) {
-    [self setItem:[NSNull null] atIndex:i syncing:YES];
-  }
-}
-
-- (void)showSettings:(id)sender {
-  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:syncController];
-  NSView *view = [settings view];
-  [view setFrameOrigin:CGPointMake((NSWidth([clipboardView bounds]) - NSWidth([view frame])) / 2,
-                                   (NSHeight([clipboardView bounds]) - NSHeight([view frame])) / 2
-                                   )];
-  [clipboardView addSubview:[settings view]];
-}
-
 - (BOOL)clipboardContainsItem:(CBItem *)item {
   return [[clipboard items] containsObject:item];
 }
 
-- (void)addSyncController:(id)object {
-  syncController = object;
+- (CBSyncController*)syncController {
+  return syncController;
 }
 
 - (NSDate*)lastChanged {

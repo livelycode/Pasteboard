@@ -78,10 +78,13 @@
     delegate = anObject;
     mouseOver = NO;
     mouseDown = NO;
+    
     NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"note" forKey:@"area"];
-    noteArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options owner:self userInfo:userInfo];
+    noteArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:options
+                                              owner:self userInfo:userInfo];
     [self addTrackingArea:noteArea];
+    
     NSShadow *pageShadow = [[NSShadow alloc] init];
     [pageShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:SHADOW_ALPHA]];
     [pageShadow setShadowBlurRadius:SHADOW_BLUR];
