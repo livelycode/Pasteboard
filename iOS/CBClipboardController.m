@@ -14,7 +14,8 @@
   CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
   [toolbar setFrame:toolbarRect];
   devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
-  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
+  UIBarButtonItem* removeAllButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove All" style:UIBarButtonItemStyleBordered target:self action:@selector(clearAllButtonTapped:)];
+  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, removeAllButton, nil] animated:NO];
   [self.view addSubview:toolbar];
   
   devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
@@ -84,7 +85,7 @@
 - (id)initWithDelegate:(id)appController {
   self = [super init];
   if (self != nil) {
-    clipboard = [[CBClipboard alloc] initWithCapacity:8];
+    clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
     frames = [[NSMutableArray alloc] init];
     viewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
@@ -97,16 +98,18 @@
 
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
   [clipboard setItem:item atIndex:index];
-  [self drawItem:item atViewIndex:index+1];
+  if ([item isEqual:[NSNull null]]) {
+    [self removeViewAtViewIndex:index+1];
+  } else {
+    [self drawItem:item atViewIndex:index+1];
+  }
   if(sync) {
-    if(syncController) {
-      [syncController didSetItem:item atIndex:index];
-    } 
+    [syncController didSetItem:item atIndex:index];
   }
 }
 
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
-  [clipboard insertItem:item atIndex:0];
+  [clipboard addItem:item];
   NSArray* items = [clipboard items];
   for(NSInteger index=0; index<(ROWS*COLUMNS-1); index++) {
     id object = [items objectAtIndex:index];
@@ -117,9 +120,7 @@
     }
   }
   if(sync) {
-    if(syncController) {
-      [syncController didAddItem:item];
-    }
+    [syncController didAddItem:item];
   }
 }
 
@@ -197,6 +198,12 @@
     [popoverController dismissPopoverAnimated:NO]; 
   } else {
     [popoverController presentPopoverFromBarButtonItem:devicesButton permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+  }
+}
+
+- (void)clearAllButtonTapped:(id)event {
+  for (int i=0; i < (ROWS * COLUMNS-1); i++) {
+    [self setItem:[NSNull null] atIndex:i syncing:YES];
   }
 }
 @end

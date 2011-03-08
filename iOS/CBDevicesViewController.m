@@ -60,6 +60,8 @@
 
 @implementation CBDevicesViewController(Delegation)
 
+
+//UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   NSUInteger index = [indexPath row];
   UITableViewCell* viewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -69,6 +71,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return [foundCloudboards count];
+}
+
+- (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)newIndexPath {
+  NSUInteger index = [newIndexPath row];
+  [theTableView deselectRowAtIndexPath:[theTableView indexPathForSelectedRow] animated:YES];
+  UITableViewCell *cell = [theTableView cellForRowAtIndexPath:newIndexPath];
+  if (cell.accessoryType == UITableViewCellAccessoryNone) {
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    [syncController addClientToSearch:[foundCloudboards objectAtIndex:index]];
+  } else if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    [syncController removeClientToSearch:[foundCloudboards objectAtIndex:index]];
+  }
 }
 
 //CBSyncControllerDelegate

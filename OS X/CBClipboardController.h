@@ -6,7 +6,7 @@
 
 @interface CBClipboardController : NSObject {
   @private
-  id changeListener;
+  id syncController;
   CBClipboard *clipboard;
   CBClipboardView *clipboardView;
   NSMutableArray *frames;
@@ -19,7 +19,7 @@
 - (void)clearClipboard:(id)sender;
 - (void)showSettings:(id)sender;
 - (BOOL)clipboardContainsItem:(CBItem *)item;
-- (void)addChangeListener:(id)object;
+- (void)addSyncController:(id)object;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
 @end

@@ -34,9 +34,14 @@
   if([postURLs containsObject: path]) {
     match = YES;
     NSInteger itemIndex = [path intValue];
-    NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: 
-                                      [NSKeyedUnarchiver unarchiveObjectWithData:body]];
-    CBItem* item = [[CBItem alloc] initWithString: itemString];
+    NSString* plainString = [NSKeyedUnarchiver unarchiveObjectWithData:body];
+    id item;
+    if([plainString isEqualToString:@""]) {
+      item = [NSNull null];
+    } else {
+      NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: plainString];
+      item = [[CBItem alloc] initWithString: itemString];      
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedRemoteItem:item atIndex:itemIndex];
     });

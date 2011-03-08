@@ -76,7 +76,7 @@
   if (self != nil) {
     frames = [[NSMutableArray alloc] init];
     viewSlots = [[NSMutableArray alloc] init];
-    clipboard = [[CBClipboard alloc] initWithCapacity:(ROWS * COLUMNS)];
+    clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
     clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
     lastChanged = [[NSDate alloc] init];
     [self initializeItemSlots];
@@ -108,8 +108,8 @@
     [self drawItem:item atViewIndex:index+1];
   }
   if(sync) {
-    if(changeListener) {
-      [changeListener didSetItem:item atIndex:index];
+    if(syncController) {
+      [syncController didSetItem:item atIndex:index];
     } 
   }
 }
@@ -126,14 +126,14 @@
     }
   }
   if(sync) {
-    if(changeListener) {
-      [changeListener didAddItem:item];
+    if(syncController) {
+      [syncController didAddItem:item];
     } 
   }
 }
 
 - (void)clearClipboard:(id)sender {
-  for (int i=0; i < (ROWS * COLUMNS); i++) {
+  for (int i=0; i < (ROWS * COLUMNS-1); i++) {
     [self setItem:[NSNull null] atIndex:i syncing:YES];
   }
 }
@@ -146,8 +146,8 @@
   return [[clipboard items] containsObject:item];
 }
 
-- (void)addChangeListener:(id)object {
-  changeListener = object;
+- (void)addSyncController:(id)object {
+  syncController = object;
 }
 
 - (NSDate*)lastChanged {
