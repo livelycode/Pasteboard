@@ -28,7 +28,7 @@
 
 
 - (void)loadView {
-  CGRect viewFrame = CGRectMake(0, 0, 300, 500);
+  CGRect viewFrame = CGRectMake(0, 0, 300, 300);
   self.view = [[CBDevicesView alloc] initWithFrame:viewFrame delegate:self];
   tableView = [[UITableView alloc] initWithFrame:viewFrame style:UITableViewStylePlain];
   tableView.delegate = self;

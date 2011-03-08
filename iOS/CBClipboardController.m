@@ -23,7 +23,7 @@
   
   devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
-  popoverController.popoverContentSize = CGSizeMake(300, 500);
+  popoverController.popoverContentSize = CGSizeMake(300, 300);
 }
 
 - (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
