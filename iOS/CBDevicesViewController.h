@@ -12,6 +12,12 @@
 
 @interface CBDevicesViewController : UIViewController {
   CBClipboardController* delegate;
+  UITableView* tableView;
 }
 - (id)initWithDelegate:(CBClipboardController*)delegate;
+@end
+
+@interface CBDevicesViewController(Delegation)<UITableViewDelegate, UITableViewDataSource>
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 @end

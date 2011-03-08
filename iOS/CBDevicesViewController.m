@@ -25,7 +25,12 @@
 
 
 - (void)loadView {
-  self.view = [[CBDevicesView alloc] initWithFrame:CGRectMake(0, 0, 300, 500) delegate:self];
+  CGRect viewFrame = CGRectMake(0, 0, 300, 500);
+  self.view = [[CBDevicesView alloc] initWithFrame:viewFrame delegate:self];
+  tableView = [[UITableView alloc] initWithFrame:viewFrame style:UITableViewStylePlain];
+  tableView.delegate = self;
+  tableView.dataSource = self;
+  [self.view addSubview:tableView];
 }
 
 
@@ -46,6 +51,25 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
 	return NO;
+}
+
+@end
+
+@implementation CBDevicesViewController(Delegation)
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  NSUInteger index = [indexPath row];
+  UITableViewCell* viewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+  if(index==3) {
+    viewCell.textLabel.text = @"Yeah Yeah";
+  } {
+    viewCell.textLabel.text = @"Sample Text";
+  }
+  return viewCell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  return 5;
 }
 
 @end

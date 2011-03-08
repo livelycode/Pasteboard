@@ -135,9 +135,9 @@
     [clientsQueuedForConfirm removeObject:[client serviceName]];
   }
   //for testing always register:
-  //if([clientsToSearch containsObject:[client serviceName]]) {
+  if([clientsToSearch containsObject:[client serviceName]]) {
     [self registerAsClientOf:client];
-  //}
+  }
 }
 
 - (void)confirmClient:(CBRemoteCloudboard*)client {
@@ -209,9 +209,9 @@
 
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString *)clientName {
-  //if([clientsToSearch containsObject:clientName]) {
+  if([clientsToSearch containsObject:clientName]) {
   //always true for testing:
-  if(YES) {
+  //if(YES) {
     CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
     if(visibleClient) {
       [self confirmClient:visibleClient];
