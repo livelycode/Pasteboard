@@ -64,7 +64,8 @@
   if (aTableView == registeredClipboardsView) {
     object = [registeredClipboards objectAtIndex:rowIndex];
   }
-  return object;
+  NSString* substring = [object substringFromIndex:10];
+  return substring;
 }
 
 - (void)tableViewSelectionDidChange:(NSNotification *)aNotification {

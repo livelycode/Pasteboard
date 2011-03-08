@@ -65,7 +65,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   NSUInteger index = [indexPath row];
   UITableViewCell* viewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-  viewCell.textLabel.text = [foundCloudboards objectAtIndex:index];
+  NSString* substring = [[foundCloudboards objectAtIndex:index] substringFromIndex:10];
+  viewCell.textLabel.text = substring;
   return viewCell;
 }
 
