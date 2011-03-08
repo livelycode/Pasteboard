@@ -24,7 +24,7 @@
 }
 
 - (void)addItem:(CBItem *)anItem {
-  [items addObject:anItem];
+  [items insertObject:anItem atIndex:0];
   
   if ([items count] > capacity) {
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);

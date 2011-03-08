@@ -1,7 +1,7 @@
 #import "Cocoa.h"
 #import "CBSyncControllerProtocol.h"
 
-@interface CBDevicesController : NSViewController {
+@interface CBSettingsController : NSViewController {
 @private
   CBSyncController* syncController;
   NSMutableArray *foundClipboards;
@@ -20,13 +20,13 @@
 
 @end
 
-@interface CBDevicesController(Overridden)
+@interface CBSettingsController(Overridden)
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
 
 @end
 
-@interface CBDevicesController(Delegation)
+@interface CBSettingsController(Delegation)
   <NSTableViewDataSource, NSTableViewDelegate, CBSyncControllerProtocol>
 
 - (void)awakeFromNib;
