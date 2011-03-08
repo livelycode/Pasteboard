@@ -1,7 +1,5 @@
 #import "Cloudboard.h"
 
-#define COUNT 7
-
 @implementation CBClipboard
 
 - (id)init {
@@ -14,24 +12,24 @@
     {
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
-      for(NSInteger i = 0; i<COUNT; i++) {
+      for(NSInteger i = 0; i<capacity; i++) {
         [items addObject:[NSNull null]];
       }
     }
     return self;
 }
 
-- (void)setItem:(CBItem*)anItem atIndex:(NSInteger)anIndex {
-  [items replaceObjectAtIndex:anIndex withObject:anItem];
+- (void)setItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex {
+    [items replaceObjectAtIndex:anIndex withObject:anItem];
 }
 
-- (void)insertItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex {
-    [items insertObject:anItem atIndex:anIndex];
-    if ([items count] > capacity)
-    {
-        NSRange tail = NSMakeRange(capacity, [items count] - capacity);
-        [items removeObjectsInRange:tail];
-    }
+- (void)addItem:(CBItem *)anItem {
+  [items addObject:anItem];
+  
+  if ([items count] > capacity) {
+    NSRange tail = NSMakeRange(capacity, [items count] - capacity);
+    [items removeObjectsInRange:tail];
+  }
 }
 
 - (void)removeItemAtIndex:(NSUInteger)anIndex {

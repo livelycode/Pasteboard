@@ -16,6 +16,8 @@
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync;
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
+- (void)clearClipboard:(id)sender;
+- (void)showSettings:(id)sender;
 - (BOOL)clipboardContainsItem:(CBItem *)item;
 - (void)addChangeListener:(id)object;
 - (NSDate*)lastChanged;

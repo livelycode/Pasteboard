@@ -4,6 +4,10 @@
 #define COLUMNS 2
 #define PADDING 20
 
+#define BUTTON_PADDING 16
+#define BUTTON_HEIGHT 24
+#define BUTTON_WIDTH 80
+
 @implementation CBClipboardController(Private)
 
 - (void)removeViewAtViewIndex:(NSInteger)index {
@@ -51,6 +55,15 @@
   }
 }
 
+- (void)addButtonWithFrame:(CGRect)aRect title:(NSString *)aTitle action:(SEL)aSelector {
+  NSButton *button = [[NSButton alloc] initWithFrame:aRect];
+  [button setBezelStyle:NSTexturedRoundedBezelStyle];
+  [button setTitle:aTitle];
+  [button setTarget:self];
+  [button setAction:aSelector];
+  [clipboardView addSubview:button];
+}
+
 - (NSArray*)allItems {
   return [clipboard items];
 }
@@ -69,13 +82,31 @@
     [self initializeItemSlots];
     [self drawPasteView];
     [viewController addSubview:clipboardView];
+    
+    CGFloat clearX = BUTTON_PADDING;
+    CGFloat clearY = BUTTON_PADDING;
+    CGFloat clearWidth = BUTTON_WIDTH;
+    CGFloat clearHeight = BUTTON_HEIGHT;
+    CGRect clearFrame = CGRectMake(clearX, clearY, clearWidth, clearHeight);
+    [self addButtonWithFrame:clearFrame title:@"Clear All" action:@selector(clearClipboard:)];
+    
+    CGFloat settingsX = CGRectGetWidth(aFrame) - BUTTON_WIDTH - BUTTON_PADDING;
+    CGFloat settingsY = BUTTON_PADDING;
+    CGFloat settingsWidth = BUTTON_WIDTH;
+    CGFloat settingsHeight = BUTTON_HEIGHT;
+    CGRect settingsFrame = CGRectMake(settingsX, settingsY, settingsWidth, settingsHeight);
+    [self addButtonWithFrame:settingsFrame title:@"Settings" action:@selector(showSettings:)];
   }
   return self;
 }
 
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
   [clipboard setItem:item atIndex:index];
-  [self drawItem:item atViewIndex:index+1];
+  if ([item isEqual:[NSNull null]]) {
+    [self removeViewAtViewIndex:index+1];
+  } else {
+    [self drawItem:item atViewIndex:index+1];
+  }
   if(sync) {
     if(changeListener) {
       [changeListener didSetItem:item atIndex:index];
@@ -84,11 +115,11 @@
 }
 
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
-  [clipboard insertItem:item atIndex:0];
+  [clipboard addItem:item];
   NSArray* items = [clipboard items];
   for(NSInteger index=0; index<(ROWS*COLUMNS-1); index++) {
     id object = [items objectAtIndex:index];
-    if([object isEqual: [NSNull null]]) {
+    if([object isEqual:[NSNull null]]) {
       [self removeViewAtViewIndex:index+1];
     } else {
       [self drawItem:object atViewIndex:index+1];
@@ -99,6 +130,16 @@
       [changeListener didAddItem:item];
     } 
   }
+}
+
+- (void)clearClipboard:(id)sender {
+  for (int i=0; i < (ROWS * COLUMNS); i++) {
+    [self setItem:[NSNull null] atIndex:i syncing:YES];
+  }
+}
+
+- (void)showSettings:(id)sender {
+  NSLog(@"settings");
 }
 
 - (BOOL)clipboardContainsItem:(CBItem *)item {
