@@ -13,7 +13,7 @@
   self = [super init];
   if (self) {
     clipboardController = [aSyncController retain];
-    [clipboardController addChangeListener: self];
+    [clipboardController addSyncController: self];
     delegates = [[NSMutableArray alloc] init];
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];

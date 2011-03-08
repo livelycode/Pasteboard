@@ -17,7 +17,7 @@
   [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, nil] animated:NO];
   [self.view addSubview:toolbar];
   
-  devicesViewController = [[CBDevicesViewController alloc] initWithDelegate:self];
+  devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
   popoverController.popoverContentSize = CGSizeMake(300, 500);
 }
@@ -89,6 +89,7 @@
     viewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
     delegate = appController;
+    syncController = [[CBSyncController alloc] initWithClipboardController:self];
     [self view];
   }
   return self;
@@ -98,8 +99,8 @@
   [clipboard setItem:item atIndex:index];
   [self drawItem:item atViewIndex:index+1];
   if(sync) {
-    if(changeListener) {
-      [changeListener didSetItem:item atIndex:index];
+    if(syncController) {
+      [syncController didSetItem:item atIndex:index];
     } 
   }
 }
@@ -116,8 +117,8 @@
     }
   }
   if(sync) {
-    if(changeListener) {
-      [changeListener didAddItem:item];
+    if(syncController) {
+      [syncController didAddItem:item];
     }
   }
 }
@@ -127,9 +128,9 @@
   return [[clipboard items] containsObject:anItem];
 }
 
-- (void)addChangeListener:(id)anObject
+- (void)addSyncController:(id)anObject
 {
-  changeListener = [anObject retain];
+  syncController = [anObject retain];
 }
 
 - (NSDate*)lastChanged {
@@ -140,9 +141,13 @@
   return [clipboard items];
 }
 
+- (CBSyncController*)syncController {
+  return syncController;
+}
+
 - (void)dealloc {
   [clipboard release];
-  [changeListener release];
+  [syncController release];
   [viewSlots release];
   [super dealloc];
 }
@@ -166,7 +171,7 @@
 }
 
 - (void)viewDidLoad {
-  [delegate startSyncingWith:self];
+
 }
 
 @end

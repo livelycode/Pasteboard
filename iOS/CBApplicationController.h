@@ -13,11 +13,11 @@
   @private
   CBClipboardController *syncingClipboardController;
   UIWindow *window;
-  CBSyncController *syncController;
 }
 - (void)initClipboards;
 - (void)addSubview: (UIView*) view;
 - (CBSyncController*) syncController;
+- (CBClipboardController*) clipboardController;
 - (CBItem*)currentPasteboardItem;
 @end
 

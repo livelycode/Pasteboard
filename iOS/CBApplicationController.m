@@ -14,8 +14,12 @@
   [window addSubview:subView];
 }
 
-- (CBSyncController*) syncController {
-  return syncController;
+- (CBClipboardController*)clipboardController {
+  return syncingClipboardController;
+}
+
+- (CBSyncController*)syncController {
+  return [syncingClipboardController syncController];
 }
 
 - (CBItem*)currentPasteboardItem {
@@ -74,10 +78,5 @@
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName {
   NSLog(@"client asks for registration: %@", clientName);
-}
-
-//CBClipboardControllerDelegate
-- (void)startSyncingWith:(CBClipboardController*)controller {
-  syncController = [[CBSyncController alloc] initWithClipboardController:controller];
 }
 @end

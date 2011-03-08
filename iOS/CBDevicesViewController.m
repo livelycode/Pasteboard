@@ -11,10 +11,13 @@
 
 @implementation CBDevicesViewController
 
-- (id)initWithDelegate:(CBClipboardController*)delegate {
+- (id)initWithClipboard:(CBClipboardController*)delegate syncController:(CBSyncController*)aSyncController {
     self = [super init];
     if (self) {
-        // Custom initialization
+      syncController = aSyncController;
+      foundCloudboards = [[NSMutableArray alloc] init];
+      [syncController addDelegate:self];
+      foundCloudboards = [[NSMutableArray alloc] initWithArray:[syncController visibleClients]];
     }
     return self;
 }
@@ -60,16 +63,38 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   NSUInteger index = [indexPath row];
   UITableViewCell* viewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-  if(index==3) {
-    viewCell.textLabel.text = @"Yeah Yeah";
-  } {
-    viewCell.textLabel.text = @"Sample Text";
-  }
+  viewCell.textLabel.text = [foundCloudboards objectAtIndex:index];
   return viewCell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return 5;
+  return [foundCloudboards count];
 }
 
+//CBSyncControllerDelegate
+- (void)clientBecameVisible:(NSString*)clientName {
+  NSLog(@"client visible %@", clientName);
+  if([foundCloudboards containsObject:clientName] == NO) {
+    [foundCloudboards addObject:clientName];
+    [tableView reloadData];
+  }
+}
+- (void)clientBecameInvisible:(NSString*)clientName {
+  NSLog(@"client invisible %@", clientName);
+  if([foundCloudboards containsObject:clientName]) {
+    [foundCloudboards addObject:clientName];
+    [tableView reloadData];
+  }
+}
+- (void)clientConnected:(NSString*)clientName {
+  NSLog(@"client connected %@", clientName);
+}
+
+- (void)clientDisconnected:(NSString*)clientName {
+  NSLog(@"client disconnected %@", clientName);
+}
+
+- (void)clientConfirmed:(NSString*)clientName {
+  NSLog(@"client confirmed %@", clientName);
+}
 @end
