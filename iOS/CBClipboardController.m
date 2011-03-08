@@ -14,8 +14,11 @@
   CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
   [toolbar setFrame:toolbarRect];
   devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
+  
+  UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+  
   UIBarButtonItem* removeAllButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove All" style:UIBarButtonItemStyleBordered target:self action:@selector(clearAllButtonTapped:)];
-  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, removeAllButton, nil] animated:NO];
+  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, flexibleSpace, removeAllButton, nil] animated:NO];
   [self.view addSubview:toolbar];
   
   devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];

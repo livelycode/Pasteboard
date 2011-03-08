@@ -97,7 +97,7 @@
 - (void)clientBecameInvisible:(NSString*)clientName {
   NSLog(@"client invisible %@", clientName);
   if([foundCloudboards containsObject:clientName]) {
-    [foundCloudboards addObject:clientName];
+    [foundCloudboards removeObject:clientName];
     [tableView reloadData];
   }
 }

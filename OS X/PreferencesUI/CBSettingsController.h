@@ -4,7 +4,7 @@
 @interface CBSettingsController : NSViewController {
 @private
   CBSyncController* syncController;
-  NSMutableArray *foundClipboards;
+  NSMutableArray *foundCloudboards;
   NSMutableArray *registeredClipboards;
   NSURL *devicesURL;
   IBOutlet NSTableView *foundClipboardsView;

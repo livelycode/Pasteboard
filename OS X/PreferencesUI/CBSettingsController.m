@@ -9,7 +9,7 @@
     [syncController addDelegate:self];
     devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
     NSArray* visibleClients = [syncController visibleClients];
-    foundClipboards = [NSMutableArray arrayWithArray:visibleClients];
+    foundCloudboards = [NSMutableArray arrayWithArray:visibleClients];
     registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
@@ -20,7 +20,7 @@
 
 - (IBAction)addDevice:(id)sender {
   NSUInteger index = [foundClipboardsView selectedRow];
-  id device = [foundClipboards objectAtIndex:index];
+  id device = [foundCloudboards objectAtIndex:index];
   [registeredClipboards addObject:device];
   [registeredClipboards writeToURL:devicesURL atomically:YES];
   [registeredClipboardsView reloadData];
@@ -48,7 +48,7 @@
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
   NSUInteger count = 0;
   if (aTableView == foundClipboardsView) {
-    count = [foundClipboards count];
+    count = [foundCloudboards count];
   }
   if (aTableView == registeredClipboardsView) {
     count = [registeredClipboards count];
@@ -59,7 +59,7 @@
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
   id object = nil;
   if (aTableView == foundClipboardsView) {
-    object = [foundClipboards objectAtIndex:rowIndex];
+    object = [foundCloudboards objectAtIndex:rowIndex];
   }
   if (aTableView == registeredClipboardsView) {
     object = [registeredClipboards objectAtIndex:rowIndex];
@@ -89,15 +89,20 @@
 
 //CBSyncControllerDelegate
 - (void)clientBecameVisible:(NSString*)clientName {
-  NSLog(@"client visible %@", clientName);
-  [foundClipboards addObject:clientName];
-  [foundClipboardsView reloadData];
+  if([foundCloudboards containsObject:clientName] == NO) {
+    [foundCloudboards addObject:clientName];
+    [foundClipboardsView reloadData];
+  }
 }
+
 - (void)clientBecameInvisible:(NSString*)clientName {
   NSLog(@"client invisible %@", clientName);
-  [foundClipboards removeObject:clientName];
-  [foundClipboardsView reloadData];
+  if([foundCloudboards containsObject:clientName]) {
+    [foundCloudboards removeObject:clientName];
+    [foundClipboardsView reloadData];
+  }
 }
+
 - (void)clientConnected:(NSString*)clientName {
   NSLog(@"client connected %@", clientName);
 }
