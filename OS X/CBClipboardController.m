@@ -139,7 +139,12 @@
 }
 
 - (void)showSettings:(id)sender {
-  NSLog(@"settings");
+  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:changeListener];
+  NSView *view = [settings view];
+  [view setFrameOrigin:CGPointMake((NSWidth([clipboardView bounds]) - NSWidth([view frame])) / 2,
+                                   (NSHeight([clipboardView bounds]) - NSHeight([view frame])) / 2
+                                   )];
+  [clipboardView addSubview:[settings view]];
 }
 
 - (BOOL)clipboardContainsItem:(CBItem *)item {

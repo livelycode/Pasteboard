@@ -30,15 +30,6 @@
   [syncController addDelegate:self];
 }
 
-- (void)openPreferences {
-  if (preferencesController == nil) {
-    preferencesController = [[CBPreferencesController alloc] initWithAppController: self];
-  }
-  [preferencesController showWindow:nil];
-  [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-  [[preferencesController window] makeKeyAndOrderFront:nil];
-}
-
 - (CBSyncController*)syncController {
   return syncController;
 }
@@ -54,7 +45,6 @@
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
   [self startSyncing];
-  [self openPreferences];
 }
 
 - (void)systemPasteboardDidChange {

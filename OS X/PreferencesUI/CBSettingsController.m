@@ -1,9 +1,9 @@
 #import "Cloudboard.h"
 
-@implementation CBDevicesController
+@implementation CBSettingsController
 
 - (id)initWithSyncController:(CBSyncController *)aSyncController {
-  self = [super initWithNibName:@"devices" bundle:nil];
+  self = [super initWithNibName:@"preferences" bundle:nil];
   if(self != nil) {
     syncController = aSyncController;
     [syncController addDelegate:self];
@@ -38,7 +38,7 @@
 
 @end
 
-@implementation CBDevicesController(Delegation)
+@implementation CBSettingsController(Delegation)
 
 - (void)awakeFromNib {
   [addButton setEnabled:NO];

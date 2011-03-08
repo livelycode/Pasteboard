@@ -2,7 +2,7 @@
 #import "CBPasteboardObserver.h"
 #import "CBSyncControllerProtocol.h"
 
-@class CBClipboard, CBClipboardController, CBItem, CBHotKeyObserver, CBPasteboardObserver, CBMainWindowController, CBPreferencesController, HTTPConnectionDelegate, CBSyncController;
+@class CBClipboard, CBClipboardController, CBItem, CBHotKeyObserver, CBPasteboardObserver, CBMainWindowController, HTTPConnectionDelegate, CBSyncController;
 
 @interface CBApplicationController : NSObject 
 {
@@ -11,7 +11,6 @@
     CBHotKeyObserver *hotKey;
     CBClipboardController *clipboardController;
     CBMainWindowController *windowController;
-    CBPreferencesController *preferencesController;
     CBSyncController *syncController;
     NSArray *pasteboardClasses;
     BOOL windowHidden;
