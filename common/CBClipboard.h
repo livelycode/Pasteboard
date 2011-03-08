@@ -15,7 +15,7 @@
 
 - (void)setItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex;
 
-- (void)insertItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex;
+- (void)addItem:(CBItem *)anItem;
 
 - (void)removeItemAtIndex:(NSUInteger)anIndex;
 
