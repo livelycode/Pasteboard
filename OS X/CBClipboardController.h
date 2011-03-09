@@ -3,11 +3,10 @@
 
 @class CBClipboard, CBClipboardView, CBSyncController;
 
-@interface CBClipboardController : NSObject {
+@interface CBClipboardController : NSViewController {
   @private
   CBSyncController* syncController;
   CBClipboard *clipboard;
-  CBClipboardView *clipboardView;
   NSMutableArray *frames;
   NSMutableArray *viewSlots;
   NSDate* lastChanged;
@@ -26,7 +25,7 @@
 - (void)pasteViewClicked:(CBItemView *)view index:(NSInteger)index;
 @end
 
-@interface CBClipboardController(Private)
-- (void)clearClipboard:(id)sender;
-- (void)showSettings:(id)sender;
+@interface CBClipboardController(Actions)
+- (IBAction)clearClipboard:(id)sender;
+- (IBAction)showSettings:(id)sender;
 @end

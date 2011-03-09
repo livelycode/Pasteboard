@@ -36,6 +36,10 @@
   [syncController removeClientToSearch:device];
 }
 
+- (IBAction)back:(id)sernder {
+  NSLog(@"back");
+}
+
 @end
 
 @implementation CBSettingsController(Delegation)

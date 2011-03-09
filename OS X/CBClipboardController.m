@@ -25,7 +25,7 @@
   } else {
     [viewSlots addObject:itemView];
   }
-  [clipboardView addSubview:itemView];
+  [[self view] addSubview:itemView];
 }
 
 - (void)drawPasteView {
@@ -37,11 +37,11 @@
   } else {
     [viewSlots addObject:pasteView];
   }
-  [clipboardView addSubview:pasteView];
+  [[self view] addSubview:pasteView];
 }
 
 - (void)initializeItemSlots {
-  CGRect mainBounds = [clipboardView bounds];
+  CGRect mainBounds = [[self view] bounds];
   CGFloat itemWidth = (mainBounds.size.width - ((COLUMNS + 1) * PADDING)) / COLUMNS;
   CGFloat itemHeight = (mainBounds.size.height - ((ROWS + 1) * PADDING)) / ROWS;
   CGPoint origin = CGPointMake(PADDING, (mainBounds.size.height - itemHeight - PADDING));
@@ -55,14 +55,9 @@
   }
 }
 
-- (void)addButtonWithFrame:(CGRect)aRect title:(NSString *)aTitle action:(SEL)aSelector {
-  NSButton *button = [[NSButton alloc] initWithFrame:aRect];
-  [button setBezelStyle:NSTexturedRoundedBezelStyle];
-  [button setTitle:aTitle];
-  [button setTarget:self];
-  [button setAction:aSelector];
-  [clipboardView addSubview:button];
-}
+@end
+
+@implementation CBClipboardController(Actions)
 
 - (void)clearClipboard:(id)sender {
   for (int i=0; i < (ROWS * COLUMNS-1); i++) {
@@ -72,42 +67,44 @@
 
 - (void)showSettings:(id)sender {
   CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:syncController];
-  NSView *view = [settings view];
-  [view setFrameOrigin:CGPointMake((NSWidth([clipboardView bounds]) - NSWidth([view frame])) / 2,
-                                   (NSHeight([clipboardView bounds]) - NSHeight([view frame])) / 2
-                                   )];
-  [clipboardView addSubview:[settings view]];
+  CBClipboardView  *back = (CBClipboardView *)[settings view];
+  [back setFrame:[[self view] frame]];
+  NSView *superview = [[self view] superview];
+  [[self view] removeFromSuperview];
+  [superview addSubview:back];
+}
+
+@end
+
+@implementation CBClipboardController(Delegation)
+//CBItemViewDelegate
+- (void)itemViewClicked:(CBItemView *)view index:(NSInteger)index {
+  NSAttributedString *string = [[clipboard itemAtIndex:index] string];
+  NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
+  [systemPasteboard clearContents];
+  [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
+}
+
+//CBPasteViewDelegate
+- (void)pasteViewClicked:(CBItemView *)view index:(NSInteger)index {
+  
 }
 @end
 
 @implementation CBClipboardController
 
 - (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
-  self = [super init];
+  self = [super initWithNibName:@"clipboard" bundle:nil];
   if (self != nil) {
     frames = [[NSMutableArray alloc] init];
     viewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
-    clipboardView = [[CBClipboardView alloc] initWithFrame:aFrame];
     lastChanged = [[NSDate alloc] init];
     syncController = [[CBSyncController alloc] initWithClipboardController: self];
+    [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
-    [viewController addSubview:clipboardView];
-    
-    CGFloat clearX = BUTTON_PADDING;
-    CGFloat clearY = BUTTON_PADDING;
-    CGFloat clearWidth = BUTTON_WIDTH;
-    CGFloat clearHeight = BUTTON_HEIGHT;
-    CGRect clearFrame = CGRectMake(clearX, clearY, clearWidth, clearHeight);
-    [self addButtonWithFrame:clearFrame title:@"Clear All" action:@selector(clearClipboard:)];
-    
-    CGFloat settingsX = CGRectGetWidth(aFrame) - BUTTON_WIDTH - BUTTON_PADDING;
-    CGFloat settingsY = BUTTON_PADDING;
-    CGFloat settingsWidth = BUTTON_WIDTH;
-    CGFloat settingsHeight = BUTTON_HEIGHT;
-    CGRect settingsFrame = CGRectMake(settingsX, settingsY, settingsWidth, settingsHeight);
-    [self addButtonWithFrame:settingsFrame title:@"Settings" action:@selector(showSettings:)];
+    [viewController addSubview:[self view]];
   }
   return self;
 }
@@ -158,20 +155,5 @@
 
 - (NSArray*)allItems {
   return [clipboard items];
-}
-@end
-
-@implementation CBClipboardController(Delegation)
-//CBItemViewDelegate
-- (void)itemViewClicked:(CBItemView *)view index:(NSInteger)index {
-  NSAttributedString *string = [[clipboard itemAtIndex:index] string];
-  NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
-  [systemPasteboard clearContents];
-  [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
-}
-
-//CBPasteViewDelegate
-- (void)pasteViewClicked:(CBItemView *)view index:(NSInteger)index {
-  
 }
 @end

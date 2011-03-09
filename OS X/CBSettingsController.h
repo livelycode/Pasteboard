@@ -18,6 +18,8 @@
 
 - (IBAction)removeDevice:(id)sender;
 
+- (IBAction)back:(id)sernder;
+
 @end
 
 @interface CBSettingsController(Overridden)
