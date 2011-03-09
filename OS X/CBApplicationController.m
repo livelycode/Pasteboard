@@ -17,7 +17,7 @@
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  windowController = [[CBMainWindowController alloc] init];
+  windowController = [[CBMainWindowController alloc] initWithFrontView:nil backView:nil];
   clipboardController = [windowController clipboardController];
   hotKey = [[CBHotKeyObserver alloc] init];
   [hotKey setDelegate:windowController];

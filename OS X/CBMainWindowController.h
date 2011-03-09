@@ -14,10 +14,13 @@
     CBClipboardController *clipboardController;
     CBSettingsController *settingsController;
     CBSyncController *syncController;
+    NSView *front;
+    NSView *back;
 }
 
-- (id)init;
-- (void)flipViews;
+- (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack;
+- (void)showFront;
+- (void)showBack;
 - (CBClipboardController *)clipboardController;
 
 @end

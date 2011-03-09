@@ -1,8 +1,11 @@
 #import "Cocoa.h"
 #import "CBSyncControllerProtocol.h"
 
+@class CBMainWindowController;
+
 @interface CBSettingsController : NSViewController {
 @private
+  CBMainWindowController *windowController;
   CBSyncController* syncController;
   NSMutableArray *foundCloudboards;
   NSMutableArray *registeredClipboards;
@@ -11,14 +14,19 @@
   IBOutlet NSTableView *registeredClipboardsView;
   IBOutlet NSButton *addButton;
   IBOutlet NSButton *removeButton;
+  IBOutlet NSButton *backButton;
 }
 
-- (id)initWithSyncController:(CBSyncController*)sync;
+- (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*)syncController;
+
+- (void)setWindowController:(CBMainWindowController *)aController;
+@end
+
+@interface CBSettingsController(Actions)
+
 - (IBAction)addDevice:(id)sender;
-
 - (IBAction)removeDevice:(id)sender;
-
-- (IBAction)back:(id)sernder;
+- (IBAction)back:(id)sender;
 
 @end
 
