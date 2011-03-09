@@ -66,12 +66,7 @@
 }
 
 - (void)showSettings:(id)sender {
-  CBSettingsController *settings = [[CBSettingsController alloc] initWithSyncController:syncController];
-  CBClipboardView  *back = (CBClipboardView *)[settings view];
-  [back setFrame:[[self view] frame]];
-  NSView *superview = [[self view] superview];
-  [[self view] removeFromSuperview];
-  [superview addSubview:back];
+  [windowController showBack];
 }
 
 @end
@@ -109,6 +104,10 @@
 
 - (void)setSyncController:(CBSyncController *)controller {
   syncController = controller;
+}
+
+- (void)setWindowController:(CBMainWindowController *)aController {
+  windowController = aController;
 }
 
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {

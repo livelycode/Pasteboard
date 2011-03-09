@@ -1,22 +1,6 @@
 #import "Cloudboard.h"
 
-@implementation CBSettingsController
-
-- (id)initWithSyncController:(CBSyncController *)aSyncController {
-  self = [super initWithNibName:@"preferences" bundle:nil];
-  if(self != nil) {
-    syncController = aSyncController;
-    [syncController addDelegate:self];
-    devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
-    NSArray* visibleClients = [syncController visibleClients];
-    foundCloudboards = [NSMutableArray arrayWithArray:visibleClients];
-    registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
-    if (registeredClipboards == nil) {
-      registeredClipboards = [NSMutableArray array];
-    }
-  }
-  return self;
-}
+@implementation CBSettingsController(Actions)
 
 - (IBAction)addDevice:(id)sender {
   NSUInteger index = [foundClipboardsView selectedRow];
@@ -36,8 +20,37 @@
   [syncController removeClientToSearch:device];
 }
 
-- (IBAction)back:(id)sernder {
-  NSLog(@"back");
+- (IBAction)back:(id)sender {
+NSLog(@"bar");
+  [windowController showFront];
+}
+
+@end
+
+@implementation CBSettingsController
+
+- (id)initWithFrame:(CGRect)aRect; {
+  self = [super initWithNibName:@"settings" bundle:nil];
+  if(self != nil) {
+    [[self view] setFrame:aRect];
+    [syncController addDelegate:self];
+    devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
+    NSArray* visibleClients = [syncController visibleClients];
+    foundCloudboards = [NSMutableArray arrayWithArray:visibleClients];
+    registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
+    if (registeredClipboards == nil) {
+      registeredClipboards = [NSMutableArray array];
+    }
+  }
+  return self;
+}
+
+- (void)setSyncController:(CBSyncController*)sync {
+  syncController = sync;
+}
+
+- (void)setWindowController:(CBMainWindowController *)aController {
+  windowController = aController;
 }
 
 @end

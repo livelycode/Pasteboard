@@ -20,7 +20,7 @@
   return window;
 }
 
-- (CBClipboardController *)createClipboardController {
+- (CGRect)createClipboardFrame {
   CGRect mainFrame = [[NSScreen mainScreen] frame];
   CGFloat screenHeight = CGRectGetHeight(mainFrame);
   CGFloat screenWidth = CGRectGetWidth(mainFrame);
@@ -28,8 +28,7 @@
   CGFloat marginBottom = 50;
   CGFloat clipboardHeight = screenHeight - (2 * marginBottom);
   CGFloat clipboardWidth = (screenWidth - (3 * marginSide)) / 2;
-  CGRect frame = CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
-  return [[CBClipboardController alloc] initWithFrame:frame];
+  return CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
 }
 
 @end
@@ -48,24 +47,37 @@
 
 @implementation CBMainWindowController
 
-- (id)init {
+- (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack {
   self = [super init];
   if (self != nil) {
     CGRect mainFrame = [[NSScreen mainScreen] frame];
+    CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
     rootView = [self createRootViewWihtFrame:mainFrame];
     [mainWindow setContentView:rootView];
-    clipboardController = [self createClipboardController];
+    clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame];
+    [clipboardController setWindowController:self];
     syncController = [[CBSyncController alloc] initWithClipboardController:clipboardController];
     [clipboardController setSyncController:syncController];
-    settingsController = [[CBSettingsController alloc] initWithSyncController:syncController];
+    settingsController = [[CBSettingsController alloc] initWithFrame:clipboardFrame];
+    [settingsController setSyncController:syncController];
+    [settingsController setWindowController:self];
     [rootView addSubview:[clipboardController view]];
+    front = [clipboardController view];
+    back = [settingsController view];
   }
   return self;
 }
 
-- (void)flipViews {
-  
+- (void)showFront {
+  [back removeFromSuperview];
+  [rootView addSubview:front];
+  NSLog(@"foo");
+}
+
+- (void)showBack {
+  [front removeFromSuperview];
+  [rootView addSubview:back];
 }
 
 - (CBClipboardController *)clipboardController {
