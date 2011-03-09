@@ -14,9 +14,7 @@
     CBSyncController *syncController;
     BOOL windowHidden;
 }
-- (void)initClipboard;
 - (void)initPasteboardObserver;
-- (void)addSubview: (NSView*) view;
 - (void)startSyncing;
 - (void)openPreferences;
 - (CBItem*)currentPasteboardItem;

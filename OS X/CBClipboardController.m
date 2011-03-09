@@ -93,20 +93,22 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController {
+- (id)initWithFrame:(CGRect)aFrame {
   self = [super initWithNibName:@"clipboard" bundle:nil];
   if (self != nil) {
     frames = [[NSMutableArray alloc] init];
     viewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
     lastChanged = [[NSDate alloc] init];
-    syncController = [[CBSyncController alloc] initWithClipboardController: self];
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
-    [viewController addSubview:[self view]];
   }
   return self;
+}
+
+- (void)setSyncController:(CBSyncController *)controller {
+  syncController = controller;
 }
 
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {

@@ -1,7 +1,9 @@
 #import "Cocoa.h"
 #import "CBHotKeyObserverDelegate.h"
 
-@class CBWindowView;;
+@class CBWindowView;
+@class CBSyncController;
+@class CBSettingsController;
 
 @interface CBMainWindowController : NSObject
 {
@@ -9,11 +11,14 @@
     NSArray *types;
     NSWindow *mainWindow;
     CBWindowView *rootView;
+    CBClipboardController *clipboardController;
+    CBSettingsController *settingsController;
+    CBSyncController *syncController;
 }
 
 - (id)init;
-
-- (NSView *)rootView;
+- (void)flipViews;
+- (CBClipboardController *)clipboardController;
 
 @end
 

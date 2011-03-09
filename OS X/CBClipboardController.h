@@ -11,7 +11,8 @@
   NSMutableArray *viewSlots;
   NSDate* lastChanged;
 }
-- (id)initWithFrame:(CGRect)aFrame viewController:(id)viewController;
+- (id)initWithFrame:(CGRect)aFrame;
+- (void)setSyncController:(CBSyncController *)controller;
 - (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync;
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (BOOL)clipboardContainsItem:(CBItem *)item;
