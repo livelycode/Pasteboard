@@ -69,6 +69,10 @@
   if([clientsToSearch containsObject:clientName] == NO) {
     [clientsToSearch addObject:clientName];
     CBRemoteCloudboard* visibleClient = [clientsVisible objectForKey:clientName];
+    if([clientsUserNeedsToConfirm containsObject:clientName]) {
+      [clientsQueuedForConfirm addObject:clientName];
+      [clientsUserNeedsToConfirm removeObject:clientName];
+    }
     if(visibleClient) {
       [self foundClient:visibleClient];
     }
@@ -235,6 +239,7 @@
       [clientsQueuedForConfirm addObject:clientName];    
     }
   } else {
+    [clientsUserNeedsToConfirm addObject:clientName];
     [self informDelegatesWith:@selector(clientRequiresUserConfirmation:) object:clientName];
   }
 }
