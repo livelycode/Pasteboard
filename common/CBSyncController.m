@@ -98,10 +98,19 @@
 }
 
 - (void)dealloc {
+  [httpServer release];
   [serviceBrowser release];
-  [clientsConnected release];
   [myServiceName release];
   [clipboardController release];
+  [delegates release];
+  
+  [clientsVisible release];  
+  [clientsConnected release];
+  [clientsIAwaitConfirm release];
+  
+  [clientsToSearch release];
+  [clientsUserNeedsToConfirm release];
+  [clientsQueuedForConfirm release];
   [super dealloc];
 }
 @end
