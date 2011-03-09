@@ -8,7 +8,7 @@
     syncController = aSyncController;
     [syncController addDelegate:self];
     devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
-    NSArray* visibleClients = [syncController visibleClients];
+    NSArray* visibleClients = [syncController clientsVisible];
     foundCloudboards = [NSMutableArray arrayWithArray:visibleClients];
     registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
     if (registeredClipboards == nil) {

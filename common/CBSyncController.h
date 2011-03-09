@@ -35,8 +35,9 @@
 - (void)setClientsToSearch:(NSArray*)clientNames;
 - (void)addClientToSearch:(NSString*)clientName;
 - (void)removeClientToSearch:(NSString*)clientName;
-- (NSArray*)visibleClients;
-- (NSArray*)connectedClients;
+- (NSArray*)clientsVisible;
+- (NSArray*)clientsConnected;
+- (NSArray*)clientsToSearch;
 - (NSArray*)clientsRequiringUserConfirm;
 - (NSString*) serviceName;
 @end

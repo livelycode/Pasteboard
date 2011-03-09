@@ -81,12 +81,16 @@
   [self informDelegatesWith:@selector(clientDisconnected:) object:clientName]; 
 }
 
-- (NSArray*)visibleClients {
+- (NSArray*)clientsVisible {
   return [clientsVisible allKeys];
 }
 
-- (NSArray*)connectedClients {
+- (NSArray*)clientsConnected {
   return [clientsConnected allKeys];
+}
+
+- (NSArray*)clientsToSearch {
+  return [NSArray arrayWithArray: clientsToSearch];
 }
 
 - (NSArray*)clientsRequiringUserConfirm {

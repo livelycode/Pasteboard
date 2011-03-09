@@ -17,7 +17,7 @@
       syncController = aSyncController;
       foundCloudboards = [[NSMutableArray alloc] init];
       [syncController addDelegate:self];
-      foundCloudboards = [[NSMutableArray alloc] initWithArray:[syncController visibleClients]];
+      foundCloudboards = [[NSMutableArray alloc] initWithArray:[syncController clientsVisible]];
     }
     return self;
 }
