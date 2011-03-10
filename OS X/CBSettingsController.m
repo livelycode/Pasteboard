@@ -7,7 +7,6 @@
   NSUInteger index = [foundClipboardsView selectedRow];
   id device = [foundCloudboards objectAtIndex:index];
   [registeredClipboards addObject:device];
-  [registeredClipboards writeToURL:devicesURL atomically:YES];
   [registeredClipboardsView reloadData];
   [syncController addClientToSearch:device];
 }
@@ -16,7 +15,6 @@
   NSUInteger index = [registeredClipboardsView selectedRow];
   id device = [registeredClipboards objectAtIndex:index];
   [registeredClipboards removeObjectAtIndex:index];
-  [registeredClipboards writeToURL:devicesURL atomically:YES];
   [registeredClipboardsView reloadData];
   [syncController removeClientToSearch:device];
 }
@@ -36,10 +34,8 @@ NSLog(@"bar");
     [[self view] setFrame:aRect];
     syncController = aSyncController;
     [syncController addDelegate:self];
-    devicesURL = [[NSBundle mainBundle] URLForResource:@"Devices" withExtension:@"plist"];
-    NSArray* visibleClients = [syncController clientsVisible];
-    foundCloudboards = [NSMutableArray arrayWithArray:visibleClients];
-    registeredClipboards = [NSMutableArray arrayWithContentsOfURL:devicesURL];
+    foundCloudboards = [NSMutableArray arrayWithArray:[syncController clientsVisible]];
+    registeredClipboards = [NSMutableArray arrayWithArray:[syncController clientsToSearch]];
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
     }

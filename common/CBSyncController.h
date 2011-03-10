@@ -18,6 +18,7 @@
   NSString* myServiceName;
   CBClipboardController* clipboardController;
   NSMutableArray* delegates;
+  NSURL* clientsStoreURL;
   
   //CBRemoteCloudboardArrays:
   NSMutableDictionary* clientsVisible;
@@ -50,6 +51,7 @@
 - (void)confirmClient:(CBRemoteCloudboard*)client;
 - (void)initialSyncToClient:(CBRemoteCloudboard*)client;
 - (void)informDelegatesWith:(SEL)selector object:(id)object;
+- (void)persistClientsToSearch;
 @end
 
 @interface CBSyncController(Delegation)<NSNetServiceBrowserDelegate, NSNetServiceDelegate>
