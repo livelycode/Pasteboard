@@ -2,7 +2,7 @@
 
 @implementation CBItem
 
-- (id)initWithString:(NSAttributedString *)aString
+- (id)initWithString:(NSString *)aString
 {
     self = [super init];
     if (self != nil)
@@ -12,7 +12,13 @@
     return self;
 }
 
-- (NSAttributedString *)string
+- (id)initWithAttributedString:(NSAttributedString *)aString
+{
+  self = [self initWithString:[aString string]];
+  return self;
+}
+
+- (NSString *)string
 {
     return string;
 }

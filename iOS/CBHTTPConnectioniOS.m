@@ -10,7 +10,8 @@
       [postURLsTemp addObject: [[NSNumber numberWithInt: i] stringValue]];
     }
     postURLs = [[NSArray alloc] initWithArray: postURLsTemp];
-    syncController = [[[UIApplication sharedApplication] delegate] syncController];
+    CBApplicationController* appController = [[UIApplication sharedApplication] delegate];
+    syncController = [appController syncController];
   }
   return self;
 }

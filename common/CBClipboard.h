@@ -13,7 +13,7 @@
 
 - (id)initWithCapacity:(NSUInteger)aCapacity;
 
-- (void)setItem:(CBItem *)anItem atIndex:(NSUInteger)anIndex;
+- (void)setItem:(id)anItem atIndex:(NSUInteger)anIndex;
 
 - (void)addItem:(CBItem *)anItem;
 

@@ -41,7 +41,7 @@
 }
 
 - (void)syncAddedItem:(CBItem*)item {
-  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:[[item string] string]];
+  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:[item string]];
   [self postToPath:@"add" WithData:archivedItem];
 }
 
@@ -50,10 +50,10 @@
   if([item isEqual:[NSNull null]]) {
     string = @"";
   } else {
-    string = [[item string] string];
+    string = [item string];
   }
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:string];
-  [self postToPath:[[NSNumber numberWithInt: index] stringValue] WithData:archivedItem];
+  [self postToPath:[[NSNumber numberWithInteger: index] stringValue] WithData:archivedItem];
 }
 
 - (NSString*)serviceName {
@@ -128,9 +128,6 @@
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
   [URLRequest setHTTPBody:data];
-  NSURLResponse *URLResponse = nil;
-  NSError *receivedError = nil;
-  //[[NSURLConnection alloc] initWithRequest:URLRequest delegate:self];
   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
   dispatch_async(queue,^{
     NSURLResponse *URLResponse = nil;

@@ -6,10 +6,10 @@
   @private
   id delegate;
   NSInteger index;
-  NSAttributedString* string;
+  NSString* string;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
 @end
 

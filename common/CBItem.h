@@ -3,12 +3,14 @@
 @interface CBItem : NSObject
 {
     @private
-    NSAttributedString *string;
+    NSString *string;
 }
 
-- (id)initWithString:(NSAttributedString *)aString;
+- (id)initWithString:(NSString *)aString;
 
-- (NSAttributedString *)string;
+- (id)initWithAttributedString:(NSAttributedString *)aString;
+
+- (NSString *)string;
 
 - (BOOL)isEqual:(id)anObject;
 

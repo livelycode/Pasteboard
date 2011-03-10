@@ -101,7 +101,7 @@
   return self;
 }
 
-- (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
+- (void)setItem:(id)item atIndex:(NSInteger)index syncing:(BOOL)sync {
   [clipboard setItem:item atIndex:index];
   if ([item isEqual:[NSNull null]]) {
     [self removeViewAtViewIndex:index+1];
@@ -206,7 +206,7 @@
 }
 
 - (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index {
-  NSString *string = [[[clipboard itemAtIndex:index] string] string];
+  NSString *string = [[clipboard itemAtIndex:index] string];
   UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
   [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
 }
