@@ -46,6 +46,7 @@ NSLog(@"bar");
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
     }
+    [self updateLaunchd];
   }
   return self;
 }
@@ -132,6 +133,28 @@ NSLog(@"bar");
 
 - (void)clientConfirmed:(NSString*)clientName {
   NSLog(@"client confirmed %@", clientName);
+}
+
+@end
+
+@implementation CBSettingsController(Private)
+
+- (void)updateLaunchd {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSString *folder = [@"~/Library/LaunchAgents/" stringByExpandingTildeInPath];  
+  if ([fileManager fileExistsAtPath: folder] == NO) {
+    [fileManager createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:NULL];
+  }
+  NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
+  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"KeepAlive"];
+  [settings setValue:@"Cloudboard" forKey:@"Label"];
+  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"OnDemand"];
+  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"RunAtLoad"];
+  NSString* executablePath = [[NSBundle mainBundle] executablePath];
+  NSString* programArgs = [[NSArray alloc] initWithObjects:executablePath, nil];
+  [settings setValue: programArgs forKey:@"ProgramArguments"];
+  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
+  [settings writeToURL:plistURL atomically:YES];
 }
 
 @end

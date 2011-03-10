@@ -16,38 +16,32 @@
   IBOutlet NSButton *removeButton;
   IBOutlet NSButton *backButton;
 }
-
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*)syncController;
-
 - (void)setWindowController:(CBMainWindowController *)aController;
 @end
 
 @interface CBSettingsController(Actions)
-
 - (IBAction)addDevice:(id)sender;
 - (IBAction)removeDevice:(id)sender;
 - (IBAction)back:(id)sender;
-
 @end
 
 @interface CBSettingsController(Overridden)
-
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;
-
 @end
 
 @interface CBSettingsController(Delegation)
   <NSTableViewDataSource, NSTableViewDelegate, CBSyncControllerProtocol>
-
 - (void)awakeFromNib;
-
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
-
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex;
-
 //CBSyncControllerDelegate
 - (void)clientBecameVisible:(NSString*)clientName;
 - (void)clientBecameInvisible:(NSString*)clientName;
 - (void)clientConnected:(NSString*)clientName;
 - (void)clientConfirmed:(NSString*)clientName;
+@end
+
+@interface CBSettingsController(Private)
+- (void)updateLaunchd;
 @end
