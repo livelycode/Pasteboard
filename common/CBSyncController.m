@@ -18,7 +18,7 @@
     [serviceBrowser setDelegate:self];
         
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
     if ([urls count] > 0) {
       NSURL *userDocumentsURL = [urls objectAtIndex:0];
       clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
@@ -29,8 +29,8 @@
     }
     
     clientsVisible = [[NSMutableDictionary alloc] init];
-    clientsConnected = [[NSMutableDictionary alloc] init];
-    clientsIAwaitConfirm = [[NSMutableDictionary alloc] init];
+    clientsConnected = [[NSMutableArray alloc] init];
+    clientsIAwaitConfirm = [[NSMutableArray alloc] init];
     
     clientsUserNeedsToConfirm = [[NSMutableArray alloc] init];
     clientsQueuedForConfirm = [[NSMutableArray alloc] init];
@@ -58,13 +58,15 @@
 
 - (void)syncAddedItem: (CBItem*)item {
   NSLog(@"sync added item");
-  for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
+  for(NSString* clientName in clientsConnected) {
+    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
     [client syncAddedItem: item];
   }
 }
 
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(CBRemoteCloudboard* client in [clientsConnected allValues]) {
+  for(NSString* clientName in clientsConnected) {
+    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
     [client syncItem: item atIndex: index];
   }
 }
@@ -92,8 +94,9 @@
 
 - (void)removeClientToSearch:(NSString*)clientName {
   [clientsToSearch removeObject:clientName];
-  [clientsConnected setValue:nil forKey:clientName];
+  [clientsConnected removeObject:clientName];
   [self informDelegatesWith:@selector(clientDisconnected:) object:clientName]; 
+  [self persistClientsToSearch];
 }
 
 - (NSArray*)clientsVisible {
@@ -101,7 +104,7 @@
 }
 
 - (NSArray*)clientsConnected {
-  return [clientsConnected allKeys];
+  return [[NSArray alloc] initWithArray:clientsConnected];
 }
 
 - (NSArray*)clientsToSearch {
@@ -119,7 +122,7 @@
   [clipboardController release];
   [delegates release];
   
-  [clientsVisible release];  
+  [clientsVisible release];
   [clientsConnected release];
   [clientsIAwaitConfirm release];
   
@@ -175,7 +178,7 @@
 
 - (void)registerAsClientOf:(CBRemoteCloudboard*)client {
   [client registerAsClient];
-  [clientsIAwaitConfirm setValue:client forKey:[client serviceName]];
+  [clientsIAwaitConfirm addObject:[client serviceName]];
 }
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
@@ -196,7 +199,6 @@
 }
 
 - (void)persistClientsToSearch {
-  NSLog(@"%i", [clientsToSearch count]);
   [clientsToSearch writeToURL:clientsStoreURL atomically:YES];
 }
 @end
@@ -227,7 +229,7 @@
   NSLog(@"removed service: %@", netService);
   if([[netService name] hasPrefix: @"Cloudboard"]) {
     [clientsVisible setValue:nil forKey:[netService name]];
-    [clientsConnected setValue:nil forKey:[netService name]];
+    [clientsConnected removeObject:[netService name]];
     [self informDelegatesWith:@selector(clientBecameInvisible:) object:[netService name]]; 
   }
 }
@@ -263,9 +265,9 @@
 }
 
 - (void)registrationConfirmationFrom:(NSString *)serviceName {
-  CBRemoteCloudboard* client = [clientsIAwaitConfirm objectForKey:serviceName];
-  [clientsConnected setValue:client forKey:serviceName];
-  [clientsIAwaitConfirm setValue:nil forKey:serviceName];
+  CBRemoteCloudboard* client = [clientsVisible objectForKey:serviceName];
+  [clientsConnected addObject:serviceName];
+  [clientsIAwaitConfirm removeObject:serviceName];
   [self informDelegatesWith:@selector(clientConnected:)object:serviceName];
   [self initialSyncToClient: client];
 }

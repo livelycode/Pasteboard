@@ -22,8 +22,8 @@
   
   //CBRemoteCloudboardArrays:
   NSMutableDictionary* clientsVisible;
-  NSMutableDictionary* clientsConnected;
-  NSMutableDictionary* clientsIAwaitConfirm;
+  NSMutableArray* clientsConnected;
+  NSMutableArray* clientsIAwaitConfirm;
   //Service Name Arrays:
   NSMutableArray* clientsToSearch;
   NSMutableArray* clientsUserNeedsToConfirm;
