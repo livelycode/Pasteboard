@@ -1,7 +1,1 @@
-//
-//  prefix.h
-//  cloudboard-mac
-//
-//  Created by Mirko on 3/10/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+#define NS_BUILD_32_LIKE_64 1
