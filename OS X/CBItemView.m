@@ -43,6 +43,14 @@
   [string drawInRect:textRect];
 }
 
+- (void)fadeOut {
+  NSData *data = [self dataWithPDFInsideRect:[self bounds]];
+  NSImage *image = [[NSImage alloc] initWithData:data];
+  NSImageView *imageView = [[NSImageView alloc] initWithFrame:[self frame]];
+  [imageView setImage:image];
+  [[self superview] addSubview:imageView];
+}
+
 @end
 
 @implementation CBItemView(Overridden)
@@ -51,6 +59,7 @@
   mouseDown = NO;
   [self setNeedsDisplay:YES];
   [delegate itemViewClicked:self index:index];
+  [self fadeOut];
 }
 
 - (void)drawRect:(NSRect)aRect {
@@ -80,11 +89,6 @@
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }
   return self;
-}
-
-- (NSImage *)viewAsImage {
-  NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
-  return [[NSImage alloc] initWithData:imageData];
 }
 
 @end

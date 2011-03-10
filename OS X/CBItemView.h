@@ -14,6 +14,7 @@
 }
 
 - (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
+
 @end
 
 @interface CBItemView(Overridden)
