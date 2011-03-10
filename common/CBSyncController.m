@@ -16,12 +16,25 @@
     delegates = [[NSMutableArray alloc] init];
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
+        
+    NSURL* bundleURL = [[NSBundle mainBundle] bundleURL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    if ([urls count] > 0) {
+      NSURL *userDocumentsURL = [urls objectAtIndex:0];
+      clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
+      NSLog(@"existing: %@", userDocumentsURL);
+    }
+    clientsToSearch = [[NSMutableArray alloc] initWithContentsOfURL:clientsStoreURL];
+    NSLog(@"existing: %@", clientsStoreURL);
+    if(clientsToSearch == nil) {
+      clientsToSearch = [[NSMutableArray alloc] init];
+    }
     
     clientsVisible = [[NSMutableDictionary alloc] init];
     clientsConnected = [[NSMutableDictionary alloc] init];
     clientsIAwaitConfirm = [[NSMutableDictionary alloc] init];
     
-    clientsToSearch = [[NSMutableArray alloc] init];
     clientsUserNeedsToConfirm = [[NSMutableArray alloc] init];
     clientsQueuedForConfirm = [[NSMutableArray alloc] init];
     
@@ -76,6 +89,7 @@
     if(visibleClient) {
       [self foundClient:visibleClient];
     }
+    [self persistClientsToSearch];
   }
 }
 
@@ -182,6 +196,11 @@
       [delegate performSelector:selector withObject:object];
     }
   }
+}
+
+- (void)persistClientsToSearch {
+  NSLog(@"%i", [clientsToSearch count]);
+  [clientsToSearch writeToURL:clientsStoreURL atomically:YES];
 }
 @end
 

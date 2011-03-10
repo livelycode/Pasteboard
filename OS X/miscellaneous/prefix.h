@@ -1,0 +1,1 @@
+#define NS_BUILD_32_LIKE_64 1

@@ -35,7 +35,7 @@
 @implementation CBClipboardView(Overridden)
 
 - (void)drawRect:(NSRect)aRect {   
-  CGRect contentFrame = [self bounds];
+  NSRect contentFrame = [self bounds];
   NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:contentFrame xRadius:CORNER_RADIUS yRadius:CORNER_RADIUS];
   [path addClip];
   [self drawBackgroundWithPath:path];
@@ -46,7 +46,7 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     NSShadow *dropShadow = [[NSShadow alloc] init];
-    [dropShadow setShadowOffset:CGSizeMake(0, DROP_SHADOW_OFFSET)];
+    [dropShadow setShadowOffset:NSMakeSize(0, DROP_SHADOW_OFFSET)];
     [dropShadow setShadowBlurRadius:DROP_SHADOW_BLUR];
     [dropShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:DROP_SHADOW_ALPHA]];
     [self setShadow:dropShadow];
