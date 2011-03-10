@@ -43,6 +43,20 @@
   [string drawInRect:textRect];
 }
 
+- (void)fadeOut {
+  CGRect bounds = [self bounds];
+  CGRect frame = [self frame];
+  NSData *data = [self dataWithPDFInsideRect:bounds];
+  NSImage *image = [[NSImage alloc] initWithData:data];
+  NSImageView *imageView = [[NSImageView alloc] initWithFrame:frame];
+  [imageView setImage:image];
+  [imageView setImageScaling:NSImageScaleAxesIndependently];
+  [[self superview] addSubview:imageView];
+	  
+  CGRect newFrame = CGRectInset(frame, CGRectGetWidth(frame)*-0.1, CGRectGetHeight(frame)*-0.1);
+  [[imageView animator] setFrame:newFrame];
+}
+
 @end
 
 @implementation CBItemView(Overridden)
@@ -51,15 +65,11 @@
   mouseDown = NO;
   [self setNeedsDisplay:YES];
   [delegate itemViewClicked:self index:index];
+  [self fadeOut];
 }
 
 - (void)drawRect:(NSRect)aRect {
-  CGRect mainBounds = [self bounds];
-  CGFloat notePadding = 8;
-  CGRect noteRect = CGRectMake(CGRectGetMinX(mainBounds) + notePadding,
-                               CGRectGetMinY(mainBounds) + notePadding,
-                               CGRectGetWidth(mainBounds) - (2 * notePadding),
-                               CGRectGetHeight(mainBounds) - (2 * notePadding));
+  CGRect noteRect = CGRectInset([self bounds], 24, 24);
   NSBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];
   [self drawBorderWithPath:notePath];
