@@ -2,7 +2,7 @@
 
 #define ROWS 4
 #define COLUMNS 2
-#define PADDING 10
+#define PADDING 0
 
 #define BUTTON_PADDING 16
 #define BUTTON_HEIGHT 24
