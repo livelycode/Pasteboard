@@ -82,4 +82,9 @@
   return self;
 }
 
+- (NSImage *)viewAsImage {
+  NSData *imageData = [self dataWithPDFInsideRect:[self bounds]];
+  return [[NSImage alloc] initWithData:imageData];
+}
+
 @end
