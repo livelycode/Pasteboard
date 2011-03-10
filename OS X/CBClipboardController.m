@@ -73,15 +73,15 @@
 
 @implementation CBClipboardController(Delegation)
 //CBItemViewDelegate
-- (void)itemViewClicked:(CBItemView *)view index:(NSInteger)index {
-  NSAttributedString *string = [[clipboard itemAtIndex:index] string];
+- (void)itemViewClicked:(CBItemView*)view index:(NSInteger)index {
+  NSString *string = [[clipboard itemAtIndex:index] string];
   NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
   [systemPasteboard clearContents];
   [systemPasteboard writeObjects:[NSArray arrayWithObject:string]];
 }
 
 //CBPasteViewDelegate
-- (void)pasteViewClicked:(CBItemView *)view index:(NSInteger)index {
+- (void)pasteViewClicked:(CBPasteView*)view index:(NSInteger)index {
   
 }
 @end
@@ -110,7 +110,7 @@
   windowController = aController;
 }
 
-- (void)setItem:(CBItem *)item atIndex:(NSInteger)index syncing:(BOOL)sync {
+- (void)setItem:(id)item atIndex:(NSInteger)index syncing:(BOOL)sync {
   [clipboard setItem:item atIndex:index];
   if ([item isEqual:[NSNull null]]) {
     [self removeViewAtViewIndex:index+1];

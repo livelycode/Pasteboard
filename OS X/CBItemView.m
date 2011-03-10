@@ -40,7 +40,7 @@
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  [string drawInRect:textRect];
+  [string drawInRect:textRect withAttributes:nil];
 }
 
 - (void)fadeOut {
@@ -94,7 +94,7 @@
 
 @implementation CBItemView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
