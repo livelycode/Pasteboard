@@ -17,16 +17,13 @@
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
         
-    NSURL* bundleURL = [[NSBundle mainBundle] bundleURL];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
     if ([urls count] > 0) {
       NSURL *userDocumentsURL = [urls objectAtIndex:0];
       clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
-      NSLog(@"existing: %@", userDocumentsURL);
     }
     clientsToSearch = [[NSMutableArray alloc] initWithContentsOfURL:clientsStoreURL];
-    NSLog(@"existing: %@", clientsStoreURL);
     if(clientsToSearch == nil) {
       clientsToSearch = [[NSMutableArray alloc] init];
     }
@@ -229,6 +226,8 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) netService moreComing: (BOOL)more {
   NSLog(@"removed service: %@", netService);
   if([[netService name] hasPrefix: @"Cloudboard"]) {
+    [clientsVisible setValue:nil forKey:[netService name]];
+    [clientsConnected setValue:nil forKey:[netService name]];
     [self informDelegatesWith:@selector(clientBecameInvisible:) object:[netService name]]; 
   }
 }
