@@ -44,16 +44,30 @@
 }
 
 - (void)fadeOut {
+  NSView *rootView = [[self window] contentView];
+  NSView *clipboardView = [self superview];
   CGRect bounds = [self bounds];
   CGRect frame = [self frame];
   NSData *data = [self dataWithPDFInsideRect:bounds];
   NSImage *image = [[NSImage alloc] initWithData:data];
-  NSImageView *imageView = [[NSImageView alloc] initWithFrame:frame];
+  CGRect newStartFrame = [rootView convertRect:frame fromView:clipboardView];
+  NSImageView *imageView = [[NSImageView alloc] initWithFrame:newStartFrame];
+  [imageView setWantsLayer:YES];
   [imageView setImage:image];
   [imageView setImageScaling:NSImageScaleAxesIndependently];
-  [[self superview] addSubview:imageView];
-	  
-  CGRect newFrame = CGRectInset(frame, CGRectGetWidth(frame)*-0.1, CGRectGetHeight(frame)*-0.1);
+  [rootView addSubview:imageView];
+  CGRect newFrame = CGRectInset(newStartFrame, CGRectGetWidth(newStartFrame)*-0.1, CGRectGetHeight(newStartFrame)*-0.1);
+  
+  CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"frameSize"];
+  [zoom setDuration:3];
+  CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
+  [fade setBeginTime:1];
+  [fade setDuration:1];
+  [fade setToValue:[NSNumber numberWithFloat:0.5]];
+  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+  [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
+  [group setDuration:3];
+  [imageView setAnimations:[NSDictionary dictionaryWithObject:zoom forKey:@"frameSize"]];
   [[imageView animator] setFrame:newFrame];
 }
 
