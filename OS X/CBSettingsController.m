@@ -5,16 +5,20 @@
 
 - (IBAction)addDevice:(id)sender {
   NSUInteger index = [foundClipboardsView selectedRow];
-  id device = [foundCloudboards objectAtIndex:index];
+  NSString* device = [foundCloudboards objectAtIndex:index];
   [registeredClipboards addObject:device];
+  [foundCloudboards removeObject:device];
+  [foundClipboardsView reloadData];
   [registeredClipboardsView reloadData];
   [syncController addClientToSearch:device];
 }
 
 - (IBAction)removeDevice:(id)sender {
   NSUInteger index = [registeredClipboardsView selectedRow];
-  id device = [registeredClipboards objectAtIndex:index];
+  NSString* device = [registeredClipboards objectAtIndex:index];
   [registeredClipboards removeObjectAtIndex:index];
+  [foundCloudboards addObject:device];
+  [foundClipboardsView reloadData];
   [registeredClipboardsView reloadData];
   [syncController removeClientToSearch:device];
 }
@@ -36,6 +40,9 @@ NSLog(@"bar");
     [syncController addDelegate:self];
     foundCloudboards = [NSMutableArray arrayWithArray:[syncController clientsVisible]];
     registeredClipboards = [NSMutableArray arrayWithArray:[syncController clientsToSearch]];
+    for(NSString*client in registeredClipboards) {
+      [foundCloudboards removeObject:client];
+    }
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
     }
@@ -101,7 +108,7 @@ NSLog(@"bar");
 
 //CBSyncControllerDelegate
 - (void)clientBecameVisible:(NSString*)clientName {
-  if([foundCloudboards containsObject:clientName] == NO) {
+  if(([foundCloudboards containsObject:clientName] == NO) && ([registeredClipboards containsObject:clientName] == NO)) {
     [foundCloudboards addObject:clientName];
     [foundClipboardsView reloadData];
   }
