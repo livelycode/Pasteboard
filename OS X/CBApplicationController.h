@@ -15,9 +15,6 @@
     BOOL windowHidden;
 }
 - (void)initPasteboardObserver;
-- (void)startSyncing;
-- (void)openPreferences;
-- (CBItem*)currentPasteboardItem;
 - (CBSyncController*)syncController;
 @end
 
@@ -28,4 +25,8 @@
 
 //CBPasteboardOberserverDelegate
 - (void)systemPasteboardDidChange;
+@end
+
+@interface CBApplicationController(Private)
+- (CBItem*)currentPasteboardItem;
 @end
