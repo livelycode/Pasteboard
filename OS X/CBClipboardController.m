@@ -2,7 +2,7 @@
 
 #define ROWS 4
 #define COLUMNS 2
-#define PADDING 20
+#define PADDING 10
 
 #define BUTTON_PADDING 16
 #define BUTTON_HEIGHT 24
@@ -42,13 +42,13 @@
 
 - (void)initializeItemSlots {
   CGRect mainBounds = [[self view] bounds];
-  CGFloat itemWidth = (mainBounds.size.width - ((COLUMNS + 1) * PADDING)) / COLUMNS;
-  CGFloat itemHeight = (mainBounds.size.height - ((ROWS + 1) * PADDING)) / ROWS;
+  NSUInteger itemWidth = (mainBounds.size.width - ((COLUMNS + 1) * PADDING)) / COLUMNS;
+  NSUInteger itemHeight = (mainBounds.size.height - ((ROWS + 1) * PADDING)) / ROWS;
   CGPoint origin = CGPointMake(PADDING, (mainBounds.size.height - itemHeight - PADDING));
   for(NSInteger row=0; row<ROWS; row++) {
     for(NSInteger column=0; column<COLUMNS; column++) {
-      CGFloat x = origin.x + (column * (itemWidth + PADDING));
-      CGFloat y = origin.y - (row * (itemHeight + PADDING));
+      NSUInteger x = origin.x + (column * (itemWidth + PADDING));
+      NSUInteger y = origin.y - (row * (itemHeight + PADDING));
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithRect:itemFrame]];
     }

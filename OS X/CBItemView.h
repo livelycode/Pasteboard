@@ -18,9 +18,7 @@
 
 @interface CBItemView(Overridden)
 
-- (void)mouseDown:(NSEvent *)theEvent;
-- (void)mouseEntered:(NSEvent *)theEvent;
-- (void)mouseExited:(NSEvent *)theEvent;
+- (void)mouseUp:(NSEvent *)theEvent;
 - (void)drawRect:(NSRect)aRect;
 
 @end
