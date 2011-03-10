@@ -153,7 +153,10 @@
 
 - (void)stopSyncing {
   [syncController release];
-  [popoverController release];
+  if(popoverController.popoverVisible) {
+    [popoverController dismissPopoverAnimated:NO]; 
+    [popoverController release];
+  }
 }
 
 - (void)startSyncing {

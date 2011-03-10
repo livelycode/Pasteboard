@@ -18,7 +18,13 @@
     [serviceBrowser setDelegate:self];
         
     NSURL* bundleURL = [[NSBundle mainBundle] bundleURL];
-    clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:bundleURL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    if ([urls count] > 0) {
+      NSURL *userDocumentsURL = [urls objectAtIndex:0];
+      clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
+      NSLog(@"existing: %@", userDocumentsURL);
+    }
     clientsToSearch = [[NSMutableArray alloc] initWithContentsOfURL:clientsStoreURL];
     NSLog(@"existing: %@", clientsStoreURL);
     if(clientsToSearch == nil) {

@@ -60,10 +60,8 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser*)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo;
 - (void)netServiceBrowser:(NSNetServiceBrowser*)netServiceBrowser didFindDomain:(NSString *)domainName
                moreComing:(BOOL)moreDomainsComing;
-- (void)netServiceBrowser:(NSNetServiceBrowser*)browser didFindService:(NSNetService*)service 
-               moreComing:(BOOL)more;
-- (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService:(NSNetService*)service 
-               moreComing:(BOOL)more;
+- (void)netServiceBrowser:(NSNetServiceBrowser*)browser didFindService:(NSNetService*)service moreComing:(BOOL)more;
+- (void)netServiceBrowser:(NSNetServiceBrowser *)browser didRemoveService:(NSNetService*)service moreComing:(BOOL)more;
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser;
 
 //CBClipboardControllerDelegate

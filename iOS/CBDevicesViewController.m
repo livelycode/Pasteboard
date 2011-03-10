@@ -14,16 +14,22 @@
 - (id)initWithClipboard:(CBClipboardController*)delegate syncController:(CBSyncController*)aSyncController {
     self = [super init];
     if (self) {
-      syncController = aSyncController;
+      syncController = [aSyncController retain];
       foundCloudboards = [[NSMutableArray alloc] init];
       [syncController addDelegate:self];
       foundCloudboards = [[NSMutableArray alloc] initWithArray:[syncController clientsVisible]];
+      selectedCloudboards = [[NSMutableArray alloc] initWithArray:[syncController clientsToSearch]];
     }
     return self;
 }
 
 - (void)dealloc {
-    [super dealloc];
+  [delegate release];
+  [syncController release];
+  [tableView release];
+  [foundCloudboards release];
+  [selectedCloudboards release];
+  [super dealloc];
 }
 
 
@@ -64,9 +70,15 @@
 //UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   NSUInteger index = [indexPath row];
+  NSString* clientName = [foundCloudboards objectAtIndex:index];
   UITableViewCell* viewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-  NSString* substring = [[foundCloudboards objectAtIndex:index] substringFromIndex:10];
+  NSString* substring = [clientName substringFromIndex:10];
   viewCell.textLabel.text = substring;
+  if ([selectedCloudboards containsObject:clientName]) {
+    viewCell.accessoryType = UITableViewCellAccessoryCheckmark;
+  } else {
+    viewCell.accessoryType = UITableViewCellAccessoryNone;
+  }
   return viewCell;
 }
 
@@ -77,14 +89,15 @@
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)newIndexPath {
   NSUInteger index = [newIndexPath row];
   [theTableView deselectRowAtIndexPath:[theTableView indexPathForSelectedRow] animated:YES];
-  UITableViewCell *cell = [theTableView cellForRowAtIndexPath:newIndexPath];
-  if (cell.accessoryType == UITableViewCellAccessoryNone) {
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    [syncController addClientToSearch:[foundCloudboards objectAtIndex:index]];
-  } else if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
-    cell.accessoryType = UITableViewCellAccessoryNone;
+  NSString* clientName = [foundCloudboards objectAtIndex:index];
+  if ([selectedCloudboards containsObject:clientName]) {
     [syncController removeClientToSearch:[foundCloudboards objectAtIndex:index]];
+    [selectedCloudboards removeObject:clientName];
+  } else {
+    [syncController addClientToSearch:[foundCloudboards objectAtIndex:index]];
+    [selectedCloudboards addObject:clientName];
   }
+  [tableView reloadData];
 }
 
 //CBSyncControllerDelegate
