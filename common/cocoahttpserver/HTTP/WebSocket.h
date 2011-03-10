@@ -13,6 +13,8 @@
 	HTTPMessage *request;
 	GCDAsyncSocket *asyncSocket;
 	
+    id delegate;
+  
 	NSData *term;
 	
 	BOOL isStarted;
