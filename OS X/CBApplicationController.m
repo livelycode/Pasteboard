@@ -35,7 +35,7 @@
 
 - (CBItem*)currentPasteboardItem {
   NSString* copyString = [[NSPasteboard generalPasteboard] stringForType:(NSString*)kUTTypeUTF8PlainText];
-  return [[CBItem alloc] initWithString:[[NSAttributedString alloc] initWithString:copyString]];
+  return [[CBItem alloc] initWithString:copyString];
 }
 
 @end

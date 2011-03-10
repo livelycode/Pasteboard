@@ -40,7 +40,8 @@
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  [string drawInRect:textRect withAttributes:nil];
+  NSAttributedString* attrString = [[NSAttributedString alloc] initWithString: string];
+  [attrString drawInRect:textRect];
 }
 
 - (void)fadeOut {
