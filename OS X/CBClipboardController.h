@@ -25,8 +25,8 @@
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
-- (void)itemViewClicked;
-- (void)pasteViewClicked:(CBPasteView*)view index:(NSInteger)index;
+- (void)itemViewClicked:(CBItemView*)view;
+- (void)pasteViewClicked;
 @end
 
 @interface CBClipboardController(Actions)

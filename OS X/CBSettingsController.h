@@ -46,7 +46,3 @@
 - (void)clientConnected:(NSString*)clientName;
 - (void)clientConfirmed:(NSString*)clientName;
 @end
-
-@interface CBSettingsController(Private)
-- (void)updateLaunchd;
-@end

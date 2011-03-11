@@ -165,7 +165,3 @@ NSLog(@"bar");
 }
 
 @end
-
-@implementation CBSettingsController(Private)
-
-@end

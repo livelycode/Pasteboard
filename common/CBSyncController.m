@@ -219,10 +219,6 @@
 }
 
 //CBClipboardControllerDelegate
-- (void)didSetItem:(CBItem*)item atIndex:(NSUInteger)index {
-  [self syncItem:item atIndex:index];
-}
-
 - (void)didAddItem:(CBItem*)item {
   for(NSString* clientName in clientsConnected) {
     CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];

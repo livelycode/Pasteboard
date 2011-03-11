@@ -14,15 +14,11 @@
 
 - (id)initWithCapacity:(NSUInteger)aCapacity;
 
-- (void)setItem:(id)anItem atIndex:(NSUInteger)anIndex;
-
 - (void)addItem:(CBItem *)anItem;
 
-- (void)removeItemAtIndex:(NSUInteger)anIndex;
+- (CBItem*)itemAtIndex:(NSUInteger)anIndex;
 
-- (CBItem *)itemAtIndex:(NSUInteger)anIndex;
-
-- (NSArray *)items;
+- (NSArray*)items;
 
 - (void)persist;
 

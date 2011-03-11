@@ -23,10 +23,6 @@
     return self;
 }
 
-- (void)setItem:(id)anItem atIndex:(NSUInteger)anIndex {
-    [items replaceObjectAtIndex:anIndex withObject:anItem];
-}
-
 - (void)addItem:(CBItem *)anItem {
   [items insertObject:anItem atIndex:0];
   if ([items count] > capacity) {
@@ -54,6 +50,10 @@
   });
 }
 
+- (void)clear {
+  [items removeAllObjects];
+}
+
 - (void)dealloc {
   [items release];
   [super dealloc];
@@ -74,10 +74,6 @@
     [self clear]; 
   }
   NSLog(@"items loaded");
-}
-
-- (void)clear {
-  [items removeAllObjects];
 }
 
 @end
