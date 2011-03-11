@@ -157,4 +157,8 @@
 - (NSArray*)allItems {
   return [clipboard items];
 }
+
+- (void)persistClipboard {
+  [clipboard persist];
+}
 @end

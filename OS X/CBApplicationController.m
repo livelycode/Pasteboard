@@ -52,6 +52,11 @@
     }
   }
 }
+
+- (void)applicationWillTerminate:(NSNotification *)notification {
+  NSLog(@"terminate");
+  [clipboardController persistClipboard];
+}
 @end
 
 @implementation CBApplicationController(Private)

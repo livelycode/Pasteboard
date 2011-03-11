@@ -21,6 +21,7 @@
 - (CBSyncController*)syncController;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
+- (void)persistClipboard;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>

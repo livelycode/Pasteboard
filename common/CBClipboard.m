@@ -12,9 +12,13 @@
     {
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
-      for(NSInteger i = 0; i<capacity; i++) {
-        [items addObject:[NSNull null]];
+      NSFileManager *fileManager = [NSFileManager defaultManager];
+      NSArray *urls = [fileManager URLsForDirectory:NSAutosavedInformationDirectory inDomains:NSUserDomainMask];
+      if ([urls count] > 0) {
+        NSURL *userDocumentsURL = [urls objectAtIndex:0];
+        storeURL = [[NSURL alloc] initWithString:@"CBItems.plist" relativeToURL:userDocumentsURL];
       }
+      [self loadItems];
     }
     return self;
 }
@@ -30,6 +34,7 @@
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
   }
+  [self persist];
 }
 
 - (void)removeItemAtIndex:(NSUInteger)anIndex {
@@ -44,9 +49,45 @@
   	return [NSArray arrayWithArray:items];
 }
 
+- (void)persist {
+  NSMutableArray* stringsToPersist = [NSMutableArray array];
+  for(id object in items) {
+    NSString* string;
+    if([object isEqual: [NSNull null]]) {
+      string = @"";
+    } else {
+      string = [object string];
+    }
+    [stringsToPersist addObject:string];
+  }
+  [stringsToPersist writeToURL:storeURL atomically:YES];
+}
+
 - (void)dealloc {
   [items release];
   [super dealloc];
+}
+
+@end
+
+@implementation CBClipboard(Private)
+
+- (void)loadItems {
+  NSArray* itemStrings = [[NSArray alloc] initWithContentsOfURL:storeURL];
+  if(itemStrings) {
+    for(NSString* string in itemStrings) {
+      if([string isEqualToString:@""]) {
+        [items addObject:[NSNull null]];
+      } else {
+        [items addObject:[[CBItem alloc] initWithString:string]];
+      }
+    }
+  } else {
+    for(NSInteger i = 0; i<capacity; i++) {
+      [items addObject:[NSNull null]];
+    } 
+  }
+  NSLog(@"items loaded");
 }
 
 @end
