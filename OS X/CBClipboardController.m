@@ -30,7 +30,7 @@
 
 - (void)drawPasteView {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
-  NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame index:0 delegate:self];
+  NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame delegate:self];
   [self removeViewAtViewIndex:0];
   if([viewSlots count] > 0) {
     [viewSlots replaceObjectAtIndex:0 withObject:pasteView];

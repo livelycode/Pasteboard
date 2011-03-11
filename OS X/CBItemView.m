@@ -102,10 +102,6 @@
   [[animationLayers objectAtIndex:0] removeFromSuperlayer];	
 }
 
-/*- (void)displayLayer:(CALayer *)layer {
-  
-}*/
-
 @end
 
 @implementation CBItemView
