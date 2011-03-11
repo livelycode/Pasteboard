@@ -12,7 +12,7 @@
 
 - (void)drawItem:(CBItem*)item {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
+  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
   [itemViewSlots insertObject:newItemView atIndex:0];
   [[self view] addSubview:newItemView];
   //remove last itemView if necessary
@@ -65,7 +65,8 @@
 
 @implementation CBClipboardController(Delegation)
 //CBItemViewDelegate
-- (void)itemViewClicked:(CBItemView*)view index:(NSInteger)index {
+- (void)itemViewClicked:(CBItemView*)view {
+  NSInteger index = [itemViewSlots indexOfObject:view];
   NSString *string = [[clipboard itemAtIndex:index] string];
   NSPasteboard *systemPasteboard = [NSPasteboard generalPasteboard];
   [systemPasteboard clearContents];
@@ -73,7 +74,7 @@
 }
 
 //CBPasteViewDelegate
-- (void)pasteViewClicked:(CBPasteView*)view index:(NSInteger)index {
+- (void)pasteViewClicked {
   
 }
 @end

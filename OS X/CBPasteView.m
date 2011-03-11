@@ -46,7 +46,7 @@
 
 - (void)mouseUp:(NSEvent *)theEvent {
   [self setNeedsDisplay:YES];
-  [delegate itemViewClicked:self index:index];
+  [delegate pasteViewClicked];
 }
 
 - (void)drawRect:(NSRect)aRect {
