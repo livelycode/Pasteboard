@@ -7,6 +7,24 @@
 
 @implementation CBClipboardController(Private)
 
+- (void)drawItem:(CBItem*)item {
+  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
+  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
+  [itemViewSlots insertObject:newItemView atIndex:0];
+  [[self view] addSubview:newItemView];
+  //remove last itemView if necessary
+  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
+    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
+    [itemViewSlots removeLastObject]; 
+    [lastView removeFromSuperview];
+  }
+  //move all existing itemViews
+  [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
+    CGRect newFrame = [[frames objectAtIndex:index+1] CGRectValue];
+    [itemView setFrame:newFrame];
+  }];
+}
+
 - (void)drawToolbar {
   toolbar = [[UIToolbar alloc] init];
   [toolbar sizeToFit];
@@ -73,11 +91,6 @@
     delegate = appController;
     [self startSyncing];
     [self view];
-    for(id item in [clipboard items]) {
-      if([item isEqual:[NSNull null]] == NO) {
-        [self addItem:item syncing:NO];
-      }
-    }
   }
   return self;
 }
@@ -85,21 +98,7 @@
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
   [clipboard persist];
-  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
-  [itemViewSlots insertObject:newItemView atIndex:0];
-  [[self view] addSubview:newItemView];
-  //remove last itemView if necessary
-  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
-    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
-    [itemViewSlots removeLastObject]; 
-    [lastView removeFromSuperview];
-  }
-  //move all existing itemViews
-  [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
-    CGRect newFrame = [[frames objectAtIndex:index+1] CGRectValue];
-    [itemView setFrame:newFrame];
-  }];
+  [self drawItem:item];
   if(sync) {
     if(syncController) {
       [syncController didAddItem:item];
@@ -165,9 +164,7 @@
   [self initializeItemViewFrames];
   [self drawPasteButton];
   for(id item in [clipboard items]) {
-    if([item isEqual:[NSNull null]] == NO) {
-      [self addItem:item syncing:NO];
-    }
+    [self drawItem:item];
   }
 }
 

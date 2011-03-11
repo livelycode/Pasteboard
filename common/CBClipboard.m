@@ -29,7 +29,6 @@
 
 - (void)addItem:(CBItem *)anItem {
   [items insertObject:anItem atIndex:0];
-  
   if ([items count] > capacity) {
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
@@ -50,14 +49,8 @@
 
 - (void)persist {
   NSMutableArray* stringsToPersist = [NSMutableArray array];
-  for(id object in items) {
-    NSString* string;
-    if([object isEqual: [NSNull null]]) {
-      string = @"";
-    } else {
-      string = [object string];
-    }
-    [stringsToPersist addObject:string];
+  for(CBItem* item in items) {
+    [stringsToPersist addObject:[item string]];
   }
   [stringsToPersist writeToURL:storeURL atomically:YES];
 }
@@ -76,11 +69,7 @@
   NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
   if(itemStrings) {
     for(NSString* string in itemStrings) {
-      if([string isEqualToString:@""]) {
-        [items addObject:[NSNull null]];
-      } else {
-        [items addObject:[[CBItem alloc] initWithString:string]];
-      }
+      [items addObject:[[CBItem alloc] initWithString:string]];
     }
   } else {
     [self clear]; 
@@ -90,9 +79,6 @@
 
 - (void)clear {
   [items removeAllObjects];
-  for(NSInteger i = 0; i<capacity; i++) {
-    [items addObject:[NSNull null]];
-  }
 }
 
 @end
