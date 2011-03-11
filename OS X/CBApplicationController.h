@@ -7,7 +7,6 @@
 @interface CBApplicationController : NSObject 
 {
   @private
-  NSURL* settingsURL;
   CBPasteboardObserver *pasteboardObserver;		
   CBHotKeyObserver *hotKey;
   CBClipboardController *clipboardController;

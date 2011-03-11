@@ -36,12 +36,6 @@
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
-  if ([urls count] > 0) {
-    NSURL* userSettingsURL = [urls objectAtIndex:0];
-    settingsURL = [[NSURL alloc] initWithString:@"CBSettings.plist" relativeToURL:userSettingsURL];
-  }
   [self loadSettings];
   windowController = [[CBMainWindowController alloc] initWithFrontView:nil backView:nil];
   clipboardController = [windowController clipboardController];
@@ -68,21 +62,16 @@
 }
 
 - (void)loadSettings {
-  NSDictionary* settings = [[NSDictionary alloc] initWithContentsOfURL:settingsURL];
-  if(settings == nil) {
-    autoStart = NO;
-    autoPaste = YES;
-  } else {
-    autoStart = [[settings valueForKey:@"AutoStart"] boolValue];
-    autoPaste = [[settings valueForKey:@"AutoPaste"] boolValue];
-  }
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  autoStart = [userDefaults boolForKey:@"AutoStart"];
+  autoPaste = [userDefaults boolForKey:@"AutoPaste"];
 }
 
 - (void)updateSettings {
-  NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
-  [settings setValue:[NSNumber numberWithBool:autoStart] forKey:@"AutoStart"];
-  [settings setValue:[NSNumber numberWithBool:autoPaste] forKey:@"AutoPaste"];
-  [settings writeToURL:settingsURL atomically:YES];
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setBool:autoStart forKey:@"AutoStart"];
+  [userDefaults setBool:autoPaste forKey:@"AutoPaste"];
+  [userDefaults synchronize];
 }
 
 - (void)updateLaunchd {
