@@ -8,13 +8,12 @@
   NSString *string;
   NSTrackingArea *noteArea;
   NSMutableArray *animationLayers;
-  NSInteger index;
   BOOL mouseOver;
   BOOL mouseDown;
   BOOL noteBacklighted;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
 @end	
 

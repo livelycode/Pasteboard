@@ -82,7 +82,7 @@
 - (void)mouseUp:(NSEvent *)theEvent {
   mouseDown = NO;
   [self setNeedsDisplay:YES];
-  [delegate itemViewClicked:self index:index];
+  [delegate itemViewClicked:self];
   [self fadeOut];
 }
 
@@ -106,10 +106,9 @@
 
 @implementation CBItemView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    index = itemIndex;
     string = content;
     delegate = anObject;
     mouseDown = NO;
