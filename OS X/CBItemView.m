@@ -51,24 +51,12 @@
   NSData *data = [self dataWithPDFInsideRect:bounds];
   NSImage *image = [[NSImage alloc] initWithData:data];
   CGRect newStartFrame = [rootView convertRect:frame fromView:clipboardView];
-  NSImageView *imageView = [[NSImageView alloc] initWithFrame:newStartFrame];
-  [imageView setWantsLayer:YES];
-  [imageView setImage:image];
-  [imageView setImageScaling:NSImageScaleAxesIndependently];
-  [rootView addSubview:imageView];
   CGRect newFrame = CGRectInset(newStartFrame, CGRectGetWidth(newStartFrame)*-0.1, CGRectGetHeight(newStartFrame)*-0.1);
   
-  CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"frameSize"];
-  [zoom setDuration:3];
-  CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"alphaValue"];
-  [fade setBeginTime:1];
-  [fade setDuration:1];
-  [fade setToValue:[NSNumber numberWithFloat:0.5]];
-  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
-  [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
-  [group setDuration:3];
-  [imageView setAnimations:[NSDictionary dictionaryWithObject:zoom forKey:@"frameSize"]];
-  [[imageView animator] setFrame:newFrame];
+  CALayer *layer = [[CALayer alloc] init];
+  [[NSAnimationContext currentContext] setDuration:2];
+  [layer setTransform:CATransform3DMakeScale(2, 2, 2)];
+  [layer setOpacity:0];
 }
 
 @end
