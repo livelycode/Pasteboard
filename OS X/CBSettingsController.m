@@ -23,6 +23,24 @@
   [syncController removeClientToSearch:device];
 }
 
+- (IBAction)autoPasteCheckboxChanged:(id)sender {
+  NSInteger autoPaste = [sender state];
+  if(autoPaste == NSOnState) {
+    [appController setAutoPaste:YES];
+  } else {
+    [appController setAutoPaste:NO];
+  }
+}
+
+- (IBAction)autoStartCheckboxChanged:(id)sender {
+  NSInteger autoStart = [sender state];
+  if(autoStart == NSOnState) {
+    [appController setAutoStart:YES];
+  } else {
+    [appController setAutoStart:NO];
+  }
+}
+
 - (IBAction)back:(id)sender {
 NSLog(@"bar");
   [windowController showFront];
@@ -35,9 +53,10 @@ NSLog(@"bar");
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*) aSyncController; {
   self = [super initWithNibName:@"settings" bundle:nil];
   if(self != nil) {
-    [[self view] setFrame:aRect];
+    appController = [[NSApplication sharedApplication] delegate];
     syncController = aSyncController;
     [syncController addDelegate:self];
+    
     foundCloudboards = [NSMutableArray arrayWithArray:[syncController clientsVisible]];
     registeredClipboards = [NSMutableArray arrayWithArray:[syncController clientsToSearch]];
     for(NSString*client in registeredClipboards) {
@@ -46,7 +65,7 @@ NSLog(@"bar");
     if (registeredClipboards == nil) {
       registeredClipboards = [NSMutableArray array];
     }
-    [self updateLaunchd];
+    [[self view] setFrame:aRect];
   }
   return self;
 }
@@ -60,6 +79,16 @@ NSLog(@"bar");
 @implementation CBSettingsController(Delegation)
 
 - (void)awakeFromNib {
+  if([appController autoStart]) {
+    [autoStartButton setState:NSOnState];
+  } else {
+    [autoStartButton setState:NSOffState];
+  }
+  if([appController autoPaste]) {
+    [autoPasteButton setState:NSOnState];
+  } else {
+    [autoPasteButton setState:NSOffState];
+  }
   [addButton setEnabled:NO];
   [removeButton setEnabled:NO];
 }
@@ -138,23 +167,5 @@ NSLog(@"bar");
 @end
 
 @implementation CBSettingsController(Private)
-
-- (void)updateLaunchd {
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-  NSString *folder = [@"~/Library/LaunchAgents/" stringByExpandingTildeInPath];  
-  if ([fileManager fileExistsAtPath: folder] == NO) {
-    [fileManager createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:NULL];
-  }
-  NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
-  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"KeepAlive"];
-  [settings setValue:@"Cloudboard" forKey:@"Label"];
-  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"OnDemand"];
-  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"RunAtLoad"];
-  NSString* executablePath = [[NSBundle mainBundle] executablePath];
-  NSString* programArgs = [[NSArray alloc] initWithObjects:executablePath, nil];
-  [settings setValue: programArgs forKey:@"ProgramArguments"];
-  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
-  [settings writeToURL:plistURL atomically:YES];
-}
 
 @end

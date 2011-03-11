@@ -12,11 +12,37 @@
   return [clipboardController syncController];
 }
 
+- (BOOL)autoPaste {
+  return autoPaste;
+}
+
+- (BOOL)autoStart {
+  return autoStart;
+}
+
+- (void)setAutoPaste:(BOOL)newAutoPaste {
+  autoPaste = newAutoPaste;
+  [self updateSettings];
+}
+
+- (void)setAutoStart:(BOOL)newAutoStart {
+  autoStart = newAutoStart;
+  [self updateSettings];
+  [self updateLaunchd];
+}
+
 @end
 
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
+  if ([urls count] > 0) {
+    NSURL* userSettingsURL = [urls objectAtIndex:0];
+    settingsURL = [[NSURL alloc] initWithString:@"CBSettings.plist" relativeToURL:userSettingsURL];
+  }
+  [self loadSettings];
   windowController = [[CBMainWindowController alloc] initWithFrontView:nil backView:nil];
   clipboardController = [windowController clipboardController];
   hotKey = [[CBHotKeyObserver alloc] init];
@@ -32,10 +58,49 @@
     }
   }
 }
+@end
+
+@implementation CBApplicationController(Private)
 
 - (CBItem*)currentPasteboardItem {
   NSString* copyString = [[NSPasteboard generalPasteboard] stringForType:(NSString*)kUTTypeUTF8PlainText];
   return [[CBItem alloc] initWithString:copyString];
+}
+
+- (void)loadSettings {
+  NSDictionary* settings = [[NSDictionary alloc] initWithContentsOfURL:settingsURL];
+  if(settings == nil) {
+    autoStart = NO;
+    autoPaste = YES;
+  } else {
+    autoStart = [[settings valueForKey:@"AutoStart"] boolValue];
+    autoPaste = [[settings valueForKey:@"AutoPaste"] boolValue];
+  }
+}
+
+- (void)updateSettings {
+  NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
+  [settings setValue:[NSNumber numberWithBool:autoStart] forKey:@"AutoStart"];
+  [settings setValue:[NSNumber numberWithBool:autoPaste] forKey:@"AutoPaste"];
+  [settings writeToURL:settingsURL atomically:YES];
+}
+
+- (void)updateLaunchd {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSString *folder = [@"~/Library/LaunchAgents/" stringByExpandingTildeInPath];  
+  if ([fileManager fileExistsAtPath: folder] == NO) {
+    [fileManager createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:NULL];
+  }
+  NSMutableDictionary* settings = [[NSMutableDictionary alloc] init];
+  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"KeepAlive"];
+  [settings setValue:@"Cloudboard" forKey:@"Label"];
+  [settings setValue:[NSNumber numberWithBool:NO] forKey:@"OnDemand"];
+  [settings setValue:[NSNumber numberWithBool:autoStart] forKey:@"RunAtLoad"];
+  NSString* executablePath = [[NSBundle mainBundle] executablePath];
+  NSString* programArgs = [[NSArray alloc] initWithObjects:executablePath, nil];
+  [settings setValue: programArgs forKey:@"ProgramArguments"];
+  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
+  [settings writeToURL:plistURL atomically:YES];
 }
 
 @end

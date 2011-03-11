@@ -6,16 +6,23 @@
 
 @interface CBApplicationController : NSObject 
 {
-    @private
-    CBPasteboardObserver *pasteboardObserver;		
-    CBHotKeyObserver *hotKey;
-    CBClipboardController *clipboardController;
-    CBMainWindowController *windowController;
-    CBSyncController *syncController;
-    BOOL windowHidden;
+  @private
+  NSURL* settingsURL;
+  CBPasteboardObserver *pasteboardObserver;		
+  CBHotKeyObserver *hotKey;
+  CBClipboardController *clipboardController;
+  CBMainWindowController *windowController;
+  CBSyncController *syncController;
+  BOOL windowHidden;
+  BOOL autoStart;
+  BOOL autoPaste;
 }
 - (void)initPasteboardObserver;
 - (CBSyncController*)syncController;
+- (BOOL)autoStart;
+- (void)setAutoStart:(BOOL)autoStart;
+- (BOOL)autoPaste;
+- (void)setAutoPaste:(BOOL)autoPaste;
 @end
 
 @interface CBApplicationController(Delegation)
@@ -29,4 +36,7 @@
 
 @interface CBApplicationController(Private)
 - (CBItem*)currentPasteboardItem;
+- (void)loadSettings;
+- (void)updateSettings;
+- (void)updateLaunchd;
 @end

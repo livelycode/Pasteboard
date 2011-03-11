@@ -3,12 +3,12 @@
 	<data>
 		<int key="IBDocument.SystemTarget">1060</int>
 		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1294</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1305</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1294</string>
+			<string key="NS.object.0">1305</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSTableView</string>
@@ -47,7 +47,6 @@
 						<string key="NSFrame">{{458, 18}, {43, 25}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="467315624">
 							<int key="NSCellFlags">-2080244224</int>
@@ -89,7 +88,7 @@
 														<string key="NSFrameSize">{218, 238}</string>
 														<reference key="NSSuperview" ref="788459030"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="1037539044"/>
+														<reference key="NSNextKeyView" ref="522229279"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<bool key="NSEnabled">YES</bool>
 														<object class="_NSCornerView" key="NSCornerView">
@@ -216,7 +215,7 @@
 										<string key="NSFrame">{{18, 65}, {220, 240}}</string>
 										<reference key="NSSuperview" ref="164144974"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="522229279"/>
+										<reference key="NSNextKeyView" ref="788459030"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<int key="NSsFlags">562</int>
 										<reference key="NSVScroller" ref="1037539044"/>
@@ -736,6 +735,38 @@
 					</object>
 					<int key="connectionID">68</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">autoStartCheckboxChanged:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="251148524"/>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">autoPasteCheckboxChanged:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="284283852"/>
+					</object>
+					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">autoStartButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="251148524"/>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">autoPasteButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="284283852"/>
+					</object>
+					<int key="connectionID">72</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1066,7 +1097,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">68</int>
+			<int key="maxID">72</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1083,12 +1114,22 @@
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="addDevice:">id</string>
+						<string key="autoPasteCheckboxChanged:">id</string>
+						<string key="autoStartCheckboxChanged:">id</string>
 						<string key="back:">id</string>
 						<string key="removeDevice:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addDevice:">
 							<string key="name">addDevice:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="autoPasteCheckboxChanged:">
+							<string key="name">autoPasteCheckboxChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="autoStartCheckboxChanged:">
+							<string key="name">autoStartCheckboxChanged:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="back:">
@@ -1102,6 +1143,8 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addButton">NSButton</string>
+						<string key="autoPasteButton">NSButton</string>
+						<string key="autoStartButton">NSButton</string>
 						<string key="backButton">NSButton</string>
 						<string key="foundClipboardsView">NSTableView</string>
 						<string key="registeredClipboardsView">NSTableView</string>
@@ -1110,6 +1153,14 @@
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="addButton">
 							<string key="name">addButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="autoPasteButton">
+							<string key="name">autoPasteButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="autoStartButton">
+							<string key="name">autoStartButton</string>
 							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="backButton">

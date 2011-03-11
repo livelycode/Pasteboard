@@ -5,11 +5,14 @@
 
 @interface CBSettingsController : NSViewController {
 @private
-  CBMainWindowController *windowController;
+  CBMainWindowController* windowController;
+  CBApplicationController* appController;
   CBSyncController* syncController;
   NSMutableArray *foundCloudboards;
   NSMutableArray *registeredClipboards;
   NSURL *devicesURL;
+  IBOutlet NSButton* autoStartButton;
+  IBOutlet NSButton* autoPasteButton;
   IBOutlet NSTableView *foundClipboardsView;
   IBOutlet NSTableView *registeredClipboardsView;
   IBOutlet NSButton *addButton;
@@ -23,6 +26,8 @@
 @interface CBSettingsController(Actions)
 - (IBAction)addDevice:(id)sender;
 - (IBAction)removeDevice:(id)sender;
+- (IBAction)autoPasteCheckboxChanged:(id)sender;
+- (IBAction)autoStartCheckboxChanged:(id)sender;
 - (IBAction)back:(id)sender;
 @end
 
