@@ -32,7 +32,7 @@
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer;
-- (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index;
+- (void)handleTapFromItemView:(CBItemView*)itemView;
 - (void)devicesButtonTapped:(id)event;
 @end
 

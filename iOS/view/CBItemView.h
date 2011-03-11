@@ -5,11 +5,10 @@
 {
   @private
   id delegate;
-  NSInteger index;
   NSString* string;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
 @end
 

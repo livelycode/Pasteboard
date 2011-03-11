@@ -52,10 +52,9 @@
 
 @implementation CBItemView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    index = itemIndex;
     delegate = anObject;
     string = content;
     [self setBackgroundColor:[UIColor clearColor]];
@@ -98,7 +97,7 @@
 @implementation CBItemView(Delegation)
 
 - (void)handleTap:(UITapGestureRecognizer*)recognizer {
-  [delegate handleTapFromItemView:self index:index];
+  [delegate handleTapFromItemView:self];
 }
 
 @end

@@ -9,7 +9,7 @@
 
 - (void)drawItem:(CBItem*)item {
   CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
+  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
   [itemViewSlots insertObject:newItemView atIndex:0];
   [[self view] addSubview:newItemView];
   //remove last itemView if necessary
@@ -197,7 +197,8 @@
   }
 }
 
-- (void)handleTapFromItemView:(CBItemView*)itemView index:(NSInteger)index {
+- (void)handleTapFromItemView:(CBItemView*)itemView {
+  NSInteger index = [itemViewSlots indexOfObject:itemView];
   NSString *string = [[clipboard itemAtIndex:index] string];
   UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
   [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
