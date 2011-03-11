@@ -45,14 +45,14 @@
   CGFloat textX = TEXT_PADDING;
   CGFloat textY = TEXT_PADDING;
   CGRect textRect = CGRectMake(textX, textY, textWidth, textHeight);
-  [[string string] drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
+  [string drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
 }
 
 @end
 
 @implementation CBItemView
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject {
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
     index = itemIndex;
@@ -77,11 +77,6 @@
   CGFloat noteRight = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
   CGFloat noteBottom = mainBounds.origin.y + NOTE_PADDING;
   CGFloat noteTop = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
-  
-  CGFloat crossLeft = noteRight - CROSS_WIDTH - CROSS_PADDING;
-  CGFloat crossRight = noteRight - CROSS_PADDING;
-  CGFloat crossBottom = noteBottom + CROSS_WIDTH + CROSS_PADDING;
-  CGFloat crossTop = noteBottom + CROSS_PADDING;
   
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);

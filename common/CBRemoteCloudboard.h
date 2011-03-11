@@ -32,7 +32,7 @@
 - (void)sendRegistrationConfirmation;
 @end
 
-@interface CBRemoteCloudboard(Delegation)
+@interface CBRemoteCloudboard(Delegation)<NSNetServiceDelegate>
 //NSNetServiceDelegate
 - (void)netServiceDidResolveAddress:(NSNetService *)netService;
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict;

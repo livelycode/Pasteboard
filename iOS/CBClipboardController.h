@@ -17,7 +17,7 @@
 }
 
 - (id)initWithDelegate:(id)appController;
-- (void)setItem:(CBItem*)newItem atIndex:(NSInteger)anIndex syncing:(BOOL)sync;
+- (void)setItem:(id)newItem atIndex:(NSInteger)anIndex syncing:(BOOL)sync;
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;

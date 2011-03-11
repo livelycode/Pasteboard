@@ -24,5 +24,4 @@
 @interface CBApplicationController(Delegation)<CBSyncControllerProtocol>
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName;
-- (void)startSyncingWith:(CBClipboardController*)controller;
 @end

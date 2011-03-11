@@ -5,7 +5,7 @@
 {
   @private
   id delegate;
-  NSAttributedString *string;
+  NSString *string;
   NSTrackingArea *noteArea;
   NSInteger index;
   BOOL mouseOver;
@@ -13,7 +13,7 @@
   BOOL noteBacklighted;
 }
 
-- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSAttributedString*)content delegate:(id <CBItemViewDelegate>)anObject;
+- (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
 @end
 

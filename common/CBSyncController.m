@@ -273,7 +273,7 @@
 }
 
 - (void)receivedAddedRemoteItem: (CBItem*)item {
-  NSLog(@"received item: %@", [[item string] string]);
+  NSLog(@"received item: %@", [item string]);
   [clipboardController addItem:item syncing:NO];
 }
 

@@ -39,8 +39,7 @@
     if([plainString isEqualToString:@""]) {
       item = [NSNull null];
     } else {
-      NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: plainString];
-      item = [[CBItem alloc] initWithString: itemString];      
+      item = [[CBItem alloc] initWithString: plainString];      
     }
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedRemoteItem:item atIndex:itemIndex];
@@ -49,9 +48,7 @@
   }
   if([path isEqualToString:@"add"]) {
     match = YES;
-    NSAttributedString* itemString = [[NSAttributedString alloc] initWithString: 
-                                      [NSKeyedUnarchiver unarchiveObjectWithData:body]];
-    CBItem* item = [[CBItem alloc] initWithString: itemString];
+    CBItem* item = [[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]];
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedAddedRemoteItem:item];
     });
@@ -92,12 +89,12 @@
 - (NSObject<HTTPResponse> *)httpResponseForMethod:(NSString *)method URI:(NSString *)path {
   NSString* newPath = [path substringFromIndex:1];
   if ([method isEqualToString:@"POST"]) {
-    NSString *postStr = nil;
 	NSData *postData = [request body];
     NSData* response = [self handlePOSTWithPath:newPath body:postData];
 	return [[[HTTPDataResponse alloc] initWithData:response] autorelease];
   }	else {
     NSLog(@"got GET request");
+    return [[[HTTPDataResponse alloc] init] autorelease];
   }
 }
 
