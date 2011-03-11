@@ -10,33 +10,27 @@
 
 @implementation CBClipboardController(Private)
 
-- (void)removeViewAtViewIndex:(NSInteger)index {
-  if([viewSlots count] > index) {
-    [[viewSlots objectAtIndex:index] removeFromSuperview];
+- (void)drawItem:(CBItem*)item {
+  CGRect frame = [[frames objectAtIndex:0] rectValue];
+  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
+  [itemViewSlots insertObject:newItemView atIndex:0];
+  [[self view] addSubview:newItemView];
+  //remove last itemView if necessary
+  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
+    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
+    [itemViewSlots removeLastObject];
+    [lastView removeFromSuperview];
   }
-}
-
-- (void)drawItem:(CBItem *)item atViewIndex:(NSInteger)index {
-  CGRect frame = [[frames objectAtIndex:index] rectValue];
-  CBItemView *itemView = [[CBItemView alloc] initWithFrame:frame index:index-1 content:[item string] delegate:self];
-  [self removeViewAtViewIndex:index];
-  if([viewSlots count] > index) {
-    [viewSlots replaceObjectAtIndex:index withObject:itemView];
-  } else {
-    [viewSlots addObject:itemView];
-  }
-  [[self view] addSubview:itemView];
+  //move all existing itemViews
+  [itemViewSlots enumerateObjectsUsingBlock:^(CBItemView* itemView, NSUInteger index, BOOL *stop) {
+    CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];
+    [itemView setFrame:newFrame];
+  }];
 }
 
 - (void)drawPasteView {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
   NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame delegate:self];
-  [self removeViewAtViewIndex:0];
-  if([viewSlots count] > 0) {
-    [viewSlots replaceObjectAtIndex:0 withObject:pasteView];
-  } else {
-    [viewSlots addObject:pasteView];
-  }
   [[self view] addSubview:pasteView];
 }
 
@@ -60,9 +54,7 @@
 @implementation CBClipboardController(Actions)
 
 - (void)clearClipboard:(id)sender {
-  for (int i=0; i < (ROWS * COLUMNS-1); i++) {
-    [self setItem:[NSNull null] atIndex:i syncing:YES];
-  }
+  [self clearClipboard];
 }
 
 - (void)showSettings:(id)sender {
@@ -92,12 +84,15 @@
   self = [super initWithNibName:@"clipboard" bundle:nil];
   if (self != nil) {
     frames = [[NSMutableArray alloc] init];
-    viewSlots = [[NSMutableArray alloc] init];
+    itemViewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
     lastChanged = [[NSDate alloc] init];
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
+    for(id item in [clipboard items]) {
+      [self drawItem:item];
+    }
   }
   return self;
 }
@@ -110,35 +105,14 @@
   windowController = aController;
 }
 
-- (void)setItem:(id)item atIndex:(NSInteger)index syncing:(BOOL)sync {
-  [clipboard setItem:item atIndex:index];
-  if ([item isEqual:[NSNull null]]) {
-    [self removeViewAtViewIndex:index+1];
-  } else {
-    [self drawItem:item atViewIndex:index+1];
-  }
-  if(sync) {
-    if(syncController) {
-      [syncController didSetItem:item atIndex:index];
-    } 
-  }
-}
-
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
-  NSArray* items = [clipboard items];
-  for(NSInteger index=0; index<(ROWS*COLUMNS-1); index++) {
-    id object = [items objectAtIndex:index];
-    if([object isEqual:[NSNull null]]) {
-      [self removeViewAtViewIndex:index+1];
-    } else {
-      [self drawItem:object atViewIndex:index+1];
-    }
-  }
+  [clipboard persist];
+  [self drawItem:(CBItem*)item];
   if(sync) {
     if(syncController) {
       [syncController didAddItem:item];
-    } 
+    }
   }
 }
 
@@ -156,5 +130,17 @@
 
 - (NSArray*)allItems {
   return [clipboard items];
+}
+
+- (void)persistClipboard {
+  [clipboard persist];
+}
+
+- (void)clearClipboard {
+  for (CBItemView* view in itemViewSlots) {
+    [view removeFromSuperview];
+  }
+  [clipboard clear];
+  [clipboard persist];
 }
 @end

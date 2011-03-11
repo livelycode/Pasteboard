@@ -42,18 +42,17 @@
 
 - (void)syncAddedItem:(CBItem*)item {
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:[item string]];
-  [self postToPath:@"add" WithData:archivedItem];
+  [self postToPath:@"add" withData:archivedItem];
 }
 
-- (void)syncItem:(CBItem*)item atIndex:(NSUInteger)index {
-  NSString* string;
-  if([item isEqual:[NSNull null]]) {
-    string = @"";
-  } else {
-    string = [item string];
+- (void)syncItems:(NSArray*)items {
+  NSMutableArray* strings = [NSMutableArray array];
+  for(CBItem* item in items) {
+    [strings addObject:[item string]];
   }
+  NSString* string = [strings componentsJoinedByString:@"com.cloudboard.separator"];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:string];
-  [self postToPath:[[NSNumber numberWithInteger: index] stringValue] WithData:archivedItem];
+  [self postToPath:@"initialsync" withData:archivedItem];	
 }
 
 - (NSString*)serviceName {
@@ -123,7 +122,7 @@
   [service resolveWithTimeout:5];
 }
 
-- (void)postToPath:(NSString*)path WithData:(NSData*)data {
+- (void)postToPath:(NSString*)path withData:(NSData*)data {
   NSURL *requestURL = [url URLByAppendingPathComponent:path];
   NSMutableURLRequest *URLRequest = [NSMutableURLRequest requestWithURL:requestURL];
   [URLRequest setHTTPMethod:@"POST"];
@@ -140,11 +139,11 @@
 
 - (void)sendRegistration {
   NSLog(@"try to register as client of: %@", url);
-  [self postToPath:@"register" WithData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
+  [self postToPath:@"register" withData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
 - (void)sendRegistrationConfirmation {
   NSLog(@"confirm registration of: %@", url);
-  [self postToPath:@"confirm" WithData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
+  [self postToPath:@"confirm" withData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 @end

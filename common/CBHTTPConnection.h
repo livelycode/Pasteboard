@@ -7,7 +7,6 @@
 @interface CBHTTPConnection : HTTPConnection {
 @private
   CBSyncController *syncController;
-  NSMutableArray* postURLs;
   int dataStartIndex;
   NSMutableArray* multipartData;
   BOOL postHeaderOK;

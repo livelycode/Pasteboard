@@ -4,9 +4,10 @@
 
 @interface CBClipboard : NSObject
 {
-    @private
-    NSMutableArray *items;
-    NSUInteger capacity;
+  @private
+  NSMutableArray *items;
+  NSUInteger capacity;
+  NSURL* storeURL;
 }
 
 - (id)init;
@@ -23,4 +24,12 @@
 
 - (NSArray *)items;
 
+- (void)persist;
+
+- (void)clear;
+
+@end
+
+@interface CBClipboard(Private)
+- (void)loadItems;
 @end

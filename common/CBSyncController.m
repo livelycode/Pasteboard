@@ -17,14 +17,11 @@
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
         
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
-    if ([urls count] > 0) {
-      NSURL *userDocumentsURL = [urls objectAtIndex:0];
-      clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
-    }
-    clientsToSearch = [[NSMutableArray alloc] initWithContentsOfURL:clientsStoreURL];
-    if(clientsToSearch == nil) {
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray* clientsToSearchSettings = [userDefaults arrayForKey:@"clients"];
+    if(clientsToSearchSettings) {
+      clientsToSearch = [[NSMutableArray alloc] initWithArray:clientsToSearchSettings];
+    } else {
       clientsToSearch = [[NSMutableArray alloc] init];
     }
     
@@ -61,13 +58,6 @@
   for(NSString* clientName in clientsConnected) {
     CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
     [client syncAddedItem: item];
-  }
-}
-
-- (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(NSString* clientName in clientsConnected) {
-    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
-    [client syncItem: item atIndex: index];
   }
 }
 
@@ -183,11 +173,7 @@
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
   NSLog(@"starting initial sync to %@", [client serviceName]);
-  NSInteger index = 0;
-  for(CBItem* item in [clipboardController allItems]) {
-    [self syncItem:item atIndex:index];
-    index++;
-  }
+  [client syncItems:[clipboardController allItems]];
 }
 
 - (void)informDelegatesWith:(SEL)selector object:(id)object {
@@ -199,7 +185,9 @@
 }
 
 - (void)persistClientsToSearch {
-  [clientsToSearch writeToURL:clientsStoreURL atomically:YES];
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject:clientsToSearch forKey:@"clients"];
+  [userDefaults synchronize];
 }
 @end
 
@@ -277,8 +265,15 @@
   [clipboardController addItem:item syncing:NO];
 }
 
-- (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index {
-  NSLog(@"received item: %@", item);
-  [clipboardController setItem:item atIndex:index syncing:NO];
+- (void)receivedRemoteItems: (NSArray*)items {
+  NSLog(@"received items: %@", items);
+  [clipboardController clearClipboard];
+  for(CBItem* item in items) {
+    [clipboardController addItem:item syncing:NO];
+  }
+}
+
+- (void)receivedReset {
+  [clipboardController clearClipboard];
 }
 @end
