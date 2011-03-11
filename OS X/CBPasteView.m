@@ -23,11 +23,18 @@
   CGFloat dash[2] = {24, 6};
   [aPath setLineDash:dash count:2 phase:0];
   [aPath stroke];
+  [NSGraphicsContext restoreGraphicsState];
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  NSFont *font = [NSFont fontWithName:@"Helvetica" size:56];
-  NSColor *color = [NSColor whiteColor];
+  [NSGraphicsContext saveGraphicsState];
+  NSShadow* shadow = [[NSShadow alloc] init];
+  [shadow setShadowOffset:CGSizeMake(0, -1)];
+  [shadow setShadowBlurRadius:0];
+  [shadow setShadowColor:[NSColor whiteColor]];
+  [shadow set];
+  NSFont *font = [NSFont fontWithName:@"Helvetica Bold" size:72];
+  NSColor *color = [NSColor colorWithDeviceWhite:0 alpha:0.3];
   NSArray *objects = [NSArray arrayWithObjects:font, color, nil];
   NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
   NSDictionary *attributes = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
@@ -37,6 +44,7 @@
   CGFloat heightDelta = (CGRectGetHeight(textRect) - size.height) / 2;
   CGRect rect = CGRectInset(textRect, widthDelta, heightDelta);
   [string drawInRect:rect withAttributes:attributes];
+  [NSGraphicsContext restoreGraphicsState];
 }
 
 @end
