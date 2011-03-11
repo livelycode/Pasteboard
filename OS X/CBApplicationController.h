@@ -4,8 +4,7 @@
 
 @class CBClipboard, CBClipboardController, CBItem, CBHotKeyObserver, CBPasteboardObserver, CBMainWindowController, HTTPConnectionDelegate, CBSyncController;
 
-@interface CBApplicationController : NSObject 
-{
+@interface CBApplicationController:NSObject {
   @private
   CBPasteboardObserver *pasteboardObserver;		
   CBHotKeyObserver *hotKey;

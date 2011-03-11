@@ -17,14 +17,11 @@
     serviceBrowser = [[NSNetServiceBrowser alloc] init];
     [serviceBrowser setDelegate:self];
         
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
-    if ([urls count] > 0) {
-      NSURL *userDocumentsURL = [urls objectAtIndex:0];
-      clientsStoreURL = [[NSURL alloc] initWithString:@"CBClients.plist" relativeToURL:userDocumentsURL];
-    }
-    clientsToSearch = [[NSMutableArray alloc] initWithContentsOfURL:clientsStoreURL];
-    if(clientsToSearch == nil) {
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray* clientsToSearchSettings = [userDefaults arrayForKey:@"clients"];
+    if(clientsToSearchSettings) {
+      clientsToSearch = [[NSMutableArray alloc] initWithArray:clientsToSearchSettings];
+    } else {
       clientsToSearch = [[NSMutableArray alloc] init];
     }
     
@@ -199,7 +196,9 @@
 }
 
 - (void)persistClientsToSearch {
-  [clientsToSearch writeToURL:clientsStoreURL atomically:YES];
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject:clientsToSearch forKey:@"clients"];
+  [userDefaults synchronize];
 }
 @end
 

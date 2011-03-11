@@ -18,8 +18,7 @@
   NSString* myServiceName;
   CBClipboardController* clipboardController;
   NSMutableArray* delegates;
-  NSURL* clientsStoreURL;
-  
+    
   //CBRemoteCloudboardArrays:
   NSMutableDictionary* clientsVisible;
   NSMutableArray* clientsConnected;
