@@ -86,7 +86,7 @@
 }
 
 - (NSArray*)clientsConnected {
-  return [[NSArray alloc] initWithArray:clientsConnected];
+  return [NSArray arrayWithArray:clientsConnected];
 }
 
 - (NSArray*)clientsToSearch {

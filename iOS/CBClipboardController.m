@@ -138,6 +138,21 @@
   syncController = [[CBSyncController alloc] initWithClipboardController:self];
   [self preparePopoverView];
 }
+		
+- (void)persistClipboard {
+  [clipboard persist];
+}
+
+- (void)clearClipboardSyncing:(BOOL)sync {
+  for (CBItemView* view in itemViewSlots) {
+    [view removeFromSuperview];
+  }
+  [clipboard clear];
+  if(sync) {
+    [syncController didResetItems];
+  }
+  [clipboard persist];
+}
 
 - (void)dealloc {
   [clipboard release];
@@ -171,22 +186,6 @@
 - (void)viewDidLoad {
 
 }
-
-- (void)persistClipboard {
-  [clipboard persist];
-}
-
-- (void)clearClipboardSyncing:(BOOL)sync {
-  for (CBItemView* view in itemViewSlots) {
-    [view removeFromSuperview];
-  }
-  [clipboard clear];
-  if(sync) {
-    [syncController didResetItems];
-  }
-  [clipboard persist];
-}
-
 @end
 
 @implementation CBClipboardController(Delegation)

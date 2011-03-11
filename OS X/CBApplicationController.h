@@ -10,7 +10,7 @@
   CBHotKeyObserver *hotKey;
   CBClipboardController *clipboardController;
   CBMainWindowController *windowController;
-  CBSyncController *syncController;
+  CBSyncController *syncController;	
   BOOL windowHidden;
   BOOL autoStart;
   BOOL autoPaste;
