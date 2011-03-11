@@ -11,6 +11,14 @@
   return view;
 }
 
+- (NSView *)createAnimationViewWithFrame:(CGRect)aRect {
+  NSView *view = [[NSView alloc] initWithFrame:aRect];
+  CALayer *layer = [CALayer layer];
+  [view setLayer:layer];
+  [view setWantsLayer:YES];
+  return view;
+}
+
 - (NSWindow *)createWindowWithFrame:(CGRect)aRect {
   NSWindow *window = [[NSWindow alloc] initWithContentRect:aRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
   [window setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
@@ -54,7 +62,9 @@
     CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
     rootView = [self createRootViewWihtFrame:mainFrame];
-    [mainWindow setContentView:rootView];
+    animationView = [self createAnimationViewWithFrame:mainFrame]; 
+    [[mainWindow contentView] addSubview:rootView];
+    [[mainWindow contentView] addSubview:animationView];
     clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame];
     [clipboardController setWindowController:self];
     syncController = [[CBSyncController alloc] initWithClipboardController:clipboardController];
@@ -71,12 +81,15 @@
 - (void)showFront {
   [back removeFromSuperview];
   [rootView addSubview:front];
-  NSLog(@"foo");
 }
 
 - (void)showBack {
   [front removeFromSuperview];
   [rootView addSubview:back];
+}
+
+- (void)addSublayerToRootLayer:(CALayer *)aLayer {
+  [[animationView layer] addSublayer:aLayer];
 }
 
 - (CBClipboardController *)clipboardController {
