@@ -2,9 +2,11 @@
 
 #define WINDOW_ALPHA 0.4
 
+static CALayer *rootLayer;
+
 @implementation CBMainWindowController(Private)
 
-- (CBWindowView *)createRootViewWihtFrame:(CGRect)aRect {
+- (CBWindowView *)createRootViewWithFrame:(CGRect)aRect {
   CBWindowView *view = [[CBWindowView alloc] initWithFrame:aRect];
   [view setWantsLayer:YES];
   [view setColor:[NSColor colorWithCalibratedWhite:0 alpha:WINDOW_ALPHA]];
@@ -13,8 +15,8 @@
 
 - (NSView *)createAnimationViewWithFrame:(CGRect)aRect {
   NSView *view = [[NSView alloc] initWithFrame:aRect];
-  CALayer *layer = [CALayer layer];
-  [view setLayer:layer];
+  rootLayer = [CALayer layer];
+  [view setLayer:rootLayer];
   [view setWantsLayer:YES];
   return view;
 }
@@ -55,14 +57,19 @@
 
 @implementation CBMainWindowController
 
++ (void)addSublayerToRootLayer:(CALayer *)aLayer {
+  [rootLayer addSublayer:aLayer];
+  [rootLayer setNeedsDisplay];
+}
+
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack {
   self = [super init];
   if (self != nil) {
     CGRect mainFrame = [[NSScreen mainScreen] frame];
     CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
-    rootView = [self createRootViewWihtFrame:mainFrame];
-    animationView = [self createAnimationViewWithFrame:mainFrame]; 
+    rootView = [self createRootViewWithFrame:mainFrame];
+    NSView *animationView = [self createAnimationViewWithFrame:mainFrame]; 
     [[mainWindow contentView] addSubview:rootView];
     [[mainWindow contentView] addSubview:animationView];
     clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame];
@@ -86,10 +93,6 @@
 - (void)showBack {
   [front removeFromSuperview];
   [rootView addSubview:back];
-}
-
-- (void)addSublayerToRootLayer:(CALayer *)aLayer {
-  [[animationView layer] addSublayer:aLayer];
 }
 
 - (CBClipboardController *)clipboardController {

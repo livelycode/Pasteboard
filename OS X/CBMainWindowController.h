@@ -10,7 +10,6 @@
   NSArray *types;
   NSWindow *mainWindow;
   CBWindowView *rootView;
-  NSView *animationView;
   CBClipboardController *clipboardController;
   CBSettingsController *settingsController;
   CBSyncController *syncController;
@@ -18,10 +17,11 @@
   NSView *back;
 }
 
++ (void)addSublayerToRootLayer:(CALayer *)aLayer;
+
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack;
 - (void)showFront;
 - (void)showBack;
-- (void)addSublayerToRootLayer:(CALayer *)aLayer;
 - (CBClipboardController *)clipboardController;
 
 @end

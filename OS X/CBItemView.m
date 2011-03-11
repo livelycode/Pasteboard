@@ -47,17 +47,31 @@
 - (void)fadeOut {
   NSView *rootView = [[self window] contentView];
   NSView *clipboardView = [self superview];
-  CGRect bounds = [self bounds];
   CGRect frame = [self frame];
-  NSData *data = [self dataWithPDFInsideRect:bounds];
-  NSImage *image = [[NSImage alloc] initWithData:data];
-  CGRect newStartFrame = [rootView convertRect:frame fromView:clipboardView];
-  CGRect newFrame = CGRectInset(newStartFrame, CGRectGetWidth(newStartFrame)*-0.1, CGRectGetHeight(newStartFrame)*-0.1);
   
+  NSImage *image = [[NSImage alloc] initWithData:[self dataWithPDFInsideRect:[self bounds]]];  
+  CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);
+  CGImageRef maskRef =  CGImageSourceCreateImageAtIndex(source, 0, NULL);
+    
   CALayer *layer = [[CALayer alloc] init];
-  [[NSAnimationContext currentContext] setDuration:2];
-  [layer setTransform:CATransform3DMakeScale(2, 2, 2)];
+  [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+  [layer setNeedsDisplay];
   [layer setOpacity:0];
+  [layer setFrame:[rootView convertRect:frame fromView:clipboardView]];
+  [layer setContents:(id)maskRef];
+  [CBMainWindowController addSublayerToRootLayer:layer];
+  
+  CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
+  [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];
+  CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
+  [fade setFromValue:[NSNumber numberWithFloat:0.3]];
+  [fade setToValue:[NSNumber numberWithFloat:0]];
+  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+  [group setDelegate:self];
+  [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
+  [group setDuration:0.3];
+  [layer addAnimation:group forKey:@"transform"];
+  [animationLayers insertObject:layer atIndex:0];
 }
 
 @end
@@ -81,6 +95,18 @@
 
 @end
 
+@implementation CBItemView(Delegation)
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+  [[animationLayers objectAtIndex:0] removeFromSuperlayer];	
+}
+
+/*- (void)displayLayer:(CALayer *)layer {
+  
+}*/
+
+@end
+
 @implementation CBItemView
 
 - (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
@@ -91,6 +117,7 @@
     delegate = anObject;
     mouseDown = NO;
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
+    animationLayers = [NSMutableArray array];
   }
   return self;
 }
