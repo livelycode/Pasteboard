@@ -13,7 +13,7 @@
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
       NSFileManager *fileManager = [NSFileManager defaultManager];
-      NSArray *urls = [fileManager URLsForDirectory:NSAutosavedInformationDirectory inDomains:NSUserDomainMask];
+      NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
       if ([urls count] > 0) {
         NSURL *userDocumentsURL = [urls objectAtIndex:0];
         storeURL = [[NSURL alloc] initWithString:@"CBItems.plist" relativeToURL:userDocumentsURL];
@@ -34,7 +34,6 @@
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
   }
-  [self persist];
 }
 
 - (void)removeItemAtIndex:(NSUInteger)anIndex {
@@ -73,7 +72,8 @@
 @implementation CBClipboard(Private)
 
 - (void)loadItems {
-  NSArray* itemStrings = [[NSArray alloc] initWithContentsOfURL:storeURL];
+  NSArray* itemStringsReverse = [[NSArray alloc] initWithContentsOfURL:storeURL];
+  NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
   if(itemStrings) {
     for(NSString* string in itemStrings) {
       if([string isEqualToString:@""]) {
@@ -83,11 +83,16 @@
       }
     }
   } else {
-    for(NSInteger i = 0; i<capacity; i++) {
-      [items addObject:[NSNull null]];
-    } 
+    [self clear]; 
   }
   NSLog(@"items loaded");
+}
+
+- (void)clear {
+  [items removeAllObjects];
+  for(NSInteger i = 0; i<capacity; i++) {
+    [items addObject:[NSNull null]];
+  }
 }
 
 @end

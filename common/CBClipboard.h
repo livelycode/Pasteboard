@@ -26,6 +26,8 @@
 
 - (void)persist;
 
+- (void)clear;
+
 @end
 
 @interface CBClipboard(Private)

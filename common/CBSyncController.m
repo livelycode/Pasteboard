@@ -61,13 +61,6 @@
   }
 }
 
-- (void)syncItem: (CBItem*)item atIndex: (NSInteger)index {
-  for(NSString* clientName in clientsConnected) {
-    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
-    [client syncItem: item atIndex: index];
-  }
-}
-
 - (void)setClientsToSearch:(NSArray *)clientNames {
   for(NSString* clientName in clientNames) {
     [self addClientToSearch:clientName];
@@ -180,11 +173,7 @@
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
   NSLog(@"starting initial sync to %@", [client serviceName]);
-  NSInteger index = 0;
-  for(CBItem* item in [clipboardController allItems]) {
-    [self syncItem:item atIndex:index];
-    index++;
-  }
+  [client syncItems:[clipboardController allItems]];
 }
 
 - (void)informDelegatesWith:(SEL)selector object:(id)object {
@@ -276,8 +265,14 @@
   [clipboardController addItem:item syncing:NO];
 }
 
-- (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index {
-  NSLog(@"received item: %@", item);
-  [clipboardController setItem:item atIndex:index syncing:NO];
+- (void)receivedRemoteItems: (NSArray*)items {
+  NSLog(@"received items: %@", items);
+  for(CBItem* item in items) {
+    [clipboardController addItem:item syncing:NO];
+  }
+}
+
+- (void)receivedReset {
+  [clipboardController clearClipboard];
 }
 @end

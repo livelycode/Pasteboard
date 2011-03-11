@@ -25,24 +25,22 @@
     match = YES;
     NSString* clientName = [[[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding] autorelease];
     dispatch_async(dispatch_get_main_queue(), ^{
-      NSLog(@"confirm in dispatch queue");
       [syncController registrationConfirmationFrom:clientName];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
   // Set clipboard item at URL
-  if([postURLs containsObject: path]) {
+  if([path isEqualToString:@"initialsync"]) {
     match = YES;
-    NSInteger itemIndex = [path intValue];
     NSString* plainString = [NSKeyedUnarchiver unarchiveObjectWithData:body];
-    id item;
-    if([plainString isEqualToString:@""]) {
-      item = [NSNull null];
-    } else {
-      item = [[CBItem alloc] initWithString: plainString];      
+    NSArray* strings = [plainString componentsSeparatedByString:@"com.cloudboard.separator"];
+    NSMutableArray* items = [NSMutableArray array];
+    for(NSString* string in strings) {
+      CBItem* item = [[CBItem alloc] initWithString: string];
+      [items addObject: item];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      [syncController receivedRemoteItem:item atIndex:itemIndex];
+      [syncController receivedRemoteItems:items];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
@@ -51,6 +49,13 @@
     CBItem* item = [[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]];
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedAddedRemoteItem:item];
+    });
+    responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
+  }
+  if([path isEqualToString:@"reset"]) {
+    match = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [syncController receivedReset];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }

@@ -70,5 +70,6 @@
 - (void)registrationRequestFrom:(NSString*)serviceName;
 - (void)registrationConfirmationFrom:(NSString*)serviceName;
 - (void)receivedAddedRemoteItem: (CBItem*)item;
-- (void)receivedRemoteItem: (CBItem*)item atIndex: (NSInteger) index;
+- (void)receivedRemoteItems: (NSArray*)items;
+- (void)receivedReset;
 @end

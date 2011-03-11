@@ -21,13 +21,13 @@
 - (void)registerAsClient;
 - (void)confirmClient;
 - (void)syncAddedItem: (CBItem*)item;
-- (void)syncItem: (CBItem*)item atIndex: (NSUInteger)index;
+- (void)syncItems:(NSArray*)items;
 - (NSString*)serviceName;
 @end
 
 @interface CBRemoteCloudboard(Private)
 - (void)resolveService;
-- (void)postToPath:(NSString*)path WithData:(NSData*)data;
+- (void)postToPath:(NSString*)path withData:(NSData*)data;
 - (void)sendRegistration;
 - (void)sendRegistrationConfirmation;
 @end
