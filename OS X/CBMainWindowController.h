@@ -5,18 +5,19 @@
 @class CBSyncController;
 @class CBSettingsController;
 
-@interface CBMainWindowController : NSObject
-{
-    @private
-    NSArray *types;
-    NSWindow *mainWindow;
-    CBWindowView *rootView;
-    CBClipboardController *clipboardController;
-    CBSettingsController *settingsController;
-    CBSyncController *syncController;
-    NSView *front;
-    NSView *back;
+@interface CBMainWindowController : NSObject {
+  @private
+  NSArray *types;
+  NSWindow *mainWindow;
+  CBWindowView *rootView;
+  CBClipboardController *clipboardController;
+  CBSettingsController *settingsController;
+  CBSyncController *syncController;
+  NSView *front;
+  NSView *back;
 }
+
++ (void)addSublayerToRootLayer:(CALayer *)aLayer;
 
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack;
 - (void)showFront;

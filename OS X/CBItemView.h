@@ -7,6 +7,7 @@
   id delegate;
   NSString *string;
   NSTrackingArea *noteArea;
+  NSMutableArray *animationLayers;
   NSInteger index;
   BOOL mouseOver;
   BOOL mouseDown;
@@ -15,11 +16,17 @@
 
 - (id)initWithFrame:(CGRect)aRect index:(NSInteger)itemIndex content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
 
-@end
+@end	
 
 @interface CBItemView(Overridden)
 
 - (void)mouseUp:(NSEvent *)theEvent;
 - (void)drawRect:(NSRect)aRect;
+
+@end
+
+@interface CBItemView(Delegation)
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag;
 
 @end

@@ -30,7 +30,7 @@
 
 - (void)drawPasteView {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
-  pasteView = [[CBPasteView alloc] initWithFrame:frame index:0 delegate:self];
+  NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame delegate:self];
   [[self view] addSubview:pasteView];
 }
 
