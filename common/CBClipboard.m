@@ -35,10 +35,6 @@
   }
 }
 
-- (void)removeItemAtIndex:(NSUInteger)anIndex {
-    [items replaceObjectAtIndex:anIndex withObject: [NSNull null]];
-}
-
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex {
     return [items objectAtIndex:anIndex];
 }
@@ -52,7 +48,10 @@
   for(CBItem* item in items) {
     [stringsToPersist addObject:[item string]];
   }
-  [stringsToPersist writeToURL:storeURL atomically:YES];
+  dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
+  dispatch_async(queue,^{
+    [stringsToPersist writeToURL:storeURL atomically:YES];
+  });
 }
 
 - (void)dealloc {
