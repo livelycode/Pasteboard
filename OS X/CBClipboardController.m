@@ -10,6 +10,24 @@
 
 @implementation CBClipboardController(Private)
 
+- (void)drawItem:(CBItem*)item {
+  CGRect frame = [[frames objectAtIndex:0] rectValue];
+  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
+  [itemViewSlots insertObject:newItemView atIndex:0];
+  [[self view] addSubview:newItemView];
+  //remove last itemView if necessary
+  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
+    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
+    [itemViewSlots removeLastObject];
+    [lastView removeFromSuperview];
+  }
+  //move all existing itemViews
+  [itemViewSlots enumerateObjectsUsingBlock:^(CBItemView* itemView, NSUInteger index, BOOL *stop) {
+    CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];
+    [itemView setFrame:newFrame];
+  }];
+}
+
 - (void)drawPasteView {
   CGRect frame = [[frames objectAtIndex:0] rectValue];
   pasteView = [[CBPasteView alloc] initWithFrame:frame index:0 delegate:self];
@@ -73,9 +91,7 @@
     [self initializeItemSlots];
     [self drawPasteView];
     for(id item in [clipboard items]) {
-      if([item isEqual:[NSNull null]] == NO) {
-        [self addItem:item syncing:NO];
-      }
+      [self drawItem:item];
     }
   }
   return self;
@@ -92,21 +108,7 @@
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
   [clipboard persist];
-  CGRect frame = [[frames objectAtIndex:0] rectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame index:0 content:[item string] delegate:self];
-  [itemViewSlots insertObject:newItemView atIndex:0];
-  [[self view] addSubview:newItemView];
-  //remove last itemView if necessary
-  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
-    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
-    [itemViewSlots removeLastObject];
-    [lastView removeFromSuperview];
-  }
-  //move all existing itemViews
-  [itemViewSlots enumerateObjectsUsingBlock:^(CBItemView* itemView, NSUInteger index, BOOL *stop) {
-    CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];
-    [itemView setFrame:newFrame];
-  }];
+  [self drawItem:(CBItem*)item];
   if(sync) {
     if(syncController) {
       [syncController didAddItem:item];

@@ -46,17 +46,13 @@
 }
 
 - (void)syncItems:(NSArray*)items {
-  NSMutableString* string = [NSMutableString string];
-  for(id item in items) {
-    if([item isEqual:[NSNull null]]) {
-      
-    } else {
-      [string appendString:@"com.cloudboard.separator"];
-      [string appendString:[item string]];
-    }
+  NSMutableArray* strings = [NSMutableArray array];
+  for(CBItem* item in items) {
+    [strings addObject:[item string]];
   }
+  NSString* string = [strings componentsJoinedByString:@"com.cloudboard.separator"];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:string];
-  [self postToPath:@"initialsync" withData:archivedItem];
+  [self postToPath:@"initialsync" withData:archivedItem];	
 }
 
 - (NSString*)serviceName {
