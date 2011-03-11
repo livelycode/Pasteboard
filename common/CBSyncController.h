@@ -30,7 +30,6 @@
 }
 - (id) initWithClipboardController: (CBClipboardController*)controller;
 - (void)addDelegate:(id<CBSyncControllerProtocol>)delegate;
-- (void)syncAddedItem:(CBItem*)item;
 - (void)syncItem: (CBItem*)item atIndex: (NSInteger)index;
 - (void)setClientsToSearch:(NSArray*)clientNames;
 - (void)addClientToSearch:(NSString*)clientName;
@@ -65,7 +64,7 @@
 
 //CBClipboardControllerDelegate
 - (void)didAddItem: (CBItem *)item;
-- (void)didSetItem:(CBItem*)item atIndex:(NSUInteger)index;
+- (void)didResetItems;
 //CBHTTPConnectionDelegate
 - (void)registrationRequestFrom:(NSString*)serviceName;
 - (void)registrationConfirmationFrom:(NSString*)serviceName;

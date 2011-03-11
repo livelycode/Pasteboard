@@ -33,14 +33,16 @@
   if([path isEqualToString:@"initialsync"]) {
     match = YES;
     NSString* plainString = [NSKeyedUnarchiver unarchiveObjectWithData:body];
-    NSArray* strings = [plainString componentsSeparatedByString:@"com.cloudboard.separator"];
     NSMutableArray* items = [NSMutableArray array];
-    for(NSString* string in strings) {
-      CBItem* item = [[CBItem alloc] initWithString: string];
-      [items addObject: item];
+    if([plainString isEqualToString:@""] == NO) {
+      NSArray* strings = [plainString componentsSeparatedByString:@"com.cloudboard.separator"];
+      for(NSString* string in strings) {
+        CBItem* item = [[CBItem alloc] initWithString: string];
+        [items addObject: item];
+      }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      [syncController receivedRemoteItems:items];
+      [syncController receivedRemoteItems:[[items reverseObjectEnumerator] allObjects]];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }

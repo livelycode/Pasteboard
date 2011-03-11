@@ -10,7 +10,6 @@
   CBClipboard *clipboard;
   NSMutableArray *frames;
   NSMutableArray *itemViewSlots;
-  CBPasteView* pasteView;
   NSDate* lastChanged;
 }
 - (id)initWithFrame:(CGRect)aFrame;
@@ -22,7 +21,7 @@
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
 - (void)persistClipboard;
-- (void)clearClipboard;
+- (void)clearClipboardSyncing:(BOOL)sync;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
@@ -31,6 +30,6 @@
 @end
 
 @interface CBClipboardController(Actions)
-- (IBAction)clearClipboard:(id)sender;
-- (IBAction)showSettings:(id)sender;
+- (IBAction)clearClipboardClicked:(id)sender;
+- (IBAction)showSettingsClicked:(id)sender;
 @end

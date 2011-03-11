@@ -53,14 +53,6 @@
   return myServiceName;
 }
 
-- (void)syncAddedItem: (CBItem*)item {
-  NSLog(@"sync added item");
-  for(NSString* clientName in clientsConnected) {
-    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
-    [client syncAddedItem: item];
-  }
-}
-
 - (void)setClientsToSearch:(NSArray *)clientNames {
   for(NSString* clientName in clientNames) {
     [self addClientToSearch:clientName];
@@ -232,7 +224,17 @@
 }
 
 - (void)didAddItem:(CBItem*)item {
-  [self syncAddedItem:item];
+  for(NSString* clientName in clientsConnected) {
+    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
+    [client syncAddedItem: item];
+  }
+}
+
+- (void)didResetItems {
+  for(NSString* clientName in clientsConnected) {
+    CBRemoteCloudboard* client = [clientsVisible valueForKey:clientName];
+    [client resetItems];
+  }
 }
 
 //CBHTTPConnectionDelegate
@@ -267,13 +269,13 @@
 
 - (void)receivedRemoteItems: (NSArray*)items {
   NSLog(@"received items: %@", items);
-  [clipboardController clearClipboard];
+  [clipboardController clearClipboardSyncing:NO];
   for(CBItem* item in items) {
     [clipboardController addItem:item syncing:NO];
   }
 }
 
 - (void)receivedReset {
-  [clipboardController clearClipboard];
+  [clipboardController clearClipboardSyncing:NO];
 }
 @end

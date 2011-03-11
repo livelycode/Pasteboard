@@ -22,6 +22,7 @@
 - (void)confirmClient;
 - (void)syncAddedItem: (CBItem*)item;
 - (void)syncItems:(NSArray*)items;
+- (void)resetItems;
 - (NSString*)serviceName;
 @end
 

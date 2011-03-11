@@ -17,7 +17,7 @@
   [[self view] addSubview:newItemView];
   //remove last itemView if necessary
   while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
-    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
+    CBItemView* lastView = [itemViewSlots lastObject];
     [itemViewSlots removeLastObject];
     [lastView removeFromSuperview];
   }
@@ -53,11 +53,11 @@
 
 @implementation CBClipboardController(Actions)
 
-- (void)clearClipboard:(id)sender {
-  [self clearClipboard];
+- (void)clearClipboardClicked:(id)sender {
+  [self clearClipboardSyncing:YES];
 }
 
-- (void)showSettings:(id)sender {
+- (void)showSettingsClicked:(id)sender {
   [windowController showBack];
 }
 
@@ -137,11 +137,14 @@
   [clipboard persist];
 }
 
-- (void)clearClipboard {
+- (void)clearClipboardSyncing:(BOOL)sync {
   for (CBItemView* view in itemViewSlots) {
     [view removeFromSuperview];
   }
   [clipboard clear];
+  if(sync) {
+    [syncController didResetItems];
+  }
   [clipboard persist];
 }
 @end

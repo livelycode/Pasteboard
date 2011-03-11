@@ -55,6 +55,11 @@
   [self postToPath:@"initialsync" withData:archivedItem];	
 }
 
+- (void)resetItems {
+  NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:@"reset"];
+  [self postToPath:@"reset" withData:archivedItem];
+}
+
 - (NSString*)serviceName {
   return [service name];
 }

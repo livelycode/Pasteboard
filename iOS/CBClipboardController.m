@@ -176,11 +176,14 @@
   [clipboard persist];
 }
 
-- (void)clearClipboard {
+- (void)clearClipboardSyncing:(BOOL)sync {
   for (CBItemView* view in itemViewSlots) {
     [view removeFromSuperview];
   }
   [clipboard clear];
+  if(sync) {
+    [syncController didResetItems];
+  }
   [clipboard persist];
 }
 
@@ -211,6 +214,6 @@
 }
 
 - (void)clearAllButtonTapped:(id)event {
-  [self clearClipboard];
+  [self clearClipboardSyncing:YES];
 }
 @end

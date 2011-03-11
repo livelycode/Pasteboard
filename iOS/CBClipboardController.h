@@ -26,7 +26,7 @@
 - (void)stopSyncing;
 - (void)startSyncing;
 - (void)persistClipboard;
-- (void)clearClipboard;
+- (void)clearClipboardSyncing:(BOOL)sync;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
