@@ -63,6 +63,37 @@
   [string drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
 }
 
+- (void)fadeOut {
+  CGRect frame = [self frame];
+  
+  UIGraphicsBeginImageContext(self.bounds.size);
+  [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+  UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  
+  CGImageRef maskRef =  image.CGImage;
+  CALayer *layer = [[CALayer alloc] init];
+  [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+  [layer setNeedsDisplay];
+  [layer setOpacity:0];
+  [layer setFrame:frame];
+  [layer setContents:(id)maskRef];
+  [self.superview.layer addSublayer:layer];
+  
+  CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
+  [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];
+  CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
+  [fade setFromValue:[NSNumber numberWithFloat:0.5]];
+  [fade setToValue:[NSNumber numberWithFloat:0]];
+  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+  [group setDelegate:self];
+  [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
+  [group setDuration:0.5];
+  [group setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+  [layer addAnimation:group forKey:@"transform"];
+  [animationLayers insertObject:layer atIndex:0];
+}
+
 @end
 
 @implementation CBItemView
@@ -72,6 +103,7 @@
   if (self != nil) {
     delegate = anObject;
     string = content;
+    animationLayers = [[NSMutableArray alloc] init];
     [self setBackgroundColor:[UIColor clearColor]];
     UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleTap:)];
@@ -102,7 +134,12 @@
 @implementation CBItemView(Delegation)
 
 - (void)handleTap:(UITapGestureRecognizer*)recognizer {
+  [self fadeOut];
   [delegate handleTapFromItemView:self];
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+  [[animationLayers objectAtIndex:0] removeFromSuperlayer];	
 }
 
 @end

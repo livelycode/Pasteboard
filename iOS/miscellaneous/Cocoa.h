@@ -4,3 +4,5 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
+#import <CoreMotion/CoreMotion.h>
+#import <ImageIO/ImageIO.h>

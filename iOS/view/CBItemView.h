@@ -6,6 +6,7 @@
   @private
   id delegate;
   NSString* string;
+  NSMutableArray *animationLayers;
 }
 
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
