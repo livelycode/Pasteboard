@@ -19,7 +19,7 @@
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
   [shadow set];
   [[NSColor colorWithDeviceWhite:1 alpha:0.8] setStroke];
-  [aPath setLineWidth:6];
+  [aPath setLineWidth:lineWidth];
   CGFloat dash[2] = {24, 6};
   [aPath setLineDash:dash count:2 phase:0];
   [aPath stroke];
@@ -63,6 +63,7 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     delegate = anObject;
+    lineWidth = CGRectGetWidth(aRect) / 60;
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }
   return self;

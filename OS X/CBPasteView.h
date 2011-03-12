@@ -6,6 +6,7 @@
 @private
   id delegate;
   NSTrackingArea *noteArea;
+  CGFloat lineWidth;
 }
 
 - (id)initWithFrame:(CGRect)aRect delegate:(id <CBItemViewDelegate>)anObject;
