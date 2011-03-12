@@ -266,7 +266,7 @@
 - (void)receivedRemoteItems: (NSArray*)items {
   NSLog(@"received items: %@", items);
   [clipboardController clearClipboardSyncing:NO];
-  for(CBItem* item in items) {
+  for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {
     [clipboardController addItem:item syncing:NO];
   }
 }

@@ -1,7 +1,7 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@class CBApplicationController, CBSyncController;
+@class CBApplicationController, CBSyncController, CBPasteView;
 
 @interface CBClipboardController : UIViewController {
 @private
@@ -22,7 +22,7 @@
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
 //UIGestureRecognizerDelegate
-- (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer;
+- (void)handleTapFromPasteView:(CBPasteView*)view;
 - (void)handleTapFromItemView:(CBItemView*)itemView;
 - (void)devicesButtonTapped:(id)event;
 @end
