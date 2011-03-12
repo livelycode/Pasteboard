@@ -76,7 +76,7 @@
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
-    for(id item in [clipboard items]) {
+    for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
       [self drawItem:item];
     }
   }

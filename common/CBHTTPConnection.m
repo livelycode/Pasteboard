@@ -42,7 +42,7 @@
       }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      [syncController receivedRemoteItems:[[items reverseObjectEnumerator] allObjects]];
+      [syncController receivedRemoteItems:items];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }

@@ -34,12 +34,7 @@
 
 - (void)drawPasteButton {
   CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  UIButton* pasteView = [[UIButton alloc] initWithFrame:CGRectInset(frame, 10, 10)];
-  [pasteView setTitle:@"Paste" forState:UIControlStateNormal];
-  pasteView.layer.borderWidth = 1;
-  UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
-                                        initWithTarget:self action:@selector(handleTapFromPasteView:)];
-  [pasteView addGestureRecognizer:recognizer];
+  CBPasteView* pasteView = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
   [self.view addSubview:pasteView];
 }
 
@@ -118,7 +113,7 @@
   [self preparePopoverView];
   [self initializeItemViewFrames];
   [self drawPasteButton];
-  for(id item in [clipboard items]) {
+  for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
     [self drawItem:item];
   }
 }
@@ -130,7 +125,7 @@
 
 @implementation CBClipboardController(Delegation)
 //UIGestureRecognizerDelegate
-- (void)handleTapFromPasteView:(UITapGestureRecognizer *)recognizer {
+- (void)handleTapFromPasteView:(CBPasteView*)view {
   CBItem* newItem = [delegate currentPasteboardItem];
   if(newItem != nil) {
     [self addItem:newItem syncing:YES];
@@ -140,6 +135,7 @@
 - (void)handleTapFromItemView:(CBItemView*)itemView {
   NSInteger index = [itemViewSlots indexOfObject:itemView];
   NSString *string = [[clipboard itemAtIndex:index] string];
+  NSLog(@"%@", string);
   UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
   [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
 }

@@ -6,3 +6,4 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <CoreMotion/CoreMotion.h>
 #import <ImageIO/ImageIO.h>
+#import <CoreText/CoreText.h>
