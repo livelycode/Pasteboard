@@ -29,7 +29,7 @@
 }
 
 - (NSDate*)lastChanged {
-  return lastChanged;
+  return [clipboard lastChanged];
 }
 
 - (NSArray*)allItems {

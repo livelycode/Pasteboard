@@ -68,6 +68,6 @@
 - (void)registrationRequestFrom:(NSString*)serviceName;
 - (void)registrationConfirmationFrom:(NSString*)serviceName;
 - (void)receivedAddedRemoteItem:(CBItem*)item;
-- (void)receivedRemoteItems:(NSArray*)items;
+- (void)receivedRemoteItems:(NSArray*)items changedDate:(NSDate*)date;
 - (void)receivedReset;
 @end
