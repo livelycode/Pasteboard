@@ -19,32 +19,47 @@
 #define BACKLIGHT_BLUE 1
 #define BACKLIGHT_ALPHA 0.2
 
-#define SHADOW_ALPHA 0.8
-#define SHADOW_BLUR 3
-#define SHADOW_OFFSET 4
-
 #define BORDER_ALPHA 1
 
 @implementation CBItemView(Private)
 
-- (void)drawNotePathAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  UIBezierPath* notePath = [UIBezierPath bezierPath];
-  [notePath moveToPoint:CGPointMake(left, bottom)];
-  [notePath addLineToPoint:CGPointMake(right, bottom)];
-  [notePath addLineToPoint:CGPointMake(right, top)];
-  [notePath addLineToPoint:CGPointMake(left, top)];
-  [notePath closePath];
-  UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
-  [noteDarkColor setFill];
-  [notePath fill];
+- (UIBezierPath *)notePathWithRect:(CGRect)noteRect {
+  UIBezierPath *path = [UIBezierPath bezierPath];
+  [path moveToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMinY(noteRect))];
+  [path addLineToPoint:CGPointMake(CGRectGetMaxX(noteRect), CGRectGetMinY(noteRect))];
+  [path addLineToPoint:CGPointMake(CGRectGetMaxX(noteRect), CGRectGetMaxY(noteRect))];
+  [path addLineToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMaxY(noteRect))];
+  [path closePath];
+  return path;
 }
 
-- (void)drawTextAtLeft:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom {
-  CGFloat textWidth = right - left;
-  CGFloat textHeight = top - bottom;
-  CGFloat textX = TEXT_PADDING;
-  CGFloat textY = TEXT_PADDING;
-  CGRect textRect = CGRectMake(textX, textY, textWidth, textHeight);
+- (void)drawBorderWithPath:(UIBezierPath *)aPath {
+  [aPath addClip];
+  [[UIColor colorWithWhite:1 alpha:0.3] setStroke];
+  [aPath setLineWidth:2];
+  [aPath stroke];
+}
+
+- (void)drawNoteWithPath:(UIBezierPath *)aPath {
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:0.4];
+  CGContextSetShadowWithColor(context, CGSizeMake(0, 2), 8, [shadowColor CGColor]);
+  
+  UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
+  [noteDarkColor setFill];
+  [aPath fill];
+  
+  CGContextRestoreGState(context);
+/*
+  NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9 green:0.8 blue:0.4 alpha:1];
+  NSColor *startingColor = [endingColor highlightWithLevel:0.3];
+  NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+  [gradient drawInBezierPath:aPath angle:270];
+  [NSGraphicsContext restoreGraphicsState];*/
+}
+
+- (void)drawTextAtRect:(CGRect)textRect {
   [string drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
 }
 
@@ -70,20 +85,11 @@
 @implementation CBItemView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect mainBounds = [self bounds];
-  CGFloat noteLeft = mainBounds.origin.x + NOTE_PADDING;
-  CGFloat noteRight = mainBounds.origin.x + mainBounds.size.width - NOTE_PADDING;
-  CGFloat noteBottom = mainBounds.origin.y + NOTE_PADDING;
-  CGFloat noteTop = mainBounds.origin.y + mainBounds.size.height - NOTE_PADDING;
-  
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSaveGState(context);
-  UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:SHADOW_ALPHA];
-  CGContextSetShadowWithColor(context, CGSizeMake(0, SHADOW_OFFSET), SHADOW_BLUR, [shadowColor CGColor]);
-  [self drawNotePathAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
-  CGContextRestoreGState(context);
-  
-  [self drawTextAtLeft:noteLeft right:noteRight top:noteTop bottom:noteBottom];
+  CGRect noteRect = CGRectInset([self bounds], 24, 24);
+  UIBezierPath *notePath = [self notePathWithRect:noteRect];
+  [self drawNoteWithPath:notePath];
+  [self drawBorderWithPath:notePath];
+  [self drawTextAtRect:CGRectInset(noteRect, 8, 8)];
 }
 
 - (void)dealloc {
