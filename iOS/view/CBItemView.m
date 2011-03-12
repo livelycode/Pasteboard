@@ -45,18 +45,19 @@
   CGContextSaveGState(context);
   UIColor* shadowColor = [UIColor colorWithWhite:0 alpha:0.4];
   CGContextSetShadowWithColor(context, CGSizeMake(0, 2), 8, [shadowColor CGColor]);
-  
-  UIColor* noteDarkColor = [UIColor colorWithRed:NOTE_RED green:NOTE_GREEN blue:NOTE_BLUE alpha:1];
-  [noteDarkColor setFill];
   [aPath fill];
-  
+  CGContextAddPath(context, aPath.CGPath);
+  CGContextClosePath(context);
+  CGContextClip(context);
+  UIColor *endingColor = [UIColor colorWithRed:0.9 green:0.8 blue:0.4 alpha:1];
+  UIColor *startingColor = [UIColor colorWithRed:0.93 green:0.86 blue:0.58 alpha:1];
+  NSUInteger height = CGRectGetHeight(aPath.bounds);
+  CGFloat gradientLocations[2] = { 0.0, 1.0 };
+  NSMutableArray *colors = [NSMutableArray arrayWithObjects:(id)startingColor.CGColor, (id)endingColor.CGColor, nil];
+  CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+  CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)colors, gradientLocations);  
+  CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, height), kCGGradientDrawsAfterEndLocation);
   CGContextRestoreGState(context);
-/*
-  NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9 green:0.8 blue:0.4 alpha:1];
-  NSColor *startingColor = [endingColor highlightWithLevel:0.3];
-  NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
-  [gradient drawInBezierPath:aPath angle:270];
-  [NSGraphicsContext restoreGraphicsState];*/
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
