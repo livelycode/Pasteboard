@@ -15,13 +15,6 @@
 - (id)initWithFrame:(CGRect)aFrame;
 - (void)setWindowController:(CBMainWindowController *)aController;
 - (void)setSyncController:(CBSyncController *)controller;
-- (void)addItem:(CBItem *)item syncing:(BOOL)sync;
-- (BOOL)clipboardContainsItem:(CBItem *)item;
-- (CBSyncController*)syncController;
-- (NSDate*)lastChanged;
-- (NSArray*)allItems;
-- (void)persistClipboard;
-- (void)clearClipboardSyncing:(BOOL)sync;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
@@ -32,4 +25,8 @@
 @interface CBClipboardController(Actions)
 - (IBAction)clearClipboardClicked:(id)sender;
 - (IBAction)showSettingsClicked:(id)sender;
+@end
+
+@interface CBClipboardController(Private)
+- (CGRect)rectForNSValue:(NSValue*)value;
 @end

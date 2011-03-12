@@ -9,23 +9,8 @@
 #define BUTTON_WIDTH 80
 
 @implementation CBClipboardController(Private)
-
-- (void)drawItem:(CBItem*)item {
-  CGRect frame = [[frames objectAtIndex:0] rectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
-  [itemViewSlots insertObject:newItemView atIndex:0];
-  [[self view] addSubview:newItemView];
-  //remove last itemView if necessary
-  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
-    CBItemView* lastView = [itemViewSlots lastObject];
-    [itemViewSlots removeLastObject];
-    [lastView removeFromSuperview];
-  }
-  //move all existing itemViews
-  [itemViewSlots enumerateObjectsUsingBlock:^(CBItemView* itemView, NSUInteger index, BOOL *stop) {
-    CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];
-    [itemView setFrame:newFrame];
-  }];
+- (CGRect)rectForNSValue:(NSValue*)value {
+  return [value rectValue];
 }
 
 - (void)drawPasteView {
@@ -104,47 +89,5 @@
 
 - (void)setWindowController:(CBMainWindowController *)aController {
   windowController = aController;
-}
-
-- (void)addItem:(CBItem *)item syncing:(BOOL)sync {
-  [clipboard addItem:item];
-  [clipboard persist];
-  [self drawItem:(CBItem*)item];
-  if(sync) {
-    if(syncController) {
-      [syncController didAddItem:item];
-    }
-  }
-}
-
-- (BOOL)clipboardContainsItem:(CBItem *)item {
-  return [[clipboard items] containsObject:item];
-}
-
-- (CBSyncController*)syncController {
-  return syncController;
-}
-
-- (NSDate*)lastChanged {
-  return lastChanged;
-}
-
-- (NSArray*)allItems {
-  return [clipboard items];
-}
-
-- (void)persistClipboard {
-  [clipboard persist];
-}
-
-- (void)clearClipboardSyncing:(BOOL)sync {
-  for (CBItemView* view in itemViewSlots) {
-    [view removeFromSuperview];
-  }
-  [clipboard clear];
-  if(sync) {
-    [syncController didResetItems];
-  }
-  [clipboard persist];
 }
 @end

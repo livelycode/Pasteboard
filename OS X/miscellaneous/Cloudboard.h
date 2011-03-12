@@ -1,6 +1,6 @@
 #import "CBClipboard.h"
 #import "CBItem.h"
-#import "CBClipboardController.h"
+#import "CBClipboardControllerCommon.h"
 #import "HTTPServer.h"
 #import "CBHTTPConnection.h"
 #import "CBSyncController.h"
@@ -8,6 +8,7 @@
 #import "CBRemoteCloudboard.h"
 
 #import "CBApplicationController.h"
+#import "CBClipboardController.h"
 #import "CBHotKeyObserver.h"
 #import "CBMainWindowController.h"
 #import "CBPasteboardObserver.h"

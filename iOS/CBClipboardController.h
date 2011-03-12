@@ -15,18 +15,9 @@
   NSDate* lastChanged;
   CBSyncController* syncController;
 }
-
 - (id)initWithDelegate:(id)appController;
-- (void)addItem:(CBItem *)item syncing:(BOOL)sync;
-- (NSDate*)lastChanged;
-- (NSArray*)allItems;
-- (BOOL)clipboardContainsItem:(CBItem*)anItem;
-- (void)addSyncController:(id)anObject;
-- (CBSyncController*)syncController;
 - (void)stopSyncing;
 - (void)startSyncing;
-- (void)persistClipboard;
-- (void)clearClipboardSyncing:(BOOL)sync;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
@@ -37,6 +28,7 @@
 @end
 
 @interface CBClipboardController(Private)
+- (CGRect)rectForNSValue:(NSValue*)value;
 - (void)drawPasteButton;
 - (void)initializeItemViewFrames;
 @end

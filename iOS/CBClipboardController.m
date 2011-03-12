@@ -7,22 +7,8 @@
 
 @implementation CBClipboardController(Private)
 
-- (void)drawItem:(CBItem*)item {
-  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
-  [itemViewSlots insertObject:newItemView atIndex:0];
-  [[self view] addSubview:newItemView];
-  //remove last itemView if necessary
-  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
-    CBItemView* lastView = [itemViewSlots objectAtIndex:([itemViewSlots count]-1)];
-    [itemViewSlots removeLastObject]; 
-    [lastView removeFromSuperview];
-  }
-  //move all existing itemViews
-  [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
-    CGRect newFrame = [[frames objectAtIndex:index+1] CGRectValue];
-    [itemView setFrame:newFrame];
-  }];
+- (CGRect)rectForNSValue:(NSValue*)value {
+  return [value CGRectValue];
 }
 
 - (void)drawToolbar {
@@ -95,37 +81,6 @@
   return self;
 }
 
-- (void)addItem:(CBItem *)item syncing:(BOOL)sync {
-  [clipboard addItem:item];
-  [clipboard persist];
-  [self drawItem:item];
-  if(sync) {
-    if(syncController) {
-      [syncController didAddItem:item];
-    } 
-  }
-}
-
-- (BOOL)clipboardContainsItem:(CBItem *)anItem {
-  return [[clipboard items] containsObject:anItem];
-}
-
-- (void)addSyncController:(id)anObject {
-  syncController = [anObject retain];
-}
-
-- (NSDate*)lastChanged {
-  return lastChanged;
-}
-
-- (NSArray*)allItems {
-  return [clipboard items];
-}
-
-- (CBSyncController*)syncController {
-  return syncController;
-}
-
 - (void)stopSyncing {
   [syncController release];
   if(popoverController.popoverVisible) {
@@ -137,21 +92,6 @@
 - (void)startSyncing {
   syncController = [[CBSyncController alloc] initWithClipboardController:self];
   [self preparePopoverView];
-}
-		
-- (void)persistClipboard {
-  [clipboard persist];
-}
-
-- (void)clearClipboardSyncing:(BOOL)sync {
-  for (CBItemView* view in itemViewSlots) {
-    [view removeFromSuperview];
-  }
-  [clipboard clear];
-  if(sync) {
-    [syncController didResetItems];
-  }
-  [clipboard persist];
 }
 
 - (void)dealloc {
