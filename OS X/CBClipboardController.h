@@ -5,6 +5,8 @@
 
 @interface CBClipboardController : NSViewController {
   @private
+  NSInteger rows;
+  NSInteger columns;
   CBMainWindowController *windowController;
   CBSyncController* syncController;
   CBClipboard *clipboard;

@@ -1,7 +1,5 @@
 #import "Cloudboard.h"
 
-#define ROWS 4
-#define COLUMNS 2
 #define PADDING 0
 
 #define BUTTON_PADDING 16
@@ -21,11 +19,11 @@
 
 - (void)initializeItemSlots {
   CGRect mainBounds = [[self view] bounds];
-  NSUInteger itemWidth = (mainBounds.size.width - ((COLUMNS + 1) * PADDING)) / COLUMNS;
-  NSUInteger itemHeight = (mainBounds.size.height - ((ROWS + 1) * PADDING)) / ROWS;
+  NSUInteger itemWidth = (mainBounds.size.width - ((columns + 1) * PADDING)) / columns;
+  NSUInteger itemHeight = (mainBounds.size.height - ((rows + 1) * PADDING)) / rows;
   CGPoint origin = CGPointMake(PADDING, (mainBounds.size.height - itemHeight - PADDING));
-  for(NSInteger row=0; row<ROWS; row++) {
-    for(NSInteger column=0; column<COLUMNS; column++) {
+  for(NSInteger row=0; row<rows; row++) {
+    for(NSInteger column=0; column<columns; column++) {
       NSUInteger x = origin.x + (column * (itemWidth + PADDING));
       NSUInteger y = origin.y - (row * (itemHeight + PADDING));
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
@@ -69,16 +67,16 @@
 - (id)initWithFrame:(CGRect)aFrame {
   self = [super initWithNibName:@"clipboard" bundle:nil];
   if (self != nil) {
+    rows = 4;
+    columns = 2;
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
-    clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
+    clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     lastChanged = [[NSDate alloc] init];
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
-    for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
-      [self drawItem:item];
-    }
+    [self drawAllItems];
   }
   return self;
 }

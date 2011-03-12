@@ -5,6 +5,8 @@
 
 @interface CBClipboardController : UIViewController {
 @private
+  NSInteger rows;
+  NSInteger columns;
   UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
