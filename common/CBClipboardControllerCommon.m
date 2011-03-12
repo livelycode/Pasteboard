@@ -75,6 +75,11 @@
 }
 
 - (void)drawAllItems {
+  for(CBItemView* itemView in itemViewSlots) {
+    [itemView removeFromSuperview];
+  }
+  [itemViewSlots release];
+  itemViewSlots = [[NSMutableArray alloc] init];
   for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
     [self drawItem:item];
   }

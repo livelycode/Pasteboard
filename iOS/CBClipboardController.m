@@ -117,6 +117,26 @@
 - (void)viewDidLoad {
 
 }
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  return NO;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  if((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+    columns = 2;
+    rows = 4;
+    [self initializeItemViewFrames];
+    [self drawAllItems];
+    NSLog(@"portrait");
+  } else {
+    columns = 4;
+    rows = 2;
+    [self initializeItemViewFrames];
+    [self drawAllItems];
+    NSLog(@"landscape");
+  }
+}
 @end
 
 @implementation CBClipboardController(Delegation)
