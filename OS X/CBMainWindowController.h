@@ -15,6 +15,8 @@
   CBSyncController *syncController;
   NSView *front;
   NSView *back;
+  CALayer *flipLayer;
+  BOOL isFlipped;
 }
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer;

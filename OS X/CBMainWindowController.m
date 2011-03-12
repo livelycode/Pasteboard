@@ -41,6 +41,40 @@ static CALayer *rootLayer;
   return CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
 }
 
+- (CATransform3D)createFlipTransform {
+  CATransform3D transform = CATransform3DMakeRotation(M_PI, 0, 1, 0);
+  transform.m34 = 0.0005;
+  return transform;
+}
+
+- (CALayer *)createFlipLayer {
+  [CATransaction setDisableActions:YES];
+  CALayer *frontLayer = [clipboardController snapShot];
+  [frontLayer setDoubleSided:NO];
+  CALayer *backLayer = [settingsController snapShot];
+  [backLayer setTransform:[self createFlipTransform]];
+  CALayer *layer = [CALayer layer];
+  [layer setFrame:[front frame]];
+  [layer addSublayer:backLayer];
+  [layer addSublayer:frontLayer];
+  [CATransaction setDisableActions:NO];
+  return layer;
+}
+
+- (CABasicAnimation *)createFlipAnimation {
+  CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+  [animation setDelegate:self];
+  [animation setDuration:1];
+  if (isFlipped) {
+    [animation setFromValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    [animation setToValue:[NSValue valueWithCATransform3D:[self createFlipTransform]]];
+  } else {
+    [animation setToValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    [animation setFromValue:[NSValue valueWithCATransform3D:[self createFlipTransform]]];
+  }
+  return animation;
+}
+
 @end
 
 @implementation CBMainWindowController(Delegation)
@@ -51,6 +85,15 @@ static CALayer *rootLayer;
   } else {
     [mainWindow makeKeyAndOrderFront:self];
   }
+}
+
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
+  if (isFlipped) {
+    [rootView addSubview:back];
+  } else {
+    [rootView addSubview:front];
+  }
+  [flipLayer removeFromSuperlayer];
 }
 
 @end
@@ -65,6 +108,7 @@ static CALayer *rootLayer;
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack {
   self = [super init];
   if (self != nil) {
+    isFlipped = NO;
     CGRect mainFrame = [[NSScreen mainScreen] frame];
     CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
@@ -78,21 +122,28 @@ static CALayer *rootLayer;
     [clipboardController setSyncController:syncController];
     settingsController = [[CBSettingsController alloc] initWithFrame:clipboardFrame syncController:syncController];
     [settingsController setWindowController:self];
-    [rootView addSubview:[clipboardController view]];
     front = [clipboardController view];
     back = [settingsController view];
+    [rootView addSubview:front];
   }
   return self;
 }
 
 - (void)showFront {
+  isFlipped = NO;
+  [CBMainWindowController addSublayerToRootLayer:flipLayer];
+  [flipLayer setTransform:CATransform3DIdentity];
+  [flipLayer addAnimation:[self createFlipAnimation] forKey:@"transform"];
   [back removeFromSuperview];
-  [rootView addSubview:front];
 }
 
 - (void)showBack {
+  isFlipped = YES;
+  flipLayer = [self createFlipLayer];
+  [CBMainWindowController addSublayerToRootLayer:flipLayer];
+  [flipLayer setTransform:[self createFlipTransform]];
+  [flipLayer addAnimation:[self createFlipAnimation] forKey:@"transform"];
   [front removeFromSuperview];
-  [rootView addSubview:back];
 }
 
 - (CBClipboardController *)clipboardController {

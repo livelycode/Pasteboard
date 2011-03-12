@@ -54,12 +54,13 @@
   CGImageRef maskRef =  CGImageSourceCreateImageAtIndex(source, 0, NULL);
     
   CALayer *layer = [[CALayer alloc] init];
-  [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+  [CATransaction setDisableActions:YES];
   [layer setNeedsDisplay];
   [layer setOpacity:0];
   [layer setFrame:[rootView convertRect:frame fromView:clipboardView]];
   [layer setContents:(id)maskRef];
   [CBMainWindowController addSublayerToRootLayer:layer];
+  [CATransaction setDisableActions:NO];
   
   CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
   [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];

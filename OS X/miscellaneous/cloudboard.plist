@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>KeepAlive</key>
-	<true/>
+	<false/>
 	<key>Label</key>
 	<string>Cloudboard</string>
+	<key>OnDemand</key>
+	<false/>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/Applications/Cloudboard.app/Contents/MacOS/Cloudboard</string>
 	</array>
-	<key>OnDemand</key>
-	<false/>
 	<key>RunAtLoad</key>
 	<true/>
 </dict>

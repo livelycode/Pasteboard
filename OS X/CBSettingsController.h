@@ -21,6 +21,7 @@
 }
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*)syncController;
 - (void)setWindowController:(CBMainWindowController *)aController;
+- (CALayer *)snapShot;
 @end
 
 @interface CBSettingsController(Actions)
