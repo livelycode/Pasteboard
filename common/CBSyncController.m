@@ -165,7 +165,7 @@
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
   NSLog(@"starting initial sync to %@", [client serviceName]);
-  [client syncItems:[clipboardController allItems]];
+  [client syncItems:[clipboardController allItems] withDate:[clipboardController lastChanged]];
 }
 
 - (void)informDelegatesWith:(SEL)selector object:(id)object {
@@ -263,11 +263,15 @@
   [clipboardController addItem:item syncing:NO];
 }
 
-- (void)receivedRemoteItems: (NSArray*)items {
-  NSLog(@"received items: %@", items);
-  [clipboardController clearClipboardSyncing:NO];
-  for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {
-    [clipboardController addItem:item syncing:NO];
+- (void)receivedRemoteItems: (NSArray*)items changedDate:(NSDate *)date {
+  NSLog(@"received items: %@ changed: %@ local: %@", items, date, [clipboardController lastChanged]);
+  if([[clipboardController lastChanged] compare:date] == NSOrderedAscending) {
+    [clipboardController clearClipboardSyncing:NO];
+    for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {
+      [clipboardController addItem:item syncing:NO];
+    }
+  } else {
+    NSLog(@"I have better stuff!");
   }
 }
 

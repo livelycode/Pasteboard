@@ -1,7 +1,5 @@
 #import "Cloudboard.h"
 
-#define ROWS 4
-#define COLUMNS 2
 #define PADDING_TOP 40
 #define PADDING_LEFT 20
 
@@ -38,9 +36,7 @@
   [self.view addSubview:pasteView];
 }
 
-- (void)initializeItemViewFrames {
-  NSInteger rows = ROWS;
-  NSInteger columns = COLUMNS;
+- (void)initializeItemViewFrames {	
   CGFloat paddingTop = PADDING_TOP + CGRectGetHeight(toolbar.frame);
   CGFloat paddingLeft = PADDING_LEFT;
   CGRect mainBounds = [self.view bounds];
@@ -65,7 +61,9 @@
 - (id)initWithDelegate:(id)appController {
   self = [super init];
   if (self != nil) {
-    clipboard = [[CBClipboard alloc] initWithCapacity:ROWS*COLUMNS-1];
+    rows = 4;
+    columns = 2;
+    clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     lastChanged = [[NSDate alloc] init];
@@ -113,13 +111,31 @@
   [self preparePopoverView];
   [self initializeItemViewFrames];
   [self drawPasteButton];
-  for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
-    [self drawItem:item];
-  }
+  [self drawAllItems];
 }
 
 - (void)viewDidLoad {
 
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  return NO;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+  if((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
+    columns = 2;
+    rows = 4;
+    [self initializeItemViewFrames];
+    [self drawAllItems];
+    NSLog(@"portrait");
+  } else {
+    columns = 4;
+    rows = 2;
+    [self initializeItemViewFrames];
+    [self drawAllItems];
+    NSLog(@"landscape");
+  }
 }
 @end
 

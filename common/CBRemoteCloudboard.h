@@ -14,6 +14,7 @@
   CBSyncController* syncController;
   NSNetService* service;
   NSURL* url;
+  NSDate* localLastChanged;
   BOOL confirmClient;
   BOOL registerClient;
 }
@@ -21,7 +22,7 @@
 - (void)registerAsClient;
 - (void)confirmClient;
 - (void)syncAddedItem: (CBItem*)item;
-- (void)syncItems:(NSArray*)items;
+- (void)syncItems:(NSArray*)items withDate:(NSDate*)date;
 - (void)resetItems;
 - (NSString*)serviceName;
 @end

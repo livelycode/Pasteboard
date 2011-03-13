@@ -18,3 +18,4 @@
 #import "CBClipboardView.h"
 #import "CBWindowView.h"
 #import "CBSettingsController.h"
+#define POST_SEPARATOR @"com.cloudboard.separator"
