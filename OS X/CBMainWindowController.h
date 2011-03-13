@@ -7,15 +7,15 @@
 
 @interface CBMainWindowController : NSObject {
   @private
-  NSArray *types;
   NSWindow *mainWindow;
   CBWindowView *rootView;
   CBClipboardController *clipboardController;
   CBSettingsController *settingsController;
   CBSyncController *syncController;
-  NSView *front;
-  NSView *back;
+  NSView *frontView;
+  NSView *backView;
   CALayer *flipLayer;
+  NSString *flipKey;
   BOOL isFlipped;
 }
 
@@ -31,5 +31,6 @@
 @interface CBMainWindowController(Delegation) <CBHotKeyObserverDelegate>
 
 - (void)hotKeyPressed:(CBHotKeyObserver *)hotKey;
+- (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag;
 
 @end
