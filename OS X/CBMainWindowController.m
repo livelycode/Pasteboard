@@ -1,23 +1,15 @@
 #import "Cloudboard.h"
 
-#define WINDOW_ALPHA 0.4
-
 static CALayer *rootLayer;
 
 @implementation CBMainWindowController(Private)
 
 - (CBWindowView *)createRootViewWithFrame:(CGRect)aRect {
   CBWindowView *view = [[CBWindowView alloc] initWithFrame:aRect];
-  [view setWantsLayer:YES];
-  [view setColor:[NSColor colorWithCalibratedWhite:0 alpha:WINDOW_ALPHA]];
-  return view;
-}
-
-- (NSView *)createAnimationViewWithFrame:(CGRect)aRect {
-  NSView *view = [[NSView alloc] initWithFrame:aRect];
   rootLayer = [CALayer layer];
+  [rootLayer setBackgroundColor:CGColorCreateGenericGray(0, 0.4)];
   [view setLayer:rootLayer];
-  [view setWantsLayer:YES];
+  [view setWantsLayer:YES];	
   return view;
 }
 
@@ -64,7 +56,7 @@ static CALayer *rootLayer;
 - (CABasicAnimation *)createFlipAnimation {
   CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
   [animation setDelegate:self];
-  [animation setDuration:1];
+  [animation setDuration:0.8];
   if (isFlipped) {
     [animation setFromValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
     [animation setToValue:[NSValue valueWithCATransform3D:[self createFlipTransform]]];
@@ -102,7 +94,6 @@ static CALayer *rootLayer;
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer {
   [rootLayer addSublayer:aLayer];
-  [rootLayer setNeedsDisplay];
 }
 
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack {
@@ -113,9 +104,7 @@ static CALayer *rootLayer;
     CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
     rootView = [self createRootViewWithFrame:mainFrame];
-    NSView *animationView = [self createAnimationViewWithFrame:mainFrame]; 
-    [[mainWindow contentView] addSubview:rootView];
-    [[mainWindow contentView] addSubview:animationView];
+    [mainWindow setContentView:rootView];
     clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame];
     [clipboardController setWindowController:self];
     syncController = [[CBSyncController alloc] initWithClipboardController:clipboardController];
@@ -132,18 +121,18 @@ static CALayer *rootLayer;
 - (void)showFront {
   isFlipped = NO;
   [CBMainWindowController addSublayerToRootLayer:flipLayer];
+  [back removeFromSuperview];
   [flipLayer setTransform:CATransform3DIdentity];
   [flipLayer addAnimation:[self createFlipAnimation] forKey:@"transform"];
-  [back removeFromSuperview];
 }
 
 - (void)showBack {
   isFlipped = YES;
   flipLayer = [self createFlipLayer];
   [CBMainWindowController addSublayerToRootLayer:flipLayer];
+  [front removeFromSuperview];
   [flipLayer setTransform:[self createFlipTransform]];
   [flipLayer addAnimation:[self createFlipAnimation] forKey:@"transform"];
-  [front removeFromSuperview];
 }
 
 - (CBClipboardController *)clipboardController {
