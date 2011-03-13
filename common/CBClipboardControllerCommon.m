@@ -8,8 +8,6 @@
 
 #import "Cloudboard.h"
 
-#define ROWS 4
-#define COLUMNS 2
 #define PADDING 0
 
 @implementation CBClipboardController(CBClipboardControllerCommon)
@@ -29,7 +27,7 @@
 }
 
 - (NSDate*)lastChanged {
-  return lastChanged;
+  return [clipboard lastChanged];
 }
 
 - (NSArray*)allItems {
@@ -64,7 +62,7 @@
   [itemViewSlots insertObject:newItemView atIndex:0];
   [[self view] addSubview:newItemView];
   //remove last itemView if necessary
-  while([itemViewSlots count] > (ROWS*COLUMNS-1)) {
+  while([itemViewSlots count] > (rows*columns-1)) {
     CBItemView* lastView = [itemViewSlots lastObject];
     [itemViewSlots removeLastObject];
     [lastView removeFromSuperview];
@@ -76,4 +74,14 @@
   }];
 }
 
+- (void)drawAllItems {
+  for(CBItemView* itemView in itemViewSlots) {
+    [itemView removeFromSuperview];
+  }
+  [itemViewSlots release];
+  itemViewSlots = [[NSMutableArray alloc] init];
+  for(id item in [[[clipboard items] reverseObjectEnumerator] allObjects]) {
+    [self drawItem:item];
+  }
+}
 @end

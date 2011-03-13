@@ -12,6 +12,7 @@
     {
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
+      lastChanged = [NSDate dateWithTimeIntervalSince1970:0];
       NSFileManager *fileManager = [NSFileManager defaultManager];
       NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
       if ([urls count] > 0) {
@@ -24,11 +25,13 @@
 }
 
 - (void)addItem:(CBItem *)anItem {
+  NSLog(@"clipboard: addItem");
   [items insertObject:anItem atIndex:0];
   if ([items count] > capacity) {
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
   }
+  lastChanged = [[NSDate alloc] init];
 }
 
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex {
@@ -40,14 +43,21 @@
 }
 
 - (void)persist {
+  NSMutableDictionary* itemData = [NSMutableDictionary dictionary];
+  [itemData setValue:lastChanged forKey:@"date"];
   NSMutableArray* stringsToPersist = [NSMutableArray array];
   for(CBItem* item in items) {
     [stringsToPersist addObject:[item string]];
   }
+  [itemData setValue:stringsToPersist forKey:@"items"];
   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
   dispatch_async(queue,^{
-    [stringsToPersist writeToURL:storeURL atomically:YES];
+    [itemData writeToURL:storeURL atomically:YES];
   });
+}
+
+- (NSDate*)lastChanged {
+  return lastChanged;
 }
 
 - (void)clear {
@@ -64,9 +74,11 @@
 @implementation CBClipboard(Private)
 
 - (void)loadItems {
-  NSArray* itemStringsReverse = [[NSArray alloc] initWithContentsOfURL:storeURL];
-  NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
-  if(itemStrings) {
+  NSDictionary* itemData = [[NSDictionary alloc] initWithContentsOfURL:storeURL];
+  if(itemData) {
+    lastChanged = [itemData valueForKey:@"date"];
+    NSArray* itemStringsReverse = [itemData valueForKey:@"items"];
+    NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
     for(NSString* string in itemStrings) {
       [items addObject:[[CBItem alloc] initWithString:string]];
     }

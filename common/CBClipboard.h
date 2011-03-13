@@ -8,22 +8,16 @@
   NSMutableArray *items;
   NSUInteger capacity;
   NSURL* storeURL;
+  NSDate* lastChanged;
 }
-
 - (id)init;
-
 - (id)initWithCapacity:(NSUInteger)aCapacity;
-
 - (void)addItem:(CBItem *)anItem;
-
 - (CBItem*)itemAtIndex:(NSUInteger)anIndex;
-
 - (NSArray*)items;
-
 - (void)persist;
-
 - (void)clear;
-
+- (NSDate*)lastChanged;
 @end
 
 @interface CBClipboard(Private)

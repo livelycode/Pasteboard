@@ -63,7 +63,11 @@
 
 - (CBItem*)currentPasteboardItem {
   NSString* copyString = [[NSPasteboard generalPasteboard] stringForType:(NSString*)kUTTypeUTF8PlainText];
-  return [[CBItem alloc] initWithString:copyString];
+  if(copyString) {
+    return [[CBItem alloc] initWithString:copyString];
+  } else {
+    return nil;
+  }
 }
 
 - (void)loadSettings {

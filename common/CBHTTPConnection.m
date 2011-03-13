@@ -34,15 +34,15 @@
     match = YES;
     NSString* plainString = [NSKeyedUnarchiver unarchiveObjectWithData:body];
     NSMutableArray* items = [NSMutableArray array];
-    if([plainString isEqualToString:@""] == NO) {
-      NSArray* strings = [plainString componentsSeparatedByString:@"com.cloudboard.separator"];
-      for(NSString* string in strings) {
-        CBItem* item = [[CBItem alloc] initWithString: string];
-        [items addObject: item];
-      }
+    NSMutableArray* strings = [NSMutableArray arrayWithArray:[plainString componentsSeparatedByString:POST_SEPARATOR]];
+    NSDate* lastChanged = [NSDate dateWithTimeIntervalSince1970:[[strings objectAtIndex:0] integerValue]];
+    [strings removeObjectAtIndex:0];
+    for(NSString* string in strings) {
+      CBItem* item = [[CBItem alloc] initWithString: string];
+      [items addObject: item];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      [syncController receivedRemoteItems:items];
+      [syncController receivedRemoteItems:items changedDate:lastChanged];
     });
     responseData = [@"ok" dataUsingEncoding: NSUTF8StringEncoding];
   }
