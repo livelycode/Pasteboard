@@ -113,6 +113,10 @@
   return self;
 }
 
+- (void)moveToFrame:(CGRect)frame {
+  [self setFrame:frame];
+}
+
 @end
 
 @implementation CBItemView(Overridden)

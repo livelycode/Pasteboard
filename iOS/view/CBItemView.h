@@ -10,7 +10,7 @@
 }
 
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;
-
+- (void)moveToFrame:(CGRect)frame;
 @end
 
 @interface CBItemView(Overridden)
