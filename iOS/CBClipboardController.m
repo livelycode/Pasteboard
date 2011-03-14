@@ -12,9 +12,6 @@
 - (void)drawToolbar {
   toolbar = [[UIToolbar alloc] init];
   [toolbar sizeToFit];
-  CGFloat toolbarHeight = CGRectGetHeight([toolbar frame]);
-  CGRect toolbarRect = CGRectMake(0, 20, CGRectGetWidth(self.view.bounds), toolbarHeight);
-  [toolbar setFrame:toolbarRect];
   devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
   
   UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -99,9 +96,7 @@
 
 - (void)loadView {
   CGRect mainFrame = [[UIScreen mainScreen] bounds];
-  CGFloat screenHeight = CGRectGetHeight(mainFrame);
-  CGFloat screenWidth = CGRectGetWidth(mainFrame);
-  CGRect frame = CGRectMake(0, 0, screenWidth, screenHeight);
+  CGRect frame = CGRectOffset(mainFrame, 0, 20);
   UIView* clipboardView = [[UIView alloc] initWithFrame:frame];
   [clipboardView setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
   [self setView:clipboardView];
