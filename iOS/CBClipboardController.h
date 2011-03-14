@@ -12,6 +12,7 @@
   CBApplicationController* delegate;
   UIBarButtonItem* devicesButton;
   UIPopoverController* popoverController;
+  CBPasteView* pasteButton;
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
   CBSyncController* syncController;
@@ -30,6 +31,11 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
+- (CGRect)clipboardFrame;
+- (void)drawToolbar;
+- (void)preparePopoverView;
 - (void)drawPasteButton;
+- (void)setRowsForPortrait;
+- (void)setRowsForLandscape;
 - (void)initializeItemViewFrames;
 @end
