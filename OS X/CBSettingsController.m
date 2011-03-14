@@ -42,7 +42,6 @@
 }
 
 - (IBAction)back:(id)sender {
-NSLog(@"bar");
   [windowController showFront];
 }
 
@@ -72,18 +71,6 @@ NSLog(@"bar");
 
 - (void)setWindowController:(CBMainWindowController *)aController {
   windowController = aController;
-}
-
-- (CALayer *)snapShot {
-  NSView *view = [self view];
-  NSImage *image = [[NSImage alloc] initWithData:[view dataWithPDFInsideRect:[view bounds]]];  
-  CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);
-  CGImageRef imageRef =  CGImageSourceCreateImageAtIndex(source, 0, NULL);
-  
-  CALayer *layer = [[CALayer alloc] init];
-  [layer setFrame:[view bounds]];
-  [layer setContents:(id)imageRef];
-  return layer;
 }
 
 @end

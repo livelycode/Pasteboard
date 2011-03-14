@@ -17,7 +17,6 @@
 - (id)initWithFrame:(CGRect)aFrame;
 - (void)setWindowController:(CBMainWindowController *)aController;
 - (void)setSyncController:(CBSyncController *)controller;
-- (CALayer *)snapShot;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
