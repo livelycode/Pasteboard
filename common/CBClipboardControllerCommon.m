@@ -42,6 +42,7 @@
   for (CBItemView* view in itemViewSlots) {
     [view removeFromSuperview];
   }
+  [itemViewSlots removeAllObjects];
   [clipboard clear];
   if(sync) {
     [syncController didResetItems];
