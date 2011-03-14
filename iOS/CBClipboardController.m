@@ -66,7 +66,6 @@
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
-    lastChanged = [[NSDate alloc] init];
     delegate = appController;
     [self startSyncing];
     [self view];

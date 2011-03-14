@@ -264,7 +264,8 @@
 }
 
 - (void)receivedRemoteItems: (NSArray*)items changedDate:(NSDate *)date {
-  NSLog(@"received items: %@ changed: %@ local: %@", items, date, [clipboardController lastChanged]);
+  NSDate* localLastChanged = [clipboardController lastChanged];
+  NSLog(@"received items: %@ changed: %@ local: %@", items, date, localLastChanged);
   if([[clipboardController lastChanged] compare:date] == NSOrderedAscending) {
     [clipboardController clearClipboardSyncing:NO];
     for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {

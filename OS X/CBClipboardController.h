@@ -12,7 +12,6 @@
   CBClipboard *clipboard;
   NSMutableArray *frames;
   NSMutableArray *itemViewSlots;
-  NSDate* lastChanged;
 }
 - (id)initWithFrame:(CGRect)aFrame;
 - (void)setWindowController:(CBMainWindowController *)aController;

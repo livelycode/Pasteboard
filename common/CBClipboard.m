@@ -12,7 +12,7 @@
     {
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
-      lastChanged = [NSDate dateWithTimeIntervalSince1970:0];
+      lastChanged = [[NSDate alloc] initWithTimeIntervalSince1970:0];
       NSFileManager *fileManager = [NSFileManager defaultManager];
       NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
       if ([urls count] > 0) {
@@ -31,6 +31,7 @@
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
   }
+  [lastChanged release];
   lastChanged = [[NSDate alloc] init];
 }
 

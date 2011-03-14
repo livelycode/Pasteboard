@@ -14,7 +14,6 @@
   UIPopoverController* popoverController;
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
-  NSDate* lastChanged;
   CBSyncController* syncController;
 }
 - (id)initWithDelegate:(id)appController;

@@ -72,7 +72,6 @@
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
-    lastChanged = [[NSDate alloc] init];
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
