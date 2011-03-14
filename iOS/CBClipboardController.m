@@ -77,23 +77,19 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
   if((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
     [self setRowsForPortrait];
-    CGRect newFrame = CGRectMake(0, 0, CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame));
-    [self.view setFrame:newFrame];
-    [frames removeAllObjects];
-    [self initializeItemViewFrames];
-    [self drawAllItems];
-    [pasteButton setFrame:[[frames objectAtIndex:0] CGRectValue]];
     NSLog(@"portrait");
   } else {
     [self setRowsForLandscape];
-    CGRect newFrame = CGRectMake(0, 0, CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame));
-    [self.view setFrame:newFrame];
-    [frames removeAllObjects];
-    [self initializeItemViewFrames];
-    [self drawAllItems];
-    [pasteButton setFrame:[[frames objectAtIndex:0] CGRectValue]];
     NSLog(@"landscape");
   }
+  CGRect newFrame = CGRectMake(0, 0, CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame));
+  [self.view setFrame:newFrame];
+  [frames removeAllObjects];
+  [self initializeItemViewFrames];
+  [UIView animateWithDuration:0.5 animations:^(void) {
+    [self moveAllItemViews];
+    [pasteButton setFrame:[[frames objectAtIndex:0] CGRectValue]];
+  }];
 }
 @end
 
@@ -173,6 +169,12 @@
 - (void)setRowsForLandscape {
   rows = ROWS_LANDSCAPE;
   columns = ITEMS/rows;
+}
+
+- (void)moveAllItemViewsAnimated {
+  [UIView animateWithDuration:0.5 animations:^(void) {
+    [self moveAllItemViews];
+  }];
 }
 
 - (void)initializeItemViewFrames {	

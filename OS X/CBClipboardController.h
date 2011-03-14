@@ -30,4 +30,7 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
+- (void)drawPasteView;
+- (void)moveAllItemViewsAnimated;
+- (void)initializeItemSlots;
 @end

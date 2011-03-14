@@ -69,10 +69,14 @@
     [lastView removeFromSuperview];
   }
   //move all existing itemViews
+  [self moveAllItemViewsAnimated];
+}
+
+- (void)moveAllItemViews {
   [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
     CGRect newFrame = [self rectForNSValue:[frames objectAtIndex:index+1]];
     [itemView moveToFrame:newFrame];
-  }];
+  }];  
 }
 
 - (void)drawAllItems {

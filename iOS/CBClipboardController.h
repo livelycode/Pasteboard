@@ -37,5 +37,6 @@
 - (void)drawPasteButton;
 - (void)setRowsForPortrait;
 - (void)setRowsForLandscape;
+- (void)moveAllItemViewsAnimated;
 - (void)initializeItemViewFrames;
 @end

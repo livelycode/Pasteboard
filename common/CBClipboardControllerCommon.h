@@ -22,5 +22,6 @@
 
 @interface CBClipboardController(CommonPrivate)
 - (void)drawItem:(CBItem *)item;
+- (void)moveAllItemViews;
 - (void)drawAllItems;
 @end
