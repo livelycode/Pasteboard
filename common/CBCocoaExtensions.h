@@ -2,6 +2,6 @@
 
 @interface NSView(CBCocoaExtensions)
 
-- (CALayer *)layerSnapshot;
+- (CALayer *)snapshot;
 
 @end

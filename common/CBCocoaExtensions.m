@@ -2,7 +2,7 @@
 
 @implementation NSView (CBCocoaExtensions)
 
-- (CALayer *)layerSnapshot {
+- (CALayer *)snapshot {
   NSData *data = [self dataWithPDFInsideRect:[self bounds]];
   NSImage *image = [[NSImage alloc] initWithData:data];  
   CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);

@@ -130,13 +130,13 @@ static CALayer *rootLayer;
   return CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
 }
 
-- (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack {
-  CALayer *frontLayer = [theFront layerSnapshot];
+- (CALayer *)createLayerWithFront:(id)theFront back:(id)theBack {
+  CALayer *frontLayer = [theFront snapshot];
   [frontLayer setFrame:[theFront bounds]];
   [frontLayer setDoubleSided:NO];
   
   [theBack setHidden:NO];
-  CALayer *backLayer = [theBack layerSnapshot]; 
+  CALayer *backLayer = [theBack snapshot]; 
   [backLayer setFrame:[theBack bounds]];
   [backLayer setTransform:CATransform3DMakeRotation(M_PI, 0, 1, 0)];
   [theBack setHidden:YES];
