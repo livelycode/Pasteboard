@@ -1,0 +1,3 @@
+[submodule "external/PrettyIterators"]
+	path = external/PrettyIterators
+	url = git@github.com:mirkok/PrettyIterators.git
