@@ -119,8 +119,8 @@
   return self;
 }
 
-- (void)moveToFrame:(CGRect)frame {
-  [self setFrame: frame];
+- (void)moveToFrame:(CGRect)aRect {
+  NSLog(@"%@", [self layer]);
 }
 
 @end
