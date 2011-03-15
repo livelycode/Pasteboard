@@ -114,12 +114,6 @@
 }
 
 - (void)moveToFrame:(CGRect)frame {
-  /*[UIView animateWithDuration:0.5 animations: ^ {
-   [self setFrame:frame];
-   [self setNeedsDisplay];
-   } completion:^(BOOL finished) {
-   
-   }];*/
   [self setFrame:frame];
   [self setNeedsDisplay];
 }
@@ -129,7 +123,7 @@
 @implementation CBItemView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], 24, 24);
+  CGRect noteRect = CGRectInset([self bounds], 16, 20);
   UIBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];
   [self drawBorderWithPath:notePath];

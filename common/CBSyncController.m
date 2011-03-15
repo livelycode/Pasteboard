@@ -98,6 +98,7 @@
 }
 
 - (void)dealloc {
+  [httpServer stop];
   [httpServer release];
   [serviceBrowser release];
   [myServiceName release];
