@@ -10,7 +10,7 @@
 @implementation CBClipboardController
 
 - (id)initWithDelegate:(id)appController {
-  self = [super init];
+  self = [super initWithNibName:@"Clipboard" bundle:nil];
   if (self != nil) {
     if((self.interfaceOrientation == UIInterfaceOrientationPortrait) ||
        (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -23,6 +23,7 @@
     itemViewSlots = [[NSMutableArray alloc] init];
     delegate = appController;
     [self startSyncing];
+    devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
     [self view];
   }
   return self;
@@ -47,29 +48,15 @@
 
 @implementation CBClipboardController(Overriden)
 
-- (void)loadView {
-  UIView* clipboardView = [[UIView alloc] initWithFrame:[self clipboardFrame]];
-  [clipboardView setBackgroundColor:[UIColor scrollViewTexturedBackgroundColor]];
-  clipboardView.contentMode = UIViewContentModeRedraw;
-  clipboardView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  [self setView:clipboardView];
-  [delegate addSubview:clipboardView];
-  navigationController = [[UINavigationController alloc] initWithRootViewController:self];
-  
-  [self drawToolbar];
-  //[self preparePopoverView];
+- (void)viewDidLoad {
   [self initializeItemViewFrames];
   [self drawPasteButton];
   [self drawAllItems];
 }
 
-- (void)viewDidLoad {
-
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+/*- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   return NO;
-}
+}*/
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
   if((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -108,11 +95,11 @@
 }
 
 //UIToolbarDelegate
-- (void)devicesButtonTapped:(id)event {
-
+- (IBAction)devicesButtonTapped:(id)event {
+  [self presentModalViewController:devicesViewController animated:YES];
 }
 
-- (void)clearAllButtonTapped:(id)event {
+- (IBAction)clearAllButtonTapped:(id)event {
   [self clearClipboardSyncing:YES];
 }
 @end
@@ -121,31 +108,6 @@
 
 - (CGRect)rectForNSValue:(NSValue*)value {
   return [value CGRectValue];
-}
-
-- (CGRect)clipboardFrame {
-  CGRect mainFrame = [[UIScreen mainScreen] bounds];
-  CGRect frame = mainFrame;
-  return frame;
-}
-
-- (void)drawToolbar {
-  toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, CGRectGetHeight([self.view bounds])-44, 0, 0)];
-  [toolbar sizeToFit];
-  toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-  devicesButton = [[UIBarButtonItem alloc] initWithTitle:@"Manage Devices" style:UIBarButtonItemStyleBordered target:self action:@selector(devicesButtonTapped:)];
-  
-  UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-  
-  UIBarButtonItem* removeAllButton = [[UIBarButtonItem alloc] initWithTitle:@"Remove All" style:UIBarButtonItemStyleBordered target:self action:@selector(clearAllButtonTapped:)];
-  [toolbar setItems:[[NSArray alloc] initWithObjects:devicesButton, flexibleSpace, removeAllButton, nil] animated:NO];
-  [self.view addSubview:toolbar];
-}
-
-- (void)drawPasteButton {
-  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  pasteButton = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
-  [self.view addSubview:pasteButton];
 }
 
 - (void)setRowsForPortrait {
@@ -164,10 +126,16 @@
   }];
 }
 
+- (void)drawPasteButton {
+  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
+  pasteButton = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
+  [self.view addSubview:pasteButton];
+}
+
 - (void)initializeItemViewFrames {	
-  CGFloat paddingTop = PADDING_TOP + CGRectGetHeight(toolbar.frame);
+  CGFloat paddingTop = PADDING_TOP;
   CGFloat paddingLeft = PADDING_LEFT;
-  CGRect mainBounds = [self.view bounds];
+  CGRect mainBounds = [clipboardView bounds];
   CGRect itemsBounds = CGRectMake(paddingLeft, paddingTop, CGRectGetWidth(mainBounds)-2*paddingLeft, CGRectGetHeight(mainBounds)-2*paddingTop);
   CGFloat clipboardHeight = CGRectGetHeight(itemsBounds);
   CGFloat clipboardWidth = CGRectGetWidth(itemsBounds);

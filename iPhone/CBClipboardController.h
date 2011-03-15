@@ -1,7 +1,7 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@class CBApplicationController, CBSyncController, CBPasteView;
+@class CBApplicationController, CBDevicesViewController, CBSyncController, CBPasteView;
 
 @interface CBClipboardController : UIViewController {
 @private
@@ -10,9 +10,10 @@
   UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
+  IBOutlet UIView* clipboardView;
   UIBarButtonItem* devicesButton;
-  UINavigationController* navigationController;
   CBPasteView* pasteButton;
+  CBDevicesViewController* devicesViewController;
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
   CBSyncController* syncController;

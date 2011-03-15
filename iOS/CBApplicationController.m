@@ -7,11 +7,7 @@
   window = [[UIWindow alloc] initWithFrame:mainFrame];
   [window makeKeyAndVisible];
   syncingClipboardController = [[CBClipboardController alloc] initWithDelegate:self];
-}
-
-
-- (void)addSubview: (UIView*) subView {
-  [window addSubview:subView];
+  [window addSubview:syncingClipboardController.view];
 }
 
 - (CBClipboardController*)clipboardController {
