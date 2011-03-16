@@ -58,7 +58,6 @@
   clipboardView.contentMode = UIViewContentModeRedraw;
   clipboardView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   [self setView:clipboardView];
-  [delegate addSubview:clipboardView];
   [self drawToolbar];
   [self preparePopoverView];
   [self initializeItemViewFrames];
