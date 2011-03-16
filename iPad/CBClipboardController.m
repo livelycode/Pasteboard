@@ -14,28 +14,6 @@
   [self drawAllItems];
 }
 
-/*- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-  return YES;
-}*/
-
-/*- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-  if((toInterfaceOrientation == UIInterfaceOrientationPortrait) || (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
-    [self setRowsForPortrait];
-    NSLog(@"portrait");
-  } else {
-    [self setRowsForLandscape];
-    NSLog(@"landscape");
-  }
-  CGRect newFrame = CGRectMake(0, 0, CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame));
-  [self.view setFrame:newFrame];
-  [frames removeAllObjects];
-  [self initializeItemViewFrames];
-  [UIView animateWithDuration:0.5 animations:^(void) {
-    [self moveAllItemViews];
-    [pasteButton setFrame:[[frames objectAtIndex:0] CGRectValue]];
-  }];
-}*/
-
 - (void)dealloc {
   [clipboard release];
   [syncController release];
