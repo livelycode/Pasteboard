@@ -25,7 +25,8 @@
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(CBPasteView*)view;
 - (void)handleTapFromItemView:(CBItemView*)itemView;
-- (void)devicesButtonTapped:(id)event;
+- (IBAction)devicesButtonTapped:(id)event;
+- (IBAction)clearAllButtonTapped:(id)event;
 @end
 
 @interface CBClipboardController(Private)

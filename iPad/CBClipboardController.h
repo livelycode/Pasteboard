@@ -1,18 +1,19 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@class CBApplicationController, CBSyncController, CBPasteView;
+@class CBApplicationController, CBDevicesViewController, CBSyncController, CBPasteView;
 
 @interface CBClipboardController : UIViewController {
 @private
   NSInteger rows;
   NSInteger columns;
-  UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
-  UIBarButtonItem* devicesButton;
+  IBOutlet UIView* clipboardView;
   UIPopoverController* popoverController;
+  IBOutlet UIBarButtonItem* devicesButton;
   CBPasteView* pasteButton;
+  CBDevicesViewController* devicesViewController;
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
   CBSyncController* syncController;
@@ -26,7 +27,8 @@
 //UIGestureRecognizerDelegate
 - (void)handleTapFromPasteView:(CBPasteView*)view;
 - (void)handleTapFromItemView:(CBItemView*)itemView;
-- (void)devicesButtonTapped:(id)event;
+- (IBAction)devicesButtonTapped:(id)event;
+- (IBAction)clearAllButtonTapped:(id)event;
 @end
 
 @interface CBClipboardController(Private)
