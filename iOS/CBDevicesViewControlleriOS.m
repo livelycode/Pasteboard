@@ -11,7 +11,9 @@
 
 @implementation CBDevicesViewController(iOS)
 - (void)setSyncController:(CBSyncController*)aSyncController {
-  [syncController release];
+  if(syncController) {
+    [syncController release];
+  }
   syncController = [aSyncController retain];
   [syncController addDelegate: self];
   [foundCloudboards release];
@@ -22,6 +24,7 @@
 
 - (void)releaseSyncController {
   [syncController release];
+  syncController = nil;
   [foundCloudboards release];
   [selectedCloudboards release];
   foundCloudboards = [[NSMutableArray alloc] init];
