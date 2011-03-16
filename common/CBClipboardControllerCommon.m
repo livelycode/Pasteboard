@@ -57,6 +57,12 @@
 
 @implementation CBClipboardController(CommonPrivate)
 
+- (void)drawPasteView {
+  CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
+  CBPasteView *pasteView = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
+  [[self view] addSubview:pasteView];
+}
+
 - (void)drawItem:(CBItem*)item {
   CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
   CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];

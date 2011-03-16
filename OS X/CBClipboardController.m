@@ -68,12 +68,6 @@
   return [value rectValue];
 }
 
-- (void)drawPasteView {
-  CGRect frame = [[frames objectAtIndex:0] rectValue];
-  NSView *pasteView = [[CBPasteView alloc] initWithFrame:frame delegate:self];
-  [[self view] addSubview:pasteView];
-}
-
 - (void)moveAllItemViewsAnimated {
   [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
     CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];

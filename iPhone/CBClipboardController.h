@@ -1,7 +1,7 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@class CBApplicationController, CBDevicesViewController, CBSyncController, CBPasteView;
+@class CBApplicationController, CBDevicesViewController, CBSyncController, CBClipboard, CBPasteView;
 
 @interface CBClipboardController : UIViewController {
 @private
@@ -31,7 +31,6 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
-- (void)drawPasteButton;
 - (void)setRowsForPortrait;
 - (void)setRowsForLandscape;
 - (void)moveAllItemViewsAnimated;

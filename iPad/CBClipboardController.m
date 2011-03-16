@@ -53,7 +53,7 @@
 - (void)viewDidLoad {
   [self preparePopoverView];
   [self initializeItemViewFrames];
-  [self drawPasteButton];
+  [self drawPasteView];
   [self drawAllItems];
 }
 
@@ -117,24 +117,6 @@
   return [value CGRectValue];
 }
 
-- (CGRect)clipboardFrame {
-  CGRect mainFrame = [[UIScreen mainScreen] bounds];
-  CGRect frame = CGRectOffset(mainFrame, 0, 20);
-  return frame;
-}
-
-- (void)preparePopoverView {
-  CBDevicesViewController* devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self syncController:syncController];
-  popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
-  popoverController.popoverContentSize = CGSizeMake(300, 300);
-}
-
-- (void)drawPasteButton {
-  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  pasteButton = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
-  [self.view addSubview:pasteButton];
-}
-
 - (void)setRowsForPortrait {
   rows = ROWS_PORTRAIT;
   columns = ITEMS/rows;
@@ -168,6 +150,13 @@
       [frames addObject:[NSValue valueWithCGRect:itemFrame]];
     }
   }
+}
+
+- (void)preparePopoverView {
+  CBDevicesViewController* devicesViewController = [[CBDevicesViewController alloc]
+                                                    initWithClipboard:self syncController:syncController];
+  popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];
+  popoverController.popoverContentSize = CGSizeMake(300, 300);
 }
 
 -(void)addItemView:(CBItemView *)itemView {

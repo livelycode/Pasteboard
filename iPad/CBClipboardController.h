@@ -1,7 +1,7 @@
 #import "Cocoa.h"
 #import "CBItemViewDelegate.h"
 
-@class CBApplicationController, CBDevicesViewController, CBSyncController, CBPasteView;
+@class CBApplicationController, CBDevicesViewController, CBSyncController, CBPasteView, CBClipboard;
 
 @interface CBClipboardController : UIViewController {
 @private
@@ -13,7 +13,6 @@
   UIPopoverController* popoverController;
   IBOutlet UIBarButtonItem* devicesButton;
   CBPasteView* pasteButton;
-  CBDevicesViewController* devicesViewController;
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
   CBSyncController* syncController;
@@ -33,10 +32,10 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
-- (void)drawPasteButton;
 - (void)setRowsForPortrait;
 - (void)setRowsForLandscape;
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemViewFrames;
+- (void)preparePopoverView;
 - (void)addItemView:(CBItemView *)itemView;
 @end

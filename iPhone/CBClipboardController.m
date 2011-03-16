@@ -50,7 +50,7 @@
 
 - (void)viewDidLoad {
   [self initializeItemViewFrames];
-  [self drawPasteButton];
+  [self drawPasteView];
   [self drawAllItems];
 }
 
@@ -124,12 +124,6 @@
   [UIView animateWithDuration:0.5 animations:^(void) {
     [self moveAllItemViews];
   }];
-}
-
-- (void)drawPasteButton {
-  CGRect frame = [[frames objectAtIndex:0] CGRectValue];
-  pasteButton = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
-  [self.view addSubview:pasteButton];
 }
 
 - (void)initializeItemViewFrames {	
