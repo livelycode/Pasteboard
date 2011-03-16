@@ -74,6 +74,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="81007711"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIBarStyle">1</int>
 						<object class="NSArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUINavigationItem" id="267487589">
@@ -81,7 +82,7 @@
 								<string key="IBUITitle">Devices</string>
 								<object class="IBUIBarButtonItem" key="IBUIRightBarButtonItem" id="126734928">
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-									<int key="IBUIStyle">1</int>
+									<int key="IBUIStyle">2</int>
 									<reference key="IBUINavigationItem" ref="267487589"/>
 									<int key="IBUISystemItemIdentifier">0</int>
 								</object>
