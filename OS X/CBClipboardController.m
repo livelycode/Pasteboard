@@ -75,17 +75,10 @@
 }
 
 - (void)moveAllItemViewsAnimated {
-  NSMutableArray* animations = [NSMutableArray array];
   [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
-    NSValue* newFrame = [frames objectAtIndex:index+1];
-    NSDictionary* settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                             itemView, NSViewAnimationTargetKey,
-                             newFrame, NSViewAnimationEndFrameKey, nil];
-    [animations addObject:settings];
+    CGRect newFrame = [[frames objectAtIndex:index+1] rectValue];
+    [[itemView animator] setFrame:newFrame];
   }];
-  NSViewAnimation* viewAnimation = [[NSViewAnimation alloc] initWithViewAnimations:animations];
-  [viewAnimation setFrameRate:30];
-  [viewAnimation startAnimation];
 }
 
 - (void)initializeItemSlots {

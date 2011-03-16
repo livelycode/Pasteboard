@@ -19,3 +19,6 @@
 #import "CBWindowView.h"
 #import "CBSettingsController.h"
 #define POST_SEPARATOR @"com.cloudboard.separator"
+
+#import "CBCocoaExtensions.h"
+#import "CollectionIterators.h"

@@ -21,7 +21,7 @@
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer;
 
-- (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack;
+- (id)initWithFrontView:(id)theFront backView:(id)theBack;
 - (void)showFront;
 - (void)showBack;
 - (CBClipboardController *)clipboardController;

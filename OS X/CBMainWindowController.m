@@ -10,7 +10,6 @@ static CALayer *rootLayer;
 - (CGRect)createClipboardFrame;
 - (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack;
 - (NSDictionary *)createActions;
-- (CGImageRef)CGImageWithView:(NSView *)aView;
 
 @end
 
@@ -131,16 +130,14 @@ static CALayer *rootLayer;
   return CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
 }
 
-- (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack {
-  CALayer *frontLayer = [[CALayer alloc] init];
+- (CALayer *)createLayerWithFront:(id)theFront back:(id)theBack {
+  CALayer *frontLayer = [theFront snapshot];
   [frontLayer setFrame:[theFront bounds]];
-  [frontLayer setContents:(id)[self CGImageWithView:theFront]];
   [frontLayer setDoubleSided:NO];
   
   [theBack setHidden:NO];
-  CALayer *backLayer = [[CALayer alloc] init];
+  CALayer *backLayer = [theBack snapshot]; 
   [backLayer setFrame:[theBack bounds]];
-  [backLayer setContents:(id)[self CGImageWithView:theBack]];
   [backLayer setTransform:CATransform3DMakeRotation(M_PI, 0, 1, 0)];
   [theBack setHidden:YES];
   
@@ -151,13 +148,6 @@ static CALayer *rootLayer;
   [layer setDelegate:self];
   [layer setActions:[self createActions]];
   return layer;
-}
-
-- (CGImageRef)CGImageWithView:(NSView *)aView {
-  NSData *data = [aView dataWithPDFInsideRect:[aView bounds]];
-  NSImage *image = [[NSImage alloc] initWithData:data];  
-  CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);
-  return CGImageSourceCreateImageAtIndex(source, 0, NULL);
 }
 
 - (NSDictionary *)createActions {

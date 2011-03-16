@@ -44,24 +44,7 @@
   [attrString drawInRect:textRect];
 }
 
-- (void)fadeOut {
-  NSView *rootView = [[self window] contentView];
-  NSView *clipboardView = [self superview];
-  CGRect frame = [self frame];
-  
-  NSImage *image = [[NSImage alloc] initWithData:[self dataWithPDFInsideRect:[self bounds]]];  
-  CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)[image TIFFRepresentation], NULL);
-  CGImageRef maskRef =  CGImageSourceCreateImageAtIndex(source, 0, NULL);
-    
-  CALayer *layer = [[CALayer alloc] init];
-  [CATransaction setDisableActions:YES];
-  [layer setNeedsDisplay];
-  [layer setOpacity:0];
-  [layer setFrame:[rootView convertRect:frame fromView:clipboardView]];
-  [layer setContents:(id)maskRef];
-  [CBMainWindowController addSublayerToRootLayer:layer];
-  [CATransaction setDisableActions:NO];
-  
+- (CALayer *)createAnimationLayerWithFrame:(CGRect)aRect {
   CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
   [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];
   CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
@@ -72,8 +55,22 @@
   [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
   [group setDuration:0.5];
   [group setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-  [layer addAnimation:group forKey:@"transform"];
+  CALayer *layer = [self snapshot];
+  [layer setFrame:aRect];
+  [layer setActions:[NSDictionary dictionaryWithObject:group forKey:@"opacity"]];
+  return layer;
+}
+
+- (void)fadeOut {
+  NSView *rootView = [[self window] contentView];
+  NSView *clipboardView = [self superview];
+  CGRect frame = [self frame];
+  CALayer *layer = [self createAnimationLayerWithFrame:[rootView convertRect:frame fromView:clipboardView]]	;
+  [CATransaction setDisableActions:YES];
+  [CBMainWindowController addSublayerToRootLayer:layer];
+  [CATransaction setDisableActions:NO];
   [animationLayers insertObject:layer atIndex:0];
+  [layer setOpacity:0];
 }
 
 @end
@@ -113,14 +110,10 @@
     string = content;
     delegate = anObject;
     mouseDown = NO;
-    [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
     animationLayers = [NSMutableArray array];
+    [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }
   return self;
-}
-
-- (void)moveToFrame:(CGRect)frame {
-  [self setFrame: frame];
 }
 
 @end
