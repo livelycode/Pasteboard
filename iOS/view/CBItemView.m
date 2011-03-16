@@ -1,26 +1,5 @@
 #import "Cloudboard.h"
 
-#define NOTE_PADDING 10
-
-#define TEXT_PADDING 12
-
-#define CROSS_WIDTH 16
-#define CROSS_PADDING 10
-#define CROSS_LINE_WIDTH 3
-#define CROSS_HIGHLIGHT 0.2
-
-#define NOTE_RED 0.9
-#define NOTE_GREEN 0.8
-#define NOTE_BLUE 0.3
-#define NOTE_HIGHLIGHT 0.2
-
-#define BACKLIGHT_RED 0.5
-#define BACKLIGHT_GREEN 0.5
-#define BACKLIGHT_BLUE 1
-#define BACKLIGHT_ALPHA 0.2
-
-#define BORDER_ALPHA 1
-
 @implementation CBItemView(Private)
 
 - (UIBezierPath *)notePathWithRect:(CGRect)noteRect {
@@ -61,7 +40,7 @@
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  [string drawInRect:textRect withFont: [UIFont systemFontOfSize:16]];
+  [string drawInRect:textRect withFont: [UIFont systemFontOfSize:ITEM_FONT_SIZE]];
 }
 
 - (void)fadeOut {
@@ -123,7 +102,7 @@
 @implementation CBItemView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], 16, 20);
+  CGRect noteRect = CGRectInset([self bounds], ITEM_PADDING_X, ITEM_PADDING_Y);
   UIBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];
   [self drawBorderWithPath:notePath];
