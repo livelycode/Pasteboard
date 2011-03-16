@@ -15,7 +15,6 @@
   UIWindow *window;
 }
 - (void)initClipboards;
-- (void)addSubview: (UIView*) view;
 - (CBSyncController*) syncController;
 - (CBClipboardController*) clipboardController;
 - (CBItem*)currentPasteboardItem;

@@ -21,7 +21,7 @@
 @end
 
 @interface CBClipboardController(CommonPrivate)
-- (void)drawPasteView;
+- (void)drawPasteView;	
 - (void)drawItem:(CBItem *)item;
 - (void)moveAllItemViews;
 - (void)drawAllItems;

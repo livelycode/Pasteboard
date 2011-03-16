@@ -7,7 +7,6 @@
   window = [[UIWindow alloc] initWithFrame:mainFrame];
   [window makeKeyAndVisible];
   clipboardController = [[CBClipboardController alloc] initWithDelegate:self];
-  [clipboardController.view setFrame:CGRectOffset(clipboardController.view.frame, 0, 22)];
   [window addSubview:clipboardController.view];
 }
 

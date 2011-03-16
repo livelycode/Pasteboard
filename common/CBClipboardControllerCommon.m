@@ -81,7 +81,7 @@
 - (void)moveAllItemViews {
   [itemViewSlots enumerateObjectsUsingBlock:^(id itemView, NSUInteger index, BOOL *stop) {
     CGRect newFrame = [self rectForNSValue:[frames objectAtIndex:index+1]];
-    [itemView moveToFrame:newFrame];
+    [itemView setFrame:newFrame];
   }];  
 }
 

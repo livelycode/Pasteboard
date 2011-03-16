@@ -14,7 +14,7 @@
 - (void)releaseSyncController;
 @end
 
-@interface CBDevicesViewController(Delegation)<UITableViewDelegate, UITableViewDataSource, CBSyncControllerProtocol>
+@interface CBDevicesViewController(iOSDelegation)<UITableViewDelegate, UITableViewDataSource, CBSyncControllerProtocol>
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 //CBSyncControllerDelegate

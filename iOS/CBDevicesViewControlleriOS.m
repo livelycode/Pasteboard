@@ -29,7 +29,7 @@
 }
 @end
 
-@implementation CBDevicesViewController(Delegation)
+@implementation CBDevicesViewController(iOSDelegation)
 
 //UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
