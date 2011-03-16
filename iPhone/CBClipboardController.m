@@ -22,6 +22,21 @@
   [self drawPasteView];
   [self drawAllItems];
 }
+
+- (void)viewDidUnload {
+  [clipboardView release];
+}
+
+- (void)dealloc {
+  [clipboard release];
+  [delegate release];
+  [devicesViewController release];
+  [pasteButton release];
+  [itemViewSlots release];
+  [frames release];
+  [syncController release];
+  [super dealloc];
+}
 @end
 
 @implementation CBClipboardController(Delegation)

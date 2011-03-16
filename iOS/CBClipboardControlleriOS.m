@@ -26,7 +26,6 @@
     delegate = appController;
     devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self];
     [self startSyncing];
-    [devicesViewController setSyncController:syncController];
   }
   return self;
 }

@@ -14,10 +14,20 @@
   [self drawAllItems];
 }
 
+- (void)viewDidUnload {
+  [clipboardView release];
+  [devicesButton release];
+}
+
 - (void)dealloc {
   [clipboard release];
-  [syncController release];
+  [delegate release];
+  [devicesViewController release];
+  [popoverController release];
+  [pasteButton release];
   [itemViewSlots release];
+  [frames release];
+  [syncController release];
   [super dealloc];
 }
 @end

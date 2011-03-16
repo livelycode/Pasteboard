@@ -11,6 +11,7 @@
 
 @implementation CBDevicesViewController(iOS)
 - (void)setSyncController:(CBSyncController*)aSyncController {
+  [syncController release];
   syncController = [aSyncController retain];
   [syncController addDelegate: self];
   [foundCloudboards release];
