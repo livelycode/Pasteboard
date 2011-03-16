@@ -6,16 +6,17 @@
   CGRect mainFrame = [[UIScreen mainScreen] bounds];
   window = [[UIWindow alloc] initWithFrame:mainFrame];
   [window makeKeyAndVisible];
-  syncingClipboardController = [[CBClipboardController alloc] initWithDelegate:self];
-  [window addSubview:syncingClipboardController.view];
+  clipboardController = [[CBClipboardController alloc] initWithDelegate:self];
+  [clipboardController.view setFrame:CGRectOffset(clipboardController.view.frame, 0, 22)];
+  [window addSubview:clipboardController.view];
 }
 
 - (CBClipboardController*)clipboardController {
-  return syncingClipboardController;
+  return clipboardController;
 }
 
 - (CBSyncController*)syncController {
-  return [syncingClipboardController syncController];
+  return [clipboardController syncController];
 }
 
 - (CBItem*)currentPasteboardItem {
@@ -51,18 +52,18 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
   NSLog(@"moved to background");
-  [syncingClipboardController stopSyncing];
+  [clipboardController stopSyncing];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
   NSLog(@"entering foreground");
-  [syncingClipboardController startSyncing];
+  [clipboardController startSyncing];
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
   NSLog(@"will terminate");
-  [syncingClipboardController stopSyncing];
+  [clipboardController stopSyncing];
 }
 
 

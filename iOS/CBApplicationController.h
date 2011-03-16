@@ -11,7 +11,7 @@
 @interface CBApplicationController : NSObject <UIApplicationDelegate>
 {
   @private
-  CBClipboardController *syncingClipboardController;
+  CBClipboardController *clipboardController;
   UIWindow *window;
 }
 - (void)initClipboards;
