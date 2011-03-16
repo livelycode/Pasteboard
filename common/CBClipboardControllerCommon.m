@@ -61,7 +61,7 @@
   CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
   CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
   [itemViewSlots insertObject:newItemView atIndex:0];
-  [[self view] addSubview:newItemView];
+  [self addItemView:newItemView];
   //remove last itemView if necessary
   while([itemViewSlots count] > (rows*columns-1)) {
     CBItemView* lastView = [itemViewSlots lastObject];

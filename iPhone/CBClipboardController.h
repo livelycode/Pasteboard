@@ -7,11 +7,9 @@
 @private
   NSInteger rows;
   NSInteger columns;
-  UIToolbar* toolbar;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
   IBOutlet UIView* clipboardView;
-  UIBarButtonItem* devicesButton;
   CBPasteView* pasteButton;
   CBDevicesViewController* devicesViewController;
   NSMutableArray* itemViewSlots;
@@ -32,12 +30,10 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
-- (CGRect)clipboardFrame;
-- (void)drawToolbar;
-- (void)preparePopoverView;
 - (void)drawPasteButton;
 - (void)setRowsForPortrait;
 - (void)setRowsForLandscape;
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemViewFrames;
+- (void)addItemView:(CBItemView*)itemView;
 @end

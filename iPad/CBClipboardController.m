@@ -195,4 +195,8 @@
   }
 }
 
+-(void)addItemView:(CBItemView *)itemView {
+  [self.view addSubview:itemView];
+}
+
 @end

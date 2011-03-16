@@ -151,4 +151,8 @@
   }
 }
 
+-(void)addItemView:(CBItemView *)itemView {
+  [clipboardView addSubview:itemView];
+}
+
 @end

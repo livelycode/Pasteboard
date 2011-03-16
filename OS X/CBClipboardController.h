@@ -10,6 +10,7 @@
   CBMainWindowController *windowController;
   CBSyncController* syncController;
   CBClipboard *clipboard;
+  NSView* clipboardView;
   NSMutableArray *frames;
   NSMutableArray *itemViewSlots;
 }
@@ -33,4 +34,5 @@
 - (void)drawPasteView;
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemSlots;
+- (void)addItemView:(CBItemView*)view;
 @end
