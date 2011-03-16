@@ -90,7 +90,7 @@
   }
 }
 
-- (void)addItemView:(CBItemView*)itemView {
+- (void)addItemView:(NSView*)itemView {
   [self.view addSubview: itemView];
 }
 

@@ -2,9 +2,6 @@
 #import "CBClipboardControlleriOS.h"
 #import "Cloudboard.h"
 
-#define PADDING_TOP 40
-#define PADDING_LEFT 20
-
 #define ITEMS 8
 #define ROWS_PORTRAIT 4
 #define ROWS_LANDSCAPE 2
@@ -20,6 +17,8 @@
     } else {
       [self setRowsForLandscape];
     }
+    paddingTop = CLIPBOARD_PADDING_TOP;
+    paddingSides = CLIPBOARD_PADDING_SIDES;
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
@@ -87,17 +86,15 @@
 }
 
 - (void)initializeItemViewFrames {	
-  CGFloat paddingTop = PADDING_TOP;
-  CGFloat paddingLeft = PADDING_LEFT;
   CGRect mainBounds = [clipboardView bounds];
-  CGRect itemsBounds = CGRectMake(paddingLeft, paddingTop, CGRectGetWidth(mainBounds)-2*paddingLeft, CGRectGetHeight(mainBounds)-2*paddingTop);
+  CGRect itemsBounds = CGRectMake(paddingSides, paddingTop, CGRectGetWidth(mainBounds)-2*paddingSides, CGRectGetHeight(mainBounds)-2*paddingTop);
   CGFloat clipboardHeight = CGRectGetHeight(itemsBounds);
   CGFloat clipboardWidth = CGRectGetWidth(itemsBounds);
   CGFloat itemWidth = clipboardWidth / columns;
   CGFloat itemHeight = clipboardHeight / rows;
   for(NSInteger row=1; row<=rows; row++) {
     for(NSInteger column=1; column<=columns; column++) {
-      CGFloat x = paddingLeft + itemWidth*(column-1);
+      CGFloat x = paddingSides + itemWidth*(column-1);
       CGFloat y = paddingTop +(row-1)*itemHeight;
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithCGRect:itemFrame]];
@@ -105,7 +102,7 @@
   }
 }
 
--(void)addItemView:(CBItemView *)itemView {
-  [self.view addSubview:itemView];
+-(void)addItemView:(UIView *)itemView {
+  [clipboardView addSubview:itemView];
 }
 @end

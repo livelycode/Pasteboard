@@ -33,5 +33,5 @@
 - (CGRect)rectForNSValue:(NSValue*)value;
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemSlots;
-- (void)addItemView:(CBItemView*)view;
+- (void)addItemView:(NSView*)view;
 @end

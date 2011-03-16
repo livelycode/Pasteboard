@@ -27,5 +27,5 @@
 - (void)setRowsForLandscape;
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemViewFrames;
-- (void)addItemView:(CBItemView *)itemView;
+- (void)addItemView:(UIView *)itemView;
 @end

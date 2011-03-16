@@ -7,6 +7,8 @@
 @private
   NSInteger rows;
   NSInteger columns;
+  CGFloat paddingTop;
+  CGFloat paddingSides;
   CBClipboard* clipboard;
   CBApplicationController* delegate;
   IBOutlet UIView* clipboardView;

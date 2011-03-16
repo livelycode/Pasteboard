@@ -8,8 +8,6 @@
 
 #import "Cloudboard.h"
 
-#define PADDING 0
-
 @implementation CBClipboardController(CBClipboardControllerCommon)
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
@@ -60,7 +58,7 @@
 - (void)drawPasteView {
   CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
   CBPasteView *pasteView = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
-  [[self view] addSubview:pasteView];
+  [self addItemView:pasteView];
 }
 
 - (void)drawItem:(CBItem*)item {
