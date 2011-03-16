@@ -626,7 +626,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_INFO; // | HTTP_LOG_FLAG_TRACE;
 			[theNetService release];
 		};
 		
-		[[self class] performBonjourBlock:bonjourBlock waitUntilDone:NO];
+		[[self class] performBonjourBlock:bonjourBlock waitUntilDone:YES];
 		
 		netService = nil;
 	}
