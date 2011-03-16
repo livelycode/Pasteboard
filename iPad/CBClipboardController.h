@@ -10,6 +10,7 @@
   CBClipboard* clipboard;
   CBApplicationController* delegate;
   IBOutlet UIView* clipboardView;
+  CBDevicesViewController* devicesViewController;
   UIPopoverController* popoverController;
   IBOutlet UIBarButtonItem* devicesButton;
   CBPasteView* pasteButton;
@@ -17,25 +18,12 @@
   NSMutableArray* frames;
   CBSyncController* syncController;
 }
-- (id)initWithDelegate:(id)appController;
-- (void)stopSyncing;
-- (void)startSyncing;
 @end
 
 @interface CBClipboardController(Delegation) <CBItemViewDelegate>
-//UIGestureRecognizerDelegate
-- (void)handleTapFromPasteView:(CBPasteView*)view;
-- (void)handleTapFromItemView:(CBItemView*)itemView;
 - (IBAction)devicesButtonTapped:(id)event;
-- (IBAction)clearAllButtonTapped:(id)event;
 @end
 
 @interface CBClipboardController(Private)
-- (CGRect)rectForNSValue:(NSValue*)value;
-- (void)setRowsForPortrait;
-- (void)setRowsForLandscape;
-- (void)moveAllItemViewsAnimated;
-- (void)initializeItemViewFrames;
 - (void)preparePopoverView;
-- (void)addItemView:(CBItemView *)itemView;
 @end

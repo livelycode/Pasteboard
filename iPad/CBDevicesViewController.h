@@ -19,15 +19,5 @@
   NSMutableArray* selectedCloudboards;
   NSMutableArray* connectedCloudboards;
 }
-- (id)initWithClipboard:(CBClipboardController*)delegate syncController:(CBSyncController*)aSyncController;
-@end
-
-@interface CBDevicesViewController(Delegation)<UITableViewDelegate, UITableViewDataSource, CBSyncControllerProtocol>
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
-//CBSyncControllerDelegate
-- (void)clientBecameVisible:(NSString*)clientName;
-- (void)clientBecameInvisible:(NSString*)clientName;
-- (void)clientConnected:(NSString*)clientName;
-- (void)clientConfirmed:(NSString*)clientName;
+- (id)initWithClipboard:(CBClipboardController*)delegate;
 @end
