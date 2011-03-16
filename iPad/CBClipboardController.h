@@ -33,9 +33,6 @@
 
 @interface CBClipboardController(Private)
 - (CGRect)rectForNSValue:(NSValue*)value;
-- (CGRect)clipboardFrame;
-- (void)drawToolbar;
-- (void)preparePopoverView;
 - (void)drawPasteButton;
 - (void)setRowsForPortrait;
 - (void)setRowsForLandscape;
