@@ -28,7 +28,7 @@
 @implementation CBPasteView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], 32, 32);
+  CGRect noteRect = CGRectInset([self bounds], ITEM_PADDING_X, ITEM_PADDING_Y);
   [self drawBorderWithPath:[self notePathWithRect:noteRect]];
 }
 
