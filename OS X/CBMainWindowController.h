@@ -36,6 +36,6 @@
 - (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)frontView back:(NSView *)backView;
 - (NSWindow *)createWindowWithFrame:(CGRect)aRect;
 - (CGRect)createClipboardFrame;
-- (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack;
-- (NSDictionary *)createActions;
+- (CALayer *)layerWithFront:(NSView *)theFront back:(NSView *)theBack;
+- (NSDictionary *)actions;
 @end

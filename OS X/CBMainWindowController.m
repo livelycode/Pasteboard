@@ -37,7 +37,7 @@ static CALayer *rootLayer;
 }
 
 - (void)showFront {
-  flipLayer = [self createLayerWithFront:backView back:frontView];
+  flipLayer = [self layerWithFront:backView back:frontView];
   [CATransaction setDisableActions:YES];
   [CBMainWindowController addSublayerToRootLayer:flipLayer];
   [CATransaction setDisableActions:NO];
@@ -46,7 +46,7 @@ static CALayer *rootLayer;
 }
 
 - (void)showBack {
-  flipLayer = [self createLayerWithFront:frontView back:backView];
+  flipLayer = [self layerWithFront:frontView back:backView];
   [CATransaction setDisableActions:YES];
   [CBMainWindowController addSublayerToRootLayer:flipLayer];
   [CATransaction setDisableActions:NO];
@@ -133,7 +133,7 @@ static CALayer *rootLayer;
   return CGRectMake((screenWidth-clipboardWidth)/2, marginBottom, clipboardWidth, clipboardHeight);
 }
 
-- (CALayer *)createLayerWithFront:(id)theFront back:(id)theBack {
+- (CALayer *)layerWithFront:(id)theFront back:(id)theBack {
   CALayer *frontLayer = [theFront snapshot];
   [frontLayer setFrame:[theFront bounds]];
   [frontLayer setDoubleSided:NO];
@@ -144,16 +144,16 @@ static CALayer *rootLayer;
   [backLayer setTransform:CATransform3DMakeRotation(M_PI, 0, 1, 0)];
   [theBack setHidden:YES];
   
-  CALayer *layer = [[CALayer alloc] init];
+  CALayer *layer = [CALayer layer];
   [layer setFrame:[theFront frame]];
   [layer addSublayer:backLayer];
   [layer addSublayer:frontLayer];
   [layer setDelegate:self];
-  [layer setActions:[self createActions]];
+  [layer setActions:[self actions]];
   return layer;
 }
 
-- (NSDictionary *)createActions {
+- (NSDictionary *)actions {
   CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:flipKey];
   [animation setDelegate:self];
   [animation setDuration:0.5];
