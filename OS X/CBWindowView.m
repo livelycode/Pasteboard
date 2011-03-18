@@ -2,32 +2,24 @@
 
 @implementation CBWindowView	
 
-- (id)initWithFrame:(NSRect)aFrame
-{
+- (id)initWithFrame:(NSRect)aFrame {
     self = [super initWithFrame:aFrame];
-    if (self != nil)
-    {
-        color = [NSColor whiteColor];
+    if (self != nil) {
+
     }
     return self;
 }
 
-- (void)drawRect:(NSRect)aRect
-{
-    [color set];
-    CGRect frame = [self bounds];
-    NSBezierPath *path = [NSBezierPath bezierPathWithRect:frame];
-    [path fill];
+- (void)drawRect:(NSRect)aRect {
+  NSColor* color = [NSColor colorWithCalibratedWhite:0 alpha:0.4];
+  [color set];
+  CGRect frame = [self bounds];
+  NSBezierPath *path = [NSBezierPath bezierPathWithRect:frame];
+  [path fill];
 }
 
-- (void)mouseDown:(NSEvent *)theEvent
-{
+- (void)mouseDown:(NSEvent *)theEvent {
     [[self window] orderOut:self];
-}
-
-- (void)setColor:(NSColor *)aColor
-{
-    color = aColor;
 }
 
 @end

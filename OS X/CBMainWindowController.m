@@ -2,17 +2,6 @@
 
 static CALayer *rootLayer;
 
-@interface CBMainWindowController(Private)
-
-- (CATransform3D)createFlipTransform;
-- (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)frontView back:(NSView *)backView;
-- (NSWindow *)createWindowWithFrame:(CGRect)aRect;
-- (CGRect)createClipboardFrame;
-- (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack;
-- (NSDictionary *)createActions;
-
-@end
-
 @implementation CBMainWindowController
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer {
@@ -27,14 +16,13 @@ static CALayer *rootLayer;
     CGRect mainFrame = [[NSScreen mainScreen] frame];
     CGRect clipboardFrame = [self createClipboardFrame];
     mainWindow = [self createWindowWithFrame:mainFrame];
-    clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame];
-    [clipboardController setWindowController:self];
+    clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame windowController:self];
     syncController = [[CBSyncController alloc] initWithClipboardController:clipboardController];
     [clipboardController setSyncController:syncController];
     settingsController = [[CBSettingsController alloc] initWithFrame:clipboardFrame syncController:syncController];
     [settingsController setWindowController:self];
-    frontView = [clipboardController view];
-    backView = [settingsController view];
+    frontView = [[clipboardController view] retain];
+    backView = [[settingsController view] retain];
     [mainWindow setContentView:[self createRootViewWithFrame:mainFrame front:frontView back:backView]];
   }
   return self;
@@ -60,6 +48,18 @@ static CALayer *rootLayer;
 
 - (CBClipboardController *)clipboardController {
   return clipboardController;
+}
+
+- (void)dealloc {
+  [mainWindow release];
+  [clipboardController release];
+  [settingsController release];
+  [syncController release];
+  [frontView release];
+  [backView release];
+  [flipLayer release];
+  [flipKey release];
+  [super dealloc];
 }
 
 @end
@@ -100,11 +100,10 @@ static CALayer *rootLayer;
 
 - (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)theFront back:(NSView *)theBack {
   NSView *animationView = [[NSView alloc] initWithFrame:aRect];
-  rootLayer = [CALayer layer];
+  rootLayer = [[CALayer alloc] init];
   [animationView setLayer:rootLayer];
   [animationView setWantsLayer:YES];
   CBWindowView *view = [[CBWindowView alloc] initWithFrame:aRect];
-  [view setColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
   [view setWantsLayer:YES];
   [view setSubviews:[NSArray arrayWithObjects:theBack, theFront, animationView, nil]];
   return view;

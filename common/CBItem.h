@@ -6,6 +6,8 @@
     NSString *string;
 }
 
++ (id)itemWithString:(NSString*)aString;
+
 - (id)initWithString:(NSString *)aString;
 
 - (id)initWithAttributedString:(NSAttributedString *)aString;

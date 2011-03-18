@@ -11,13 +11,14 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon72.png</string>
+		<string>Icon114.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>greatakiraempire.com.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>PasteBoard</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,5 +29,7 @@
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 </dict>
 </plist>

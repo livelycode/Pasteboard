@@ -22,7 +22,7 @@
   NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:(NSString*)kUTTypeUTF8PlainText];
   NSLog(@"pasted: %@", value);
   if(value != nil) {
-    CBItem* item = [[[CBItem alloc] initWithString:value] autorelease];
+    CBItem* item = [CBItem itemWithString:value];
     return item;
   }
   return nil;

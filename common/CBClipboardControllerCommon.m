@@ -57,13 +57,13 @@
 
 - (void)drawPasteView {
   CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
-  CBPasteView *pasteView = [[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self];
+  CBPasteView *pasteView = [[[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self] autorelease];
   [self addItemView:pasteView];
 }
 
 - (void)drawItem:(CBItem*)item {
   CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
-  CBItemView *newItemView = [[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self];
+  CBItemView *newItemView = [[[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self] autorelease];
   [itemViewSlots insertObject:newItemView atIndex:0];
   [self addItemView:newItemView];
   //remove last itemView if necessary

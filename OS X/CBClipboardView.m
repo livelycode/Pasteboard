@@ -9,6 +9,10 @@
 #define DROP_SHADOW_BLUR 8
 #define DROP_SHADOW_ALPHA 0.8
 
+@implementation CBClipboardView
+
+@end
+
 @implementation CBClipboardView(Private)
 
 - (void)drawBackgroundWithPath:(NSBezierPath *)aPath {
@@ -55,9 +59,5 @@
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {}
-
-@end
-
-@implementation CBClipboardView
 
 @end

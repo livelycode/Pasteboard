@@ -6,12 +6,8 @@
   @private
   id delegate;
   NSString *string;
-  NSTrackingArea *noteArea;
   NSMutableArray *animationLayers;
-  CGImageRef snapshot;
-  BOOL mouseOver;
   BOOL mouseDown;
-  BOOL noteBacklighted;
 }
 
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject;

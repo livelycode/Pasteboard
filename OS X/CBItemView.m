@@ -92,6 +92,12 @@
   [self drawTextAtRect:CGRectInset(noteRect, 8, 8)];
 }
 
+- (void)dealloc {
+  [delegate release];
+  [string release];
+  [animationLayers release];
+}
+
 @end
 
 @implementation CBItemView(Delegation)
@@ -107,10 +113,10 @@
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    string = content;
-    delegate = anObject;
+    string = [content retain];
+    delegate = [anObject retain];
     mouseDown = NO;
-    animationLayers = [NSMutableArray array];
+    animationLayers = [[NSMutableArray alloc] init];
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }
   return self;

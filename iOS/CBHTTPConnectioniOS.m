@@ -6,7 +6,7 @@
   self = [super initWithAsyncSocket:newSocket configuration:aConfig];
   if (self != nil) {
     CBApplicationController* appController = [[UIApplication sharedApplication] delegate];
-    syncController = [appController syncController];
+    syncController = [[appController syncController] retain];
   }
   return self;
 }

@@ -138,9 +138,8 @@
   dispatch_async(queue,^{
     NSURLResponse *URLResponse = nil;
     NSError *receivedError = nil;
-    NSData *receivedData = [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
+    [NSURLConnection sendSynchronousRequest:URLRequest returningResponse:&URLResponse
                                                              error:&receivedError];
-    NSLog(@"post to path: %@ response: %@", path, [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease]);
   });
 }
 

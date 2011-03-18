@@ -14,8 +14,7 @@
   NSMutableArray *frames;
   NSMutableArray *itemViewSlots;
 }
-- (id)initWithFrame:(CGRect)aFrame;
-- (void)setWindowController:(CBMainWindowController *)aController;
+- (id)initWithFrame:(CGRect)aFrame windowController:(CBMainWindowController*)controller;
 - (void)setSyncController:(CBSyncController *)controller;
 @end
 

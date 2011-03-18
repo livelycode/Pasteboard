@@ -36,7 +36,7 @@
 
 @implementation CBClipboardController
 
-- (id)initWithFrame:(CGRect)aFrame {
+- (id)initWithFrame:(CGRect)aFrame windowController:(CBMainWindowController *)aController {
   self = [super initWithNibName:@"clipboard" bundle:nil];
   if (self != nil) {
     rows = 4;
@@ -44,6 +44,7 @@
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
+    windowController = [aController retain];
     [[self view] setFrame:aFrame];
     [self initializeItemSlots];
     [self drawPasteView];
@@ -53,11 +54,8 @@
 }
 
 - (void)setSyncController:(CBSyncController *)controller {
-  syncController = controller;
-}
-
-- (void)setWindowController:(CBMainWindowController *)aController {
-  windowController = aController;
+  [syncController release];
+  syncController = [controller retain];
 }
 
 @end

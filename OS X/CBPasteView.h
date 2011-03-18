@@ -5,7 +5,6 @@
 {
 @private
   id delegate;
-  NSTrackingArea *noteArea;
   CGFloat lineWidth;
 }
 

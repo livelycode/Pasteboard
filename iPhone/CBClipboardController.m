@@ -8,12 +8,7 @@
 #define ROWS_LANDSCAPE 2
 
 @implementation CBClipboardController
-- (void)dealloc {
-  [clipboard release];
-  [syncController release];
-  [itemViewSlots release];
-  [super dealloc];
-}
+
 @end
 
 @implementation CBClipboardController(Overriden)
