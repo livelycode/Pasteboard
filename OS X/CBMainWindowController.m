@@ -8,6 +8,14 @@ static CALayer *rootLayer;
   [rootLayer addSublayer:aLayer];
 }
 
+- (void)toggleVisibility {
+  if ([mainWindow isVisible]) {
+    [mainWindow orderOut:self];
+  } else {
+    [mainWindow makeKeyAndOrderFront:self];
+  }
+}
+
 - (id)initWithFrontView:(NSView *)theFront backView:(NSView *)theBack {
   self = [super init];
   if (self != nil) {
@@ -67,11 +75,7 @@ static CALayer *rootLayer;
 @implementation CBMainWindowController(Delegation)
 
 - (void)hotKeyPressed:(CBHotKeyObserver *)hotKey {
-  if ([mainWindow isVisible]) {
-    [mainWindow orderOut:self];
-  } else {
-    [mainWindow makeKeyAndOrderFront:self];
-  }
+  [self toggleVisibility];
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {

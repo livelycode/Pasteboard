@@ -42,6 +42,18 @@
 
 @end
 
+@implementation CBApplicationController(Actions)
+
+- (IBAction)showPasteboard:(id)sender {
+  [windowController toggleVisibility];
+}
+
+- (IBAction)quitApplication:(id)sender {
+  [[NSApplication sharedApplication] terminate:sender];
+}
+
+@end
+
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -51,6 +63,7 @@
   hotKey = [[CBHotKeyObserver alloc] init];
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
+  [self activateStatusMenu];
 }
 
 - (void)systemPasteboardDidChange {
@@ -107,6 +120,16 @@
   [settings setValue: programArgs forKey:@"ProgramArguments"];
   NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
   [settings writeToURL:plistURL atomically:YES];
+}
+
+- (void)activateStatusMenu {
+  [NSBundle loadNibNamed:@"menu" owner:self];
+  NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
+  statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
+  [statusItem setImage:[NSImage imageNamed:@"IconStatusBar"]];
+  [statusItem setAlternateImage:[NSImage imageNamed:@"IconStatusBarInvers"]];
+  [statusItem setHighlightMode:YES];
+  [statusItem setMenu:statusBarMenu];
 }
 
 @end

@@ -10,7 +10,9 @@
   CBHotKeyObserver *hotKey;
   CBClipboardController *clipboardController;
   CBMainWindowController *windowController;
-  CBSyncController *syncController;	
+  CBSyncController *syncController;
+  NSStatusItem *statusItem;
+  IBOutlet NSMenu *statusBarMenu;
   BOOL windowHidden;
   BOOL autoStart;
   BOOL autoPaste;
@@ -21,6 +23,13 @@
 - (void)setAutoStart:(BOOL)autoStart;
 - (BOOL)autoPaste;
 - (void)setAutoPaste:(BOOL)autoPaste;
+@end
+
+@interface CBApplicationController(Actions)
+
+- (IBAction)showPasteboard:(id)sender;
+- (IBAction)quitApplication:(id)sender;
+
 @end
 
 @interface CBApplicationController(Delegation)
@@ -37,4 +46,5 @@
 - (void)loadSettings;
 - (void)updateSettings;
 - (void)updateLaunchd;
+- (void)activateStatusMenu;
 @end

@@ -19,6 +19,7 @@
 }
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer;
+- (void)toggleVisibility;
 - (id)initWithFrontView:(id)theFront backView:(id)theBack;
 - (void)showFront;
 - (void)showBack;
