@@ -37,7 +37,7 @@
     NSDate* lastChanged = [NSDate dateWithTimeIntervalSince1970:[[strings objectAtIndex:0] integerValue]];
     [strings removeObjectAtIndex:0];
     for(NSString* string in strings) {
-      CBItem* item = [[[CBItem alloc] initWithString: string] autorelease];
+      CBItem* item = [CBItem itemWithString: string];
       [items addObject: item];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -47,7 +47,7 @@
   }
   if([path isEqualToString:@"add"]) {
     match = YES;
-    CBItem* item = [[[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]] autorelease];
+    CBItem* item = [CBItem itemWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]];
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedAddedRemoteItem:item];
     });
@@ -88,7 +88,9 @@
 
 - (void)prepareForBodyWithSize:(UInt64)contentLength {
   dataStartIndex = 0;
-  if (multipartData == nil ) multipartData = [[NSMutableArray alloc] init];   //jlz
+  if (multipartData == nil ) {
+    multipartData = [[NSMutableArray alloc] init]; 
+  }
   postHeaderOK = FALSE ;
 }
 
