@@ -42,6 +42,18 @@
 
 @end
 
+@implementation CBApplicationController(Actions)
+
+- (IBAction)showPasteboard:(id)sender {
+  [windowController toggleVisibility];
+}
+
+- (IBAction)quitApplication:(id)sender {
+  [[NSApplication sharedApplication] terminate:sender];
+}
+
+@end
+
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -111,10 +123,13 @@
 }
 
 - (void)activateStatusMenu {
+  [NSBundle loadNibNamed:@"menu" owner:self];
   NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
   statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
   [statusItem setImage:[NSImage imageNamed:@"IconStatusBar"]];
+  [statusItem setAlternateImage:[NSImage imageNamed:@"IconStatusBarInvers"]];
   [statusItem setHighlightMode:YES];
+  [statusItem setMenu:statusBarMenu];
 }
 
 @end
