@@ -2,17 +2,6 @@
 
 static CALayer *rootLayer;
 
-@interface CBMainWindowController(Private)
-
-- (CATransform3D)createFlipTransform;
-- (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)frontView back:(NSView *)backView;
-- (NSWindow *)createWindowWithFrame:(CGRect)aRect;
-- (CGRect)createClipboardFrame;
-- (CALayer *)createLayerWithFront:(NSView *)theFront back:(NSView *)theBack;
-- (NSDictionary *)createActions;
-
-@end
-
 @implementation CBMainWindowController
 
 + (void)addSublayerToRootLayer:(CALayer *)aLayer {
