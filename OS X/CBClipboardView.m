@@ -24,7 +24,7 @@
 }
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
-  NSShadow* shadow = [[NSShadow alloc] init];
+  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
   [shadow setShadowOffset:NSZeroSize];
   [shadow setShadowBlurRadius:INNER_SHADOW_BLUR];
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:INNER_SHADOW_ALPHA]];

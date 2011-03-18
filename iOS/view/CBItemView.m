@@ -124,7 +124,8 @@
 }
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
-  [[animationLayers objectAtIndex:0] removeFromSuperlayer];	
+  [[animationLayers objectAtIndex:0] removeFromSuperlayer];
+  [animationLayers removeObjectAtIndex:0];
 }
 
 @end

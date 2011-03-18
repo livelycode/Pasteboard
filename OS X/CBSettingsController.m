@@ -56,13 +56,10 @@
     syncController = aSyncController;
     [syncController addDelegate:self];
     
-    foundCloudboards = [NSMutableArray arrayWithArray:[syncController clientsVisible]];
-    registeredClipboards = [NSMutableArray arrayWithArray:[syncController clientsToSearch]];
+    foundCloudboards = [[NSMutableArray alloc] initWithArray:[syncController clientsVisible]];
+    registeredClipboards = [[NSMutableArray alloc] initWithArray:[syncController clientsToSearch]];
     for(NSString*client in registeredClipboards) {
       [foundCloudboards removeObject:client];
-    }
-    if (registeredClipboards == nil) {
-      registeredClipboards = [NSMutableArray array];
     }
     [[self view] setFrame:aRect];
   }
@@ -70,7 +67,8 @@
 }
 
 - (void)setWindowController:(CBMainWindowController *)aController {
-  windowController = aController;
+  [windowController autorelease];
+  windowController = [aController retain];
 }
 
 - (void)dealloc {

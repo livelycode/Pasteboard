@@ -2,9 +2,9 @@
 
 @implementation CBItemView(Private)
 
-- (NSTrackingArea *)createTrackingAreaWithRect:(CGRect)aRect {
+- (NSTrackingArea *)trackingAreaWithRect:(CGRect)aRect {
   NSTrackingAreaOptions options = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-  return [[NSTrackingArea alloc] initWithRect:aRect options:options owner:self userInfo:nil];
+  return [[[NSTrackingArea alloc] initWithRect:aRect options:options owner:self userInfo:nil] autorelease];
 }
 
 - (NSBezierPath *)notePathWithRect:(CGRect)noteRect {
@@ -19,7 +19,7 @@
 
 - (void)drawNoteWithPath:(NSBezierPath *)aPath {
   [NSGraphicsContext saveGraphicsState];
-  NSShadow* shadow = [[NSShadow alloc] init];
+  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
   [shadow setShadowOffset:CGSizeMake(0, -2)];
   [shadow setShadowBlurRadius:8];
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
@@ -27,7 +27,7 @@
   [aPath fill];
   NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9 green:0.8 blue:0.4 alpha:1];
   NSColor *startingColor = [endingColor highlightWithLevel:0.3];
-  NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+  NSGradient *gradient = [[[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor] autorelease];
   [gradient drawInBezierPath:aPath angle:270];
   [NSGraphicsContext restoreGraphicsState];
 }
@@ -40,17 +40,17 @@
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  NSAttributedString* attrString = [[NSAttributedString alloc] initWithString: string];
+  NSAttributedString* attrString = [[[NSAttributedString alloc] initWithString: string] autorelease];
   [attrString drawInRect:textRect];
 }
 
-- (CALayer *)createAnimationLayerWithFrame:(CGRect)aRect {
+- (CALayer *)animationLayerWithFrame:(CGRect)aRect {
   CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
   [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];
   CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
   [fade setFromValue:[NSNumber numberWithDouble:0.5]];
   [fade setToValue:[NSNumber numberWithFloat:0]];
-  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+  CAAnimationGroup *group = [[[CAAnimationGroup alloc] init] autorelease];
   [group setDelegate:self];
   [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
   [group setDuration:0.5];
@@ -65,7 +65,7 @@
   NSView *rootView = [[self window] contentView];
   NSView *clipboardView = [self superview];
   CGRect frame = [self frame];
-  CALayer *layer = [self createAnimationLayerWithFrame:[rootView convertRect:frame fromView:clipboardView]]	;
+  CALayer *layer = [self animationLayerWithFrame:[rootView convertRect:frame fromView:clipboardView]];
   [CATransaction setDisableActions:YES];
   [CBMainWindowController addSublayerToRootLayer:layer];
   [CATransaction setDisableActions:NO];
@@ -104,7 +104,8 @@
 @implementation CBItemView(Delegation)
 
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag {
-  [[animationLayers objectAtIndex:0] removeFromSuperlayer];	
+  [[animationLayers objectAtIndex:0] removeFromSuperlayer];
+  [animationLayers removeObjectAtIndex:0];
 }
 
 @end
@@ -118,7 +119,7 @@
     delegate = [anObject retain];
     mouseDown = NO;
     animationLayers = [[NSMutableArray alloc] init];
-    [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
+    [self addTrackingArea:[self trackingAreaWithRect:aRect]];
   }
   return self;
 }

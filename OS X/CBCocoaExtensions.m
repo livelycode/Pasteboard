@@ -9,6 +9,7 @@
   CALayer *layer = [CALayer layer];
   [layer setFrame:[self frame]];
   [layer setContents:(id)CGImageSourceCreateImageAtIndex(source, 0, NULL)];
+  CFRelease(source);
   return layer;
 }
 
