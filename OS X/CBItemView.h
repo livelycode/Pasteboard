@@ -26,3 +26,13 @@
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag;
 
 @end
+
+@interface CBItemView(Private)
+- (NSTrackingArea *)createTrackingAreaWithRect:(CGRect)aRect;
+- (NSBezierPath *)notePathWithRect:(CGRect)noteRect;
+- (void)drawNoteWithPath:(NSBezierPath *)aPath;
+- (void)drawBorderWithPath:(NSBezierPath *)aPath;
+- (void)drawTextAtRect:(CGRect)textRect;
+- (CALayer *)createAnimationLayerWithFrame:(CGRect)aRect;
+- (void)fadeOut;
+@end

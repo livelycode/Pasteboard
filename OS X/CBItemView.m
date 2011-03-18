@@ -48,7 +48,7 @@
   CABasicAnimation *zoom = [CABasicAnimation animationWithKeyPath:@"transform"];
   [zoom setToValue:[NSValue valueWithCATransform3D:CATransform3DMakeScale(1.3, 1.3, 1.3)]];
   CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
-  [fade setFromValue:[NSNumber numberWithFloat:0.5]];
+  [fade setFromValue:[NSNumber numberWithDouble:0.5]];
   [fade setToValue:[NSNumber numberWithFloat:0]];
   CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
   [group setDelegate:self];
@@ -96,6 +96,7 @@
   [delegate release];
   [string release];
   [animationLayers release];
+  [super dealloc];
 }
 
 @end
