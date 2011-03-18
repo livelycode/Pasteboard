@@ -37,6 +37,7 @@
   [clipboardController release];
   [windowController release];
   [syncController release];
+  [statusItem release];
   [super dealloc];
 }
 
