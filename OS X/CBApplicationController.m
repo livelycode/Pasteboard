@@ -51,6 +51,7 @@
   hotKey = [[CBHotKeyObserver alloc] init];
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
+  [self activateStatusMenu];
 }
 
 - (void)systemPasteboardDidChange {
@@ -107,6 +108,13 @@
   [settings setValue: programArgs forKey:@"ProgramArguments"];
   NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
   [settings writeToURL:plistURL atomically:YES];
+}
+
+- (void)activateStatusMenu {
+  NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
+  statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
+  [statusItem setImage:[NSImage imageNamed:@"IconStatusBar"]];
+  [statusItem setHighlightMode:YES];
 }
 
 @end
