@@ -14,7 +14,6 @@
   CBSyncController* syncController;
   NSNetService* service;
   NSURL* url;
-  NSDate* localLastChanged;
   BOOL confirmClient;
   BOOL registerClient;
 }

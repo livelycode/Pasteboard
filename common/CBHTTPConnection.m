@@ -11,7 +11,6 @@
 
 - (NSData*)handlePOSTWithPath:(NSString*)path body:(NSData*)body {
   NSData* responseData;
-  NSLog(@"got path: %@", path);
   BOOL match = NO;
   if([path isEqual:@"register"]) {
     match = YES;
@@ -38,7 +37,7 @@
     NSDate* lastChanged = [NSDate dateWithTimeIntervalSince1970:[[strings objectAtIndex:0] integerValue]];
     [strings removeObjectAtIndex:0];
     for(NSString* string in strings) {
-      CBItem* item = [[CBItem alloc] initWithString: string];
+      CBItem* item = [[[CBItem alloc] initWithString: string] autorelease];
       [items addObject: item];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -48,7 +47,7 @@
   }
   if([path isEqualToString:@"add"]) {
     match = YES;
-    CBItem* item = [[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]];
+    CBItem* item = [[[CBItem alloc] initWithString: [NSKeyedUnarchiver unarchiveObjectWithData:body]] autorelease];
     dispatch_async(dispatch_get_main_queue(), ^{
       [syncController receivedAddedRemoteItem:item];
     });
@@ -114,6 +113,12 @@
   if (!result)	{
     NSLog(@"no result in post data");
   }
+}
+
+- (void)dealloc {
+  [syncController release];
+  [multipartData release];
+  [super dealloc];
 }
 
 @end

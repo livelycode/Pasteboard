@@ -10,7 +10,6 @@
   CBSyncController* syncController;
   NSMutableArray *foundCloudboards;
   NSMutableArray *registeredClipboards;
-  NSURL *devicesURL;
   IBOutlet NSButton* autoStartButton;
   IBOutlet NSButton* autoPasteButton;
   IBOutlet NSTableView *foundClipboardsView;

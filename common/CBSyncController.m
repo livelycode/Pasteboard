@@ -124,7 +124,6 @@
   // Tell the server to broadcast its presence via Bonjour.
   [httpServer setType:@"_http._tcp."];
   [httpServer setName:myServiceName];
-  //[httpServer setPort:8090];
   [httpServer setConnectionClass:[CBHTTPConnection class]];
   
   NSError *error = nil;
@@ -136,7 +135,6 @@
 }
 
 - (void) searchRemotes {
-  NSLog(@"invoke search");
   [serviceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@"local."];    
 }
 
@@ -201,7 +199,7 @@
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
   if([[newService name] hasPrefix: @"Cloudboard"] & ([[newService name] isEqual: myServiceName] == NO)) {
-    CBRemoteCloudboard* client = [[CBRemoteCloudboard alloc] initWithService:newService syncController:self];
+    CBRemoteCloudboard* client = [[[CBRemoteCloudboard alloc] initWithService:newService syncController:self] autorelease];
     [self foundClient:client];
   }
 }
@@ -243,7 +241,7 @@
     if(visibleClient) {
       [self confirmClient:visibleClient];
     } else {
-      [clientsQueuedForConfirm addObject:clientName];    
+      [clientsQueuedForConfirm addObject:clientName];
     }
   } else {
     [clientsUserNeedsToConfirm addObject:clientName];

@@ -92,6 +92,12 @@
   [self drawTextAtRect:CGRectInset(noteRect, 8, 8)];
 }
 
+- (void)dealloc {
+  [delegate release];
+  [string release];
+  [animationLayers release];
+}
+
 @end
 
 @implementation CBItemView(Delegation)

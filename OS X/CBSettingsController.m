@@ -73,6 +73,22 @@
   windowController = aController;
 }
 
+- (void)dealloc {
+  [windowController release];
+  [appController release];
+  [syncController release];
+  [foundCloudboards release];
+  [registeredClipboards release];
+  [autoStartButton release];
+  [autoPasteButton release];
+  [foundClipboardsView release];
+  [registeredClipboardsView release];
+  [addButton release];
+  [removeButton release];
+  [backButton release];
+  [super dealloc];
+}
+
 @end
 
 @implementation CBSettingsController(Delegation)

@@ -67,6 +67,8 @@
 
 - (void)dealloc {
   [items release];
+  [storeURL release];
+  [lastChanged release];
   [super dealloc];
 }
 
@@ -75,18 +77,17 @@
 @implementation CBClipboard(Private)
 
 - (void)loadItems {
-  NSDictionary* itemData = [[NSDictionary alloc] initWithContentsOfURL:storeURL];
+  NSDictionary* itemData = [NSDictionary dictionaryWithContentsOfURL:storeURL];
   if(itemData) {
-    lastChanged = [itemData valueForKey:@"date"];
+    lastChanged = [[itemData valueForKey:@"date"] retain];
     NSArray* itemStringsReverse = [itemData valueForKey:@"items"];
     NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
     for(NSString* string in itemStrings) {
-      [items addObject:[[CBItem alloc] initWithString:string]];
+      [items addObject:[[[CBItem alloc] initWithString:string] autorelease]];
     }
   } else {
     [self clear]; 
   }
-  NSLog(@"items loaded");
 }
 
 @end

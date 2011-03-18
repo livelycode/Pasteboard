@@ -5,29 +5,20 @@
 static id globalDelegate;
 static id globalSelf;
 
-OSStatus
-hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData)
-{
-    if ([globalDelegate respondsToSelector:@selector(hotKeyPressed:)])
-    {
+OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData) {
+    if ([globalDelegate respondsToSelector:@selector(hotKeyPressed:)]) {
         [globalDelegate hotKeyPressed:globalSelf];
     }
     return noErr;
 }
 
-- (id)init
-{
-  // hotkey: ALT+TAB
-	return [self initHotKey:48
-               withModifier:optionKey];
+- (id)init {
+	return [self initHotKey:48 withModifier:optionKey];
 }
 
-- (id)initHotKey:(NSUInteger)key
-    withModifier:(NSUInteger)modifier
-{
+- (id)initHotKey:(NSUInteger)key withModifier:(NSUInteger)modifier {
     self = [super init];
-    if (self != nil)
-    {
+    if (self != nil) {
         globalSelf = self;
         globalDelegate = nil;
         eventType.eventClass = kEventClassKeyboard;
@@ -40,8 +31,7 @@ hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData)
     return self;
 }
 
-- (void)setDelegate:(id)anObject
-{
+- (void)setDelegate:(id)anObject {
     globalDelegate = anObject;
 }
 

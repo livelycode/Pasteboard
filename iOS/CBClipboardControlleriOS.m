@@ -31,6 +31,7 @@
 
 - (void)stopSyncing {
   [syncController release];
+  syncController = nil;
   [devicesViewController releaseSyncController];
 }
 

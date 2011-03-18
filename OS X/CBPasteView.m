@@ -13,7 +13,7 @@
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
   [NSGraphicsContext saveGraphicsState];
-  NSShadow* shadow = [[NSShadow alloc] init];
+  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
   [shadow setShadowOffset:CGSizeMake(0, -2)];
   [shadow setShadowBlurRadius:2];
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
@@ -31,7 +31,7 @@
   NSColor *color = [NSColor colorWithDeviceWhite:0 alpha:0.2];
   NSArray *objects = [NSArray arrayWithObjects:font, color, nil];
   NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
-  NSDictionary *attributes = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
+  NSDictionary *attributes = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
   NSString *string = @"Paste";
   CGSize size = [string sizeWithAttributes:attributes];
   CGFloat widthDelta = (CGRectGetWidth(textRect) - size.width) / 2;
@@ -55,6 +55,11 @@
   [self drawTextAtRect:noteRect];
 }
 
+- (void)dealloc {
+  [delegate release];
+  [super dealloc];
+}
+
 @end
 
 @implementation CBPasteView
@@ -62,7 +67,7 @@
 - (id)initWithFrame:(CGRect)aRect delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    delegate = anObject;
+    delegate = [anObject retain];
     lineWidth = CGRectGetWidth(aRect) / 60;
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }

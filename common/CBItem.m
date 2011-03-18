@@ -2,8 +2,11 @@
 
 @implementation CBItem
 
-- (id)initWithString:(NSString *)aString
-{
++ (id)itemWithString:(NSString*)aString {
+  return [[[self alloc] initWithString:aString] autorelease];
+}
+
+- (id)initWithString:(NSString *)aString {
     self = [super init];
     if (self != nil)
     {
@@ -12,19 +15,16 @@
     return self;
 }
 
-- (id)initWithAttributedString:(NSAttributedString *)aString
-{
+- (id)initWithAttributedString:(NSAttributedString *)aString {
   self = [self initWithString:[aString string]];
   return self;
 }
 
-- (NSString *)string
-{
+- (NSString *)string {
     return string;
 }
 
-- (BOOL)isEqual:(id)anObject
-{
+- (BOOL)isEqual:(id)anObject {
     BOOL isEqual = NO;
     if ([anObject isMemberOfClass:[self class]])
     {
@@ -36,8 +36,7 @@
     return isEqual;
 }
 
-- (NSUInteger)hash
-{
+- (NSUInteger)hash {
     return [string hash];
 }
 

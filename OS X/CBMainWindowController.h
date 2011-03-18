@@ -8,7 +8,6 @@
 @interface CBMainWindowController : NSObject {
   @private
   NSWindow *mainWindow;
-  CBWindowView *rootView;
   CBClipboardController *clipboardController;
   CBSettingsController *settingsController;
   CBSyncController *syncController;
