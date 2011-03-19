@@ -127,8 +127,8 @@
   [NSBundle loadNibNamed:@"menu" owner:self];
   NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
   statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
-  [statusItem setImage:[NSImage imageNamed:@"IconStatusBar"]];
-  [statusItem setAlternateImage:[NSImage imageNamed:@"IconStatusBarInvers"]];
+  [statusItem setImage:[NSImage imageNamed:@"StatusItem"]];
+  [statusItem setAlternateImage:[NSImage imageNamed:@"StatusItemHighlighted"]];
   [statusItem setHighlightMode:YES];
   [statusItem setMenu:statusBarMenu];
 }
