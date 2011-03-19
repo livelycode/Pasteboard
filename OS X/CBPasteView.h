@@ -3,9 +3,8 @@
 
 @interface CBPasteView : NSView
 {
-@private
+  @private
   id delegate;
-  CGFloat lineWidth;
 }
 - (id)initWithFrame:(CGRect)aRect delegate:(id <CBItemViewDelegate>)anObject;
 @end
@@ -17,7 +16,6 @@
 
 @interface CBPasteView(Private)
 - (NSTrackingArea *)createTrackingAreaWithRect:(CGRect)aRect;
-- (NSBezierPath *)notePathWithRect:(CGRect)noteRect;
-- (void)drawBorderWithPath:(NSBezierPath *)aPath;
-- (void)drawTextAtRect:(CGRect)textRect;
+- (void)drawBorderWithRect:(CGRect)aRect;
+- (void)drawTextWithRect:(CGRect)textRect;
 @end

@@ -7,28 +7,26 @@
   return [[NSTrackingArea alloc] initWithRect:aRect options:options owner:self userInfo:nil];
 }
 
-- (NSBezierPath *)notePathWithRect:(CGRect)noteRect {
-  return [NSBezierPath bezierPathWithRoundedRect:noteRect xRadius:16 yRadius:16];
-}
-
-- (void)drawBorderWithPath:(NSBezierPath *)aPath {
+- (void)drawBorderWithRect:(CGRect)aRect {
   [NSGraphicsContext saveGraphicsState];
   NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
   [shadow setShadowOffset:CGSizeMake(0, -2)];
   [shadow setShadowBlurRadius:2];
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
   [shadow set];
-  [[NSColor colorWithDeviceWhite:1 alpha:0.8] setStroke];
-  [aPath setLineWidth:lineWidth];
-  CGFloat dash[2] = {24, 6};
-  [aPath setLineDash:dash count:2 phase:0];
-  [aPath stroke];
+  [[NSColor colorWithDeviceWhite:0.9 alpha:1] setStroke];
+  NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
+  CGFloat width = CGRectGetWidth(aRect);
+  [path setLineWidth:(width/32)];
+  CGFloat dash[2] = {(width/12), (width/64)};
+  [path setLineDash:dash count:2 phase:0];
+  [path stroke];
   [NSGraphicsContext restoreGraphicsState];
 }
 
-- (void)drawTextAtRect:(CGRect)textRect {
+- (void)drawTextWithRect:(CGRect)textRect {
   NSFont *font = [NSFont fontWithName:@"Helvetica Bold" size:(CGRectGetHeight(textRect) / 2)];
-  NSColor *color = [NSColor colorWithDeviceWhite:0 alpha:0.2];
+  NSColor *color = [NSColor colorWithCalibratedWhite:0 alpha:0.2];
   NSArray *objects = [NSArray arrayWithObjects:font, color, nil];
   NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
   NSDictionary *attributes = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
@@ -49,10 +47,10 @@
   [delegate pasteViewClicked];
 }
 
-- (void)drawRect:(NSRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], 32, 32);
-  [self drawBorderWithPath:[self notePathWithRect:noteRect]];
-  [self drawTextAtRect:noteRect];
+- (void)drawRect:(NSRect)aRect { 
+  CGRect bounds = [self bounds];
+  [self drawBorderWithRect:CGRectInset(bounds, 32, 16)];
+  [self drawTextWithRect:CGRectInset(bounds, 32, 32)];
 }
 
 - (void)dealloc {
@@ -68,7 +66,6 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     delegate = [anObject retain];
-    lineWidth = CGRectGetWidth(aRect) / 60;
     [self addTrackingArea:[self createTrackingAreaWithRect:aRect]];
   }
   return self;
