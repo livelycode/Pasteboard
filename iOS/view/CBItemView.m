@@ -36,6 +36,7 @@
   CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
   CGGradientRef gradient = CGGradientCreateWithColors(colorspace, (CFArrayRef)colors, gradientLocations);  
   CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, height), kCGGradientDrawsAfterEndLocation);
+  CFRelease(gradient);
   CGContextRestoreGState(context);
 }
 
@@ -52,7 +53,7 @@
   UIGraphicsEndImageContext();
   
   CGImageRef maskRef =  image.CGImage;
-  CALayer *layer = [[CALayer alloc] init];
+  CALayer *layer = [[[CALayer alloc] init] autorelease];
   [CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
   [layer setNeedsDisplay];
   [layer setOpacity:0];
@@ -65,7 +66,7 @@
   CABasicAnimation *fade = [CABasicAnimation animationWithKeyPath:@"opacity"];
   [fade setFromValue:[NSNumber numberWithFloat:0.5]];
   [fade setToValue:[NSNumber numberWithFloat:0]];
-  CAAnimationGroup *group = [[CAAnimationGroup alloc] init];
+  CAAnimationGroup *group = [[[CAAnimationGroup alloc] init] autorelease];
   [group setDelegate:self];
   [group setAnimations:[NSArray arrayWithObjects:zoom, fade, nil]];
   [group setDuration:0.5];
@@ -81,12 +82,12 @@
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    delegate = anObject;
-    string = content;
+    delegate = [anObject retain];
+    string = [content retain];
     animationLayers = [[NSMutableArray alloc] init];
     [self setBackgroundColor:[UIColor clearColor]];
-    UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(handleTap:)];
+    UITapGestureRecognizer* recognizer = [[[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleTap:)] autorelease];
     [self addGestureRecognizer:recognizer];
   }
   return self;
@@ -112,6 +113,7 @@
 - (void)dealloc {
   [string release];
   [delegate release];
+  [animationLayers release];
   [super dealloc];
 }
 @end

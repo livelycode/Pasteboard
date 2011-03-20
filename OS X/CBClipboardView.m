@@ -49,7 +49,7 @@
 - (id)initWithFrame:(NSRect)aRect {
   self = [super initWithFrame:aRect];
   if (self != nil) {
-    NSShadow *dropShadow = [[NSShadow alloc] init];
+    NSShadow *dropShadow = [[[NSShadow alloc] init] autorelease];
     [dropShadow setShadowOffset:NSMakeSize(0, DROP_SHADOW_OFFSET)];
     [dropShadow setShadowBlurRadius:DROP_SHADOW_BLUR];
     [dropShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:DROP_SHADOW_ALPHA]];

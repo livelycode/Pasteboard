@@ -79,6 +79,7 @@
 - (void)loadItems {
   NSDictionary* itemData = [NSDictionary dictionaryWithContentsOfURL:storeURL];
   if(itemData) {
+    [lastChanged release];
     lastChanged = [[itemData valueForKey:@"date"] retain];
     NSArray* itemStringsReverse = [itemData valueForKey:@"items"];
     NSArray* itemStrings = [[itemStringsReverse reverseObjectEnumerator] allObjects];
