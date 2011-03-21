@@ -113,8 +113,8 @@ static CALayer *rootLayer;
   return view;
 }
 
-- (NSWindow *)createWindowWithFrame:(CGRect)aRect {
-  NSWindow *window = [[NSWindow alloc] initWithContentRect:aRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+- (CBWindow *)createWindowWithFrame:(CGRect)aRect {
+  CBWindow *window = [[CBWindow alloc] initWithContentRect:aRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
   [window setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
   [window setLevel:NSStatusWindowLevel];
   [window setOpaque:NO];

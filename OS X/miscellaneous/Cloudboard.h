@@ -7,6 +7,7 @@
 #import "CBSyncControllerProtocol.h"
 #import "CBRemoteCloudboard.h"
 
+#import "CBWindow.h"
 #import "CBApplicationController.h"
 #import "CBClipboardController.h"
 #import "CBHotKeyObserver.h"
