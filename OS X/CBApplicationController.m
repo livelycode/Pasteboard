@@ -31,6 +31,14 @@
   [self updateLaunchd];
 }
 
+- (NSString*)hotkey {
+  return @"Alt+Tab";
+}
+
+- (void)setHotkey:(NSUInteger)charId withModifier:(NSUInteger)modifier {
+  
+}
+
 - (void)dealloc {
   [pasteboardObserver release];		
   [hotKey release];
@@ -61,18 +69,24 @@
   [self loadSettings];
   windowController = [[CBMainWindowController alloc] initWithFrontView:nil backView:nil];
   clipboardController = [[windowController clipboardController] retain];
-  hotKey = [[CBHotKeyObserver alloc] init];
+  hotKey = [[CBHotKeyObserver alloc] initAltTab];
   [hotKey setDelegate:windowController];
   [self initPasteboardObserver];
   [self activateStatusMenu];
 }
 
-- (void)systemPasteboardDidChange {
+- (void)pasteItem {
   CBItem* newItem = [self currentPasteboardItem];
   if(newItem) {
     if ([clipboardController clipboardContainsItem:newItem] == NO) {
       [clipboardController addItem:newItem syncing:YES];
     }
+  }
+}
+
+- (void)systemPasteboardDidChange {
+  if(autoPaste) {
+    [self pasteItem];
   }
 }
 

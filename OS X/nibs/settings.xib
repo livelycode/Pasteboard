@@ -511,7 +511,7 @@
 										<object class="NSTextFieldCell" key="NSCell" id="655812210">
 											<int key="NSCellFlags">-1804468671</int>
 											<int key="NSCellFlags2">138445824</int>
-											<string key="NSContents"/>
+											<string key="NSContents">Alt+Tab</string>
 											<reference key="NSSupport" ref="391880496"/>
 											<string key="NSPlaceholderString">Press a key comination</string>
 											<reference key="NSControlView" ref="691680336"/>

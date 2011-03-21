@@ -13,6 +13,7 @@ static CALayer *rootLayer;
     [mainWindow orderOut:self];
   } else {
     [mainWindow makeKeyAndOrderFront:self];
+    [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
   }
 }
 

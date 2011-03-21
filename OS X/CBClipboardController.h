@@ -7,9 +7,11 @@
   @private
   NSInteger rows;
   NSInteger columns;
+  CGRect frame;
   CBMainWindowController *windowController;
   CBSyncController* syncController;
   CBClipboard *clipboard;
+  IBOutlet NSView* itemsView;
   NSView* clipboardView;
   NSMutableArray *frames;
   NSMutableArray *itemViewSlots;

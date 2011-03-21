@@ -26,10 +26,8 @@
 
 - (BOOL)isEqual:(id)anObject {
     BOOL isEqual = NO;
-    if ([anObject isMemberOfClass:[self class]])
-    {
-        if ([string isEqual:[anObject string]])
-        {
+    if ([anObject isMemberOfClass:[self class]]) {
+        if ([string isEqualToString:[anObject string]]) {
             isEqual = YES;
         }
     }

@@ -22,6 +22,7 @@
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
+  NSLog(@"down");
   if (isActive) {
     if (([modifierEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSShiftKeyMask) {
       NSLog(@"1");

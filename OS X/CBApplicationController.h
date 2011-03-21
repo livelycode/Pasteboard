@@ -23,6 +23,8 @@
 - (void)setAutoStart:(BOOL)autoStart;
 - (BOOL)autoPaste;
 - (void)setAutoPaste:(BOOL)autoPaste;
+- (NSString*)hotkey;
+- (void)setHotkey:(NSUInteger)charId withModifier:(NSUInteger)modifier;
 @end
 
 @interface CBApplicationController(Actions)
@@ -39,6 +41,8 @@
 
 //CBPasteboardOberserverDelegate
 - (void)systemPasteboardDidChange;
+//CBClipboardViewDelegate
+- (void)pasteItem;
 @end
 
 @interface CBApplicationController(Private)

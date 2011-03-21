@@ -30,7 +30,11 @@
 
 //CBPasteViewDelegate
 - (void)pasteViewClicked {
-  
+  CBApplicationController* appController = [[NSApplication sharedApplication] delegate];
+  CBItem* newItem = [appController currentPasteboardItem];
+  if(newItem != nil) {
+    [self addItem:newItem syncing:YES];
+  }
 }
 @end
 
@@ -41,16 +45,20 @@
   if (self != nil) {
     rows = 4;
     columns = 2;
+    frame = aFrame;
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     windowController = [aController retain];
-    [[self view] setFrame:aFrame];
-    [self initializeItemSlots];
-    [self drawPasteView];
-    [self drawAllItems];
   }
   return self;
+}
+
+- (void)awakeFromNib {
+  [[self view] setFrame:frame];
+  [self initializeItemSlots];
+  [self drawPasteView];
+  [self drawAllItems];
 }
 
 - (void)setSyncController:(CBSyncController *)controller {
@@ -74,14 +82,18 @@
 }
 
 - (void)initializeItemSlots {
-  CGRect mainBounds = [[self view] bounds];
-  NSUInteger itemWidth = (mainBounds.size.width - ((columns + 1) * PADDING)) / columns;
-  NSUInteger itemHeight = (mainBounds.size.height - ((rows + 1) * PADDING)) / rows;
-  CGPoint origin = CGPointMake(PADDING, (mainBounds.size.height - itemHeight - PADDING));
-  for(NSInteger row=0; row<rows; row++) {
-    for(NSInteger column=0; column<columns; column++) {
-      NSUInteger x = origin.x + (column * (itemWidth + PADDING));
-      NSUInteger y = origin.y - (row * (itemHeight + PADDING));
+  CGRect mainBounds = [itemsView bounds];
+  CGFloat paddingSides = 0;
+  CGFloat paddingTop = 0;
+  CGRect itemsBounds = CGRectMake(paddingSides, paddingTop, CGRectGetWidth(mainBounds)-2*paddingSides, CGRectGetHeight(mainBounds)-2*paddingTop);
+  CGFloat clipboardHeight = CGRectGetHeight(itemsBounds);
+  CGFloat clipboardWidth = CGRectGetWidth(itemsBounds);
+  CGFloat itemWidth = clipboardWidth / columns;
+  CGFloat itemHeight = clipboardHeight / rows;
+  for(NSInteger row=rows; row>=1; row--) {
+    for(NSInteger column=1; column<=columns; column++) {
+      CGFloat x = paddingSides + itemWidth*(column-1);
+      CGFloat y = paddingTop +(row-1)*itemHeight;
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithRect:itemFrame]];
     }
@@ -89,7 +101,7 @@
 }
 
 - (void)addItemView:(NSView*)itemView {
-  [self.view addSubview: itemView];
+  [itemsView addSubview: itemView];
 }
 
 @end

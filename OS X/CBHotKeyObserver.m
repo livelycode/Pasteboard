@@ -12,7 +12,7 @@ OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *
     return noErr;
 }
 
-- (id)init {
+- (id)initAltTab {
 	return [self initHotKey:48 withModifier:optionKey];
 }
 
