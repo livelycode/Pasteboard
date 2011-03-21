@@ -31,6 +31,14 @@
   [self updateLaunchd];
 }
 
+- (NSString*)hotkey {
+  return @"Alt+Tab";
+}
+
+- (void)setHotkey:(NSUInteger)charId withModifier:(NSUInteger)modifier {
+  
+}
+
 - (void)dealloc {
   [pasteboardObserver release];		
   [hotKey release];

@@ -23,6 +23,8 @@
 - (void)setAutoStart:(BOOL)autoStart;
 - (BOOL)autoPaste;
 - (void)setAutoPaste:(BOOL)autoPaste;
+- (NSString*)hotkey;
+- (void)setHotkey:(NSUInteger)charId withModifier:(NSUInteger)modifier;
 @end
 
 @interface CBApplicationController(Actions)

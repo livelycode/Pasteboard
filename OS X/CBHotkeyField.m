@@ -29,8 +29,16 @@
   return [super performKeyEquivalent:event];
 }
 
+- (void)mouseDown:(NSEvent *)theEvent {
+  [self selectText:self];
+}
+
 - (void)controlTextDidBeginEditing:(NSNotification *)aNotification {
   NSLog(@"begin");
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)obj {
+  NSLog(@"end editing");
 }
 
 @end
