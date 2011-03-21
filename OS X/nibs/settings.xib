@@ -47,7 +47,6 @@
 						<string key="NSFrame">{{458, 18}, {43, 25}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="467315624">
 							<int key="NSCellFlags">-2080244224</int>
@@ -89,7 +88,7 @@
 														<string key="NSFrameSize">{218, 238}</string>
 														<reference key="NSSuperview" ref="788459030"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="1037539044"/>
+														<reference key="NSNextKeyView" ref="522229279"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<bool key="NSEnabled">YES</bool>
 														<object class="_NSCornerView" key="NSCornerView">
@@ -216,7 +215,7 @@
 										<string key="NSFrame">{{18, 37}, {220, 240}}</string>
 										<reference key="NSSuperview" ref="164144974"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="522229279"/>
+										<reference key="NSNextKeyView" ref="788459030"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<int key="NSsFlags">562</int>
 										<reference key="NSVScroller" ref="1037539044"/>
@@ -511,7 +510,7 @@
 										<object class="NSTextFieldCell" key="NSCell" id="655812210">
 											<int key="NSCellFlags">-1804468671</int>
 											<int key="NSCellFlags2">138445824</int>
-											<string key="NSContents">Alt+Tab</string>
+											<string key="NSContents"/>
 											<reference key="NSSupport" ref="391880496"/>
 											<string key="NSPlaceholderString">Press a key comination</string>
 											<reference key="NSControlView" ref="691680336"/>
