@@ -30,7 +30,11 @@
 
 //CBPasteViewDelegate
 - (void)pasteViewClicked {
-  
+  CBApplicationController* appController = [[NSApplication sharedApplication] delegate];
+  CBItem* newItem = [appController currentPasteboardItem];
+  if(newItem != nil) {
+    [self addItem:newItem syncing:YES];
+  }
 }
 @end
 

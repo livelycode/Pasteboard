@@ -68,10 +68,12 @@
 }
 
 - (void)systemPasteboardDidChange {
-  CBItem* newItem = [self currentPasteboardItem];
-  if(newItem) {
-    if ([clipboardController clipboardContainsItem:newItem] == NO) {
-      [clipboardController addItem:newItem syncing:YES];
+  if(autoPaste) {
+    CBItem* newItem = [self currentPasteboardItem];
+    if(newItem) {
+      if ([clipboardController clipboardContainsItem:newItem] == NO) {
+        [clipboardController addItem:newItem syncing:YES];
+      }
     }
   }
 }
