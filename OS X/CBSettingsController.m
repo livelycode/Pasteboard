@@ -186,4 +186,14 @@
   return YES;
 }
 
+- (BOOL)textShouldBeginEditing:(NSText *)textObject {
+  return YES;
+}
+
+- (BOOL)textShouldEndEditing:(NSText*)textObject {
+  return YES;
+}
+
+
+
 @end

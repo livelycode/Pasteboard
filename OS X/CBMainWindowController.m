@@ -31,7 +31,7 @@ static CALayer *rootLayer;
     [settingsController setWindowController:self];
     frontView = [[clipboardController view] retain];
     backView = [[settingsController view] retain];
-    [mainWindow setContentView:[self createRootViewWithFrame:mainFrame front:frontView back:backView]];
+    [mainWindow setContentView:[self rootViewWithFrame:mainFrame front:frontView back:backView]];
   }
   return self;
 }
@@ -102,12 +102,12 @@ static CALayer *rootLayer;
   return transform;
 }
 
-- (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)theFront back:(NSView *)theBack {
-  NSView *animationView = [[NSView alloc] initWithFrame:aRect];
+- (CBWindowView *)rootViewWithFrame:(CGRect)aRect front:(NSView *)theFront back:(NSView *)theBack {
+  NSView *animationView = [[[NSView alloc] initWithFrame:aRect] autorelease];
   rootLayer = [[CALayer alloc] init];
   [animationView setLayer:rootLayer];
   [animationView setWantsLayer:YES];
-  CBWindowView *view = [[CBWindowView alloc] initWithFrame:aRect];
+  CBWindowView *view = [[[CBWindowView alloc] initWithFrame:aRect] autorelease];
   [view setWantsLayer:YES];
   [view setSubviews:[NSArray arrayWithObjects:theBack, theFront, animationView, nil]];
   return view;

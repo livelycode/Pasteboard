@@ -9,7 +9,6 @@
 @interface CBClipboardView(Overriden)
 - (id)initWithFrame:(NSRect)aRect;
 - (void)drawRect:(NSRect)rect;
-- (void)mouseDown:(NSEvent *)theEvent;
 @end
 
 @interface CBClipboardView(Private)

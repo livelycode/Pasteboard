@@ -33,7 +33,7 @@
 
 @interface CBMainWindowController(Private)
 - (CATransform3D)createFlipTransform;
-- (CBWindowView *)createRootViewWithFrame:(CGRect)aRect front:(NSView *)frontView back:(NSView *)backView;
+- (CBWindowView *)rootViewWithFrame:(CGRect)aRect front:(NSView *)frontView back:(NSView *)backView;
 - (NSWindow *)createWindowWithFrame:(CGRect)aRect;
 - (CGRect)createClipboardFrame;
 - (CALayer *)layerWithFront:(NSView *)theFront back:(NSView *)theBack;
