@@ -10,27 +10,40 @@
   return self;
 }
 
-- (BOOL)performKeyEquivalent:(NSEvent *)event {
-  if (isActive) {
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSShiftKeyMask) {
-      
-    }
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSControlKeyMask) {
-      
-    }
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSCommandKeyMask) {
-      
-    }
-    if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSCommandKeyMask) {
-      
-    }
-    NSLog(@"event");
-  }
-  return [super performKeyEquivalent:event];
+- (void)mouseDown:(NSEvent *)theEvent {
+  isActive = YES;
+  [self selectText:self];
 }
 
-- (void)controlTextDidBeginEditing:(NSNotification *)aNotification {
-  NSLog(@"begin");
+- (void)flagsChanged:(NSEvent *)event {
+  if (isActive) {
+    modifierEvent = event;
+  }
+}
+
+- (void)keyDown:(NSEvent *)theEvent {
+  if (isActive) {
+    if (([modifierEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSShiftKeyMask) {
+      NSLog(@"1");
+    }
+    if (([modifierEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSControlKeyMask) {
+      NSLog(@"2");
+    }
+    if (([modifierEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSAlternateKeyMask) {
+      NSLog(@"3");
+    }
+    if (([modifierEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSCommandKeyMask) {
+      NSLog(@"4");
+    }
+  }
+}
+
+- (BOOL)textShouldBeginEditing:(NSText *)textObject {
+  return NO;
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)aNotification {
+  isActive = NO;
 }
 
 @end

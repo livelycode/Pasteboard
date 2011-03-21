@@ -45,8 +45,13 @@
   [windowController showFront];
 }
 
-- (IBAction)hotkeyChanged:(id)sender {
-  NSLog(@"foo");
+- (IBAction)toggleHotkeyFieldFocus:(id)sender; {
+  if (hotkeyFieldFocused) {
+    hotkeyFieldFocused = NO;
+  } else {
+    hotkeyFieldFocused = YES;
+  }
+  NSLog(@"%i", hotkeyFieldFocused);
 }
 
 @end
@@ -56,6 +61,7 @@
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*) aSyncController; {
   self = [super initWithNibName:@"settings" bundle:nil];
   if(self != nil) {
+    hotkeyFieldFocused = NO;
     appController = [[NSApplication sharedApplication] delegate];
     syncController = aSyncController;
     [syncController addDelegate:self];
@@ -181,9 +187,8 @@
   NSLog(@"client confirmed %@", clientName);
 }
 
-- (BOOL)control:(NSControl *)control isValidObject:(id)object {
-  NSLog(@"%@", object);
-  return YES;
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
+  return NO;
 }
 
 @end

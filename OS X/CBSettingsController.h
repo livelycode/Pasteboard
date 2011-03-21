@@ -10,6 +10,7 @@
   CBSyncController* syncController;
   NSMutableArray *foundCloudboards;
   NSMutableArray *registeredClipboards;
+  BOOL hotkeyFieldFocused;
   IBOutlet NSButton* autoStartButton;
   IBOutlet NSButton* autoPasteButton;
   IBOutlet NSTableView *foundClipboardsView;
@@ -29,7 +30,7 @@
 - (IBAction)autoPasteCheckboxChanged:(id)sender;
 - (IBAction)autoStartCheckboxChanged:(id)sender;
 - (IBAction)back:(id)sender;
-- (IBAction)hotkeyChanged:(id)sender;
+- (IBAction)toggleHotkeyFieldFocus:(id)sender;
 @end
 
 @interface CBSettingsController(Overridden)
@@ -47,5 +48,5 @@
 - (void)clientConnected:(NSString*)clientName;
 - (void)clientConfirmed:(NSString*)clientName;
 
-- (BOOL)control:(NSControl *)control isValidObject:(id)object;
+- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
 @end

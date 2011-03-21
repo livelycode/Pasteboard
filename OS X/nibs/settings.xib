@@ -47,6 +47,7 @@
 						<string key="NSFrame">{{458, 18}, {43, 25}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="467315624">
 							<int key="NSCellFlags">-2080244224</int>
@@ -88,7 +89,7 @@
 														<string key="NSFrameSize">{218, 238}</string>
 														<reference key="NSSuperview" ref="788459030"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="522229279"/>
+														<reference key="NSNextKeyView" ref="1037539044"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<bool key="NSEnabled">YES</bool>
 														<object class="_NSCornerView" key="NSCornerView">
@@ -215,7 +216,7 @@
 										<string key="NSFrame">{{18, 37}, {220, 240}}</string>
 										<reference key="NSSuperview" ref="164144974"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="788459030"/>
+										<reference key="NSNextKeyView" ref="522229279"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<int key="NSsFlags">562</int>
 										<reference key="NSVScroller" ref="1037539044"/>
@@ -792,14 +793,6 @@
 					<int key="connectionID">72</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">hotkeyChanged:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="691680336"/>
-					</object>
-					<int key="connectionID">83</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">hotkeyField</string>
 						<reference key="source" ref="1001"/>
@@ -1154,7 +1147,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">87</int>
+			<int key="maxID">89</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1182,8 +1175,8 @@
 						<string key="autoPasteCheckboxChanged:">id</string>
 						<string key="autoStartCheckboxChanged:">id</string>
 						<string key="back:">id</string>
-						<string key="hotkeyChanged:">id</string>
 						<string key="removeDevice:">id</string>
+						<string key="toggleHotkeyFieldFocus:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="addDevice:">
@@ -1202,12 +1195,12 @@
 							<string key="name">back:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="hotkeyChanged:">
-							<string key="name">hotkeyChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="removeDevice:">
 							<string key="name">removeDevice:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="toggleHotkeyFieldFocus:">
+							<string key="name">toggleHotkeyFieldFocus:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
