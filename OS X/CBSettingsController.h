@@ -17,6 +17,7 @@
   IBOutlet NSButton *addButton;
   IBOutlet NSButton *removeButton;
   IBOutlet NSButton *backButton;
+  IBOutlet NSTextField *hotkeyField;
 }
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*)syncController;
 - (void)setWindowController:(CBMainWindowController *)aController;
@@ -28,6 +29,7 @@
 - (IBAction)autoPasteCheckboxChanged:(id)sender;
 - (IBAction)autoStartCheckboxChanged:(id)sender;
 - (IBAction)back:(id)sender;
+- (IBAction)hotkeyChanged:(id)sender;
 @end
 
 @interface CBSettingsController(Overridden)
@@ -44,4 +46,6 @@
 - (void)clientBecameInvisible:(NSString*)clientName;
 - (void)clientConnected:(NSString*)clientName;
 - (void)clientConfirmed:(NSString*)clientName;
+
+- (BOOL)control:(NSControl *)control isValidObject:(id)object;
 @end

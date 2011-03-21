@@ -45,6 +45,10 @@
   [windowController showFront];
 }
 
+- (IBAction)hotkeyChanged:(id)sender {
+  
+}
+
 @end
 
 @implementation CBSettingsController
@@ -175,6 +179,11 @@
 
 - (void)clientConfirmed:(NSString*)clientName {
   NSLog(@"client confirmed %@", clientName);
+}
+
+- (BOOL)control:(NSControl *)control isValidObject:(id)object {
+  NSLog(@"%@", object);
+  return YES;
 }
 
 @end
