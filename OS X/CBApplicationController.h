@@ -39,6 +39,8 @@
 
 //CBPasteboardOberserverDelegate
 - (void)systemPasteboardDidChange;
+//CBClipboardViewDelegate
+- (void)pasteItem;
 @end
 
 @interface CBApplicationController(Private)

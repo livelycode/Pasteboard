@@ -60,4 +60,14 @@
 
 - (void)mouseDown:(NSEvent *)theEvent {}
 
+- (BOOL)performKeyEquivalent:(NSEvent *)event {
+  if (([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == NSCommandKeyMask) {
+    if ([[event charactersIgnoringModifiers] isEqualToString:@"v"]) {
+      [(CBApplicationController*)[[NSApplication sharedApplication] delegate] pasteItem];
+      return YES;
+    }
+  }
+  return NO;    
+}
+
 @end

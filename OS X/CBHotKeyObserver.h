@@ -10,11 +10,8 @@
     EventTypeSpec eventType;
 }
 
-- (id)init;
-
-- (id)initHotKey:(NSUInteger)key
-    withModifier:(NSUInteger)modifier;
-
+- (id)initAltTab;
+- (id)initHotKey:(NSUInteger)key withModifier:(NSUInteger)modifier;
 - (void)setDelegate:(id <CBHotKeyObserverDelegate>)anObject;
 
 @end
