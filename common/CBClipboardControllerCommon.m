@@ -56,14 +56,14 @@
 @implementation CBClipboardController(CommonPrivate)
 
 - (void)drawPasteView {
-  CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
-  CBPasteView *pasteView = [[[CBPasteView alloc] initWithFrame:CGRectInset(frame, 10, 10) delegate:self] autorelease];
+  CGRect pasteButtonFrame = [self rectForNSValue:[frames objectAtIndex:0]];
+  CBPasteView *pasteView = [[[CBPasteView alloc] initWithFrame:CGRectInset(pasteButtonFrame, 10, 10) delegate:self] autorelease];
   [self addItemView:pasteView];
 }
 
 - (void)drawItem:(CBItem*)item {
-  CGRect frame = [self rectForNSValue:[frames objectAtIndex:0]];
-  CBItemView *newItemView = [[[CBItemView alloc] initWithFrame:frame content:[item string] delegate:self] autorelease];
+  CGRect itemFrame = [self rectForNSValue:[frames objectAtIndex:0]];
+  CBItemView *newItemView = [[[CBItemView alloc] initWithFrame:itemFrame content:[item string] delegate:self] autorelease];
   [itemViewSlots insertObject:newItemView atIndex:0];
   [self addItemView:newItemView];
   //remove last itemView if necessary

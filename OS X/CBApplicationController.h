@@ -12,7 +12,9 @@
   CBMainWindowController *windowController;
   CBSyncController *syncController;
   NSStatusItem *statusItem;
+  NSArray* shortcutKeycodes;
   IBOutlet NSMenu *statusBarMenu;
+  NSUInteger hotkeyIndex;
   BOOL windowHidden;
   BOOL autoStart;
   BOOL autoPaste;
@@ -23,8 +25,8 @@
 - (void)setAutoStart:(BOOL)autoStart;
 - (BOOL)autoPaste;
 - (void)setAutoPaste:(BOOL)autoPaste;
-- (NSString*)hotkey;
-- (void)setHotkey:(NSUInteger)charId withModifier:(NSUInteger)modifier;
+- (NSUInteger)hotkeyIndex;
+- (void)setHotkeyIndex:(NSUInteger)hotkey;
 @end
 
 @interface CBApplicationController(Actions)
@@ -51,4 +53,5 @@
 - (void)updateSettings;
 - (void)updateLaunchd;
 - (void)activateStatusMenu;
+- (void)initShortcutKeycodes;
 @end
