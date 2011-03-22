@@ -7,7 +7,7 @@
 @interface CBApplicationController:NSObject {
   @private
   CBPasteboardObserver *pasteboardObserver;		
-  CBHotKeyObserver *hotKey;
+  CBHotKeyObserver *hotkey;
   CBClipboardController *clipboardController;
   CBMainWindowController *windowController;
   CBSyncController *syncController;
@@ -52,6 +52,7 @@
 - (void)loadSettings;
 - (void)updateSettings;
 - (void)updateLaunchd;
+- (void)startHotkeyObserver;
 - (void)activateStatusMenu;
-- (void)initShortcutKeycodes;
+- (void)initHotkeyCodes;
 @end

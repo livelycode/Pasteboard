@@ -37,12 +37,14 @@
 
 - (void)setHotkeyIndex:(NSUInteger)index {
   hotkeyIndex = index;
+  [hotkey release];
+  [self startHotkeyObserver];	
   [self updateSettings];
 }
 
 - (void)dealloc {
   [pasteboardObserver release];		
-  [hotKey release];
+  [hotkey release];
   [clipboardController release];
   [windowController release];
   [syncController release];
@@ -67,12 +69,11 @@
 @implementation CBApplicationController(Delegation)
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self initShortcutKeycodes];
+  [self initHotkeyCodes];
   [self loadSettings];
   windowController = [[CBMainWindowController alloc] initWithFrontView:nil backView:nil];
   clipboardController = [[windowController clipboardController] retain];
-  hotKey = [[CBHotKeyObserver alloc] initAltTab];
-  [hotKey setDelegate:windowController];
+  [self startHotkeyObserver];
   [self initPasteboardObserver];
   [self activateStatusMenu];
 }
@@ -142,6 +143,14 @@
   [settings writeToURL:plistURL atomically:YES];
 }
 
+- (void)startHotkeyObserver {
+  NSArray* selectedHotkey = [shortcutKeycodes objectAtIndex:hotkeyIndex];
+  NSInteger modifier = [[selectedHotkey objectAtIndex:0] integerValue];
+  NSInteger key = [[selectedHotkey objectAtIndex:1] integerValue];
+  hotkey = [[CBHotKeyObserver alloc] initHotKey:key withModifier:modifier];
+  [hotkey setDelegate:windowController];
+}
+
 - (void)activateStatusMenu {
   [NSBundle loadNibNamed:@"menu" owner:self];
   NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
@@ -152,7 +161,7 @@
   [statusItem setMenu:statusBarMenu];
 }
 
-- (void)initShortcutKeycodes {
+- (void)initHotkeyCodes {
   id (^keycodeArray)(int, int) = ^(int modifier, int key) {
     return [NSArray arrayWithObjects:[NSNumber numberWithInt:modifier], [NSNumber numberWithInt:key], nil];
   };

@@ -6,10 +6,8 @@ static id globalDelegate;
 static id globalSelf;
 
 OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData) {
-    if ([globalDelegate respondsToSelector:@selector(hotKeyPressed:)]) {
-        [globalDelegate hotKeyPressed:globalSelf];
-    }
-    return noErr;
+  [globalSelf hotkeyPressed];
+  return noErr;
 }
 
 - (id)initAltTab {
@@ -32,7 +30,21 @@ OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *
 }
 
 - (void)setDelegate:(id)anObject {
-    globalDelegate = anObject;
+    globalDelegate = [anObject retain];
+}
+
+- (void)hotkeyPressed {
+  if ([globalDelegate respondsToSelector:@selector(hotKeyPressed:)]) {
+    [globalDelegate hotKeyPressed:globalSelf];
+  }
+}
+
+- (void)dealloc {
+  UnregisterEventHotKey(hotKeyRef);
+  [globalDelegate release];
+  globalSelf = nil;
+  globalDelegate = nil;
+  [super dealloc];
 }
 
 @end
