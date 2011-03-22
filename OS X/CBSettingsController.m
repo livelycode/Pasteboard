@@ -45,13 +45,8 @@
   [windowController showFront];
 }
 
-- (IBAction)toggleHotkeyFieldFocus:(id)sender; {
-  if (hotkeyFieldFocused) {
-    hotkeyFieldFocused = NO;
-  } else {
-    hotkeyFieldFocused = YES;
-  }
-  NSLog(@"%i", hotkeyFieldFocused);
+- (IBAction)shortcutSelected:(NSPopUpButton*)sender {
+  [appController setHotkeyIndex:[sender selectedTag]];
 }
 
 @end
@@ -61,7 +56,6 @@
 - (id)initWithFrame:(CGRect)aRect syncController:(CBSyncController*) aSyncController; {
   self = [super initWithNibName:@"settings" bundle:nil];
   if(self != nil) {
-    hotkeyFieldFocused = NO;
     appController = [[NSApplication sharedApplication] delegate];
     syncController = aSyncController;
     [syncController addDelegate:self];
@@ -112,6 +106,7 @@
   } else {
     [autoPasteButton setState:NSOffState];
   }
+  [hotkeyPopup selectItemWithTag:[appController hotkeyIndex]];
   [addButton setEnabled:NO];
   [removeButton setEnabled:NO];
 }
@@ -185,10 +180,6 @@
 
 - (void)clientConfirmed:(NSString*)clientName {
   NSLog(@"client confirmed %@", clientName);
-}
-
-- (BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor {
-  return NO;
 }
 
 @end

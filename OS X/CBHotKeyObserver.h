@@ -13,6 +13,7 @@
 - (id)initAltTab;
 - (id)initHotKey:(NSUInteger)key withModifier:(NSUInteger)modifier;
 - (void)setDelegate:(id <CBHotKeyObserverDelegate>)anObject;
+- (void)hotkeyPressed;
 
 @end
 
