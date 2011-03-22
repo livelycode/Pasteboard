@@ -46,7 +46,6 @@
 }
 
 - (IBAction)shortcutSelected:(NSPopUpButton*)sender {
-  NSLog(@"%@, %i", [sender titleOfSelectedItem], [sender selectedTag]);
   [appController setHotkeyIndex:[sender selectedTag]];
 }
 
