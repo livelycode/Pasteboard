@@ -48,7 +48,7 @@
 					<object class="NSButton" id="626705464">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{458, 18}, {43, 25}}</string>
+						<string key="NSFrame">{{411, 16}, {76, 31}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -56,15 +56,23 @@
 						<object class="NSButtonCell" key="NSCell" id="467315624">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">134217728</int>
-							<string key="NSContents">Back</string>
+							<string key="NSContents"/>
 							<object class="NSFont" key="NSSupport" id="391880496">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">13</double>
 								<int key="NSfFlags">1044</int>
 							</object>
 							<reference key="NSControlView" ref="626705464"/>
-							<int key="NSButtonFlags">-2038152961</int>
-							<int key="NSButtonFlags2">163</int>
+							<int key="NSButtonFlags">139215103</int>
+							<int key="NSButtonFlags2">130</int>
+							<object class="NSCustomResource" key="NSNormalImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">BackButton</string>
+							</object>
+							<object class="NSCustomResource" key="NSAlternateImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">BackButtonPressed</string>
+							</object>
 							<string key="NSAlternateContents"/>
 							<string key="NSKeyEquivalent"/>
 							<int key="NSPeriodicDelay">400</int>
@@ -795,7 +803,7 @@
 								<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							</object>
 						</array>
-						<string key="NSFrame">{{17, 46}, {487, 509}}</string>
+						<string key="NSFrame">{{17, 57}, {487, 509}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="164144974"/>
@@ -829,7 +837,7 @@
 						</object>
 					</object>
 				</array>
-				<string key="NSFrameSize">{521, 573}</string>
+				<string key="NSFrameSize">{521, 584}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="506001647"/>
@@ -1022,8 +1030,8 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="1005"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="626705464"/>
 							<reference ref="506001647"/>
+							<reference ref="626705464"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1555,6 +1563,8 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="BackButton">{72, 25}</string>
+			<string key="BackButtonPressed">{72, 25}</string>
 			<string key="NSAddTemplate">{8, 8}</string>
 			<string key="NSMenuCheckmark">{9, 8}</string>
 			<string key="NSMenuMixedState">{7, 2}</string>

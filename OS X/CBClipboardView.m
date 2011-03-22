@@ -16,10 +16,13 @@
 @implementation CBClipboardView(Private)
 
 - (void)drawBackgroundWithPath:(NSBezierPath *)aPath {
-  [[NSColor blackColor] setFill];
-  [aPath fill];
-  NSImage *backgroundImage = [NSImage imageNamed:@"background.png"];
-  [[NSColor colorWithPatternImage:backgroundImage] setFill];
+  NSColor *startingColor = [NSColor colorWithCalibratedRed:(172.0/255) green:(114.0/255) blue:(44.0/255) alpha:1];
+  NSColor *endingColor = [NSColor colorWithCalibratedRed:(129.0/255) green:(67.0/255) blue:(21.0/255) alpha:1];
+  NSArray *colors = [NSArray arrayWithObjects:startingColor, endingColor, nil];
+  NSGradient *gradient = [[NSGradient alloc] initWithColors:colors];
+  [gradient drawInBezierPath:aPath angle:270];
+  NSImage *structure = [NSImage imageNamed:@"Structure.png"];
+  [[NSColor colorWithPatternImage:structure] setFill];
   [aPath fill];
 }
 

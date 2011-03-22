@@ -17,9 +17,9 @@
   [[NSColor colorWithDeviceWhite:0.9 alpha:1] setStroke];
   NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
   CGFloat width = CGRectGetWidth(aRect);
-  [path setLineWidth:(width/32)];
-  CGFloat dash[2] = {(width/12), (width/64)};
-  [path setLineDash:dash count:2 phase:0];
+  [path setLineWidth:(width/64)];
+//  CGFloat dash[2] = {(width/12), (width/64)};
+//  [path setLineDash:dash count:2 phase:0];
   [path stroke];
   [NSGraphicsContext restoreGraphicsState];
 }
