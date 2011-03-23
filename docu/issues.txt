@@ -1,0 +1,2 @@
+Issues:
+- syncing breakes if time is not exactly the same on two devices
