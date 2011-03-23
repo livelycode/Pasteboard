@@ -13,6 +13,7 @@
 
 @implementation CBClipboardController(Overriden)
 - (void)viewDidLoad {
+  [self drawBackgroundLayers];
   [self initializeItemViewFrames];
   [self drawPasteView];
   [self drawAllItems];

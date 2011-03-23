@@ -28,4 +28,5 @@
 - (void)moveAllItemViewsAnimated;
 - (void)initializeItemViewFrames;
 - (void)addItemView:(UIView *)itemView;
+- (void) drawBackgroundLayers;
 @end
