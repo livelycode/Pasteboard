@@ -43,7 +43,7 @@ OSStatus hotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *
   UnregisterEventHotKey(hotKeyRef);
   [globalDelegate release];
   globalSelf = nil;
-  globalDelegate = nil;
+  globalDelegate = nil;			
   [super dealloc];
 }
 
