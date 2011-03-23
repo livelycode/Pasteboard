@@ -44,6 +44,7 @@ static CALayer *rootLayer;
   [CATransaction setDisableActions:NO];
   [backView setHidden:YES];
   [flipLayer setTransform:[self createFlipTransform]];
+  [(CBWindowView*)[mainWindow contentView] setHideable:NO];
 }
 
 - (void)showBack {
@@ -53,6 +54,7 @@ static CALayer *rootLayer;
   [CATransaction setDisableActions:NO];
   [frontView setHidden:YES];
   [flipLayer setTransform:[self createFlipTransform]];
+  [(CBWindowView*)[mainWindow contentView] setHideable:NO];
 }
 
 - (CBClipboardController *)clipboardController {
@@ -91,6 +93,7 @@ static CALayer *rootLayer;
   [CATransaction setDisableActions:YES];
   [flipLayer removeFromSuperlayer];
   [CATransaction setDisableActions:NO];
+  [(CBWindowView*)[mainWindow contentView] setHideable:YES];
 }
 
 @end

@@ -5,9 +5,13 @@
 - (id)initWithFrame:(NSRect)aFrame {
     self = [super initWithFrame:aFrame];
     if (self != nil) {
-
+      hideable = YES;
     }
     return self;
+}
+
+- (void)setHideable:(BOOL)isHideable {
+  hideable = isHideable;
 }
 
 - (void)drawRect:(NSRect)aRect {
@@ -19,7 +23,9 @@
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
-    [[self window] orderOut:self];
+  if(hideable) {
+    [[self window] orderOut:self];    
+  }
 }
 
 @end

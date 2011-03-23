@@ -2,13 +2,13 @@
 
 @interface CBWindowView : NSView
 {
-    @private
+  @private
+  BOOL hideable;
 }
 
 - (id)initWithFrame:(NSRect)aFrame;
-
+- (void)setHideable:(BOOL)isHideable;
 - (void)mouseDown:(NSEvent *)theEvent;
-
 - (void)drawRect:(NSRect)aRect;
 
 @end
