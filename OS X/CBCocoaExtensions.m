@@ -22,3 +22,24 @@
 
 @end
 
+@implementation NSColor(CBCocoaExtensions)
+
++ (NSColor *)woodColor {
+  return [self colorWithCalibratedRed:(172.0/255) green:(114.0/255) blue:(44.0/255) alpha:1];
+}
+
++ (NSColor *)woodStructureColor {
+   return [self colorWithPatternImage:[NSImage imageNamed:@"Structure.png"]];
+}
+
++ (NSColor *)woodDarkColor {
+  return [[self woodColor] shadowWithLevel:0.2];
+}
++ (NSColor *)woodLightColor {
+  return [[self woodColor] highlightWithLevel:0.2];
+}
++ (NSColor *)woodBorderColor {
+  return [[self woodColor] shadowWithLevel:0.3];
+}
+
+@end
