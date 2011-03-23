@@ -7,7 +7,6 @@
 //
 
 #import "Cloudboard.h"
-#import <SystemConfiguration/SystemConfiguration.h>
 
 @implementation CBSyncController
 - (id)initWithClipboardController: (CBClipboardController*) aSyncController {
