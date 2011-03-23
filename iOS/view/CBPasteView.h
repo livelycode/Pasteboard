@@ -16,6 +16,6 @@
 
 @interface CBPasteView(Private)
 - (UIBezierPath *)notePathWithRect:(CGRect)noteRect;
-- (void)drawBorderWithPath:(UIBezierPath *)aPath;
+- (void)drawBorderWithRect:(CGRect)aRect	;
 - (void)handleTap:(UITapGestureRecognizer*)recognizer;
 @end
