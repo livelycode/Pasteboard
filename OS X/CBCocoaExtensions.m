@@ -7,16 +7,17 @@
   NSInteger pixelsWide = CGRectGetWidth(bounds);
   NSInteger pixelsHigh = CGRectGetHeight(bounds);
   NSInteger bytesPerRow = pixelsWide * 4;
-  void *bitmapData = malloc(bytesPerRow * pixelsHigh);
   CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-  CGContextRef imageContext = CGBitmapContextCreate (bitmapData, pixelsWide, pixelsHigh, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
-
+  CGContextRef imageContext = CGBitmapContextCreate (NULL, pixelsWide, pixelsHigh, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
   [[self layer] renderInContext:imageContext];
+  CGImageRef image = CGBitmapContextCreateImage(imageContext);
   CALayer *layer = [CALayer layer];	
   [layer setFrame:[self frame]];
-  [layer setContents:(id)CGBitmapContextCreateImage(imageContext)];
+  [layer setContents:(id)image];
   
   CGColorSpaceRelease(colorSpace);
+  CGContextRelease(imageContext);
+  CGImageRelease(image);
   return layer;
 }
 
