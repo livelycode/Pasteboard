@@ -3,17 +3,22 @@
 @implementation NSView (CBCocoaExtensions)
 
 - (CALayer *)snapshot {
-  NSData *data = [self dataWithPDFInsideRect:[self bounds]];
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-  NSData* tiffData = [image TIFFRepresentation];
-  CGImageSourceRef source = CGImageSourceCreateWithData((CFDataRef)tiffData, NULL);
-  CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+  CGRect bounds = [self bounds];
+  NSInteger pixelsWide = CGRectGetWidth(bounds);
+  NSInteger pixelsHigh = CGRectGetHeight(bounds);
+  NSInteger bytesPerRow = pixelsWide * 4;
+  void *bitmapData = malloc(bytesPerRow * pixelsHigh);
+  CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+  CGContextRef imageContext = CGBitmapContextCreate (bitmapData, pixelsWide, pixelsHigh, 8, bytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
+
+  [[self layer] renderInContext:imageContext];
   CALayer *layer = [CALayer layer];	
   [layer setFrame:[self frame]];
-  [layer setContents:(id)imageRef];
-  CFRelease(source);
-  CFRelease(imageRef);
+  [layer setContents:(id)CGBitmapContextCreateImage(imageContext)];
+  
+  CGColorSpaceRelease(colorSpace);
   return layer;
 }
 
 @end
+
