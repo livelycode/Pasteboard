@@ -8,20 +8,24 @@
 }
 
 - (void)drawBorderWithRect:(CGRect)aRect {
-  [NSGraphicsContext saveGraphicsState];
-  NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
-  [shadow setShadowOffset:CGSizeMake(0, -2)];
-  [shadow setShadowBlurRadius:2];
-  [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
-  [shadow set];
-  [[NSColor colorWithDeviceWhite:0.9 alpha:1] setStroke];
-  NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
-  CGFloat width = CGRectGetWidth(aRect);
-  [path setLineWidth:(width/64)];
-//  CGFloat dash[2] = {(width/12), (width/64)};
-//  [path setLineDash:dash count:2 phase:0];
-  [path stroke];
-  [NSGraphicsContext restoreGraphicsState];
+  CGFloat width = CGRectGetWidth(aRect) / 52;
+  CGRect highlightRect = CGRectOffset(aRect, 0, -1);
+  NSBezierPath *highlightPath = [NSBezierPath bezierPathWithRoundedRect:highlightRect xRadius:16 yRadius:16];
+  [highlightPath setLineWidth:width+2];
+  [[NSColor woodLightColor] setStroke];
+  [highlightPath stroke];
+  
+  NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
+  [borderPath setLineWidth:width+2];
+  [[NSColor woodBorderColor] setStroke];
+  [borderPath stroke];
+  
+  NSBezierPath *embossPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
+  [embossPath setLineWidth:width];
+  [[NSColor woodDarkColor] setStroke];
+  [embossPath stroke];
+  [[NSColor woodStructureColor] setStroke];
+  [embossPath stroke];
 }
 
 - (void)drawTextWithRect:(CGRect)textRect {
