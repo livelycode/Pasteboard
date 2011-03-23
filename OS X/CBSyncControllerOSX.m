@@ -7,9 +7,11 @@
 //
 
 #import "Cloudboard.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @implementation CBSyncController (CBSyncController)
 - (NSString*)deviceName {
-  return NSFullUserName();
+  //return NSFullUserName();
+  return (NSString *)SCDynamicStoreCopyComputerName(NULL, NULL);
 }
 @end
