@@ -8,6 +8,7 @@
 
 - (void)viewDidLoad {
   [self.view setFrame:CGRectOffset(self.view.frame, 0, 22)];
+  [self drawBackgroundLayers];
   [self preparePopoverView];
   [self initializeItemViewFrames];
   [self drawPasteView];

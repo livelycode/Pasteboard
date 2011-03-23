@@ -6,7 +6,8 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CBSyncController.h"
+#import "Cloudboard.h"
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @implementation CBSyncController
 - (id)initWithClipboardController: (CBClipboardController*) aSyncController {
@@ -32,9 +33,11 @@
     clientsUserNeedsToConfirm = [[NSMutableArray alloc] init];
     clientsQueuedForConfirm = [[NSMutableArray alloc] init];
     
+    NSString* deviceName = [self deviceName];
+    
     NSMutableString* tempServiceString = [NSMutableString string];
     [tempServiceString appendString: @"Cloudboard "];
-    [tempServiceString appendString: [[NSHost currentHost] name]];
+    [tempServiceString appendString: deviceName];
     myServiceName = [[NSString alloc] initWithString:tempServiceString];
     
     [self launchHTTPServer];

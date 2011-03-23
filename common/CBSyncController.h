@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Cloudboard.h"
 #import "CBSyncControllerProtocol.h"
-@class CBRemoteCloudboard, CBApplicationController;
+@class HTTPServer, CBClipboardController, CBItem, CBRemoteCloudboard, CBApplicationController;
 
 @interface CBSyncController : NSObject {
 @private
