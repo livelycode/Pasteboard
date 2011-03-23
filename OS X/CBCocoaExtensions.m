@@ -33,13 +33,13 @@
 }
 
 + (NSColor *)woodDarkColor {
-  return [[self woodColor] shadowWithLevel:0.2];
+  return [[self woodColor] shadowWithLevel:0.25];
 }
 + (NSColor *)woodLightColor {
-  return [[self woodColor] highlightWithLevel:0.2];
+  return [[self woodColor] highlightWithLevel:0.3];
 }
 + (NSColor *)woodBorderColor {
-  return [[self woodColor] shadowWithLevel:0.3];
+  return [[self woodDarkColor] shadowWithLevel:0.2];
 }
 
 @end
