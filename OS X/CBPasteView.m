@@ -28,18 +28,18 @@
   [embossPath stroke];
 }
 
-- (void)drawTextWithRect:(CGRect)textRect {
-  NSFont *font = [NSFont fontWithName:@"Helvetica Bold" size:(CGRectGetHeight(textRect) / 2)];
-  NSColor *color = [NSColor colorWithCalibratedWhite:0 alpha:0.2];
-  NSArray *objects = [NSArray arrayWithObjects:font, color, nil];
-  NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, nil];
-  NSDictionary *attributes = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+- (void)drawTextWithRect:(CGRect)textRect color:(NSColor *)aColor offset:(CGFloat)anOffset strokeWidth:(NSUInteger)aWidth {
+  NSFont *font = [NSFont fontWithName:@"Lucida Grande Bold" size:(CGRectGetHeight(textRect) / 2)];
   NSString *string = @"Paste";
+  NSNumber *strokeWidth = [NSNumber numberWithUnsignedInteger:aWidth];
+  NSArray *objects = [NSArray arrayWithObjects:font, aColor, strokeWidth, nil];
+  NSArray *keys = [NSArray arrayWithObjects:NSFontAttributeName, NSForegroundColorAttributeName, NSStrokeWidthAttributeName, nil];
+  NSDictionary *attributes = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
   CGSize size = [string sizeWithAttributes:attributes];
   CGFloat widthDelta = (CGRectGetWidth(textRect) - size.width) / 2;
   CGFloat heightDelta = (CGRectGetHeight(textRect) - size.height) / 2;
   CGRect rect = CGRectInset(textRect, widthDelta, heightDelta);
-  [string drawInRect:rect withAttributes:attributes];
+  [string drawInRect:CGRectOffset(rect, 0, anOffset) withAttributes:attributes];
 }
 
 @end
@@ -50,11 +50,18 @@
   [self setNeedsDisplay:YES];
   [delegate pasteViewClicked];
 }
-
+  
 - (void)drawRect:(NSRect)aRect { 
-  CGRect bounds = [self bounds];
-  [self drawBorderWithRect:CGRectInset(bounds, 32, 16)];
-  [self drawTextWithRect:CGRectInset(bounds, 32, 32)];
+  CGRect frame = CGRectInset([self bounds], 32, 16);
+  NSColor *background = [NSColor woodDarkColor];
+  NSColor *border = [NSColor woodBorderColor];
+  NSColor *highlight = [NSColor woodLightColor];
+  NSColor *structure = [NSColor woodStructureColor];
+  [self drawBorderWithRect:frame];
+  [self drawTextWithRect:frame color:highlight offset:-1 strokeWidth:0];
+  [self drawTextWithRect:frame color:background offset:0 strokeWidth:0];
+  [self drawTextWithRect:frame color:structure offset:0 strokeWidth:0];
+  [self drawTextWithRect:frame color:border offset:0 strokeWidth:1];
 }
 
 - (void)dealloc {
