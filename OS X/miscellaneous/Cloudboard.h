@@ -11,6 +11,7 @@
 #import "CBApplicationController.h"
 #import "CBClipboardController.h"
 #import "CBHotKeyObserver.h"
+#import "CBSyncControllerOSX.h"
 #import "CBMainWindowController.h"
 #import "CBPasteboardObserver.h"
 #import "CBItemView.h"
