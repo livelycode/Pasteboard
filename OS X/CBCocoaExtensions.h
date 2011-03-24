@@ -8,7 +8,7 @@
 
 @interface NSColor(CBCocoaExtensions)
 
-+ (NSColor *)colorWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue;
++ (NSColor *)color8BitWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue;
 + (NSColor *)noteColor;
 + (NSColor *)woodColor;
 + (NSColor *)woodStructureColor;

@@ -25,17 +25,17 @@
 
 @implementation NSColor(CBCocoaExtensions)
 
-+ (NSColor *)colorWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue {
++ (NSColor *)color8BitWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue {
   CGFloat resolution = 255.0;
   return [self colorWithCalibratedRed:(red/resolution) green:(green/resolution) blue:(blue/resolution) alpha:1];
 }
 
 + (NSColor *)noteColor {
-  return [self colorWithRed:229 green:191 blue:102];
+  return [self color8BitWithRed:229 green:191 blue:102];
 } 
 
 + (NSColor *)woodColor {
-  return [self colorWithRed:180 green:120 blue:50];
+  return [self color8BitWithRed:180 green:120 blue:50];
 }
 
 + (NSColor *)woodStructureColor {
