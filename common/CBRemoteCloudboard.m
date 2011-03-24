@@ -50,7 +50,11 @@
   NSString* lastChangedInterval = [[NSNumber numberWithInteger:[date timeIntervalSinceNow]] stringValue];
   [strings addObject:lastChangedInterval];
   for(CBItem* item in items) {
-    [strings addObject:[item string]];
+    //[strings addObject:[item string]];
+    NSMutableString* text = [NSMutableString stringWithString:[item string]];
+    [text appendString:@" ### "];
+    [text appendString:[syncController serviceName]];
+    [strings addObject:text];
   }
   NSString* string = [strings componentsJoinedByString:POST_SEPARATOR];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:string];
