@@ -14,7 +14,7 @@
 
 - (void)drawBorderWithPath:(UIBezierPath *)aPath {
   [aPath addClip];
-  [[UIColor colorWithWhite:1 alpha:0.3] setStroke];
+  [[[UIColor noteColor] brightenWithLevel:0.2] setStroke];
   [aPath setLineWidth:2];
   [aPath stroke];
 }
@@ -28,8 +28,8 @@
   CGContextAddPath(context, aPath.CGPath);
   CGContextClosePath(context);
   CGContextClip(context);
-  UIColor *endingColor = [UIColor colorWithRed:0.9 green:0.8 blue:0.4 alpha:1];
-  UIColor *startingColor = [UIColor colorWithRed:0.93 green:0.86 blue:0.58 alpha:1];
+  UIColor *startingColor = [UIColor noteColor];
+  UIColor *endingColor = [startingColor saturateWithLevel:0.2];
   NSUInteger height = CGRectGetHeight(aPath.bounds);
   CGFloat gradientLocations[2] = { 0.0, 1.0 };
   NSMutableArray *colors = [NSMutableArray arrayWithObjects:(id)startingColor.CGColor, (id)endingColor.CGColor, nil];

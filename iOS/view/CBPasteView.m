@@ -11,7 +11,7 @@
   CGRect highlightRect = CGRectOffset(aRect, 0, 1);
   UIBezierPath *highlightPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:16];
   [highlightPath setLineWidth:width+2];
-  [[UIColor woodLightColor] setStroke];
+  [[UIColor woodHighlightColor] setStroke];
   [highlightPath stroke];
   
   UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:16];
@@ -21,7 +21,7 @@
   
   UIBezierPath *embossPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:16];;
   [embossPath setLineWidth:width];
-  [[UIColor woodDarkColor] setStroke];
+  [[UIColor woodBackgroundColor] setStroke];
   [embossPath stroke];
   [[UIColor woodStructureColor] setStroke];
   [embossPath stroke];
@@ -59,11 +59,11 @@
 
 - (void)drawRect:(CGRect)aRect {
   CGRect frame = CGRectInset([self bounds], ITEM_PADDING_X, ITEM_PADDING_Y);
-  [self drawBorderWithRect:CGRectInset(frame, 16, 4)];
+  [self drawBorderWithRect:CGRectInset(frame, PASTE_BUTTON_PADDING_X, PASTE_BUTTON_PADDING_Y)];
   
-  UIColor *background = [UIColor woodDarkColor];
+  UIColor *background = [UIColor woodBackgroundColor];
   UIColor *border = [UIColor woodBorderColor];
-  UIColor *highlight = [UIColor woodLightColor];
+  UIColor *highlight = [UIColor woodHighlightColor];
   UIColor *structure = [UIColor woodStructureColor];
   [self drawTextWithRect:frame color:highlight offset:-1 strokeWidth:0];
   [self drawTextWithRect:frame color:background offset:0 strokeWidth:0];

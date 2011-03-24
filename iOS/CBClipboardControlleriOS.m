@@ -108,8 +108,8 @@
 }
 
 - (void) drawBackgroundLayers {
-  UIColor *startingColor = [UIColor colorWithRed:(172.0/255) green:(114.0/255) blue:(44.0/255) alpha:1];
-  UIColor *endingColor = [UIColor colorWithRed:(129.0/255) green:(67.0/255) blue:(21.0/255) alpha:1];
+  UIColor *startingColor = [UIColor woodColor];
+  UIColor *endingColor = [startingColor saturateWithLevel:0.2];
   CAGradientLayer *gradientLayer = [CAGradientLayer layer];
   gradientLayer.colors = [NSArray arrayWithObjects: (id)[startingColor CGColor], (id)[endingColor CGColor], nil];
   UIImage *structure = [UIImage imageNamed:@"Structure.png"];
