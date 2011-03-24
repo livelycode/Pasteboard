@@ -25,8 +25,17 @@
 
 @implementation NSColor(CBCocoaExtensions)
 
++ (NSColor *)colorWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue {
+  CGFloat resolution = 255.0;
+  return [self colorWithCalibratedRed:(red/resolution) green:(green/resolution) blue:(blue/resolution) alpha:1];
+}
+
++ (NSColor *)noteColor {
+  return [self colorWithRed:229 green:191 blue:102];
+} 
+
 + (NSColor *)woodColor {
-  return [self colorWithCalibratedRed:(172.0/255) green:(114.0/255) blue:(44.0/255) alpha:1];
+  return [self colorWithRed:172 green:114 blue:44];
 }
 
 + (NSColor *)woodStructureColor {
@@ -51,6 +60,13 @@
 
 - (NSColor *)shadeWithLevel:(CGFloat)aLevel {
   return [self blendedColorWithFraction:aLevel ofColor:[NSColor blackColor]];
+}
+
+- (NSColor *)saturateWithLevel:(CGFloat)aLevel {
+  CGFloat hue = [self hueComponent];
+  CGFloat saturation = [self saturationComponent] + aLevel;
+  CGFloat brightness = [self brightnessComponent];
+  return [NSColor colorWithCalibratedHue:hue saturation:saturation brightness:brightness alpha:1];
 }
 
 @end

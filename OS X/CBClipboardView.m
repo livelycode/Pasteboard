@@ -8,7 +8,7 @@
 
 - (void)drawBackgroundWithPath:(NSBezierPath *)aPath {
   NSColor *startingColor = [NSColor woodColor];
-  NSColor *endingColor = [NSColor colorWithCalibratedRed:(129.0/255) green:(67.0/255) blue:(21.0/255) alpha:1];
+  NSColor *endingColor = [startingColor saturateWithLevel:0.2];
   NSArray *colors = [NSArray arrayWithObjects:startingColor, endingColor, nil];
   NSGradient *gradient = [[NSGradient alloc] initWithColors:colors];
   [gradient drawInBezierPath:aPath angle:270];

@@ -25,8 +25,8 @@
   [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.4]];
   [shadow set];
   [aPath fill];
-  NSColor *endingColor = [NSColor colorWithCalibratedRed:0.9 green:0.8 blue:0.4 alpha:1];
-  NSColor *startingColor = [endingColor highlightWithLevel:0.3];
+  NSColor *startingColor = [NSColor noteColor];
+  NSColor *endingColor = [startingColor saturateWithLevel:0.2];
   NSGradient *gradient = [[[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor] autorelease];
   [gradient drawInBezierPath:aPath angle:270];
   [NSGraphicsContext restoreGraphicsState];
@@ -34,7 +34,7 @@
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
   [aPath addClip];
-  [[NSColor colorWithCalibratedWhite:1 alpha:0.3] setStroke];
+  [[[NSColor noteColor] brightenWithLevel:0.2] setStroke];
   [aPath setLineWidth:2];
   [aPath stroke];
 }
