@@ -13,6 +13,7 @@
 
 @implementation CBClipboardController(Overriden)
 - (void)viewDidLoad {
+  [self.view setFrame:CGRectOffset(self.view.frame, 0, 20)];
   [self drawBackgroundLayers];
   [self initializeItemViewFrames];
   [self drawPasteView];

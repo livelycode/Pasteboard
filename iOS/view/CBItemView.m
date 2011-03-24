@@ -14,7 +14,7 @@
 
 - (void)drawBorderWithPath:(UIBezierPath *)aPath {
   [aPath addClip];
-  [[[UIColor noteColor] brightenWithLevel:0.2] setStroke];
+  [[[UIColor noteColor] brightenWithLevel:0.1] setStroke];
   [aPath setLineWidth:2];
   [aPath stroke];
 }

@@ -9,17 +9,18 @@
 - (void)drawBorderWithRect:(CGRect)aRect {
   CGFloat width = CGRectGetWidth(aRect) / 52;
   CGRect highlightRect = CGRectOffset(aRect, 0, 1);
-  UIBezierPath *highlightPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:16];
+  CGFloat cornerRadius = CGRectGetWidth(aRect) / 12;
+  UIBezierPath *highlightPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:cornerRadius];
   [highlightPath setLineWidth:width+2];
   [[UIColor woodHighlightColor] setStroke];
   [highlightPath stroke];
   
-  UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:16];
+  UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:cornerRadius];
   [borderPath setLineWidth:width+2];
   [[UIColor woodBorderColor] setStroke];
   [borderPath stroke];
   
-  UIBezierPath *embossPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:16];;
+  UIBezierPath *embossPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:cornerRadius];;
   [embossPath setLineWidth:width];
   [[UIColor woodBackgroundColor] setStroke];
   [embossPath stroke];
