@@ -85,7 +85,9 @@
 }
 
 - (void)drawRect:(NSRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], 16, 20);
+  CGFloat width = CGRectGetWidth(aRect) / 24;
+  CGFloat height = CGRectGetHeight(aRect) / 16;
+  CGRect noteRect = CGRectInset([self bounds], width, height);
   NSBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];
   [self drawBorderWithPath:notePath];

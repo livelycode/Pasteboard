@@ -30,7 +30,7 @@
 }
 
 - (void)drawTextWithRect:(CGRect)textRect color:(NSColor *)aColor offset:(CGFloat)anOffset strokeWidth:(NSUInteger)aWidth {
-  NSFont *font = [NSFont fontWithName:@"Lucida Grande Bold" size:(CGRectGetHeight(textRect) / 2)];
+  NSFont *font = [NSFont fontWithName:@"Helvetica-Bold" size:(CGRectGetHeight(textRect) / 2)];
   NSString *string = @"Paste";
   NSNumber *strokeWidth = [NSNumber numberWithUnsignedInteger:aWidth];
   NSArray *objects = [NSArray arrayWithObjects:font, aColor, strokeWidth, nil];
@@ -52,8 +52,10 @@
   [delegate pasteViewClicked];
 }
   
-- (void)drawRect:(NSRect)aRect { 
-  CGRect frame = CGRectInset([self bounds], 32, 32);
+- (void)drawRect:(NSRect)aRect {
+  CGFloat width = CGRectGetWidth(aRect) / 24;
+  CGFloat height = CGRectGetHeight(aRect) / 16;
+  CGRect frame = CGRectInset([self bounds], width, height);
   NSColor *background = [NSColor woodBackgroundColor];
   NSColor *border = [NSColor woodBorderColor];
   NSColor *highlight = [NSColor woodHighlightColor];
