@@ -262,6 +262,7 @@
 - (void)receivedAddedRemoteItem: (CBItem*)item {
   NSLog(@"received item: %@", [item string]);
   [clipboardController addItem:item syncing:NO];
+  [clipboardController setLastChanged:[NSDate date]];
 }
 
 - (void)receivedRemoteItems: (NSArray*)items changedDate:(NSDate *)date {
@@ -272,6 +273,7 @@
     for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {
       [clipboardController addItem:item syncing:NO];
     }
+    [clipboardController setLastChanged:[date dateByAddingTimeInterval:-3]];
   } else {
     NSLog(@"I have better stuff!");
   }

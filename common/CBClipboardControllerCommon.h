@@ -12,6 +12,7 @@
 
 @interface CBClipboardController(CommonPublic)
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;
+- (void)setLastChanged:(NSDate*)date;
 - (NSDate*)lastChanged;
 - (NSArray*)allItems;
 - (BOOL)clipboardContainsItem:(CBItem*)anItem;

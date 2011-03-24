@@ -11,16 +11,18 @@
 @implementation CBClipboardController(CBClipboardControllerCommon)
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
-  if(sync) {
-    [clipboard updateLastChanged];
-  }
   [clipboard persist];
   [self drawItem:item];
   if(sync) {
+    [clipboard updateLastChanged];
     if(syncController) {
       [syncController didAddItem:item];
     } 
   }
+}
+
+- (void)setLastChanged:(NSDate*)date {
+  [clipboard setLastChanged:date];
 }
 
 - (BOOL)clipboardContainsItem:(CBItem *)anItem {
@@ -45,6 +47,7 @@
   }
   [itemViewSlots removeAllObjects];
   [clipboard clear];
+  [clipboard updateLastChanged];
   if(sync) {
     [syncController didResetItems];
   }
