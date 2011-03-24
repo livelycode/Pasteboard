@@ -15,7 +15,6 @@
   NSArray* shortcutKeycodes;
   IBOutlet NSMenu *statusBarMenu;
   NSUInteger hotkeyIndex;
-  BOOL windowHidden;
   BOOL autoStart;
   BOOL autoPaste;
 }

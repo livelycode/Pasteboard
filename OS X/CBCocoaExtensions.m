@@ -33,14 +33,24 @@
    return [self colorWithPatternImage:[NSImage imageNamed:@"Structure.png"]];
 }
 
-+ (NSColor *)woodDarkColor {
-  return [[self woodColor] shadowWithLevel:0.25];
++ (NSColor *)woodBackgroundColor {
+  return [[self woodColor] shadeWithLevel:0.3];
 }
-+ (NSColor *)woodLightColor {
-  return [[self woodColor] highlightWithLevel:0.3];
+
++ (NSColor *)woodHighlightColor {
+  return [[self woodColor] brightenWithLevel:0.4];
 }
+
 + (NSColor *)woodBorderColor {
-  return [[self woodDarkColor] shadowWithLevel:0.2];
+  return [[self woodColor] shadowWithLevel:0.5];
+}
+
+- (NSColor *)brightenWithLevel:(CGFloat)aLevel {
+  return [self blendedColorWithFraction:aLevel ofColor:[NSColor whiteColor]];
+}
+
+- (NSColor *)shadeWithLevel:(CGFloat)aLevel {
+  return [self blendedColorWithFraction:aLevel ofColor:[NSColor blackColor]];
 }
 
 @end

@@ -10,8 +10,11 @@
 
 + (NSColor *)woodColor;
 + (NSColor *)woodStructureColor;
-+ (NSColor *)woodDarkColor;
-+ (NSColor *)woodLightColor;
++ (NSColor *)woodBackgroundColor;
++ (NSColor *)woodHighlightColor;
 + (NSColor *)woodBorderColor;
+
+- (NSColor *)brightenWithLevel:(CGFloat)aLevel;
+- (NSColor *)shadeWithLevel:(CGFloat)aLevel;
 
 @end
