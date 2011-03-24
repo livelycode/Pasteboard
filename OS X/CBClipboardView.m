@@ -63,4 +63,12 @@
   return NO;    
 }
 
+- (CALayer *)snapshot {
+  NSShadow *shadow = [[self shadow] retain];
+  [self setShadow:nil];
+  CALayer *layer = [super snapshot];
+  [self setShadow:shadow];
+  return layer;
+}
+
 @end
