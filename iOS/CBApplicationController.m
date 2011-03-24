@@ -29,6 +29,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  NSLog(@"%f", [[UIScreen mainScreen] scale]);
   [self initClipboards];
   return YES;
 }

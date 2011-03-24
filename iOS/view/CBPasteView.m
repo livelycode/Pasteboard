@@ -8,15 +8,15 @@
 
 - (void)drawBorderWithRect:(CGRect)aRect {
   CGFloat width = CGRectGetWidth(aRect) / 52;
-  CGRect highlightRect = CGRectOffset(aRect, 0, 1);
+  CGRect highlightRect = CGRectOffset(aRect, 0, 1/SCALE);
   CGFloat cornerRadius = CGRectGetWidth(aRect) / 12;
   UIBezierPath *highlightPath = [UIBezierPath bezierPathWithRoundedRect:highlightRect cornerRadius:cornerRadius];
-  [highlightPath setLineWidth:width+2];
+  [highlightPath setLineWidth:width+2/SCALE];
   [[UIColor woodHighlightColor] setStroke];
   [highlightPath stroke];
   
   UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:aRect cornerRadius:cornerRadius];
-  [borderPath setLineWidth:width+2];
+  [borderPath setLineWidth:width+2/SCALE];
   [[UIColor woodBorderColor] setStroke];
   [borderPath stroke];
   
@@ -36,7 +36,7 @@
     CGContextSetTextDrawingMode (context, kCGTextFill);
   } else {
     CGContextSetRGBFillColor(context, 0, 0, 0, 0);
-    CGContextSetLineWidth(context, aWidth);
+    CGContextSetLineWidth(context, aWidth/SCALE);
     CGContextSetStrokeColorWithColor(context, [aColor CGColor]);
     CGContextSetTextDrawingMode (context, kCGTextStroke);
   }
@@ -46,7 +46,7 @@
   CGFloat widthDelta = (CGRectGetWidth(textRect) - size.width) / 2;
   CGFloat heightDelta = (CGRectGetHeight(textRect) - size.height) / 2;
   CGRect rect = CGRectInset(textRect, widthDelta, heightDelta);
-  [string drawInRect:CGRectOffset(rect, 0, -anOffset) withFont:font];
+  [string drawInRect:CGRectOffset(rect, 0, -anOffset/SCALE) withFont:font];
   CGContextRestoreGState(context);
 }
 

@@ -20,3 +20,5 @@
 #import "CBCocoaExtensions.h"
 
 #define POST_SEPARATOR @"com.cloudboard.separator"
+
+#define SCALE [[UIScreen mainScreen] scale]
