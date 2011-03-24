@@ -24,7 +24,7 @@ static CALayer *rootLayer;
     flipKey = @"transform";
     CGRect mainFrame = [[NSScreen mainScreen] frame];
     CGRect clipboardFrame = [self createClipboardFrame];
-    mainWindow = [self createWindowWithFrame:mainFrame];
+    mainWindow = [[CBWindow alloc] initWithFrame:mainFrame];
     clipboardController = [[CBClipboardController alloc] initWithFrame:clipboardFrame windowController:self];
     syncController = [[CBSyncController alloc] initWithClipboardController:clipboardController];
     [clipboardController setSyncController:syncController];
@@ -115,15 +115,6 @@ static CALayer *rootLayer;
   [view setWantsLayer:YES];
   [view setSubviews:[NSArray arrayWithObjects:theBack, theFront, animationView, nil]];
   return view;
-}
-
-- (CBWindow *)createWindowWithFrame:(CGRect)aRect {
-  CBWindow *window = [[CBWindow alloc] initWithContentRect:aRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
-  [window setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-  [window setLevel:NSStatusWindowLevel];
-  [window setOpaque:NO];
-  [window setBackgroundColor:[NSColor clearColor]];
-  return window;
 }
 
 - (CGRect)createClipboardFrame {

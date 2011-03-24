@@ -12,7 +12,7 @@
   CGRect highlightRect = CGRectOffset(aRect, 0, -1);
   NSBezierPath *highlightPath = [NSBezierPath bezierPathWithRoundedRect:highlightRect xRadius:16 yRadius:16];
   [highlightPath setLineWidth:width+2];
-  [[NSColor woodLightColor] setStroke];
+  [[NSColor woodHighlightColor] setStroke];
   [highlightPath stroke];
   
   NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
@@ -22,7 +22,7 @@
   
   NSBezierPath *embossPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
   [embossPath setLineWidth:width];
-  [[NSColor woodDarkColor] setStroke];
+  [[NSColor woodBackgroundColor] setStroke];
   [embossPath stroke];
   [[NSColor woodStructureColor] setStroke];
   [embossPath stroke];
@@ -53,9 +53,9 @@
   
 - (void)drawRect:(NSRect)aRect { 
   CGRect frame = CGRectInset([self bounds], 32, 16);
-  NSColor *background = [NSColor woodDarkColor];
+  NSColor *background = [NSColor woodBackgroundColor];
   NSColor *border = [NSColor woodBorderColor];
-  NSColor *highlight = [NSColor woodLightColor];
+  NSColor *highlight = [NSColor woodHighlightColor];
   NSColor *structure = [NSColor woodStructureColor];
   [self drawBorderWithRect:frame];
   [self drawTextWithRect:frame color:highlight offset:-1 strokeWidth:0];

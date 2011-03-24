@@ -17,5 +17,5 @@
 @interface CBPasteView(Private)
 - (NSTrackingArea *)createTrackingAreaWithRect:(CGRect)aRect;
 - (void)drawBorderWithRect:(CGRect)aRect;
-- (void)drawTextWithRect:(CGRect)textRect;
+- (void)drawTextWithRect:(CGRect)textRect color:(NSColor *)aColor offset:(CGFloat)anOffset strokeWidth:(NSUInteger)aWidth;
 @end

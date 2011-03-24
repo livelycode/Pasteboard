@@ -1,30 +1,20 @@
-//
-//  CBWindow.m
-//  cloudboard-mac
-//
-//  Created by Mirko on 3/21/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "CBWindow.h"
 
 @implementation CBWindow
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        // Initialization code here.
+- (id)initWithFrame:(CGRect)aRect {
+    self = [super initWithContentRect:aRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    if (self != nil) {
+      [self setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+    //  [self setLevel:NSStatusWindowLevel];
+      [self setOpaque:NO];
+      [self setBackgroundColor:[NSColor clearColor]];
     }
-    
     return self;
 }
 
 - (BOOL)canBecomeKeyWindow {
   return YES;
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 @end

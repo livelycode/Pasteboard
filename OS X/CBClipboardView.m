@@ -1,14 +1,5 @@
 #import "Cloudboard.h"
 
-#define CORNER_RADIUS 16
-#define BORDER_WIDTH 2
-#define BORDER_ALPHA 0.6
-#define INNER_SHADOW_BLUR 40
-#define INNER_SHADOW_ALPHA 0.8
-#define DROP_SHADOW_OFFSET -4
-#define DROP_SHADOW_BLUR 8
-#define DROP_SHADOW_ALPHA 0.8
-
 @implementation CBClipboardView
 
 @end
@@ -16,24 +7,23 @@
 @implementation CBClipboardView(Private)
 
 - (void)drawBackgroundWithPath:(NSBezierPath *)aPath {
-  NSColor *startingColor = [NSColor colorWithCalibratedRed:(172.0/255) green:(114.0/255) blue:(44.0/255) alpha:1];
-  NSColor *endingColor = [NSColor colorWithCalibratedRed:(129.0/255) green:(67.0/255) blue:(21.0/255) alpha:1];
+  NSColor *startingColor = [NSColor woodColor];
+  NSColor *endingColor = [startingColor saturateWithLevel:0.2];
   NSArray *colors = [NSArray arrayWithObjects:startingColor, endingColor, nil];
   NSGradient *gradient = [[NSGradient alloc] initWithColors:colors];
   [gradient drawInBezierPath:aPath angle:270];
-  NSImage *structure = [NSImage imageNamed:@"Structure.png"];
-  [[NSColor colorWithPatternImage:structure] setFill];
+  [[NSColor woodStructureColor] setFill];
   [aPath fill];
 }
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
   NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
   [shadow setShadowOffset:NSZeroSize];
-  [shadow setShadowBlurRadius:INNER_SHADOW_BLUR];
-  [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:INNER_SHADOW_ALPHA]];
+  [shadow setShadowBlurRadius:40];
+  [shadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.8]];
   [shadow set];
-  [[[NSColor whiteColor] colorWithAlphaComponent:BORDER_ALPHA] setStroke];
-  [aPath setLineWidth:BORDER_WIDTH];
+  [[NSColor woodHighlightColor] setStroke];
+  [aPath setLineWidth:2];
   [aPath stroke];
 }
 
@@ -43,7 +33,7 @@
 
 - (void)drawRect:(NSRect)aRect {   
   NSRect contentFrame = [self bounds];
-  NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:contentFrame xRadius:CORNER_RADIUS yRadius:CORNER_RADIUS];
+  NSBezierPath *path = [NSBezierPath bezierPathWithRoundedRect:contentFrame xRadius:16 yRadius:16];
   [path addClip];
   [self drawBackgroundWithPath:path];
   [self drawBorderWithPath:path];
@@ -53,9 +43,9 @@
   self = [super initWithFrame:aRect];
   if (self != nil) {
     NSShadow *dropShadow = [[[NSShadow alloc] init] autorelease];
-    [dropShadow setShadowOffset:NSMakeSize(0, DROP_SHADOW_OFFSET)];
-    [dropShadow setShadowBlurRadius:DROP_SHADOW_BLUR];
-    [dropShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:DROP_SHADOW_ALPHA]];
+    [dropShadow setShadowOffset:NSMakeSize(0, -4)];
+    [dropShadow setShadowBlurRadius:8];
+    [dropShadow setShadowColor:[NSColor colorWithCalibratedWhite:0 alpha:0.8]];
     [self setShadow:dropShadow];
   }
   return self;
@@ -71,6 +61,14 @@
     }
   }
   return NO;    
+}
+
+- (CALayer *)snapshot {
+  NSShadow *shadow = [[self shadow] retain];
+  [self setShadow:nil];
+  CALayer *layer = [super snapshot];
+  [self setShadow:shadow];
+  return layer;
 }
 
 @end

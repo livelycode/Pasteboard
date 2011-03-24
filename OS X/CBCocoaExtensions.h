@@ -8,10 +8,16 @@
 
 @interface NSColor(CBCocoaExtensions)
 
++ (NSColor *)colorWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue;
++ (NSColor *)noteColor;
 + (NSColor *)woodColor;
 + (NSColor *)woodStructureColor;
-+ (NSColor *)woodDarkColor;
-+ (NSColor *)woodLightColor;
++ (NSColor *)woodBackgroundColor;
++ (NSColor *)woodHighlightColor;
 + (NSColor *)woodBorderColor;
+
+- (NSColor *)brightenWithLevel:(CGFloat)aLevel;
+- (NSColor *)shadeWithLevel:(CGFloat)aLevel;
+- (NSColor *)saturateWithLevel:(CGFloat)aLevel;
 
 @end
