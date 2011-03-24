@@ -35,7 +35,7 @@
 } 
 
 + (NSColor *)woodColor {
-  return [self colorWithRed:172 green:114 blue:44];
+  return [self colorWithRed:180 green:120 blue:50];
 }
 
 + (NSColor *)woodStructureColor {
