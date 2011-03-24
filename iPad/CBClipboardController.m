@@ -13,6 +13,12 @@
   [self initializeItemViewFrames];
   [self drawPasteView];
   [self drawAllItems];
+  CGColorRef color = [[UIColor woodStructureColor] CGColor];
+  CALayer *structureLayer = [CALayer layer];
+  [structureLayer setFrame:toolbar.bounds];
+  [structureLayer setBackgroundColor:color];
+  [toolbar.layer addSublayer:structureLayer];
+  [toolbar setTintColor:[UIColor woodBackgroundColor]];
 }
 
 - (void)viewDidUnload {
