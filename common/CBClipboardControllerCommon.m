@@ -11,6 +11,9 @@
 @implementation CBClipboardController(CBClipboardControllerCommon)
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync {
   [clipboard addItem:item];
+  if(sync) {
+    [clipboard updateLastChanged];
+  }
   [clipboard persist];
   [self drawItem:item];
   if(sync) {

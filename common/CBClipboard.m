@@ -31,8 +31,6 @@
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
     [items removeObjectsInRange:tail];
   }
-  [lastChanged release];
-  lastChanged = [[NSDate alloc] init];
 }
 
 - (CBItem *)itemAtIndex:(NSUInteger)anIndex {
@@ -41,6 +39,15 @@
 
 - (NSArray *)items {
   	return [NSArray arrayWithArray:items];
+}
+
+- (void)updateLastChanged {
+  [self setLastChanged:[NSDate date]];
+}
+
+- (void)setLastChanged:(NSDate*)date {
+  [lastChanged autorelease];
+  lastChanged = [[NSDate alloc] init];
 }
 
 - (void)persist {

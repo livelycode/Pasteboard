@@ -15,6 +15,8 @@
 - (void)addItem:(CBItem *)anItem;
 - (CBItem*)itemAtIndex:(NSUInteger)anIndex;
 - (NSArray*)items;
+- (void)updateLastChanged;
+- (void)setLastChanged:(NSDate*)date;
 - (void)persist;
 - (void)clear;
 - (NSDate*)lastChanged;
