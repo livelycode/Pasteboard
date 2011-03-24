@@ -31,6 +31,16 @@
   [self updateLaunchd];
 }
 
+- (BOOL)menuItemVisible {
+  return menuItemVisible;
+}
+
+- (void)setMenuItemVisible:(BOOL)visible {
+  menuItemVisible = visible;
+  [self updateSettings];
+  [self updateStatusMenu];
+}
+
 - (NSUInteger)hotkeyIndex {
   return hotkeyIndex;
 }
@@ -75,7 +85,7 @@
   clipboardController = [[windowController clipboardController] retain];
   [self startHotkeyObserver];
   [self initPasteboardObserver];
-  [self activateStatusMenu];
+  [self updateStatusMenu];
 }
 
 - (void)pasteItem {
@@ -113,6 +123,7 @@
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
   autoStart = [userDefaults boolForKey:@"AutoStart"];
   autoPaste = [userDefaults boolForKey:@"AutoPaste"];
+  menuItemVisible = [userDefaults boolForKey:@"MenuItemVisible"];
   hotkeyIndex = [userDefaults integerForKey:@"HotkeyIndex"];
 }
 
@@ -120,6 +131,7 @@
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
   [userDefaults setBool:autoStart forKey:@"AutoStart"];
   [userDefaults setBool:autoPaste forKey:@"AutoPaste"];
+  [userDefaults setBool:menuItemVisible forKey:@"MenuItemVisible"];
   [userDefaults setInteger:hotkeyIndex forKey:@"HotkeyIndex"];
   [userDefaults synchronize];
 }
@@ -151,14 +163,22 @@
   [hotkey setDelegate:windowController];
 }
 
-- (void)activateStatusMenu {
-  [NSBundle loadNibNamed:@"menu" owner:self];
-  NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-  statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
-  [statusItem setImage:[NSImage imageNamed:@"StatusItem"]];
-  [statusItem setAlternateImage:[NSImage imageNamed:@"StatusItemHighlighted"]];
-  [statusItem setHighlightMode:YES];
-  [statusItem setMenu:statusBarMenu];
+- (void)updateStatusMenu {
+  if(menuItemVisible) {
+    [NSBundle loadNibNamed:@"menu" owner:self];
+    NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
+    statusItem = [[statusBar statusItemWithLength:NSVariableStatusItemLength] retain];
+    [statusItem setImage:[NSImage imageNamed:@"StatusItem"]];
+    [statusItem setAlternateImage:[NSImage imageNamed:@"StatusItemHighlighted"]];
+    [statusItem setHighlightMode:YES];
+    [statusItem setMenu:statusBarMenu];  
+  } else {
+    if(statusItem) {
+      [[NSStatusBar systemStatusBar] removeStatusItem:statusItem];
+      [statusItem release];
+      statusItem = nil;
+    }
+  }
 }
 
 - (void)initHotkeyCodes {

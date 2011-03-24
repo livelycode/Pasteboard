@@ -51,7 +51,6 @@
 						<string key="NSFrame">{{411, 16}, {76, 31}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="467315624">
 							<int key="NSCellFlags">-2080244224</int>
@@ -101,7 +100,7 @@
 														<string key="NSFrameSize">{218, 238}</string>
 														<reference key="NSSuperview" ref="788459030"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="1037539044"/>
+														<reference key="NSNextKeyView" ref="522229279"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<bool key="NSEnabled">YES</bool>
 														<object class="_NSCornerView" key="NSCornerView">
@@ -228,7 +227,7 @@
 										<string key="NSFrame">{{18, 37}, {220, 240}}</string>
 										<reference key="NSSuperview" ref="164144974"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="522229279"/>
+										<reference key="NSNextKeyView" ref="788459030"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<int key="NSsFlags">562</int>
 										<reference key="NSVScroller" ref="1037539044"/>
@@ -609,27 +608,28 @@
 											<string key="NSKeyEquivalent"/>
 											<int key="NSPeriodicDelay">400</int>
 											<int key="NSPeriodicInterval">75</int>
-											<nil key="NSMenuItem"/>
+											<object class="NSMenuItem" key="NSMenuItem" id="940020618">
+												<reference key="NSMenu" ref="87285658"/>
+												<string key="NSTitle">⌥ ⇥</string>
+												<string key="NSKeyEquiv"/>
+												<int key="NSMnemonicLoc">2147483647</int>
+												<int key="NSState">1</int>
+												<object class="NSCustomResource" key="NSOnImage" id="38880741">
+													<string key="NSClassName">NSImage</string>
+													<string key="NSResourceName">NSMenuCheckmark</string>
+												</object>
+												<object class="NSCustomResource" key="NSMixedImage" id="929106738">
+													<string key="NSClassName">NSImage</string>
+													<string key="NSResourceName">NSMenuMixedState</string>
+												</object>
+												<string key="NSAction">_popUpItemAction:</string>
+												<reference key="NSTarget" ref="316586019"/>
+											</object>
 											<bool key="NSMenuItemRespectAlignment">YES</bool>
 											<object class="NSMenu" key="NSMenu" id="87285658">
 												<string key="NSTitle">OtherViews</string>
 												<array class="NSMutableArray" key="NSMenuItems">
-													<object class="NSMenuItem" id="940020618">
-														<reference key="NSMenu" ref="87285658"/>
-														<string key="NSTitle">⌥ ⇥</string>
-														<string key="NSKeyEquiv"/>
-														<int key="NSMnemonicLoc">2147483647</int>
-														<object class="NSCustomResource" key="NSOnImage" id="38880741">
-															<string key="NSClassName">NSImage</string>
-															<string key="NSResourceName">NSMenuCheckmark</string>
-														</object>
-														<object class="NSCustomResource" key="NSMixedImage" id="929106738">
-															<string key="NSClassName">NSImage</string>
-															<string key="NSResourceName">NSMenuMixedState</string>
-														</object>
-														<string key="NSAction">_popUpItemAction:</string>
-														<reference key="NSTarget" ref="316586019"/>
-													</object>
+													<reference ref="940020618"/>
 													<object class="NSMenuItem" id="217146602">
 														<reference key="NSMenu" ref="87285658"/>
 														<string key="NSTitle">ctrl ⇥</string>
@@ -998,6 +998,22 @@
 						<reference key="destination" ref="942801992"/>
 					</object>
 					<int key="connectionID">121</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">menuItemVisibleButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="744103062"/>
+					</object>
+					<int key="connectionID">124</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">menuItemVisibleCheckboxChanged:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="744103062"/>
+					</object>
+					<int key="connectionID">125</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1458,7 +1474,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">123</int>
+			<int key="maxID">125</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1478,6 +1494,7 @@
 						<string key="autoPasteCheckboxChanged:">id</string>
 						<string key="autoStartCheckboxChanged:">id</string>
 						<string key="back:">id</string>
+						<string key="menuItemVisibleCheckboxChanged:">id</string>
 						<string key="removeDevice:">id</string>
 						<string key="shortcutSelected:">id</string>
 					</dictionary>
@@ -1498,6 +1515,10 @@
 							<string key="name">back:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="menuItemVisibleCheckboxChanged:">
+							<string key="name">menuItemVisibleCheckboxChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="removeDevice:">
 							<string key="name">removeDevice:</string>
 							<string key="candidateClassName">id</string>
@@ -1514,6 +1535,7 @@
 						<string key="backButton">NSButton</string>
 						<string key="foundClipboardsView">NSTableView</string>
 						<string key="hotkeyPopup">NSPopUpButton</string>
+						<string key="menuItemVisibleButton">NSButton</string>
 						<string key="registeredClipboardsView">NSTableView</string>
 						<string key="removeButton">NSButton</string>
 					</dictionary>
@@ -1541,6 +1563,10 @@
 						<object class="IBToOneOutletInfo" key="hotkeyPopup">
 							<string key="name">hotkeyPopup</string>
 							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="menuItemVisibleButton">
+							<string key="name">menuItemVisibleButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="registeredClipboardsView">
 							<string key="name">registeredClipboardsView</string>

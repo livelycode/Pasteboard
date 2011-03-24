@@ -17,6 +17,7 @@
   NSUInteger hotkeyIndex;
   BOOL autoStart;
   BOOL autoPaste;
+  BOOL menuItemVisible;
 }
 - (void)initPasteboardObserver;
 - (CBSyncController*)syncController;
@@ -24,6 +25,8 @@
 - (void)setAutoStart:(BOOL)autoStart;
 - (BOOL)autoPaste;
 - (void)setAutoPaste:(BOOL)autoPaste;
+- (BOOL)menuItemVisible;
+- (void)setMenuItemVisible:(BOOL)visible;
 - (NSUInteger)hotkeyIndex;
 - (void)setHotkeyIndex:(NSUInteger)hotkey;
 @end
@@ -52,6 +55,6 @@
 - (void)updateSettings;
 - (void)updateLaunchd;
 - (void)startHotkeyObserver;
-- (void)activateStatusMenu;
+- (void)updateStatusMenu;
 - (void)initHotkeyCodes;
 @end

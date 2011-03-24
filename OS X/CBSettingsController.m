@@ -41,6 +41,15 @@
   }
 }
 
+- (IBAction)menuItemVisibleCheckboxChanged:(id)sender {
+  NSInteger autoStart = [sender state];
+  if(autoStart == NSOnState) {
+    [appController setMenuItemVisible:YES];
+  } else {
+    [appController setMenuItemVisible:NO];
+  }
+}
+
 - (IBAction)back:(id)sender {
   [windowController showFront];
 }
@@ -105,6 +114,11 @@
     [autoPasteButton setState:NSOnState];
   } else {
     [autoPasteButton setState:NSOffState];
+  }
+  if([appController menuItemVisible]) {
+    [menuItemVisibleButton setState:NSOnState];
+  } else {
+    [menuItemVisibleButton setState:NSOffState];
   }
   [hotkeyPopup selectItemWithTag:[appController hotkeyIndex]];
   [addButton setEnabled:NO];

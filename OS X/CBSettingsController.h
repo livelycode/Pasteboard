@@ -13,6 +13,7 @@
   NSArray* shortcutKeycodes;
   IBOutlet NSButton* autoStartButton;
   IBOutlet NSButton* autoPasteButton;
+  IBOutlet NSButton* menuItemVisibleButton;
   IBOutlet NSTableView *foundClipboardsView;
   IBOutlet NSTableView *registeredClipboardsView;
   IBOutlet NSButton *addButton;
@@ -29,6 +30,7 @@
 - (IBAction)removeDevice:(id)sender;
 - (IBAction)autoPasteCheckboxChanged:(id)sender;
 - (IBAction)autoStartCheckboxChanged:(id)sender;
+- (IBAction)menuItemVisibleCheckboxChanged:(id)sender;
 - (IBAction)back:(id)sender;
 - (IBAction)shortcutSelected:(id)sender;
 @end
