@@ -15,7 +15,7 @@
   [layer setFrame:[self frame]];
   [layer setContents:(id)image];
   
-  CGColorSpaceRelease(colorSpace);
+  CGColorSpaceRelease(colorSpace);		
   CGContextRelease(imageContext);
   CGImageRelease(image);
   return layer;
