@@ -7,7 +7,7 @@
 @implementation CBClipboardController(Overriden)
 
 - (void)viewDidLoad {
-  [self.view setFrame:CGRectOffset(self.view.frame, 0, 22)];
+  [self.view setFrame:CGRectOffset(self.view.frame, 0, 20)];
   [self drawBackgroundLayers];
   [self preparePopoverView];
   [self initializeItemViewFrames];
