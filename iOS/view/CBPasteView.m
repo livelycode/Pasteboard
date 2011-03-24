@@ -30,13 +30,13 @@
 - (void)drawTextWithRect:(CGRect)textRect color:(UIColor *)aColor offset:(CGFloat)anOffset strokeWidth:(NSUInteger)aWidth {
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSaveGState(context);
-  //CGContextSelectFont(context, "Lucida Grande Bold", (CGRectGetHeight(textRect) / 2), kCGEncodingMacRoman);  
   if(aWidth == 0) {
-    CGContextSetFillColor(context, CGColorGetComponents([aColor CGColor]));
+    CGContextSetFillColorWithColor(context, [aColor CGColor]);
     CGContextSetTextDrawingMode (context, kCGTextFill);
   } else {
     CGContextSetRGBFillColor(context, 0, 0, 0, 0);
-    CGContextSetStrokeColor(context, CGColorGetComponents([aColor CGColor]));
+    CGContextSetLineWidth(context, aWidth);
+    CGContextSetStrokeColorWithColor(context, [aColor CGColor]);
     CGContextSetTextDrawingMode (context, kCGTextStroke);
   }
   NSString* string = @"Paste";
@@ -47,21 +47,6 @@
   CGRect rect = CGRectInset(textRect, widthDelta, heightDelta);
   [string drawInRect:CGRectOffset(rect, 0, -anOffset) withFont:font];
   CGContextRestoreGState(context);
-  
-  /*
-  UIFont *font = [UIFont fontWithName:@"Lucida Grande Bold" size:(CGRectGetHeight(textRect) / 2)];
-  NSString *string = @"Paste";
-  NSNumber *strokeWidth = [NSNumber numberWithUnsignedInteger:aWidth];
-  NSArray *objects = [NSArray arrayWithObjects:font, aColor, strokeWidth, nil];
-  NSArray *keys = [NSArray arrayWithObjects:UIFontAttributeName, UIForegroundColorAttributeName, NSStrokeWidthAttributeName, nil];
-  NSDictionary *attributes = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-  CGSize size = [string sizeWithAttributes:attributes];
-  CGContextSet
-  CGFloat widthDelta = (CGRectGetWidth(textRect) - size.width) / 2;
-  CGFloat heightDelta = (CGRectGetHeight(textRect) - size.height) / 2;
-  CGRect rect = CGRectInset(textRect, widthDelta, heightDelta);
-  [string drawInRect:CGRectOffset(rect, 0, anOffset) withAttributes:attributes];
-   */
 }
 
 - (void)handleTap:(UITapGestureRecognizer*)recognizer {
@@ -98,11 +83,6 @@
     UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleTap:)];
     [self addGestureRecognizer:recognizer];
-    /*UIFont *font = [UIFont fontWithName:@"Helvetica Bold" size:40];
-    UIColor *color = [UIColor colorWithWhite:0 alpha:0.2];
-    self.titleLabel.font = font;
-    self.titleLabel.textColor = color;
-    [self setTitle:@"Paste" forState:UIControlStateNormal];*/
   }
   return self;
 }
