@@ -19,6 +19,7 @@
   NSMutableArray* itemViewSlots;
   NSMutableArray* frames;
   CBSyncController* syncController;
+  IBOutlet UINavigationBar *toolbar;
 }
 @end
 
