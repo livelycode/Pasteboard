@@ -8,20 +8,21 @@
 }
 
 - (void)drawBorderWithRect:(CGRect)aRect {
-  CGFloat width = CGRectGetWidth(aRect) / 52;
+  CGFloat lineWidth = CGRectGetWidth(aRect) / 52;
+  CGFloat cornerRadius = CGRectGetWidth(aRect) / 12;
   CGRect highlightRect = CGRectOffset(aRect, 0, -1);
-  NSBezierPath *highlightPath = [NSBezierPath bezierPathWithRoundedRect:highlightRect xRadius:16 yRadius:16];
-  [highlightPath setLineWidth:width+2];
+  NSBezierPath *highlightPath = [NSBezierPath bezierPathWithRoundedRect:highlightRect xRadius:cornerRadius yRadius:cornerRadius];
+  [highlightPath setLineWidth:lineWidth+2];
   [[NSColor woodHighlightColor] setStroke];
   [highlightPath stroke];
   
-  NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
-  [borderPath setLineWidth:width+2];
+  NSBezierPath *borderPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:cornerRadius yRadius:cornerRadius];
+  [borderPath setLineWidth:lineWidth+2];
   [[NSColor woodBorderColor] setStroke];
   [borderPath stroke];
   
-  NSBezierPath *embossPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:16 yRadius:16];
-  [embossPath setLineWidth:width];
+  NSBezierPath *embossPath = [NSBezierPath bezierPathWithRoundedRect:aRect xRadius:cornerRadius yRadius:cornerRadius];
+  [embossPath setLineWidth:lineWidth];
   [[NSColor woodBackgroundColor] setStroke];
   [embossPath stroke];
   [[NSColor woodStructureColor] setStroke];
@@ -52,7 +53,7 @@
 }
   
 - (void)drawRect:(NSRect)aRect { 
-  CGRect frame = CGRectInset([self bounds], 32, 16);
+  CGRect frame = CGRectInset([self bounds], 32, 32);
   NSColor *background = [NSColor woodBackgroundColor];
   NSColor *border = [NSColor woodBorderColor];
   NSColor *highlight = [NSColor woodHighlightColor];
