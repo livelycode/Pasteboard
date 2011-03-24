@@ -47,14 +47,14 @@
 
 - (void)syncItems:(NSArray*)items withDate:(NSDate*)date {
   NSMutableArray* strings = [NSMutableArray array];
-  NSString* timeInterval = [[NSNumber numberWithInteger:[date timeIntervalSince1970]] stringValue];
-  [strings addObject:timeInterval];
+  NSString* lastChangedInterval = [[NSNumber numberWithInteger:[date timeIntervalSinceNow]] stringValue];
+  [strings addObject:lastChangedInterval];
   for(CBItem* item in items) {
     [strings addObject:[item string]];
   }
   NSString* string = [strings componentsJoinedByString:POST_SEPARATOR];
   NSData* archivedItem = [NSKeyedArchiver archivedDataWithRootObject:string];
-  [self postToPath:@"initialsync" withData:archivedItem];	
+  [self postToPath:@"initialsync" withData:archivedItem];
 }
 
 - (void)resetItems {

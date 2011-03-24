@@ -11,7 +11,8 @@
 
 @implementation CBSyncController (CBSyncController)
 - (NSString*)deviceName {
-  //return NSFullUserName();
-  return (NSString *)SCDynamicStoreCopyComputerName(NULL, NULL);
+  NSString* computerName = (NSString*)SCDynamicStoreCopyComputerName(NULL, NULL);
+  [computerName autorelease];
+  return computerName;
 }
 @end

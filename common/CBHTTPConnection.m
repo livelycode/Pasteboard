@@ -34,7 +34,7 @@
     NSString* plainString = [NSKeyedUnarchiver unarchiveObjectWithData:body];
     NSMutableArray* items = [NSMutableArray array];
     NSMutableArray* strings = [NSMutableArray arrayWithArray:[plainString componentsSeparatedByString:POST_SEPARATOR]];
-    NSDate* lastChanged = [NSDate dateWithTimeIntervalSince1970:[[strings objectAtIndex:0] integerValue]];
+    NSDate* lastChanged = [NSDate dateWithTimeIntervalSinceNow:[[strings objectAtIndex:0] integerValue]];
     [strings removeObjectAtIndex:0];
     for(NSString* string in strings) {
       CBItem* item = [CBItem itemWithString: string];
