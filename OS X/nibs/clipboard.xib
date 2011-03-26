@@ -47,7 +47,7 @@
 					<object class="NSCustomView" id="1008537749">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{20, 50}, {351, 298}}</string>
+						<string key="NSFrame">{{20, 53}, {351, 295}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="841284994"/>
@@ -57,7 +57,7 @@
 					<object class="NSButton" id="422597583">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{281, 16}, {76, 31}}</string>
+						<string key="NSFrame">{{273, 16}, {84, 31}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -92,7 +92,7 @@
 					<object class="NSButton" id="841284994">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{34, 16}, {76, 31}}</string>
+						<string key="NSFrame">{{34, 16}, {84, 31}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="422597583"/>
@@ -112,11 +112,11 @@
 							<int key="NSButtonFlags2">2</int>
 							<object class="NSCustomResource" key="NSNormalImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">ClearAllButton</string>
+								<string key="NSResourceName">RemoveAllButton</string>
 							</object>
 							<object class="NSCustomResource" key="NSAlternateImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">ClearAllButtonPressed</string>
+								<string key="NSResourceName">RemoveAllButtonPressed</string>
 							</object>
 							<string key="NSAlternateContents"/>
 							<string key="NSKeyEquivalent"/>
@@ -366,17 +366,17 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>ClearAllButton</string>
-				<string>ClearAllButtonPressed</string>
+				<string>RemoveAllButton</string>
+				<string>RemoveAllButtonPressed</string>
 				<string>SettingsButton</string>
 				<string>SettingsButtonPressed</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{72, 25}</string>
-				<string>{72, 25}</string>
-				<string>{72, 25}</string>
-				<string>{72, 25}</string>
+				<string>{80, 25}</string>
+				<string>{80, 25}</string>
+				<string>{80, 25}</string>
+				<string>{80, 25}</string>
 			</object>
 		</object>
 	</data>
