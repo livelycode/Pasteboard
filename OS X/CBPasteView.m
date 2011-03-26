@@ -53,8 +53,8 @@
 }
   
 - (void)drawRect:(NSRect)aRect {
-  CGFloat width = CGRectGetWidth(aRect) / 24;
-  CGFloat height = CGRectGetHeight(aRect) / 16;
+  NSUInteger width = CGRectGetWidth(aRect) / 24;
+  NSUInteger height = CGRectGetHeight(aRect) / 16;
   CGRect frame = CGRectInset([self bounds], width, height);
   NSColor *background = [NSColor woodBackgroundColor];
   NSColor *border = [NSColor woodBorderColor];
