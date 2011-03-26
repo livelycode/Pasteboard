@@ -83,17 +83,15 @@
 
 - (void)initializeItemSlots {
   CGRect mainBounds = [itemsView bounds];
-  CGFloat paddingSides = 0;
-  CGFloat paddingTop = 0;
-  CGRect itemsBounds = CGRectMake(paddingSides, paddingTop, CGRectGetWidth(mainBounds)-2*paddingSides, CGRectGetHeight(mainBounds)-2*paddingTop);
+  CGRect itemsBounds = CGRectMake(0, 0, CGRectGetWidth(mainBounds), CGRectGetHeight(mainBounds));
   CGFloat clipboardHeight = CGRectGetHeight(itemsBounds);
   CGFloat clipboardWidth = CGRectGetWidth(itemsBounds);
-  CGFloat itemWidth = clipboardWidth / columns;
-  CGFloat itemHeight = clipboardHeight / rows;
+  NSUInteger itemWidth = clipboardWidth / columns;
+  NSUInteger itemHeight = clipboardHeight / rows;
   for(NSInteger row=rows; row>=1; row--) {
     for(NSInteger column=1; column<=columns; column++) {
-      CGFloat x = paddingSides + itemWidth*(column-1);
-      CGFloat y = paddingTop +(row-1)*itemHeight;
+      NSUInteger x = itemWidth*(column-1);
+      NSUInteger y = (row-1)*itemHeight;
       CGRect itemFrame = CGRectMake(x, y, itemWidth, itemHeight);
       [frames addObject:[NSValue valueWithRect:itemFrame]];
     }

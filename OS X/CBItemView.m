@@ -34,7 +34,7 @@
 
 - (void)drawBorderWithPath:(NSBezierPath *)aPath {
   [aPath addClip];
-  [[[NSColor noteColor] brightenWithLevel:0.1] setStroke];
+  [[[NSColor noteColor] brightenWithLevel:0.2] setStroke];
   [aPath setLineWidth:2];
   [aPath stroke];
 }
@@ -85,8 +85,8 @@
 }
 
 - (void)drawRect:(NSRect)aRect {
-  CGFloat width = CGRectGetWidth(aRect) / 24;
-  CGFloat height = CGRectGetHeight(aRect) / 16;
+  NSInteger width = CGRectGetWidth(aRect) / 24;
+  NSInteger height = CGRectGetHeight(aRect) / 16;
   CGRect noteRect = CGRectInset([self bounds], width, height);
   NSBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];

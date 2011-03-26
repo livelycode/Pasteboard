@@ -26,12 +26,12 @@
 @implementation NSColor(CBCocoaExtensions)
 
 + (NSColor *)color8BitWithRed:(NSUInteger)red green:(NSUInteger)green blue:(NSUInteger)blue {
-  CGFloat resolution = 255.0;
+  CGFloat resolution = 255;
   return [self colorWithCalibratedRed:(red/resolution) green:(green/resolution) blue:(blue/resolution) alpha:1];
 }
 
 + (NSColor *)noteColor {
-  return [self color8BitWithRed:229 green:191 blue:102];
+  return [self color8BitWithRed:229 green:202 blue:128];
 } 
 
 + (NSColor *)woodColor {

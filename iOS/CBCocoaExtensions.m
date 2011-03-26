@@ -8,7 +8,7 @@
 }
 
 + (UIColor *)noteColor {
-  return [self color8BitWithRed:229 green:191 blue:102];
+  return [self color8BitWithRed:229 green:202 blue:128] ;
 } 
 
 + (UIColor *)woodColor {
