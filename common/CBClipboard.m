@@ -14,10 +14,12 @@
       capacity = aCapacity;
       lastChanged = [[NSDate alloc] initWithTimeIntervalSince1970:0];
       NSFileManager *fileManager = [NSFileManager defaultManager];
-      NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
+      NSArray *urls = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
       if ([urls count] > 0) {
-        NSURL *userDocumentsURL = [urls objectAtIndex:0];
-        storeURL = [[NSURL alloc] initWithString:@"CBItems.plist" relativeToURL:userDocumentsURL];
+        NSURL *appSupportURL = [urls objectAtIndex:0];
+        NSURL *ourAppSupportURL = [appSupportURL URLByAppendingPathComponent:@"Pasteboard"];
+        [fileManager createDirectoryAtPath:[ourAppSupportURL path] withIntermediateDirectories:YES attributes:nil error:NULL];
+        storeURL = [[NSURL alloc] initWithString:@"items.plist" relativeToURL:ourAppSupportURL];
       }
       [self loadItems];
     }
