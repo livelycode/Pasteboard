@@ -1,3 +1,0 @@
-Issues:
-- button remove all
-- icons less white 
