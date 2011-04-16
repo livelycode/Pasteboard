@@ -121,6 +121,11 @@
 
 - (void)loadSettings {
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  if([userDefaults boolForKey:@"defaultsSet"] == NO) {
+    [userDefaults setBool:YES forKey:@"defaultsSet"];
+    menuItemVisible = YES;
+    [self updateSettings];
+  }
   autoStart = [userDefaults boolForKey:@"AutoStart"];
   autoPaste = [userDefaults boolForKey:@"AutoPaste"];
   menuItemVisible = [userDefaults boolForKey:@"MenuItemVisible"];
