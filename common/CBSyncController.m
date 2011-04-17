@@ -130,9 +130,7 @@
   
   NSError *error = nil;
   if(![httpServer start:&error]) {
-    NSLog(@"Error starting HTTP Server: %@", error);
   } else {
-    NSLog(@"Server started");
   }
 }
 
@@ -141,7 +139,6 @@
 }
 
 - (void)foundClient:(CBRemoteCloudboard *)client {
-  NSLog(@"found client: %@", [client serviceName]);
   [clientsVisible setValue:client forKey:[client serviceName]];
   [self informDelegatesWith:@selector(clientBecameVisible:) object:[client serviceName]];
   if([clientsQueuedForConfirm containsObject:[client serviceName]]) {
@@ -165,7 +162,6 @@
 }
 
 - (void)initialSyncToClient:(CBRemoteCloudboard *)client {
-  NSLog(@"starting initial sync to %@", [client serviceName]);
   [client syncItems:[clipboardController allItems] withDate:[clipboardController lastChanged]];
 }
 
@@ -188,15 +184,12 @@
 
 //NSNetServiceBrowserDelegate
 - (void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser {
-  NSLog(@"searching services");
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorInfo {
-  NSLog(@"error: did not search services %@", errorInfo);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainName moreComing:(BOOL)more {
-  NSLog(@"found domain: %@", domainName);
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didFindService: (NSNetService*) newService moreComing: (BOOL)more; {
@@ -207,7 +200,6 @@
 }
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *) browser didRemoveService: (NSNetService*) netService moreComing: (BOOL)more {
-  NSLog(@"removed service: %@", netService);
   if([[netService name] hasPrefix: @"Cloudboard"]) {
     [clientsVisible setValue:nil forKey:[netService name]];
     [clientsConnected removeObject:[netService name]];
@@ -216,7 +208,6 @@
 }
 
 - (void)netServiceBrowserDidStopSearch:(NSNetServiceBrowser *)netServiceBrowser {
-  NSLog(@"stopped searching");
 }
 
 //CBClipboardControllerDelegate
@@ -260,14 +251,12 @@
 }
 
 - (void)receivedAddedRemoteItem: (CBItem*)item {
-  NSLog(@"received item: %@", [item string]);
   [clipboardController addItem:item syncing:NO];
   [clipboardController setLastChanged:[NSDate date]];
 }
 
 - (void)receivedRemoteItems: (NSArray*)items changedDate:(NSDate *)date {
   NSDate* localLastChanged = [clipboardController lastChanged];
-  NSLog(@"received items: %@ changed: %@ local: %@", items, date, localLastChanged);
   if([[clipboardController lastChanged] compare:date] == NSOrderedAscending) {
     [clipboardController clearClipboardSyncing:NO];
     for(CBItem* item in [[items reverseObjectEnumerator] allObjects]) {
@@ -275,7 +264,6 @@
     }
     [clipboardController setLastChanged:[date dateByAddingTimeInterval:-3]];
   } else {
-    NSLog(@"I have better stuff!");
   }
 }
 

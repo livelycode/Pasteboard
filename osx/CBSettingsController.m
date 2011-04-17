@@ -177,7 +177,6 @@
 }
 
 - (void)clientBecameInvisible:(NSString*)clientName {
-  NSLog(@"client invisible %@", clientName);
   if([foundCloudboards containsObject:clientName]) {
     [foundCloudboards removeObject:clientName];
     [foundClipboardsView reloadData];
@@ -185,15 +184,12 @@
 }
 
 - (void)clientConnected:(NSString*)clientName {
-  NSLog(@"client connected %@", clientName);
 }
 
 - (void)clientDisconnected:(NSString*)clientName {
-  NSLog(@"client disconnected %@", clientName);
 }
 
 - (void)clientConfirmed:(NSString*)clientName {
-  NSLog(@"client confirmed %@", clientName);
 }
 
 @end

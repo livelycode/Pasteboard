@@ -70,29 +70,24 @@
 
 //CBSyncControllerDelegate
 - (void)clientBecameVisible:(NSString*)clientName {
-  NSLog(@"client visible %@", clientName);
   if([foundCloudboards containsObject:clientName] == NO) {
     [foundCloudboards addObject:clientName];
     [tableView reloadData];
   }
 }
 - (void)clientBecameInvisible:(NSString*)clientName {
-  NSLog(@"client invisible %@", clientName);
   if([foundCloudboards containsObject:clientName]) {
     [foundCloudboards removeObject:clientName];
     [tableView reloadData];
   }
 }
 - (void)clientConnected:(NSString*)clientName {
-  NSLog(@"client connected %@", clientName);
 }
 
 - (void)clientDisconnected:(NSString*)clientName {
-  NSLog(@"client disconnected %@", clientName);
 }
 
 - (void)clientConfirmed:(NSString*)clientName {
-  NSLog(@"client confirmed %@", clientName);
 }
 
 @end

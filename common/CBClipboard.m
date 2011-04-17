@@ -27,7 +27,6 @@
 }
 
 - (void)addItem:(CBItem *)anItem {
-  NSLog(@"clipboard: addItem");
   [items insertObject:anItem atIndex:0];
   if ([items count] > capacity) {
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);
