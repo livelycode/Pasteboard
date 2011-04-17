@@ -13,4 +13,4 @@ Don't be annoyed by bloated preferences - adding and removing devices is dead si
 
 From day one we offer you uniquely integrated Pasteboard versions for the Mac, iPhone and iPad.
 
-Never have to abuse e-mail again to get a simple web link from the iPhone to your Mac.
+Never have to abuse e-mail again to get a simple web link from the iPad to your Mac.
