@@ -101,7 +101,6 @@
     NSData* response = [self handlePOSTWithPath:newPath body:postData];
 	return [[[HTTPDataResponse alloc] initWithData:response] autorelease];
   }	else {
-    NSLog(@"got GET request");
     return [[[HTTPDataResponse alloc] init] autorelease];
   }
 }
@@ -113,7 +112,6 @@
   // Therefore, this method may be called multiple times for the same POST request.
   BOOL result = [request appendData:postDataChunk];
   if (!result)	{
-    NSLog(@"no result in post data");
   }
 }
 

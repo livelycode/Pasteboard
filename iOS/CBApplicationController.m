@@ -20,7 +20,6 @@
 
 - (CBItem*)currentPasteboardItem {
   NSString* value = [[UIPasteboard generalPasteboard] valueForPasteboardType:(NSString*)kUTTypeUTF8PlainText];
-  NSLog(@"pasted: %@", value);
   if(value != nil) {
     CBItem* item = [CBItem itemWithString:value];
     return item;
@@ -29,7 +28,6 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  NSLog(@"%f", [[UIScreen mainScreen] scale]);
   [self initClipboards];
   return YES;
 }
@@ -51,18 +49,15 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-  NSLog(@"moved to background");
   [clipboardController stopSyncing];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-  NSLog(@"entering foreground");
   [clipboardController startSyncing];
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-  NSLog(@"will terminate");
   [clipboardController stopSyncing];
 }
 
@@ -82,6 +77,5 @@
 @implementation CBApplicationController(Delegation)
 //CBSyncControllerDelegate
 - (void)clientAsksForRegistration:(NSString *)clientName {
-  NSLog(@"client asks for registration: %@", clientName);
 }
 @end

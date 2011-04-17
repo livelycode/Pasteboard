@@ -14,10 +14,12 @@
       capacity = aCapacity;
       lastChanged = [[NSDate alloc] initWithTimeIntervalSince1970:0];
       NSFileManager *fileManager = [NSFileManager defaultManager];
-      NSArray *urls = [fileManager URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask];
+      NSArray *urls = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
       if ([urls count] > 0) {
-        NSURL *userDocumentsURL = [urls objectAtIndex:0];
-        storeURL = [[NSURL alloc] initWithString:@"CBItems.plist" relativeToURL:userDocumentsURL];
+        NSURL *appSupportURL = [urls objectAtIndex:0];
+        NSURL *ourAppSupportURL = [appSupportURL URLByAppendingPathComponent:@"Pasteboard"];
+        [fileManager createDirectoryAtPath:[ourAppSupportURL path] withIntermediateDirectories:YES attributes:nil error:NULL];
+        storeURL = [[NSURL alloc] initWithString:@"items.plist" relativeToURL:ourAppSupportURL];
       }
       [self loadItems];
     }
@@ -25,7 +27,6 @@
 }
 
 - (void)addItem:(CBItem *)anItem {
-  NSLog(@"clipboard: addItem");
   [items insertObject:anItem atIndex:0];
   if ([items count] > capacity) {
     NSRange tail = NSMakeRange(capacity, [items count] - capacity);

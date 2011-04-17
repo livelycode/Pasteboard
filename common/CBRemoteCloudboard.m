@@ -116,7 +116,6 @@
 }
 
 - (void)netService:(NSNetService *)netServiceDidNotResolve:(NSDictionary *)errorDict {
-  NSLog(@"error: not resolved address: %@", errorDict);
 }
 
 //NSURLConnectionDelegate
@@ -148,12 +147,10 @@
 }
 
 - (void)sendRegistration {
-  NSLog(@"try to register as client of: %@", url);
   [self postToPath:@"register" withData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 
 - (void)sendRegistrationConfirmation {
-  NSLog(@"confirm registration of: %@", url);
   [self postToPath:@"confirm" withData:[[syncController serviceName] dataUsingEncoding: NSUTF8StringEncoding]];
 }
 @end

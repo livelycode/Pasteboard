@@ -121,6 +121,11 @@
 
 - (void)loadSettings {
   NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  if([userDefaults boolForKey:@"defaultsSet"] == NO) {
+    [userDefaults setBool:YES forKey:@"defaultsSet"];
+    menuItemVisible = YES;
+    [self updateSettings];
+  }
   autoStart = [userDefaults boolForKey:@"AutoStart"];
   autoPaste = [userDefaults boolForKey:@"AutoPaste"];
   menuItemVisible = [userDefaults boolForKey:@"MenuItemVisible"];
@@ -145,13 +150,13 @@
   NSMutableDictionary* settings = [NSMutableDictionary dictionary];
   [settings setValue:[NSNumber numberWithBool:!autoStart] forKey:@"Disabled"];
   [settings setValue:[NSNumber numberWithBool:NO] forKey:@"KeepAlive"];
-  [settings setValue:@"Cloudboard" forKey:@"Label"];
+  [settings setValue:@"Pasteboard" forKey:@"Label"];
   [settings setValue:[NSNumber numberWithBool:NO] forKey:@"OnDemand"];
   [settings setValue:[NSNumber numberWithBool:autoStart] forKey:@"RunAtLoad"];
   NSString* executablePath = [[NSBundle mainBundle] executablePath];
   NSString* programArgs = [NSArray arrayWithObjects:executablePath, nil];
   [settings setValue: programArgs forKey:@"ProgramArguments"];
-  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Cloudboard.plist" stringByExpandingTildeInPath]];
+  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Pasteboard.plist" stringByExpandingTildeInPath]];
   [settings writeToURL:plistURL atomically:YES];
 }
 

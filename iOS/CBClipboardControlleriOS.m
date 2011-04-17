@@ -54,7 +54,6 @@
 - (void)handleTapFromItemView:(CBItemView*)itemView {
   NSInteger index = [itemViewSlots indexOfObject:itemView];
   NSString *string = [[clipboard itemAtIndex:index] string];
-  NSLog(@"%@", string);
   UIPasteboard *systemPasteboard = [UIPasteboard generalPasteboard];
   [systemPasteboard setValue: string forPasteboardType:(NSString*)kUTTypeUTF8PlainText];
 }
