@@ -161,7 +161,7 @@
   NSString* executablePath = [[NSBundle mainBundle] executablePath];
   NSString* programArgs = [NSArray arrayWithObjects:executablePath, nil];
   [settings setValue: programArgs forKey:@"ProgramArguments"];
-  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/Pasteboard.plist" stringByExpandingTildeInPath]];
+  NSURL* plistURL = [[NSURL alloc] initFileURLWithPath:[@"~/Library/LaunchAgents/com.livelycode.pasteboard.plist" stringByExpandingTildeInPath]];
   [settings writeToURL:plistURL atomically:YES];
 }
 
