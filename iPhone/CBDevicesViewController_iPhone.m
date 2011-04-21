@@ -6,13 +6,13 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CBDevicesViewController.h"
+#import "CBDevicesViewController_iPhone.h"
 #import "Cloudboard.h"
 
-@implementation CBDevicesViewController
+@implementation CBDevicesViewController_iPhone
 
 - (id)initWithClipboard:(CBClipboardController*)delegate {
-    self = [super initWithNibName:@"Devices" bundle:nil];
+    self = [super initWithNibName:@"Devices_iPhone" bundle:nil];
     if (self) {
       foundCloudboards = [[NSMutableArray alloc] init];
       selectedCloudboards = [[NSMutableArray alloc] init];
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation CBDevicesViewController(Overriden)
+@implementation CBDevicesViewController_iPhone(Overriden)
 
 - (void)dealloc {
   [delegate release];
@@ -39,7 +39,7 @@
 
 @end
 
-@implementation CBDevicesViewController(Actions)
+@implementation CBDevicesViewController_iPhone(Actions)
 
 - (IBAction)dismiss:(id)sender {
   [self dismissModalViewControllerAnimated:YES];

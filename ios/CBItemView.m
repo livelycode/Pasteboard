@@ -2,6 +2,18 @@
 
 @implementation CBItemView(Private)
 
+- (void)initDeviceSpecificParams {
+  if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    itemFontSize = 16;
+    itemPaddingX = 16;
+    itemPaddingY = 24;
+  } else {
+    itemFontSize = 10;
+    itemPaddingX = 6;
+    itemPaddingY = 10;
+  }
+}
+
 - (UIBezierPath *)notePathWithRect:(CGRect)noteRect {
   UIBezierPath *path = [UIBezierPath bezierPath];
   [path moveToPoint:CGPointMake(CGRectGetMinX(noteRect), CGRectGetMinY(noteRect))];
@@ -41,7 +53,7 @@
 }
 
 - (void)drawTextAtRect:(CGRect)textRect {
-  [string drawInRect:textRect withFont: [UIFont systemFontOfSize:ITEM_FONT_SIZE]];
+  [string drawInRect:textRect withFont: [UIFont systemFontOfSize:itemFontSize]];
 }
 
 - (void)fadeOut {
@@ -82,6 +94,7 @@
 - (id)initWithFrame:(CGRect)aRect content:(NSString*)content delegate:(id <CBItemViewDelegate>)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
+    [self initDeviceSpecificParams];
     delegate = [anObject retain];
     string = [content retain];
     animationLayers = [[NSMutableArray alloc] init];
@@ -103,7 +116,7 @@
 @implementation CBItemView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect noteRect = CGRectInset([self bounds], ITEM_PADDING_X, ITEM_PADDING_Y);
+  CGRect noteRect = CGRectInset([self bounds], itemPaddingX, itemPaddingY);
   UIBezierPath *notePath = [self notePathWithRect:noteRect];
   [self drawNoteWithPath:notePath];
   [self drawBorderWithPath:notePath];

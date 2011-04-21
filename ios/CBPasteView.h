@@ -4,6 +4,11 @@
 @interface CBPasteView : UIButton
 {
 @private
+  NSInteger itemFontSize;
+  NSInteger itemPaddingX;
+  NSInteger itemPaddingY;
+  NSInteger pasteButtonPaddingX;
+  NSInteger pasteButtonPaddingY;
   CBClipboardController* delegate;
   CGFloat lineWidth;
 }

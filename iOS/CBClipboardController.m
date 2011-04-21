@@ -8,8 +8,8 @@
 
 @implementation CBClipboardController
 
-- (id)initWithDelegate:(id)appController {
-  self = [super initWithNibName:@"Clipboard" bundle:nil];
+- (id)initWithNibName:(NSString*)nibName delegate:(id)appController {
+  self = [super initWithNibName:nibName bundle:nil];
   if (self != nil) {
     if((self.interfaceOrientation == UIInterfaceOrientationPortrait) ||
        (self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)) {
@@ -17,13 +17,11 @@
     } else {
       [self setRowsForLandscape];
     }
-    paddingTop = CLIPBOARD_PADDING_TOP;
-    paddingSides = CLIPBOARD_PADDING_SIDES;
+    [self initDeviceSpecificParams];
     clipboard = [[CBClipboard alloc] initWithCapacity:rows*columns-1];
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     delegate = appController;
-    [self startSyncing];
   }
   return self;
 }
@@ -63,6 +61,16 @@
 @end
 
 @implementation CBClipboardController(iOSPrivate)
+
+- (void)initDeviceSpecificParams {
+  if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    paddingTop = 40;
+    paddingSides = 20;
+  } else {
+    paddingTop = 20;
+    paddingSides = 10;
+  }
+}
 
 - (CGRect)rectForNSValue:(NSValue*)value {
   return [value CGRectValue];

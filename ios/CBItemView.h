@@ -4,6 +4,9 @@
 @interface CBItemView : UIView
 {
   @private
+  NSInteger itemFontSize;
+  NSInteger itemPaddingX;
+  NSInteger itemPaddingY;
   id delegate;
   NSString* string;
   NSMutableArray *animationLayers;

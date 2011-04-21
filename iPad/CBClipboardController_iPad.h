@@ -11,6 +11,7 @@
   CBPasteView* pasteButton;
   IBOutlet UINavigationBar *toolbar;
 }
+- (id)initWithDelegate:(id)appController;
 @end
 
 @interface CBClipboardController_iPad(Delegation) <CBItemViewDelegate>

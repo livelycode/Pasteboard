@@ -7,11 +7,21 @@
 #define ROWS_PORTRAIT 4
 #define ROWS_LANDSCAPE 2
 
-@implementation CBClipboardController
+#import "CBClipboardController_iPhone.h"
+#import "CBDevicesViewController_iPhone.h"
 
+@implementation CBClipboardController_iPhone
+- (id)initWithDelegate:(id)appController {
+  self = [super initWithNibName:@"Clipboard_iPhone" delegate:appController];
+  if(self) {
+    devicesViewController = [[CBDevicesViewController_iPhone alloc] initWithClipboard:self];
+    [self startSyncing];
+  }
+  return self;
+}
 @end
 
-@implementation CBClipboardController(Overriden)
+@implementation CBClipboardController_iPhone(Overriden)
 - (void)viewDidLoad {
   [self.view setFrame:CGRectOffset(self.view.frame, 0, 20)];
   [self drawBackgroundLayers];
@@ -36,13 +46,9 @@
 }
 @end
 
-@implementation CBClipboardController(Delegation)
+@implementation CBClipboardController_iPhone(Delegation)
 //UIToolbarDelegate
 - (IBAction)devicesButtonTapped:(id)event {
   [self presentModalViewController:devicesViewController animated:YES];
 }
-@end
-
-@implementation CBClipboardController(Private)
-
 @end

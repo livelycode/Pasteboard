@@ -20,6 +20,9 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  CGRect mainFrame = [[UIScreen mainScreen] bounds];
+  window = [[UIWindow alloc] initWithFrame:mainFrame];
+  [window makeKeyAndVisible];
   [self initClipboards];
   return YES;
 }

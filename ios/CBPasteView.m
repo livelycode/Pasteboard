@@ -1,6 +1,21 @@
 #import "Cloudboard.h"
 
 @implementation CBPasteView(Private)
+- (void)initDeviceSpecificParams {
+  if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    itemFontSize = 16;
+    itemPaddingX = 16;
+    itemPaddingY = 24;
+    pasteButtonPaddingX = 16;
+    pasteButtonPaddingY = 4;
+  } else {
+    itemFontSize = 10;
+    itemPaddingX = 6;
+    itemPaddingY = 10;
+    pasteButtonPaddingX = 0;
+    pasteButtonPaddingY = -2;
+  }
+}
 
 - (UIBezierPath *)notePathWithRect:(CGRect)noteRect {
   return [UIBezierPath bezierPathWithRoundedRect:noteRect cornerRadius:16];
@@ -59,8 +74,8 @@
 @implementation CBPasteView(Overridden)
 
 - (void)drawRect:(CGRect)aRect {
-  CGRect frame = CGRectInset([self bounds], ITEM_PADDING_X, ITEM_PADDING_Y);
-  [self drawBorderWithRect:CGRectInset(frame, PASTE_BUTTON_PADDING_X, PASTE_BUTTON_PADDING_Y)];
+  CGRect frame = CGRectInset([self bounds], itemPaddingX, itemPaddingY);
+  [self drawBorderWithRect:CGRectInset(frame, pasteButtonPaddingX, pasteButtonPaddingY)];
   
   UIColor *background = [UIColor woodBackgroundColor];
   UIColor *border = [UIColor woodBorderColor];
@@ -79,6 +94,7 @@
 - (id)initWithFrame:(CGRect)aRect delegate:(CBClipboardController*)anObject {
   self = [super initWithFrame:aRect];
   if (self != nil) {
+    [self initDeviceSpecificParams];
     delegate = anObject;
     lineWidth = CGRectGetWidth(aRect) / 60;
     UITapGestureRecognizer* recognizer = [[UITapGestureRecognizer alloc]

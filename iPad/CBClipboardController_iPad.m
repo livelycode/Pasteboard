@@ -3,13 +3,18 @@
 #import "CBDevicesViewController_iPad.h"
 
 @implementation CBClipboardController_iPad
-
+- (id)initWithDelegate:(id)appController {
+  self = [super initWithNibName:@"Clipboard_iPad" delegate:appController];
+  if(self) {
+    devicesViewController = [[CBDevicesViewController_iPad alloc] initWithClipboard:self];
+    [self startSyncing];
+  }
+  return self;
+}
 @end
 
 @implementation CBClipboardController_iPad(Overriden)
-
 - (void)viewDidLoad {
-  devicesViewController = [[CBDevicesViewController_iPad alloc] initWithClipboard:self];
   [self.view setFrame:CGRectOffset(self.view.frame, 0, 20)];
   [self drawBackgroundLayers];
   [self preparePopoverView];

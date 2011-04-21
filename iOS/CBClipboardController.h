@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @class CBPasteView, CBItemView, CBSyncController, CBApplicationController, CBDevicesViewController, CBClipboard;
 
@@ -27,7 +28,7 @@
 @end
 
 @interface CBClipboardController(iOS)
-- (id)initWithDelegate:(id)appController;
+- (id)initWithNibName:(NSString*)nibName delegate:(id)appController;
 - (void)stopSyncing;
 - (void)startSyncing;
 @end

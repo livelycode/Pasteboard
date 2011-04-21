@@ -8,19 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "CBSyncControllerProtocol.h"
+#import "CBDevicesViewController.h"
 
 @class CBClipboardController, CBSyncController;
 
-@interface CBDevicesViewController : UIViewController {
-  CBClipboardController* delegate;
-  CBSyncController* syncController;
-  IBOutlet UITableView* tableView;
-  NSMutableArray* foundCloudboards;
-  NSMutableArray* selectedCloudboards;
+@interface CBDevicesViewController_iPhone : CBDevicesViewController {
+
 }
 - (id)initWithClipboard:(CBClipboardController*)delegate;
 @end
 
-@interface CBDevicesViewController(Actions)
+@interface CBDevicesViewController_iPhone(Actions)
 - (IBAction)dismiss:(id)sender;
 @end

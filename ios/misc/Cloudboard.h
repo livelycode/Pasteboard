@@ -14,7 +14,6 @@
 #import "CBItemView.h"
 #import "CBDevicesView.h"
 #import "CBDevicesViewController.h"
-#import "ViewSettings.h"
 #import "CBCocoaExtensions.h"
 
 #define POST_SEPARATOR @"com.cloudboard.separator"
