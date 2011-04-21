@@ -10,12 +10,10 @@
 
 #import "CBApplicationController.h"
 #import "CBClipboardController.h"
-#import "CBClipboardControlleriOS.h"
 #import "CBSyncControlleriOS.h"
 #import "CBItemView.h"
 #import "CBDevicesView.h"
 #import "CBDevicesViewController.h"
-#import "CBDevicesViewControlleriOS.h"
 #import "ViewSettings.h"
 #import "CBCocoaExtensions.h"
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CBClipboardController.h"
-@class CBItem;
+@class CBItem, CBSyncController;
 
 @interface CBClipboardController(CommonPublic)
 - (void)addItem:(CBItem *)item syncing:(BOOL)sync;

@@ -7,7 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CBClipboardController.h"
+
+@class CBPasteView, CBItemView, CBSyncController, CBApplicationController, CBDevicesViewController, CBClipboard;
+
+@interface CBClipboardController : UIViewController {
+  @protected
+  NSInteger rows;
+  NSInteger columns;
+  CGFloat paddingTop;
+  CGFloat paddingSides;
+  CBClipboard* clipboard;
+  CBApplicationController* delegate;
+  CBDevicesViewController* devicesViewController;
+  NSMutableArray* frames;
+  CBSyncController* syncController;
+  NSMutableArray* itemViewSlots;
+  IBOutlet UIView* clipboardView;
+}
+@end
 
 @interface CBClipboardController(iOS)
 - (id)initWithDelegate:(id)appController;

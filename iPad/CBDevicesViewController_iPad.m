@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CBDevicesViewController.h"
+#import "CBDevicesViewController_iPad.h"
 #import "Cloudboard.h"
 
-@implementation CBDevicesViewController
+@implementation CBDevicesViewController_iPad
 
 - (id)initWithClipboard:(CBClipboardController*)delegate {
     self = [super init];

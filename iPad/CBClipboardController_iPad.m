@@ -1,12 +1,15 @@
 #import "Cloudboard.h"
+#import "CBClipboardController_iPad.h"
+#import "CBDevicesViewController_iPad.h"
 
-@implementation CBClipboardController
+@implementation CBClipboardController_iPad
 
 @end
 
-@implementation CBClipboardController(Overriden)
+@implementation CBClipboardController_iPad(Overriden)
 
 - (void)viewDidLoad {
+  devicesViewController = [[CBDevicesViewController_iPad alloc] initWithClipboard:self];
   [self.view setFrame:CGRectOffset(self.view.frame, 0, 20)];
   [self drawBackgroundLayers];
   [self preparePopoverView];
@@ -39,7 +42,7 @@
 }
 @end
 
-@implementation CBClipboardController(Delegation)
+@implementation CBClipboardController_iPad(Delegation)
 
 //UIToolbarDelegate
 - (IBAction)devicesButtonTapped:(id)event {
@@ -51,7 +54,7 @@
 }
 @end
 
-@implementation CBClipboardController(Private)
+@implementation CBClipboardController_iPad(Private)
 
 - (void)preparePopoverView {
   popoverController = [[UIPopoverController alloc] initWithContentViewController:devicesViewController];

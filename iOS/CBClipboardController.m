@@ -1,12 +1,12 @@
 
-#import "CBClipboardControlleriOS.h"
+#import "CBClipboardController.h"
 #import "Cloudboard.h"
 
 #define ITEMS 8
 #define ROWS_PORTRAIT 4
 #define ROWS_LANDSCAPE 2
 
-@implementation CBClipboardController(iOS)
+@implementation CBClipboardController
 
 - (id)initWithDelegate:(id)appController {
   self = [super initWithNibName:@"Clipboard" bundle:nil];
@@ -23,7 +23,6 @@
     frames = [[NSMutableArray alloc] init];
     itemViewSlots = [[NSMutableArray alloc] init];
     delegate = appController;
-    devicesViewController = [[CBDevicesViewController alloc] initWithClipboard:self];
     [self startSyncing];
   }
   return self;

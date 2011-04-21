@@ -6,10 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "CBDevicesViewControlleriOS.h"
+#import "CBDevicesViewController.h"
 #import "Cloudboard.h"
 
-@implementation CBDevicesViewController(iOS)
+@implementation CBDevicesViewController
 - (void)setSyncController:(CBSyncController*)aSyncController {
   if(syncController) {
     [syncController release];

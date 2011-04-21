@@ -6,11 +6,13 @@
 @class CBPasteboardObserver;
 @class CBMainWindowController;
 @class HTTPConnectionDelegate;
-@class CBSyncController;
+@class CBSyncController, CBItem;
+
+#import "CBSyncControllerProtocol.h"
 
 @interface CBApplicationController : NSObject <UIApplicationDelegate>
 {
-  @private
+  @protected
   CBClipboardController *clipboardController;
   UIWindow *window;
 }

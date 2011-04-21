@@ -7,9 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CBDevicesViewController.h"
+#import "CBSyncControllerProtocol.h"
+@class CBClipboardController, CBSyncController;
 
-@interface CBDevicesViewController(iOS)
+@interface CBDevicesViewController : UIViewController {
+  @protected
+  CBClipboardController* delegate;
+  CBSyncController* syncController;
+  UITableView* tableView;
+  NSMutableArray* foundCloudboards;
+  NSMutableArray* selectedCloudboards;
+  NSMutableArray* connectedCloudboards;
+}
 - (void)setSyncController:(CBSyncController*)aSyncController;
 - (void)releaseSyncController;
 @end

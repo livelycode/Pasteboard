@@ -2,14 +2,6 @@
 
 @implementation CBApplicationController
 
-- (void)initClipboards {
-  CGRect mainFrame = [[UIScreen mainScreen] bounds];
-  window = [[UIWindow alloc] initWithFrame:mainFrame];
-  [window makeKeyAndVisible];
-  clipboardController = [[CBClipboardController alloc] initWithDelegate:self];
-  [window addSubview:clipboardController.view];
-}
-
 - (CBClipboardController*)clipboardController {
   return clipboardController;
 }
