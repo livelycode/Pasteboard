@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Icon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.livelycode.pasteboard</string>
+	<string>com.livelycode.pasteboard-mac</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -33,7 +33,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSMainNibFile</key>
-	<string>clipboard</string>
+	<string>		</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSServices</key>
