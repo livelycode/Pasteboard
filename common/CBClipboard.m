@@ -13,14 +13,6 @@
       items = [[NSMutableArray alloc] init];
       capacity = aCapacity;
       lastChanged = [[NSDate alloc] initWithTimeIntervalSince1970:0];
-      NSFileManager *fileManager = [NSFileManager defaultManager];
-      NSArray *urls = [fileManager URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-      if ([urls count] > 0) {
-        NSURL *appSupportURL = [urls objectAtIndex:0];
-        NSURL *ourAppSupportURL = [appSupportURL URLByAppendingPathComponent:@"Pasteboard"];
-        [fileManager createDirectoryAtPath:[ourAppSupportURL path] withIntermediateDirectories:YES attributes:nil error:NULL];
-        storeURL = [[NSURL alloc] initWithString:@"items.plist" relativeToURL:ourAppSupportURL];
-      }
       [self loadItems];
     }
     return self;
@@ -61,7 +53,9 @@
   [itemData setValue:stringsToPersist forKey:@"items"];
   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0);
   dispatch_async(queue,^{
-    [itemData writeToURL:storeURL atomically:YES];
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:itemData forKey:@"items"];
+    [userDefaults synchronize];
   });
 }
 
@@ -85,7 +79,9 @@
 @implementation CBClipboard(Private)
 
 - (void)loadItems {
-  NSDictionary* itemData = [NSDictionary dictionaryWithContentsOfURL:storeURL];
+  NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+  NSDictionary* itemData = [userDefaults dictionaryForKey:@"items"];
+    
   if(itemData) {
     [lastChanged release];
     lastChanged = [[itemData valueForKey:@"date"] retain];
